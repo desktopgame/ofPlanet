@@ -76,7 +76,13 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\Work\PlanetSln\Planet\packages\glm.0.9.9.500\build\native\include;C:\Program Files\Autodesk\FBX\FBX SDK\2019.2\include;C:\Program Files (x86)\OpenAL 1.1 SDK\ALUT\freealut-freealut_1_1_0\include;C:\Program Files (x86)\OpenAL 1.1 SDK\include;$(SolutionDir)packages\freeglut.2.8.1.15\build\native\include\GL;$(SolutionDir)packages\glew.1.9.0.1\build\native\include\GL;$(SolutionDir)packages\glfw.3.3.0.1\build\native\include\GLFW;$(SolutionDir)packages\libpng.1.6.28.1\build\native\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>C:\Program Files\Autodesk\FBX\FBX SDK\2019.2\lib\vs2017\x86\debug;C:\Program Files (x86)\OpenAL 1.1 SDK\ALUT\build\debug;C:\Program Files (x86)\OpenAL 1.1 SDK\libs\Win32\EFX-Util_MT;C:\Program Files (x86)\OpenAL 1.1 SDK\libs\Win32;$(SolutionDir)packages\zlib.v140.windesktop.msvcstl.dyn.rt-dyn.1.2.8.8\lib\native\v140\windesktop\msvcstl\dyn\rt-dyn\Win32\Debug;$(SolutionDir)packages\libpng.1.6.28.1\build\native\lib\Win32\v140\dynamic\Debug;$(SolutionDir)packages\glfw.3.3.0.1\build\native\lib\static\v142\win32;$(SolutionDir)packages\glew.1.9.0.1\build\native\lib\v110\Win32\Debug\static;$(SolutionDir)packages\freeglut.2.8.1.15\build\native\lib\v110\Win32\Debug\static;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>freeglut.lib;glew.lib;glfw3.lib;zlibd.lib;libpng16.lib;alut.lib;OpenAL32.lib;EFX-Util.lib;libfbxsdk.lib;libxml2-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -115,8 +121,239 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="game\input\KeyMove.cpp" />
+    <ClCompile Include="game\input\MouseScroll.cpp" />
+    <ClCompile Include="game\main.cpp" />
+    <ClCompile Include="game\MyGame.cpp" />
+    <ClCompile Include="game\resources.cpp" />
+    <ClCompile Include="game\scene\PlayScene.cpp" />
+    <ClCompile Include="game\scene\TestScene.cpp" />
+    <ClCompile Include="game\scene\TitleScene.cpp" />
+    <ClCompile Include="game\scene\TutorialScene.cpp" />
+    <ClCompile Include="game\ui\ButtonUI.cpp" />
+    <ClCompile Include="game\ui\CrossHairUI.cpp" />
+    <ClCompile Include="game\ui\CursorUI.cpp" />
+    <ClCompile Include="game\ui\DebugUI.cpp" />
+    <ClCompile Include="game\world\biome\BasicBiome.cpp" />
+    <ClCompile Include="game\world\biome\Biome.cpp" />
+    <ClCompile Include="game\world\biome\DesertBiome.cpp" />
+    <ClCompile Include="game\world\biome\HillBiome.cpp" />
+    <ClCompile Include="game\world\biome\PlainBiome.cpp" />
+    <ClCompile Include="game\world\Block.cpp" />
+    <ClCompile Include="game\world\BlockRegistry.cpp" />
+    <ClCompile Include="game\world\Entity.cpp" />
+    <ClCompile Include="game\world\EntityPhysics.cpp" />
+    <ClCompile Include="game\world\gen\Cell.cpp" />
+    <ClCompile Include="game\world\gen\Xorshift.cpp" />
+    <ClCompile Include="game\world\MultiBlock.cpp" />
+    <ClCompile Include="game\world\Planet.cpp" />
+    <ClCompile Include="game\world\Space.cpp" />
+    <ClCompile Include="game\world\TexturePack.cpp" />
+    <ClCompile Include="game\world\WarpPoint.cpp" />
+    <ClCompile Include="game\world\World.cpp" />
+    <ClCompile Include="gel\content\BmpPipeline.cpp" />
+    <ClCompile Include="gel\content\ContentManager.cpp" />
+    <ClCompile Include="gel\content\EchoPipeline.cpp" />
+    <ClCompile Include="gel\content\FbxPipeline.cpp" />
+    <ClCompile Include="gel\content\PngPipeline.cpp" />
+    <ClCompile Include="gel\content\WavePipeline.cpp" />
+    <ClCompile Include="gel\device\AudioManager.cpp" />
+    <ClCompile Include="gel\device\BmpTexture.cpp" />
+    <ClCompile Include="gel\device\FbxMaterial.cpp" />
+    <ClCompile Include="gel\device\FbxMeshInfo.cpp" />
+    <ClCompile Include="gel\device\FbxModel.cpp" />
+    <ClCompile Include="gel\device\GameDevice.cpp" />
+    <ClCompile Include="gel\device\ModelManager.cpp" />
+    <ClCompile Include="gel\device\PngTexture.cpp" />
+    <ClCompile Include="gel\device\TextureManager.cpp" />
+    <ClCompile Include="gel\device\WaveAudio.cpp" />
+    <ClCompile Include="gel\Game.cpp" />
+    <ClCompile Include="gel\gsystem\Camera.cpp" />
+    <ClCompile Include="gel\gsystem\Duration.cpp" />
+    <ClCompile Include="gel\gsystem\LineRenderer.cpp" />
+    <ClCompile Include="gel\gsystem\Number.cpp" />
+    <ClCompile Include="gel\gsystem\Random.cpp" />
+    <ClCompile Include="gel\gsystem\Text.cpp" />
+    <ClCompile Include="gel\gsystem\Timer.cpp" />
+    <ClCompile Include="gel\gsystem\Transform.cpp" />
+    <ClCompile Include="gel\math\AABB.cpp" />
+    <ClCompile Include="gel\math\Quadrangle.cpp" />
+    <ClCompile Include="gel\math\Rectangle.cpp" />
+    <ClCompile Include="gel\math\Triangle.cpp" />
+    <ClCompile Include="gel\scene\SceneManager.cpp" />
+    <ClCompile Include="gel\shader\Circle.cpp" />
+    <ClCompile Include="gel\shader\Color4.cpp" />
+    <ClCompile Include="gel\shader\CubeMap.cpp" />
+    <ClCompile Include="gel\shader\FrameBuffer.cpp" />
+    <ClCompile Include="gel\shader\Line.cpp" />
+    <ClCompile Include="gel\shader\NameRule.cpp" />
+    <ClCompile Include="gel\shader\Plane.cpp" />
+    <ClCompile Include="gel\shader\PlaneBatch.cpp" />
+    <ClCompile Include="gel\shader\PlaneDraw.cpp" />
+    <ClCompile Include="gel\shader\Reflection4.cpp" />
+    <ClCompile Include="gel\shader\RenderBuffer.cpp" />
+    <ClCompile Include="gel\shader\ScreenBuffer.cpp" />
+    <ClCompile Include="gel\shader\Shader.cpp" />
+    <ClCompile Include="gel\shader\ShaderRegistry.cpp" />
+    <ClCompile Include="gel\shader\Sprite.cpp" />
+    <ClCompile Include="gel\shader\VertexArray.cpp" />
+    <ClCompile Include="gel\ui\GUI.cpp" />
+    <ClCompile Include="gel\ui\imgui\imgui.cpp" />
+    <ClCompile Include="gel\ui\imgui\imgui_demo.cpp" />
+    <ClCompile Include="gel\ui\imgui\imgui_draw.cpp" />
+    <ClCompile Include="gel\ui\imgui\imgui_impl_glfw.cpp" />
+    <ClCompile Include="gel\ui\imgui\imgui_impl_opengl2.cpp" />
+    <ClCompile Include="gel\ui\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="gel\util\CommandReader.cpp" />
+    <ClCompile Include="gel\util\error.cpp" />
+    <ClCompile Include="gel\util\Flag.cpp" />
+    <ClCompile Include="gel\util\io.cpp" />
+    <ClCompile Include="gel\util\KeyTrigger.cpp" />
+    <ClCompile Include="gel\util\MouseTrigger.cpp" />
+    <ClCompile Include="gel\util\string.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="game\def.hpp" />
+    <ClInclude Include="game\input\KeyMove.hpp" />
+    <ClInclude Include="game\input\MouseScroll.hpp" />
+    <ClInclude Include="game\MyGame.hpp" />
+    <ClInclude Include="game\resources.hpp" />
+    <ClInclude Include="game\scene\PlayScene.hpp" />
+    <ClInclude Include="game\scene\TestScene.hpp" />
+    <ClInclude Include="game\scene\TitleScene.hpp" />
+    <ClInclude Include="game\scene\TutorialScene.hpp" />
+    <ClInclude Include="game\ui\ButtonUI.hpp" />
+    <ClInclude Include="game\ui\CrossHairUI.hpp" />
+    <ClInclude Include="game\ui\CursorUI.hpp" />
+    <ClInclude Include="game\ui\DebugUI.hpp" />
+    <ClInclude Include="game\world\biome\BasicBiome.hpp" />
+    <ClInclude Include="game\world\biome\Biome.hpp" />
+    <ClInclude Include="game\world\biome\DesertBiome.hpp" />
+    <ClInclude Include="game\world\biome\HillBiome.hpp" />
+    <ClInclude Include="game\world\biome\PlainBiome.hpp" />
+    <ClInclude Include="game\world\Block.hpp" />
+    <ClInclude Include="game\world\BlockRegistry.hpp" />
+    <ClInclude Include="game\world\Entity.hpp" />
+    <ClInclude Include="game\world\EntityPhysics.hpp" />
+    <ClInclude Include="game\world\gen\Cell.hpp" />
+    <ClInclude Include="game\world\gen\Generator.hpp" />
+    <ClInclude Include="game\world\gen\PerlinNoise.hpp" />
+    <ClInclude Include="game\world\gen\Xorshift.hpp" />
+    <ClInclude Include="game\world\MultiBlock.hpp" />
+    <ClInclude Include="game\world\Planet.hpp" />
+    <ClInclude Include="game\world\Space.hpp" />
+    <ClInclude Include="game\world\TexturePack.hpp" />
+    <ClInclude Include="game\world\WarpPoint.hpp" />
+    <ClInclude Include="game\world\World.hpp" />
+    <ClInclude Include="gel\content\BmpPipeline.hpp" />
+    <ClInclude Include="gel\content\ContentManager.hpp" />
+    <ClInclude Include="gel\content\EchoPipeline.hpp" />
+    <ClInclude Include="gel\content\FbxPipeline.hpp" />
+    <ClInclude Include="gel\content\IContentPipeline.hpp" />
+    <ClInclude Include="gel\content\PngPipeline.hpp" />
+    <ClInclude Include="gel\content\ProxyPipeline.hpp" />
+    <ClInclude Include="gel\content\WavePipeline.hpp" />
+    <ClInclude Include="gel\device\AudioManager.hpp" />
+    <ClInclude Include="gel\device\BmpTexture.hpp" />
+    <ClInclude Include="gel\device\FbxMaterial.hpp" />
+    <ClInclude Include="gel\device\FbxMeshInfo.hpp" />
+    <ClInclude Include="gel\device\FbxModel.hpp" />
+    <ClInclude Include="gel\device\fbxsdk.h" />
+    <ClInclude Include="gel\device\GameDevice.hpp" />
+    <ClInclude Include="gel\device\IModel.hpp" />
+    <ClInclude Include="gel\device\IPlayableAudio.hpp" />
+    <ClInclude Include="gel\device\ITexture.hpp" />
+    <ClInclude Include="gel\device\ModelManager.hpp" />
+    <ClInclude Include="gel\device\PngTexture.hpp" />
+    <ClInclude Include="gel\device\TextureManager.hpp" />
+    <ClInclude Include="gel\device\WaveAudio.hpp" />
+    <ClInclude Include="gel\fbxsdk.hpp" />
+    <ClInclude Include="gel\Game.hpp" />
+    <ClInclude Include="gel\gel.hpp" />
+    <ClInclude Include="gel\gli.hpp" />
+    <ClInclude Include="gel\gsystem\Camera.hpp" />
+    <ClInclude Include="gel\gsystem\Duration.hpp" />
+    <ClInclude Include="gel\gsystem\LineRenderer.hpp" />
+    <ClInclude Include="gel\gsystem\Number.hpp" />
+    <ClInclude Include="gel\gsystem\Random.hpp" />
+    <ClInclude Include="gel\gsystem\ScoreTable.hpp" />
+    <ClInclude Include="gel\gsystem\Text.hpp" />
+    <ClInclude Include="gel\gsystem\Timer.hpp" />
+    <ClInclude Include="gel\gsystem\Transform.hpp" />
+    <ClInclude Include="gel\math\AABB.hpp" />
+    <ClInclude Include="gel\math\Quadrangle.hpp" />
+    <ClInclude Include="gel\math\Rectangle.hpp" />
+    <ClInclude Include="gel\math\Triangle.hpp" />
+    <ClInclude Include="gel\scene\IScene.hpp" />
+    <ClInclude Include="gel\scene\SceneManager.hpp" />
+    <ClInclude Include="gel\shader\Buffer.hpp" />
+    <ClInclude Include="gel\shader\Circle.hpp" />
+    <ClInclude Include="gel\shader\Color4.hpp" />
+    <ClInclude Include="gel\shader\CubeMap.hpp" />
+    <ClInclude Include="gel\shader\FrameBuffer.hpp" />
+    <ClInclude Include="gel\shader\Line.hpp" />
+    <ClInclude Include="gel\shader\NameRule.hpp" />
+    <ClInclude Include="gel\shader\Plane.hpp" />
+    <ClInclude Include="gel\shader\PlaneBatch.hpp" />
+    <ClInclude Include="gel\shader\PlaneDraw.hpp" />
+    <ClInclude Include="gel\shader\Reflection4.hpp" />
+    <ClInclude Include="gel\shader\RenderBuffer.hpp" />
+    <ClInclude Include="gel\shader\ScreenBuffer.hpp" />
+    <ClInclude Include="gel\shader\Sequence.hpp" />
+    <ClInclude Include="gel\shader\Shader.hpp" />
+    <ClInclude Include="gel\shader\ShaderRegistry.hpp" />
+    <ClInclude Include="gel\shader\Sprite.hpp" />
+    <ClInclude Include="gel\shader\VertexArray.hpp" />
+    <ClInclude Include="gel\ui\GUI.hpp" />
+    <ClInclude Include="gel\ui\imgui\imconfig.h" />
+    <ClInclude Include="gel\ui\imgui\imgui.h" />
+    <ClInclude Include="gel\ui\imgui\imgui_impl_glfw.h" />
+    <ClInclude Include="gel\ui\imgui\imgui_impl_opengl2.h" />
+    <ClInclude Include="gel\ui\imgui\imgui_internal.h" />
+    <ClInclude Include="gel\ui\imgui\imstb_rectpack.h" />
+    <ClInclude Include="gel\ui\imgui\imstb_textedit.h" />
+    <ClInclude Include="gel\ui\imgui\imstb_truetype.h" />
+    <ClInclude Include="gel\util\BlockingQueue.hpp" />
+    <ClInclude Include="gel\util\collections.hpp" />
+    <ClInclude Include="gel\util\CommandReader.hpp" />
+    <ClInclude Include="gel\util\error.hpp" />
+    <ClInclude Include="gel\util\Flag.hpp" />
+    <ClInclude Include="gel\util\io.hpp" />
+    <ClInclude Include="gel\util\KeyTrigger.hpp" />
+    <ClInclude Include="gel\util\MouseTrigger.hpp" />
+    <ClInclude Include="gel\util\NonCopyable.hpp" />
+    <ClInclude Include="gel\util\string.hpp" />
+    <ClInclude Include="gel\util\Vec2HashFunc.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="..\packages\freeglut.redist.2.8.1.15\build\native\freeglut.redist.targets" Condition="Exists('..\packages\freeglut.redist.2.8.1.15\build\native\freeglut.redist.targets')" />
+    <Import Project="..\packages\freeglut.2.8.1.15\build\native\freeglut.targets" Condition="Exists('..\packages\freeglut.2.8.1.15\build\native\freeglut.targets')" />
+    <Import Project="..\packages\glew.redist.1.9.0.1\build\native\glew.redist.targets" Condition="Exists('..\packages\glew.redist.1.9.0.1\build\native\glew.redist.targets')" />
+    <Import Project="..\packages\glew.1.9.0.1\build\native\glew.targets" Condition="Exists('..\packages\glew.1.9.0.1\build\native\glew.targets')" />
+    <Import Project="..\packages\glfw.3.3.0.1\build\native\glfw.targets" Condition="Exists('..\packages\glfw.3.3.0.1\build\native\glfw.targets')" />
+    <Import Project="..\packages\libpng.redist.1.6.28.1\build\native\libpng.redist.targets" Condition="Exists('..\packages\libpng.redist.1.6.28.1\build\native\libpng.redist.targets')" />
+    <Import Project="..\packages\zlib.v120.windesktop.msvcstl.dyn.rt-dyn.1.2.8.8\build\native\zlib.v120.windesktop.msvcstl.dyn.rt-dyn.targets" Condition="Exists('..\packages\zlib.v120.windesktop.msvcstl.dyn.rt-dyn.1.2.8.8\build\native\zlib.v120.windesktop.msvcstl.dyn.rt-dyn.targets')" />
+    <Import Project="..\packages\zlib.v140.windesktop.msvcstl.dyn.rt-dyn.1.2.8.8\build\native\zlib.v140.windesktop.msvcstl.dyn.rt-dyn.targets" Condition="Exists('..\packages\zlib.v140.windesktop.msvcstl.dyn.rt-dyn.1.2.8.8\build\native\zlib.v140.windesktop.msvcstl.dyn.rt-dyn.targets')" />
+    <Import Project="..\packages\libpng.1.6.28.1\build\native\libpng.targets" Condition="Exists('..\packages\libpng.1.6.28.1\build\native\libpng.targets')" />
+    <Import Project="..\packages\glm.0.9.9.500\build\native\glm.targets" Condition="Exists('..\packages\glm.0.9.9.500\build\native\glm.targets')" />
   </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>このプロジェクトは、このコンピューター上にない NuGet パッケージを参照しています。それらのパッケージをダウンロードするには、[NuGet パッケージの復元] を使用します。詳細については、http://go.microsoft.com/fwlink/?LinkID=322105 を参照してください。見つからないファイルは {0} です。</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\freeglut.redist.2.8.1.15\build\native\freeglut.redist.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\freeglut.redist.2.8.1.15\build\native\freeglut.redist.targets'))" />
+    <Error Condition="!Exists('..\packages\freeglut.2.8.1.15\build\native\freeglut.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\freeglut.2.8.1.15\build\native\freeglut.targets'))" />
+    <Error Condition="!Exists('..\packages\glew.redist.1.9.0.1\build\native\glew.redist.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\glew.redist.1.9.0.1\build\native\glew.redist.targets'))" />
+    <Error Condition="!Exists('..\packages\glew.1.9.0.1\build\native\glew.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\glew.1.9.0.1\build\native\glew.targets'))" />
+    <Error Condition="!Exists('..\packages\glfw.3.3.0.1\build\native\glfw.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\glfw.3.3.0.1\build\native\glfw.targets'))" />
+    <Error Condition="!Exists('..\packages\libpng.redist.1.6.28.1\build\native\libpng.redist.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\libpng.redist.1.6.28.1\build\native\libpng.redist.targets'))" />
+    <Error Condition="!Exists('..\packages\zlib.v120.windesktop.msvcstl.dyn.rt-dyn.1.2.8.8\build\native\zlib.v120.windesktop.msvcstl.dyn.rt-dyn.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\zlib.v120.windesktop.msvcstl.dyn.rt-dyn.1.2.8.8\build\native\zlib.v120.windesktop.msvcstl.dyn.rt-dyn.targets'))" />
+    <Error Condition="!Exists('..\packages\zlib.v140.windesktop.msvcstl.dyn.rt-dyn.1.2.8.8\build\native\zlib.v140.windesktop.msvcstl.dyn.rt-dyn.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\zlib.v140.windesktop.msvcstl.dyn.rt-dyn.1.2.8.8\build\native\zlib.v140.windesktop.msvcstl.dyn.rt-dyn.targets'))" />
+    <Error Condition="!Exists('..\packages\libpng.1.6.28.1\build\native\libpng.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\libpng.1.6.28.1\build\native\libpng.targets'))" />
+    <Error Condition="!Exists('..\packages\glm.0.9.9.500\build\native\glm.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\glm.0.9.9.500\build\native\glm.targets'))" />
+  </Target>
 </Project>
