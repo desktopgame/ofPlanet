@@ -162,8 +162,6 @@
     <ClCompile Include="gel\content\WavePipeline.cpp" />
     <ClCompile Include="gel\device\AudioManager.cpp" />
     <ClCompile Include="gel\device\BmpTexture.cpp" />
-    <ClCompile Include="gel\device\FbxMaterial.cpp" />
-    <ClCompile Include="gel\device\FbxMeshInfo.cpp" />
     <ClCompile Include="gel\device\FbxModel.cpp" />
     <ClCompile Include="gel\device\GameDevice.cpp" />
     <ClCompile Include="gel\device\ModelManager.cpp" />
@@ -262,8 +260,6 @@
     <ClInclude Include="gel\content\WavePipeline.hpp" />
     <ClInclude Include="gel\device\AudioManager.hpp" />
     <ClInclude Include="gel\device\BmpTexture.hpp" />
-    <ClInclude Include="gel\device\FbxMaterial.hpp" />
-    <ClInclude Include="gel\device\FbxMeshInfo.hpp" />
     <ClInclude Include="gel\device\FbxModel.hpp" />
     <ClInclude Include="gel\device\fbxsdk.h" />
     <ClInclude Include="gel\device\GameDevice.hpp" />

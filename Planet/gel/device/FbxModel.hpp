@@ -6,8 +6,6 @@
 #include "../gli.hpp"
 #include "../shader/IRModel.hpp"
 #include "../shader/NameRule.hpp"
-#include "FbxMaterial.hpp"
-#include "FbxMeshInfo.hpp"
 #include "IModel.hpp"
 #include "PngTexture.hpp"
 #include "fbxsdk.h"
