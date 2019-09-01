@@ -57,7 +57,7 @@ void FbxModel::procIRRec(FbxNode* node, std::shared_ptr<IRMesh> mesh) {
                 FbxNode* child = node->GetChild(i);
                 procIRRec(child, mesh->addMesh());
         }
-		procIR(node, mesh);
+        procIR(node, mesh);
 }
 
 void FbxModel::procIR(FbxNode* node, std::shared_ptr<IRMesh> mesh) {
@@ -74,7 +74,7 @@ void FbxModel::procIR(FbxNode* node, std::shared_ptr<IRMesh> mesh) {
         procIRNormal(node, mesh);
         procIRUV(node, mesh);
         procIRMaterial(node, mesh);
-		procIRSide(node, mesh);
+        procIRSide(node, mesh);
 }
 
 void FbxModel::procIRVertex(FbxNode* node, std::shared_ptr<IRMesh> mesh) {

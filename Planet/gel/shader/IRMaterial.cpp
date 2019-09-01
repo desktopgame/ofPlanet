@@ -123,8 +123,8 @@ void IRMaterial::draw(std::shared_ptr<IRMesh>& mesh, const NameRule& nameRule) {
         if (textureNo > 0) {
                 glEnableClientState(GL_TEXTURE_COORD_ARRAY);
                 glEnable(GL_TEXTURE_2D);
-				glBindTexture(GL_TEXTURE_2D,
-					mesh->getTexture(textureNo - 1)->getID());
+                glBindTexture(GL_TEXTURE_2D,
+                              mesh->getTexture(textureNo - 1)->getID());
                 // meshInfo->getTextureAt(mat.textureNo - 1)->getID());
         } else {
                 glDisable(GL_TEXTURE_2D);
@@ -158,7 +158,7 @@ void IRMaterial::addTriangle(const Triangle& tria) {
         vseq.emitVec4(tria.ver.x, tria.ver.y, tria.ver.z, tria.ver.w);
         nseq.emitVec4(tria.nor.x, tria.nor.y, tria.nor.z, tria.nor.w);
         useq.emitVec2(tria.uv.x, tria.uv.y);
-		triangles.push_back(tria);
+        triangles.push_back(tria);
 }
 void IRMaterial::addQuad(const Quadrangle& quad)
 
@@ -169,7 +169,7 @@ void IRMaterial::addQuad(const Quadrangle& quad)
         vseq.emitVec4(quad.ver.x, quad.ver.y, quad.ver.z, quad.ver.w);
         nseq.emitVec4(quad.nor.x, quad.nor.y, quad.nor.z, quad.nor.w);
         useq.emitVec2(quad.uv.x, quad.uv.y);
-		quads.push_back(quad);
+        quads.push_back(quad);
 }
 // private
 
