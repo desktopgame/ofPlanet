@@ -254,6 +254,7 @@ void FbxModel::procMaterial(FbxNode* node,
                         target->addTexture(ptex);
                         mtl.textureNo = target->getTextureCount();
                         mtl.name = tex->GetFileName();
+						mtl.type = FbxMaterialType::Texture;
                 } else {
                         mtl.shader = colorShaderName;
                         mtl.type = FbxMaterialType::Color;
