@@ -4,6 +4,7 @@
 #include <memory>
 #include <vector>
 #include "../gli.hpp"
+#include "../shader/IRModel.hpp"
 #include "../shader/NameRule.hpp"
 #include "FbxMaterial.hpp"
 #include "FbxMeshInfo.hpp"
@@ -21,19 +22,15 @@ class FbxModel : public IModel {
         AABB getAABB() const override;
 
        private:
-        void drawMeshInfo(std::shared_ptr<FbxMeshInfo> meshInfo);
-        std::shared_ptr<FbxMeshInfo> procRecNode(FbxNode* node);
-        std::shared_ptr<FbxMeshInfo> procRecNode(FbxNode* node, int depth);
-        void procNode(FbxNode* node, std::shared_ptr<FbxMeshInfo> target);
-        void procVertex(FbxNode* node, std::shared_ptr<FbxMeshInfo> target);
-        void procIndex(FbxNode* node, std::shared_ptr<FbxMeshInfo> target);
-        void procNormal(FbxNode* node, std::shared_ptr<FbxMeshInfo> target);
-        void procUV(FbxNode* node, std::shared_ptr<FbxMeshInfo> target);
-        void procMaterial(FbxNode* node, std::shared_ptr<FbxMeshInfo> target);
-        void procSide(FbxNode* node, std::shared_ptr<FbxMeshInfo> target);
-        void applyShader(FbxMaterial& mat);
-        void applyTriangle(FbxMaterial& mat);
-        void applyQuad(FbxMaterial& mat);
+        void drawIR(std::shared_ptr<IRMesh> mesh);
+        void procIRRec(FbxNode* node, std::shared_ptr<IRMesh> mesh);
+        void procIR(FbxNode* node, std::shared_ptr<IRMesh> mesh);
+        void procIRVertex(FbxNode* node, std::shared_ptr<IRMesh> mesh);
+        void procIRIndex(FbxNode* node, std::shared_ptr<IRMesh> mesh);
+        void procIRNormal(FbxNode* node, std::shared_ptr<IRMesh> mesh);
+        void procIRUV(FbxNode* node, std::shared_ptr<IRMesh> mesh);
+        void procIRMaterial(FbxNode* node, std::shared_ptr<IRMesh> mesh);
+        void procIRSide(FbxNode* node, std::shared_ptr<IRMesh> mesh);
 
         FbxManager* fbxManager;
         FbxScene* fbxScene;
@@ -41,7 +38,7 @@ class FbxModel : public IModel {
         std::string textureShaderName;
         std::string colorShaderName;
         NameRule nameRule;
-        std::shared_ptr<FbxMeshInfo> meshInfo;
+        std::shared_ptr<IRModel> model;
         AABB aabb;
 };
 }  // namespace gel

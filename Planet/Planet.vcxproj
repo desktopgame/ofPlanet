@@ -185,6 +185,10 @@
     <ClCompile Include="gel\shader\Color4.cpp" />
     <ClCompile Include="gel\shader\CubeMap.cpp" />
     <ClCompile Include="gel\shader\FrameBuffer.cpp" />
+    <ClCompile Include="gel\shader\IRMaterial.cpp" />
+    <ClCompile Include="gel\shader\IRMesh.cpp" />
+    <ClCompile Include="gel\shader\IRModel.cpp" />
+    <ClCompile Include="gel\shader\IRShape.cpp" />
     <ClCompile Include="gel\shader\Line.cpp" />
     <ClCompile Include="gel\shader\NameRule.cpp" />
     <ClCompile Include="gel\shader\Plane.cpp" />
@@ -291,6 +295,10 @@
     <ClInclude Include="gel\shader\Color4.hpp" />
     <ClInclude Include="gel\shader\CubeMap.hpp" />
     <ClInclude Include="gel\shader\FrameBuffer.hpp" />
+    <ClInclude Include="gel\shader\IRMaterial.hpp" />
+    <ClInclude Include="gel\shader\IRMesh.hpp" />
+    <ClInclude Include="gel\shader\IRModel.hpp" />
+    <ClInclude Include="gel\shader\IRShape.hpp" />
     <ClInclude Include="gel\shader\Line.hpp" />
     <ClInclude Include="gel\shader\NameRule.hpp" />
     <ClInclude Include="gel\shader\Plane.hpp" />

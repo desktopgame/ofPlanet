@@ -71,6 +71,13 @@ void TestScene::draw() {
                                    glm::value_ptr(normalMatrix));
         shader.setUniform4f("uLightPos", 0, 0, 0, 1);
         shader.unuse();
+        gel::Shader& ss = gel::ShaderRegistry::getInstance().get("ColorFixed");
+        ss.use();
+        ss.setUniformMatrix4fv("uMVPMatrix", 1, GL_FALSE, glm::value_ptr(mvp));
+        ss.setUniformMatrix4fv("uNormalMatrix", 1, GL_FALSE,
+                               glm::value_ptr(normalMatrix));
+        ss.setUniform4f("uLightPos", 0, 0, 0, 1);
+        ss.unuse();
         // glutSolidTeapot(1);
         // glutSolidCube(1);
         gameDevice->getModelManager()
