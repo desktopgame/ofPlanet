@@ -7,7 +7,7 @@ IRMaterial::IRMaterial()
     : shader(),
       name(),
       type(IRMaterialType::Texture),
-      mainColor(1.0f, 0.0f, 0.0f, 1.0f),
+      mainColor(1.0f, 1.0f, 1.0f, 1.0f),
       ambient(),
       diffuse(),
       specular(),
@@ -174,6 +174,9 @@ void IRMaterial::addQuad(const Quadrangle& quad)
 // private
 
 void IRMaterial::applyTriangleVertex(const NameRule& nameRule) {
+        if (triangles.empty()) {
+                return;
+        }
         Shader& shader = ShaderRegistry::getInstance().get(getShader());
         GLuint vertexAttrib = shader.getAttribLocation(nameRule.attribVertex);
         GLuint uvAttrib = shader.getAttribLocation(nameRule.attribUV);
@@ -189,6 +192,9 @@ void IRMaterial::applyTriangleVertex(const NameRule& nameRule) {
                 triUV.bind();
                 glVertexAttribPointer(uvAttrib, 2, GL_FLOAT, GL_FALSE, 0, NULL);
                 glEnableVertexAttribArray(uvAttrib);
+        } else {
+                shader.setUniform4f(nameRule.uniformColor, mainColor.r,
+                                    mainColor.g, mainColor.b, mainColor.a);
         }
         triVAO.unbind();
         triVertex.unbind();
@@ -198,6 +204,9 @@ void IRMaterial::applyTriangleVertex(const NameRule& nameRule) {
         }
 }
 void IRMaterial::applyQuadVertex(const NameRule& nameRule) {
+        if (quads.empty()) {
+                return;
+        }
         Shader& shader = ShaderRegistry::getInstance().get(getShader());
         GLuint vertexAttrib = shader.getAttribLocation(nameRule.attribVertex);
         GLuint uvAttrib = shader.getAttribLocation(nameRule.attribUV);
@@ -213,6 +222,9 @@ void IRMaterial::applyQuadVertex(const NameRule& nameRule) {
                 quadUV.bind();
                 glVertexAttribPointer(uvAttrib, 2, GL_FLOAT, GL_FALSE, 0, NULL);
                 glEnableVertexAttribArray(uvAttrib);
+        } else {
+                shader.setUniform4f(nameRule.uniformColor, mainColor.r,
+                                    mainColor.g, mainColor.b, mainColor.a);
         }
         quadVAO.unbind();
         quadVertex.unbind();
