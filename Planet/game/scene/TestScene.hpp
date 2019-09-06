@@ -20,7 +20,8 @@ class TestScene : public gel::IScene {
         glm::mat4 projection;
         glm::mat4 mvp;
         gel::Plane plane;
-        float angle;
+        float angleX;
+        float angleY;
         std::shared_ptr<gel::GameDevice> gameDevice;
 };
 #endif

@@ -25,6 +25,7 @@ Game::~Game() {}
 
 int Game::mainLoop(int argc, char* argv[], const char* title, int width,
                    int height, bool fullScreen) {
+        std::atexit(bridgeExit);
         this->mWidth = width;
         this->mHeight = height;
         this->solutionWidth = width;
@@ -185,6 +186,8 @@ void Game::bridgeDebugMessage(GLenum source, GLenum type, GLuint eid,
                                  user_param);
 }
 
+void Game::bridgeExit() { instance->onExit(); }
+
 void Game::onMouseButton(GLFWwindow* window, int button, int action, int mods) {
 }
 
@@ -313,4 +316,5 @@ void Game::onDebugMessage(GLenum source, GLenum type, GLuint eid,
         }
 #endif
 }
+void Game::onExit() {}
 }  // namespace  gel

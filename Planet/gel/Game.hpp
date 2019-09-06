@@ -120,6 +120,7 @@ class Game {
                                                 GLsizei length,
                                                 const GLchar* message,
                                                 GLvoid* user_param);
+        static void bridgeExit();
 
         virtual void onMouseButton(GLFWwindow* window, int button, int action,
                                    int mods);
@@ -136,6 +137,7 @@ class Game {
                                     GLenum severity, GLsizei length,
                                     const GLchar* message,
                                     const void* user_param);
+        virtual void onExit();
         virtual void init();
         virtual void update();
         virtual void draw();

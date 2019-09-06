@@ -11,7 +11,8 @@ TestScene::TestScene(const std::shared_ptr<gel::GameDevice>& gameDevice)
     : gameDevice(gameDevice),
       shader(gel::ShaderRegistry::getInstance().get("TextureFixed")),
       plane(shader),
-      angle(0) {
+      angleX(180),
+      angleY(0) {
         plane.init(0.5f);
         glEnableClientState(GL_NORMAL_ARRAY);
         glEnableClientState(GL_VERTEX_ARRAY);
@@ -29,17 +30,24 @@ void TestScene::show() {
 void TestScene::update() {}
 void TestScene::draw() {
         GLFWwindow* wd = gel::Game::getInstance()->getWindow();
-        if (glfwGetKey(wd, GLFW_KEY_RIGHT) == GLFW_PRESS) {
-                angle++;
-        } else if (glfwGetKey(wd, GLFW_KEY_LEFT) == GLFW_PRESS) {
-                angle--;
+        if (glfwGetKey(wd, GLFW_KEY_UP) == GLFW_PRESS) {
+                angleX += 0.5f;
+        } else if (glfwGetKey(wd, GLFW_KEY_DOWN) == GLFW_PRESS) {
+                angleX -= 0.5f;
         }
+        if (glfwGetKey(wd, GLFW_KEY_RIGHT) == GLFW_PRESS) {
+                angleY += 0.5f;
+        } else if (glfwGetKey(wd, GLFW_KEY_LEFT) == GLFW_PRESS) {
+                angleY -= 0.5f;
+        }
+        if (angleX > 360) angleX -= 360;
+        if (angleY > 360) angleY -= 360;
         glClearColor(0.3f, 0.3f, 1.0f, 0.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glViewport(0, 0, 1280, 720);
-        auto scale =
-            glm::scale(glm::mat4(1.0f), glm::vec3(0.01f, 0.01f, 0.01f));
-        auto rotate = glm::rotate(scale, 45.f, glm::vec3(1, 0, 0));
+        auto rotate = glm::rotate(glm::mat4(1.0f), angleY, glm::vec3(0, 1, 0));
+        rotate = glm::rotate(rotate, angleX, glm::vec3(1, 0, 0));
+        auto scale = glm::scale(rotate, glm::vec3(0.02f, 0.02f, 0.02f));
         this->projection =
             glm::perspective(30.0f, 1280.0f / 720.0f, 1.0f, 1000.0f);
         this->view =
@@ -57,7 +65,7 @@ void TestScene::draw() {
 
         // bind matrix
         auto drawModel = gameDevice->getModelManager()->getModel(
-            "./assets/model/ColorBox.fbx");
+            "./assets/model/Gun1028.fbx");
         auto ir = drawModel->getIRModel();
         ir->setModelMatrix(model);
         ir->setViewMatrix(view);
