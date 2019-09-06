@@ -3,16 +3,16 @@
 #include "IRShape.hpp"
 
 namespace gel {
-IRMesh::IRMesh()
-    : children(), materials(), shape(std::make_shared<IRShape>()) {}
+IRMesh::IRMesh(const std::string& name)
+    : children(), materials(), shape(std::make_shared<IRShape>()), name(name) {}
 IRMesh::~IRMesh() {}
 std::shared_ptr<IRMesh> IRMesh::addMesh(const std::shared_ptr<IRMesh>& mesh) {
         children.push_back(mesh);
         return mesh;
 }
 
-std::shared_ptr<IRMesh> IRMesh::addMesh() {
-        return addMesh(std::make_shared<IRMesh>());
+std::shared_ptr<IRMesh> IRMesh::addMesh(const std::string& name) {
+        return addMesh(std::make_shared<IRMesh>(name));
 }
 std::shared_ptr<IRMesh> IRMesh::getMesh(int index) const {
         return children.at(index);
@@ -56,6 +56,8 @@ void IRMesh::removeTexture(int index) {
 }
 
 size_t IRMesh::getTextureCount() const { return textures.size(); }
+
+std::string IRMesh::getName() const { return name; }
 
 std::shared_ptr<IRShape> IRMesh::getShape() const { return shape; }
 

@@ -2,6 +2,14 @@
 #include <fstream>
 #include <sstream>
 namespace gel {
+bool exists(const std::string& path) {
+        FILE* fp;
+        errno_t err = fopen_s(&fp, path.c_str(), "r");
+        if (err == 0) {
+                fclose(fp);
+        }
+        return err == 0;
+}
 std::string readAllText(const std::string& path) {
         std::ifstream ifs(path);
         std::stringstream ss;

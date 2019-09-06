@@ -12,23 +12,9 @@ TestScene::TestScene(const std::shared_ptr<gel::GameDevice>& gameDevice)
       plane(shader),
       angle(0) {
         plane.init(0.5f);
-
-        shader.use();
-        this->mvpMatrixID = shader.getUniformLocation("uMVPMatrix");
-        this->normalMatrixID = shader.getUniformLocation("uNormalMatrix");
-        glUniform1i(shader.getUniformLocation("uTexture"), 0);
-        glUniform1f(shader.getUniformLocation("uShininess"), 50.0f);
-        glUniform4f(shader.getUniformLocation("uDiffuse"), 0.5f, 0.5f, 0.5f,
-                    1.0f);
-        glUniform4f(shader.getUniformLocation("uSpecular"), 0.5f, 0.5f, 0.5f,
-                    1.0f);
-        glUniform4f(shader.getUniformLocation("uAmbient"), 0.5f, 0.5f, 0.5f,
-                    1.0f);
-        glUniform4f(shader.getUniformLocation("uLightPos"), 1, 5, 1, 1);
         glEnableClientState(GL_NORMAL_ARRAY);
         glEnableClientState(GL_VERTEX_ARRAY);
         glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-        shader.unuse();
 }
 
 void TestScene::show() {

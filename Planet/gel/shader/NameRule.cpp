@@ -16,5 +16,9 @@ void NameRule::defaults() {
         this->uniformAlpha = "uAlpha";
         this->uniformColor = "uColor";
         this->uniformPosition = "uPosition";
+        this->uniformAmbient = "uAmbient";
+        this->uniformDiffuse = "uDiffuse";
+        this->uniformSpecular = "uSpecular";
+        this->uniformShininess = "uShininess";
 }
 }  // namespace gel

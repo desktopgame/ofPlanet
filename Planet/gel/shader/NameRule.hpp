@@ -26,6 +26,10 @@ class NameRule {
         std::string uniformAlpha;
         std::string uniformColor;
         std::string uniformPosition;
+        std::string uniformAmbient;
+        std::string uniformDiffuse;
+        std::string uniformSpecular;
+        std::string uniformShininess;
 
        private:
 };

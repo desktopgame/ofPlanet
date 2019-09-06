@@ -50,8 +50,6 @@ class IRMaterial {
         void setMainColor(const Color4& mainColor);
         Color4 getMainColor() const;
 
-        void applyShader(const NameRule& nameRule);
-
         void draw(std::shared_ptr<IRMesh>& mesh, const NameRule& nameRule);
 
         void addTriangle(const Triangle& tria);

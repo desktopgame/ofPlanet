@@ -7,6 +7,7 @@
 #include "../shader/IRMesh.hpp"
 #include "../shader/IRShape.hpp"
 #include "../shader/ShaderRegistry.hpp"
+#include "../util/io.hpp"
 namespace gel {
 FbxModel::FbxModel(FbxManager* fbxManager, const std::string& textureShaderName,
                    const std::string& colorShaderName, const NameRule& nameRule)
@@ -30,7 +31,7 @@ void FbxModel::load(const std::string& path) {
         FbxGeometryConverter geometryConverter(fbxManager);
         geometryConverter.Triangulate(fbxScene, true);
         auto rootNode = fbxScene->GetRootNode();
-        procIRRec(rootNode, model->getMesh());
+        procIRRec(rootNode, model->getMesh(), 0);
 }
 
 void FbxModel::unload(const std::string& path) {
@@ -52,27 +53,74 @@ void FbxModel::drawIR(std::shared_ptr<IRMesh> mesh) {
         }
 }
 
-void FbxModel::procIRRec(FbxNode* node, std::shared_ptr<IRMesh> mesh) {
+void FbxModel::procIRRec(FbxNode* node, std::shared_ptr<IRMesh> mesh,
+                         int depth) {
+        indent(depth);
+        std::cout << node->GetName() << std::endl;
         for (int i = 0; i < node->GetChildCount(); i++) {
                 FbxNode* child = node->GetChild(i);
-                procIRRec(child, mesh->addMesh());
+                procIRRec(child, mesh->addMesh(child->GetName()), depth + 1);
         }
-        procIR(node, mesh);
+        procIR(node, mesh, depth);
 }
 
-void FbxModel::procIR(FbxNode* node, std::shared_ptr<IRMesh> mesh) {
-        auto attr = node->GetNodeAttribute();
-        if (attr == NULL) {
+void FbxModel::procIR(FbxNode* node, std::shared_ptr<IRMesh> mesh, int depth) {
+        if (!hasMeshAttr(node)) {
                 return;
         }
-        auto type = attr->GetAttributeType();
-        if (type != FbxNodeAttribute::EType::eMesh) {
-                return;
+        /*
+std::string nodename = node->GetName();
+std::shared_ptr<IRShape> shape = mesh->getShape();
+// get vertex and normals
+FbxMesh* fbxMesh = node->GetMesh();
+FbxVector4 vn;
+const int sVertexCount = fbxMesh->GetControlPointsCount();
+int sPolygonCount = fbxMesh->GetPolygonCount();
+for (int i = 0; i < sPolygonCount; i++) {
+        int sPolygonSize = fbxMesh->GetPolygonSize(i);
+        for (int pol = 0; pol < sPolygonSize; pol++) {
+                int vertex_index = fbxMesh->GetPolygonVertex(i, pol);
+                FbxVector4 vt =
+                    fbxMesh->GetControlPointAt(vertex_index);
+                assert(fbxMesh->GetPolygonVertexNormal(i, pol, vn));
+                shape->addVertex(glm::vec4(vt[0], vt[1], vt[2], vt[3]));
+                //                        shape->addNormal(glm::vec4(vn[0],
+                //                        vn[1], vn[2], vn[3]));
+                indent(depth + 1);
+                std::cout << "vt " << vt[0] << " " << vt[1] << " "
+                          << vt[2] << " " << vt[3] << std::endl;
+                indent(depth + 1);
+                std::cout << "vn " << vn[0] << " " << vn[1] << " "
+                          << vn[2] << " " << vn[3] << std::endl;
         }
+}
+        */
+        /*
+// get uv name
+FbxVector2 texCoord;
+FbxStringList uvsetName;
+fbxMesh->GetUVSetNames(uvsetName);
+
+int sNumUVSet = uvsetName.GetCount();
+bool bIsUnmapped = false;
+for (int i = 0; i < sNumUVSet; i++) {
+        for (int j = 0; j < sPolygonCount; j++) {
+                int sPolygonsize = fbxMesh->GetPolygonSize(i);
+                for (int k = 0; k < sPolygonsize; k++) {
+                        FbxString name = uvsetName.GetStringAt(i);
+                        fbxMesh->GetPolygonVertexUV(
+                            j, k, name, texCoord, bIsUnmapped);
+                        shape->addUV(
+                            glm::vec2(texCoord[0], 1.0f - texCoord[1]));
+                }
+        }
+}
+        */
         procIRVertex(node, mesh);
         procIRIndex(node, mesh);
         procIRNormal(node, mesh);
         procIRUV(node, mesh);
+
         procIRMaterial(node, mesh);
         procIRSide(node, mesh);
 }
@@ -181,8 +229,8 @@ void FbxModel::procIRUV(FbxNode* node, std::shared_ptr<IRMesh> mesh) {
 
 void FbxModel::procIRMaterial(FbxNode* node, std::shared_ptr<IRMesh> mesh) {
         FbxMesh* fbxMesh = node->GetMesh();
-        // FbxNode* node = fbxMesh->GetNode();
-        for (int i = 0; i < node->GetMaterialCount(); i++) {
+        int matCount = node->GetMaterialCount();
+        for (int i = 0; i < matCount; i++) {
                 std::shared_ptr<IRMaterial> mtl = mesh->addMaterial();
                 mtl->setShader(textureShaderName);
                 FbxSurfaceMaterial* material = node->GetMaterial(i);
@@ -194,23 +242,31 @@ void FbxModel::procIRMaterial(FbxNode* node, std::shared_ptr<IRMesh> mesh) {
                 mtl->setAmbient(Color4((float)d3ambient.Get()[0],
                                        (float)d3ambient.Get()[1],
                                        (float)d3ambient.Get()[2], 1));
-                mtl->setAmbient(Color4((float)d3diffuse.Get()[0],
+                mtl->setDiffuse(Color4((float)d3diffuse.Get()[0],
                                        (float)d3diffuse.Get()[1],
                                        (float)d3diffuse.Get()[2], 1));
-                mtl->setAmbient(Color4((float)d3specular.Get()[0],
-                                       (float)d3specular.Get()[1],
-                                       (float)d3specular.Get()[2], 1));
+                mtl->setSpecular(Color4((float)d3specular.Get()[0],
+                                        (float)d3specular.Get()[1],
+                                        (float)d3specular.Get()[2], 1));
                 mtl->setShininess(phong->Shininess.Get());
                 FbxProperty IProperty =
                     material->FindProperty(FbxSurfaceMaterial::sDiffuse);
                 FbxFileTexture* tex = IProperty.GetSrcObject<FbxFileTexture>();
                 if (tex) {
+                        // mtl->setShader(colorShaderName);
+                        // mtl->setType(IRMaterialType::Color);
+                        //*
                         auto ptex = std::make_shared<PngTexture>();
-                        ptex->load(tex->GetFileName());
+                        auto path = tex->GetFileName();
+                        if (!exists(path)) {
+                                throw std::logic_error("file is not found");
+                        }
+                        ptex->load(path);
                         mesh->addTexture(ptex);
                         mtl->setTexture(mesh->getTextureCount());
                         mtl->setShader(textureShaderName);
                         mtl->setType(IRMaterialType::Texture);
+                        //*/
                 } else {
                         mtl->setShader(colorShaderName);
                         mtl->setType(IRMaterialType::Color);
@@ -220,6 +276,7 @@ void FbxModel::procIRMaterial(FbxNode* node, std::shared_ptr<IRMesh> mesh) {
 
 void FbxModel::procIRSide(FbxNode* node, std::shared_ptr<IRMesh> mesh) {
         // assert(!dest.materials.empty());
+        std::string nodename = node->GetName();
         FbxMesh* fbxMesh = node->GetMesh();
         FbxLayer* fbxLayer = fbxMesh->GetLayer(0);
         FbxLayerElementMaterial* layerMat = fbxLayer->GetMaterials();
@@ -233,7 +290,8 @@ void FbxModel::procIRSide(FbxNode* node, std::shared_ptr<IRMesh> mesh) {
         }
         int count = 0;
         std::shared_ptr<IRShape> shape = mesh->getShape();
-        for (int k = 0; k < fbxMesh->GetPolygonCount(); k++) {
+        int poly = fbxMesh->GetPolygonCount();
+        for (int k = 0; k < poly; k++) {
                 int matId = layerMat->GetIndexArray().GetAt(k);
                 int polygonSize = fbxMesh->GetPolygonSize(k);
                 if (polygonSize == 3) {
@@ -263,7 +321,39 @@ void FbxModel::procIRSide(FbxNode* node, std::shared_ptr<IRMesh> mesh) {
         for (int i = 0; i < mesh->getMaterialCount(); i++) {
                 std::shared_ptr<IRMaterial> mat = mesh->getMaterial(i);
                 mat->update();
-                mat->applyShader(nameRule);
+        }
+}
+bool FbxModel::hasMeshAttr(FbxNode* node) const {
+        /*
+if (node) {
+                int attrCount = node->GetNodeAttributeCount();
+
+                for (int i = 0; attrCount > i; i++) {
+                                FbxNodeAttribute::EType attrType =
+                                        node->GetNodeAttributeByIndex(i)
+                                                ->GetAttributeType();
+
+                                // ノードがメッシュにつながっているかチェック
+                                if (attrType == FbxNodeAttribute::EType::eMesh)
+{ return true;
+                                }
+                }
+}
+return false;
+                */
+        auto attr = node->GetNodeAttribute();
+        if (attr == NULL) {
+                return false;
+        }
+        auto type = attr->GetAttributeType();
+        if (type == FbxNodeAttribute::EType::eMesh) {
+                return true;
+        }
+        return false;
+}
+void FbxModel::indent(int depth) const {
+        for (int i = 0; i < depth; i++) {
+                std::cout << "    ";
         }
 }
 }  // namespace gel

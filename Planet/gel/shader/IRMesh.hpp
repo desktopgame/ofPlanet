@@ -11,10 +11,10 @@ class IRShape;
 
 class IRMesh {
        public:
-        explicit IRMesh();
+        explicit IRMesh(const std::string& name);
         ~IRMesh();
         std::shared_ptr<IRMesh> addMesh(const std::shared_ptr<IRMesh>& mesh);
-        std::shared_ptr<IRMesh> addMesh();
+        std::shared_ptr<IRMesh> addMesh(const std::string& name);
         std::shared_ptr<IRMesh> getMesh(int index) const;
         void removeMesh(int index);
         size_t getMeshCount() const;
@@ -32,9 +32,11 @@ class IRMesh {
         void removeTexture(int index);
         size_t getTextureCount() const;
 
+        std::string getName() const;
         std::shared_ptr<IRShape> getShape() const;
 
        private:
+        std::string name;
         std::vector<std::shared_ptr<IRMesh> > children;
         std::vector<std::shared_ptr<IRMaterial> > materials;
         std::shared_ptr<IRShape> shape;

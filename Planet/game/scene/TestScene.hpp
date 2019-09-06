@@ -14,8 +14,6 @@ class TestScene : public gel::IScene {
         std::string getNextScene() const override;
 
        private:
-        GLuint mvpMatrixID;
-        GLuint normalMatrixID;
         gel::Shader& shader;
         glm::mat4 model;
         glm::mat4 view;

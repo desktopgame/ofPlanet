@@ -1,7 +1,7 @@
 #include "IRModel.hpp"
 #include "IRMesh.hpp"
 namespace gel {
-IRModel::IRModel() : mesh(std::make_shared<IRMesh>()) {}
+IRModel::IRModel() : mesh(std::make_shared<IRMesh>("RootNode")) {}
 
 IRModel::~IRModel() {}
 

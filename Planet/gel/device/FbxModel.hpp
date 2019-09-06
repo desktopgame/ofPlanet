@@ -21,14 +21,16 @@ class FbxModel : public IModel {
 
        private:
         void drawIR(std::shared_ptr<IRMesh> mesh);
-        void procIRRec(FbxNode* node, std::shared_ptr<IRMesh> mesh);
-        void procIR(FbxNode* node, std::shared_ptr<IRMesh> mesh);
+        void procIRRec(FbxNode* node, std::shared_ptr<IRMesh> mesh, int depth);
+        void procIR(FbxNode* node, std::shared_ptr<IRMesh> mesh, int depth);
         void procIRVertex(FbxNode* node, std::shared_ptr<IRMesh> mesh);
         void procIRIndex(FbxNode* node, std::shared_ptr<IRMesh> mesh);
         void procIRNormal(FbxNode* node, std::shared_ptr<IRMesh> mesh);
         void procIRUV(FbxNode* node, std::shared_ptr<IRMesh> mesh);
         void procIRMaterial(FbxNode* node, std::shared_ptr<IRMesh> mesh);
         void procIRSide(FbxNode* node, std::shared_ptr<IRMesh> mesh);
+        bool hasMeshAttr(FbxNode* node) const;
+        void indent(int depth) const;
 
         FbxManager* fbxManager;
         FbxScene* fbxScene;
