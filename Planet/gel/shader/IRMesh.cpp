@@ -97,7 +97,7 @@ glm::mat4 IRMesh::getLocalMatrix() const {
         mat = glm::rotate(mat, rotation.y, glm::vec3(0, 1, 0));
         mat = glm::rotate(mat, rotation.x, glm::vec3(1, 0, 0));
         mat = glm::rotate(mat, rotation.z, glm::vec3(0, 0, 1));
-        // mat = glm::scale(mat, glm::vec3(scale.x, scale.y, scale.z));
+        mat = glm::scale(mat, glm::vec3(scale.x, scale.y, scale.z));
         return mat;
 }
 
