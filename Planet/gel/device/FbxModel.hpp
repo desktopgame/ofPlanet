@@ -27,10 +27,18 @@ class FbxModel : public IModel {
         void procIRIndex(FbxNode* node, std::shared_ptr<IRMesh> mesh);
         void procIRNormal(FbxNode* node, std::shared_ptr<IRMesh> mesh);
         void procIRUV(FbxNode* node, std::shared_ptr<IRMesh> mesh);
-        void procIRMaterial(FbxNode* node, std::shared_ptr<IRMesh> mesh);
+        void procIRMaterials(FbxNode* node, std::shared_ptr<IRMesh> mesh);
+        void procIRMaterial(FbxNode* node, std::shared_ptr<IRMesh> mesh,
+                            FbxSurfaceMaterial* fbxMat);
+        void procIRLambert(FbxNode* node, std::shared_ptr<IRMesh> mesh,
+                           FbxSurfaceLambert* fbxMat);
+        void procIRPhong(FbxNode* node, std::shared_ptr<IRMesh> mesh,
+                         FbxSurfacePhong* fbxMat);
         void procIRSide(FbxNode* node, std::shared_ptr<IRMesh> mesh);
         bool hasMeshAttr(FbxNode* node) const;
         void indent(int depth) const;
+        static FbxLayerElementNormal* findElementNormal(FbxMesh* mesh);
+        static FbxLayerElementUV* findElementUV(FbxMesh* mesh);
 
         FbxManager* fbxManager;
         FbxScene* fbxScene;
