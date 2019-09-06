@@ -330,6 +330,7 @@
     <ClInclude Include="gel\util\KeyTrigger.hpp" />
     <ClInclude Include="gel\util\MouseTrigger.hpp" />
     <ClInclude Include="gel\util\NonCopyable.hpp" />
+    <ClInclude Include="gel\util\SharedHelper.hpp" />
     <ClInclude Include="gel\util\string.hpp" />
     <ClInclude Include="gel\util\Vec2HashFunc.hpp" />
   </ItemGroup>

@@ -1,7 +1,12 @@
 #include "IRMaterial.hpp"
+#include <glm/ext/matrix_clip_space.hpp>
+#include <glm/ext/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <glm/gtx/raw_data.hpp>
 #include "../shader/Shader.hpp"
 #include "../shader/ShaderRegistry.hpp"
 #include "IRMesh.hpp"
+#include "IRModel.hpp"
 namespace gel {
 IRMaterial::IRMaterial()
     : shader(),
@@ -101,13 +106,24 @@ void IRMaterial::setMainColor(const Color4& mainColor) {
 Color4 IRMaterial::getMainColor() const { return mainColor; }
 
 void IRMaterial::draw(std::shared_ptr<IRMesh>& mesh, const NameRule& nameRule) {
-        if (mesh->getName() == "Cube") {
-                return;
-        }
         glEnableClientState(GL_VERTEX_ARRAY);
         glEnableClientState(GL_NORMAL_ARRAY);
         auto& shader = ShaderRegistry::getInstance().get(getShader());
+        auto model = mesh->getModel().lock();
+        auto modelMatrix = model->getModelMatrix() * mesh->getLocalMatrix();
+        auto viewMatrix = model->getViewMatrix();
+        auto projMatrix = model->getProjectionMatrix();
+        auto normalMatrix = viewMatrix * modelMatrix;
+        auto mvp = projMatrix * viewMatrix * modelMatrix;
+        normalMatrix = glm::inverse(normalMatrix);
+        normalMatrix = glm::transpose(normalMatrix);
+
         shader.use();
+        shader.setUniformMatrix4fv(nameRule.uniformMVPMatrix, 1, GL_FALSE,
+                                   glm::value_ptr(mvp));
+        shader.setUniformMatrix4fv(nameRule.uniformNormalMatrix, 1, GL_FALSE,
+                                   glm::value_ptr(normalMatrix));
+
         if (textureNo > 0) {
                 glEnableClientState(GL_TEXTURE_COORD_ARRAY);
                 glEnable(GL_TEXTURE_2D);

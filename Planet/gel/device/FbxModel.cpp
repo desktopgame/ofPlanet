@@ -14,7 +14,7 @@ FbxModel::FbxModel(FbxManager* fbxManager, const std::string& textureShaderName,
     : fbxManager(fbxManager),
       fbxScene(nullptr),
       aabb(),
-      model(std::make_shared<IRModel>()),
+      model(IRModel::create()),
       textureShaderName(textureShaderName),
       colorShaderName(colorShaderName),
       nameRule(nameRule) {}
@@ -43,6 +43,8 @@ void FbxModel::draw() { drawIR(model->getMesh()); }
 
 AABB FbxModel::getAABB() const { return aabb; }
 
+std::shared_ptr<IRModel> FbxModel::getIRModel() const { return model; }
+
 // private
 void FbxModel::drawIR(std::shared_ptr<IRMesh> mesh) {
         for (int i = 0; i < mesh->getMaterialCount(); i++) {
@@ -68,6 +70,13 @@ void FbxModel::procIR(FbxNode* node, std::shared_ptr<IRMesh> mesh, int depth) {
         if (!hasMeshAttr(node)) {
                 return;
         }
+        FbxDouble3 pos = node->LclTranslation.Get();
+        FbxDouble3 rot = node->LclRotation.Get();
+        FbxDouble3 scl = node->LclScaling.Get();
+        mesh->setLocalPosition(glm::vec4(pos[0], pos[1], pos[2], 1.0f));
+        mesh->setLocalRotation(glm::vec4(rot[0], rot[1], rot[2], 0.0f));
+        mesh->setLocalScale(glm::vec4(scl[0], scl[1], scl[2], 1.0f));
+
         procIRVertex(node, mesh);
         procIRIndex(node, mesh);
         procIRNormal(node, mesh);

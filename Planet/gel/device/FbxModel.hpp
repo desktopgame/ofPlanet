@@ -19,6 +19,7 @@ class FbxModel : public IModel {
         void unload(const std::string& path) override;
         void draw() override;
         AABB getAABB() const override;
+        std::shared_ptr<IRModel> getIRModel() const override;
 
        private:
         void drawIR(std::shared_ptr<IRMesh> mesh);

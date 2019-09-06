@@ -19,7 +19,6 @@ class TestScene : public gel::IScene {
         glm::mat4 view;
         glm::mat4 projection;
         glm::mat4 mvp;
-        glm::mat4 normalMatrix;
         gel::Plane plane;
         float angle;
         std::shared_ptr<gel::GameDevice> gameDevice;

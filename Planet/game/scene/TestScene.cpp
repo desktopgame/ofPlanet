@@ -3,6 +3,7 @@
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "../../gel/gli.hpp"
+#include "../../gel/shader/IRModel.hpp"
 #include "../world/Block.hpp"
 #include "../world/BlockRegistry.hpp"
 #include "../world/Space.hpp"
@@ -42,33 +43,25 @@ void TestScene::draw() {
             glm::perspective(30.0f, 1280.0f / 720.0f, 1.0f, 1000.0f);
         this->view =
             glm::lookAt(glm::vec3(0, -3, 5), glm::vec3(), glm::vec3(0, 1, 0));
-        this->model = rotate;
+        this->model = scale;
         ;
         this->mvp = projection * view * model;
-
-        // bind matrix
-        this->normalMatrix = view * model;
-        this->normalMatrix = glm::inverse(normalMatrix);
-        this->normalMatrix = glm::transpose(normalMatrix);
-        shader.use();
-        shader.setUniformMatrix4fv("uMVPMatrix", 1, GL_FALSE,
-                                   glm::value_ptr(mvp));
-        shader.setUniformMatrix4fv("uNormalMatrix", 1, GL_FALSE,
-                                   glm::value_ptr(normalMatrix));
-        shader.setUniform4f("uLightPos", 0, 0, 0, 1);
-        shader.unuse();
         gel::Shader& ss = gel::ShaderRegistry::getInstance().get("ColorFixed");
         ss.use();
-        ss.setUniformMatrix4fv("uMVPMatrix", 1, GL_FALSE, glm::value_ptr(mvp));
-        ss.setUniformMatrix4fv("uNormalMatrix", 1, GL_FALSE,
-                               glm::value_ptr(normalMatrix));
         ss.setUniform4f("uLightPos", 0, 0, 0, 1);
         ss.unuse();
-        // glutSolidTeapot(1);
-        // glutSolidCube(1);
-        gameDevice->getModelManager()
-            ->getModel("./assets/model/ColorBox.fbx")
-            ->draw();
+        shader.use();
+        shader.setUniform4f("uLightPos", 0, 0, 0, 1);
+        shader.unuse();
+
+        // bind matrix
+        auto drawModel = gameDevice->getModelManager()->getModel(
+            "./assets/model/ColorBox.fbx");
+        auto ir = drawModel->getIRModel();
+        ir->setModelMatrix(model);
+        ir->setViewMatrix(view);
+        ir->setProjectionMatrix(projection);
+        drawModel->draw();
 }
 void TestScene::hide() {}
 bool TestScene::isFinished() const { return false; }

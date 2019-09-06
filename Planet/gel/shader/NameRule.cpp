@@ -12,6 +12,7 @@ void NameRule::defaults() {
         this->uniformViewMatrix = "uViewMatrix";
         this->uniformProjectionMatrix = "uProjectionMatrix";
         this->uniformMVPMatrix = "uMVPMatrix";
+        this->uniformNormalMatrix = "uNormalMatrix";
         this->uniformTexture = "uTexture";
         this->uniformAlpha = "uAlpha";
         this->uniformColor = "uColor";

@@ -22,6 +22,7 @@ class NameRule {
         std::string uniformViewMatrix;
         std::string uniformProjectionMatrix;
         std::string uniformMVPMatrix;
+        std::string uniformNormalMatrix;
         std::string uniformTexture;
         std::string uniformAlpha;
         std::string uniformColor;
