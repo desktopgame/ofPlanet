@@ -4,6 +4,7 @@
 #include <memory>
 #include <vector>
 #include "../gli.hpp"
+#include "../shader/IRMaterial.hpp"
 #include "../shader/IRModel.hpp"
 #include "../shader/NameRule.hpp"
 #include "IModel.hpp"
@@ -35,10 +36,14 @@ class FbxModel : public IModel {
         void procIRPhong(FbxNode* node, std::shared_ptr<IRMesh> mesh,
                          FbxSurfacePhong* fbxMat);
         void procIRSide(FbxNode* node, std::shared_ptr<IRMesh> mesh);
+        void procIRTexture(FbxNode* node, std::shared_ptr<IRMesh> mesh,
+                           FbxSurfaceMaterial* fbxMat,
+                           std::shared_ptr<IRMaterial> irMat);
         bool hasMeshAttr(FbxNode* node) const;
         void indent(int depth) const;
         static FbxLayerElementNormal* findElementNormal(FbxMesh* mesh);
         static FbxLayerElementUV* findElementUV(FbxMesh* mesh);
+        static FbxLayerElementMaterial* findElementMaterial(FbxMesh* mesh);
 
         FbxManager* fbxManager;
         FbxScene* fbxScene;

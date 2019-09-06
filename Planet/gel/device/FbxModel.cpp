@@ -166,7 +166,10 @@ void FbxModel::procIRUV(FbxNode* node, std::shared_ptr<IRMesh> mesh) {
 
 void FbxModel::procIRMaterials(FbxNode* node, std::shared_ptr<IRMesh> mesh) {
         for (int i = 0; i < node->GetMaterialCount(); i++) {
-                procIRMaterial(node, mesh, node->GetMaterial(i));
+                auto mat = node->GetMaterial(i);
+                std::cout << "material [" << node->GetName() << "] "
+                          << mat->GetName() << std::endl;
+                procIRMaterial(node, mesh, mat);
         }
 }
 
@@ -197,24 +200,7 @@ void FbxModel::procIRLambert(FbxNode* node, std::shared_ptr<IRMesh> mesh,
                                (float)d3diffuse.Get()[2], 1));
         mtl->setSpecular(Color4(1, 1, 1, 1));
         mtl->setShininess(1);
-        FbxProperty IProperty =
-            fbxMat->FindProperty(FbxSurfaceMaterial::sDiffuse);
-        FbxFileTexture* tex = IProperty.GetSrcObject<FbxFileTexture>();
-        if (tex) {
-                auto ptex = std::make_shared<PngTexture>();
-                auto path = tex->GetFileName();
-                if (!exists(path)) {
-                        throw std::logic_error("file is not found");
-                }
-                ptex->load(path);
-                mesh->addTexture(ptex);
-                mtl->setTexture(mesh->getTextureCount());
-                mtl->setShader(textureShaderName);
-                mtl->setType(IRMaterialType::Texture);
-        } else {
-                mtl->setShader(colorShaderName);
-                mtl->setType(IRMaterialType::Color);
-        }
+        procIRTexture(node, mesh, fbxMat, mtl);
 }
 
 void FbxModel::procIRPhong(FbxNode* node, std::shared_ptr<IRMesh> mesh,
@@ -234,34 +220,14 @@ void FbxModel::procIRPhong(FbxNode* node, std::shared_ptr<IRMesh> mesh,
                                 (float)d3specular.Get()[1],
                                 (float)d3specular.Get()[2], 1));
         mtl->setShininess(fbxMat->Shininess.Get());
-        FbxProperty IProperty =
-            fbxMat->FindProperty(FbxSurfaceMaterial::sDiffuse);
-        FbxFileTexture* tex = IProperty.GetSrcObject<FbxFileTexture>();
-        if (tex) {
-                auto ptex = std::make_shared<PngTexture>();
-                auto path = tex->GetFileName();
-                if (!exists(path)) {
-                        throw std::logic_error("file is not found");
-                }
-                ptex->load(path);
-                mesh->addTexture(ptex);
-                mtl->setTexture(mesh->getTextureCount());
-                mtl->setShader(textureShaderName);
-                mtl->setType(IRMaterialType::Texture);
-        } else {
-                mtl->setShader(colorShaderName);
-                mtl->setType(IRMaterialType::Color);
-        }
+        procIRTexture(node, mesh, fbxMat, mtl);
 }
 
 void FbxModel::procIRSide(FbxNode* node, std::shared_ptr<IRMesh> mesh) {
         // assert(!dest.materials.empty());
         std::string nodename = node->GetName();
         FbxMesh* fbxMesh = node->GetMesh();
-        FbxLayer* fbxLayer = fbxMesh->GetLayer(0);
-        FbxLayerElementMaterial* layerMat = fbxLayer->GetMaterials();
-        assert(fbxLayer != NULL);
-        assert(layerMat != NULL);
+        FbxLayerElementMaterial* layerMat = findElementMaterial(fbxMesh);
         for (int i = 0; i < mesh->getMaterialCount(); i++) {
                 auto mat = mesh->getMaterial(i);
                 mat->init();
@@ -275,8 +241,8 @@ void FbxModel::procIRSide(FbxNode* node, std::shared_ptr<IRMesh> mesh) {
                 if (polygonSize == 3) {
                         for (int j = 0; j < 3; j++) {
                                 Triangle tria;
-                                tria.ver = shape->getVertexAt(
-                                    fbxMesh->GetPolygonVertex(k, j));
+                                int vindex = fbxMesh->GetPolygonVertex(k, j);
+                                tria.ver = shape->getVertexAt(vindex);
                                 tria.nor = shape->getNormalAt(count + j);
                                 tria.uv = shape->getUVAt(count + j);
                                 mesh->getMaterial(matId)->addTriangle(tria);
@@ -285,8 +251,8 @@ void FbxModel::procIRSide(FbxNode* node, std::shared_ptr<IRMesh> mesh) {
                 } else if (polygonSize == 4) {
                         for (int j = 0; j < 4; j++) {
                                 Quadrangle quad;
-                                quad.ver = shape->getVertexAt(
-                                    fbxMesh->GetPolygonVertex(k, j));
+                                int vindex = fbxMesh->GetPolygonVertex(k, j);
+                                quad.ver = shape->getVertexAt(vindex);
                                 quad.nor = shape->getNormalAt(count + j);
                                 quad.uv = shape->getUVAt(count + j);
                                 mesh->getMaterial(matId)->addQuad(quad);
@@ -299,6 +265,28 @@ void FbxModel::procIRSide(FbxNode* node, std::shared_ptr<IRMesh> mesh) {
         for (int i = 0; i < mesh->getMaterialCount(); i++) {
                 std::shared_ptr<IRMaterial> mat = mesh->getMaterial(i);
                 mat->update();
+        }
+}
+void FbxModel::procIRTexture(FbxNode* node, std::shared_ptr<IRMesh> mesh,
+                             FbxSurfaceMaterial* fbxMat,
+                             std::shared_ptr<IRMaterial> irMat) {
+        FbxProperty IProperty =
+            fbxMat->FindProperty(FbxSurfaceMaterial::sDiffuse);
+        FbxFileTexture* tex = IProperty.GetSrcObject<FbxFileTexture>();
+        if (tex) {
+                auto ptex = std::make_shared<PngTexture>();
+                auto path = tex->GetFileName();
+                if (!exists(path)) {
+                        throw std::logic_error("file is not found");
+                }
+                ptex->load(path);
+                mesh->addTexture(ptex);
+                irMat->setTexture(mesh->getTextureCount());
+                irMat->setShader(textureShaderName);
+                irMat->setType(IRMaterialType::Texture);
+        } else {
+                irMat->setShader(colorShaderName);
+                irMat->setType(IRMaterialType::Color);
         }
 }
 bool FbxModel::hasMeshAttr(FbxNode* node) const {
@@ -335,6 +323,16 @@ FbxLayerElementUV* FbxModel::findElementUV(FbxMesh* mesh) {
                 auto uvs = layer->GetUVs();
                 if (uvs != NULL) {
                         return uvs;
+                }
+        }
+        return nullptr;
+}
+FbxLayerElementMaterial* FbxModel::findElementMaterial(FbxMesh* mesh) {
+        for (int i = 0; i < mesh->GetLayerCount(); i++) {
+                auto layer = mesh->GetLayer(i);
+                auto mat = layer->GetMaterials();
+                if (mat != NULL) {
+                        return mat;
                 }
         }
         return nullptr;

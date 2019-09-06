@@ -101,11 +101,11 @@ void IRMaterial::setMainColor(const Color4& mainColor) {
 Color4 IRMaterial::getMainColor() const { return mainColor; }
 
 void IRMaterial::draw(std::shared_ptr<IRMesh>& mesh, const NameRule& nameRule) {
+        if (mesh->getName() == "Cube") {
+                return;
+        }
         glEnableClientState(GL_VERTEX_ARRAY);
         glEnableClientState(GL_NORMAL_ARRAY);
-        //	size_t size = meshInfo->getMaterialCount();
-        //	for (int i = 0; i < (signed)size; i++) {
-        //		auto& mat = meshInfo->getMaterialAt(i);
         auto& shader = ShaderRegistry::getInstance().get(getShader());
         shader.use();
         if (textureNo > 0) {
@@ -113,7 +113,6 @@ void IRMaterial::draw(std::shared_ptr<IRMesh>& mesh, const NameRule& nameRule) {
                 glEnable(GL_TEXTURE_2D);
                 glBindTexture(GL_TEXTURE_2D,
                               mesh->getTexture(textureNo - 1)->getID());
-                // meshInfo->getTextureAt(mat.textureNo - 1)->getID());
         } else {
                 glDisable(GL_TEXTURE_2D);
                 glDisableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -136,14 +135,10 @@ void IRMaterial::draw(std::shared_ptr<IRMesh>& mesh, const NameRule& nameRule) {
                 quadVAO.unbind();
         }
         shader.unuse();
-        //	}
         glDisableClientState(GL_VERTEX_ARRAY);
         glDisableClientState(GL_NORMAL_ARRAY);
         glDisableClientState(GL_TEXTURE_COORD_ARRAY);
         glDisable(GL_TEXTURE_2D);
-        //	for (int i = 0; i < meshInfo->getChildCount(); i++) {
-        //		drawMeshInfo(meshInfo->getChildAt(i));
-        //	}
 }
 
 void IRMaterial::addTriangle(const Triangle& tria) {

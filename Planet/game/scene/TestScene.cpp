@@ -36,13 +36,13 @@ void TestScene::draw() {
         glClearColor(0.3f, 0.3f, 1.0f, 0.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glViewport(0, 0, 1280, 720);
-
+        auto scale = glm::scale(glm::mat4(1.0f), glm::vec3(1.f, 1.f, 1.f));
+        auto rotate = glm::rotate(scale, 45.f, glm::vec3(1, 0, 0));
         this->projection =
             glm::perspective(30.0f, 1280.0f / 720.0f, 1.0f, 1000.0f);
         this->view =
             glm::lookAt(glm::vec3(0, -3, 5), glm::vec3(), glm::vec3(0, 1, 0));
-        this->model =
-            glm::scale(glm::mat4(1.0f), glm::vec3(0.01f, 0.01f, 0.01f));
+        this->model = rotate;
         ;
         this->mvp = projection * view * model;
 
