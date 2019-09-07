@@ -20,8 +20,8 @@ FbxModel::FbxModel(FbxManager* fbxManager, const std::string& textureShaderName,
       nameRule(nameRule) {}
 
 void FbxModel::load(const std::string& path) {
-        this->fbxScene = FbxScene::Create(this->fbxManager, "");
-        this->fbxImporter = FbxImporter::Create(this->fbxManager, "");
+        this->fbxScene = FbxScene::Create(this->fbxManager, "Scene");
+        this->fbxImporter = FbxImporter::Create(this->fbxManager, "Importer");
         if (!fbxImporter->Initialize(path.c_str())) {
                 throw std::logic_error("fatal error: FbxImporter#Initialize");
         }
@@ -32,12 +32,10 @@ void FbxModel::load(const std::string& path) {
         geometryConverter.Triangulate(fbxScene, true);
         auto rootNode = fbxScene->GetRootNode();
         procIRRec(rootNode, model->getMesh(), 0);
+        fbxImporter->Destroy();
 }
 
-void FbxModel::unload(const std::string& path) {
-        fbxImporter->Destroy();
-        fbxScene->Destroy();
-}
+void FbxModel::unload(const std::string& path) {}
 
 std::shared_ptr<IRModel> FbxModel::getIRModel() const { return model; }
 

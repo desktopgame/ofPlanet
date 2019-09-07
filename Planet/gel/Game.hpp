@@ -142,6 +142,7 @@ class Game {
         virtual void onInit();
         virtual void onUpdate();
         virtual void onDraw();
+        virtual void onFinish();
 };
 }  // namespace gel
 #endif

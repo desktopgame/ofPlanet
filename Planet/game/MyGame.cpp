@@ -78,3 +78,5 @@ void MyGame::onDraw() {
         glfwSwapBuffers(mWindow);
         glfwPollEvents();
 }
+
+void MyGame::onFinish() { gameDevice->getContentManager()->unload(); }

@@ -108,6 +108,7 @@ int Game::mainLoop(int argc, char* argv[], const char* title, int width,
 #if DEBUG
         gui::internal::destroy();
 #endif
+        onFinish();
         fbxManager->Destroy();
         alutExit();
         glfwTerminate();
@@ -144,6 +145,8 @@ void Game::onInit() {}
 void Game::onUpdate() {}
 
 void Game::onDraw() {}
+
+void Game::onFinish() {}
 
 void Game::bridgeMouseButton(GLFWwindow* window, int button, int action,
                              int mods) {
