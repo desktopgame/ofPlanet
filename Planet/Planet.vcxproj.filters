@@ -335,9 +335,6 @@
     <ClInclude Include="gel\device\IModel.hpp">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="gel\device\IPlayableAudio.hpp">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="gel\device\ITexture.hpp">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -633,6 +630,9 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="gel\util\SharedHelper.hpp">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="gel\device\IAudio.hpp">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

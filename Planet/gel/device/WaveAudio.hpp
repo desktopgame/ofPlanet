@@ -1,10 +1,10 @@
 #ifndef GEL_DEVICE_WAVEAUDIO_HPP
 #define GEL_DEVICE_WAVEAUDIO_HPP
 #include <AL/alut.h>
-#include "IPlayableAudio.hpp"
+#include "IAudio.hpp"
 #include "WaveAudio.hpp"
 namespace gel {
-class WaveAudio : public IPlayableAudio {
+class WaveAudio : public IAudio {
        public:
         WaveAudio() = default;
         void load(const std::string& path) override;

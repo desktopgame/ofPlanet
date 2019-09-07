@@ -6,9 +6,9 @@
 #include "../gli.hpp"
 
 namespace gel {
-class IPlayableAudio;
+class IAudio;
 /**
- * AudioManager is manage a `IPlayableAudio`
+ * AudioManager is manage a `IAudio`
  * in now, supported a .wave only
  */
 class AudioManager {
@@ -47,8 +47,7 @@ class AudioManager {
         void unload(const std::string& path);
 
        private:
-        std::unordered_map<std::string, std::shared_ptr<IPlayableAudio> >
-            audioMap;
+        std::unordered_map<std::string, std::shared_ptr<IAudio> > audioMap;
 };
 }  // namespace gel
 #endif

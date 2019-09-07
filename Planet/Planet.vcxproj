@@ -265,7 +265,7 @@
     <ClInclude Include="gel\device\fbxsdk.h" />
     <ClInclude Include="gel\device\GameDevice.hpp" />
     <ClInclude Include="gel\device\IModel.hpp" />
-    <ClInclude Include="gel\device\IPlayableAudio.hpp" />
+    <ClInclude Include="gel\device\IAudio.hpp" />
     <ClInclude Include="gel\device\ITexture.hpp" />
     <ClInclude Include="gel\device\ModelManager.hpp" />
     <ClInclude Include="gel\device\PngTexture.hpp" />

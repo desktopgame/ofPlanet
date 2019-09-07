@@ -1,12 +1,12 @@
-#ifndef GEL_DEVICE_PLAYABLEAUDIO_HPP
-#define GEL_DEVICE_PLAYABLEAUDIO_HPP
+#ifndef GEL_DEVICE_AUDIO_HPP
+#define GEL_DEVICE_AUDIO_HPP
 #include <string>
 #include "../gli.hpp"
 namespace gel {
-class IPlayableAudio {
+class IAudio {
        public:
-        IPlayableAudio() = default;
-        virtual ~IPlayableAudio() = default;
+        IAudio() = default;
+        virtual ~IAudio() = default;
         virtual void load(const std::string& path) = 0;
         virtual void play() const = 0;
         virtual GLuint getBuffer() const = 0;
