@@ -13,7 +13,8 @@ TestScene::TestScene(const std::shared_ptr<gel::GameDevice>& gameDevice)
       plane(shader),
       position(0, 0, 0),
       scale(0.01f, 0.01f, 0.01f),
-      rotation(0, 0, 0) {
+      rotation(0, 0, 0),
+      lightPos(0, 0, 0) {
         plane.init(0.5f);
         glEnableClientState(GL_NORMAL_ARRAY);
         glEnableClientState(GL_VERTEX_ARRAY);
@@ -59,15 +60,15 @@ void TestScene::draw() {
         auto mvp = projection * view * model;
         gel::Shader& ss = gel::ShaderRegistry::getInstance().get("ColorFixed");
         ss.use();
-        ss.setUniform4f("uLightPos", 0, 0, 0, 1);
+        ss.setUniform4f("uLightPos", lightPos.x, lightPos.y, lightPos.z, 1);
         ss.unuse();
         shader.use();
-        shader.setUniform4f("uLightPos", 0, 0, 0, 1);
+        shader.setUniform4f("uLightPos", lightPos.x, lightPos.y, lightPos.z, 1);
         shader.unuse();
 
         // bind matrix
         auto drawModel = gameDevice->getModelManager()->getModel(
-            "./assets/model/GenericMain.fbx");
+            "./assets/model/untitled.fbx");
         auto ir = drawModel->getIRModel();
         ir->setModelMatrix(model);
         ir->setViewMatrix(view);
@@ -84,6 +85,7 @@ void TestScene::draw() {
         ImGui::SliderFloat3("Translate", &position.x, -1000, 1000);
         ImGui::SliderFloat3("Rotation", &rotation.x, 0, 360);
         ImGui::SliderFloat3("Scale", &scale.x, 0, 1000);
+        ImGui::SliderFloat3("Light", &lightPos.x, 0, 1000);
         ImGui::End();
 
         ImGui::PopStyleColor();

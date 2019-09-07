@@ -17,6 +17,7 @@ class TestScene : public gel::IScene {
         glm::vec3 position;
         glm::vec3 scale;
         glm::vec3 rotation;
+        glm::vec3 lightPos;
         gel::Shader& shader;
         gel::Plane plane;
         std::shared_ptr<gel::GameDevice> gameDevice;
