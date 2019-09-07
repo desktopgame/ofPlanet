@@ -1,5 +1,6 @@
 #include "IRMesh.hpp"
 #include "IRMaterial.hpp"
+#include "IRModel.hpp"
 #include "IRShape.hpp"
 
 #include <glm/ext/matrix_clip_space.hpp>
@@ -18,6 +19,17 @@ IRMesh::IRMesh(const std::weak_ptr<IRModel>& model, const std::string& name)
       rotation(),
       scale() {}
 IRMesh::~IRMesh() {}
+
+void IRMesh::draw() {
+        auto m = model.lock();
+        auto self = shared_from_this();
+        for (int i = 0; i < materials.size(); i++) {
+                materials.at(i)->draw(self, m->getNameRule());
+        }
+        for (int i = 0; i < children.size(); i++) {
+                children.at(i)->draw();
+        }
+}
 std::shared_ptr<IRMesh> IRMesh::addMesh(const std::shared_ptr<IRMesh>& mesh) {
         children.push_back(mesh);
         mesh->parent = shared_from_this();

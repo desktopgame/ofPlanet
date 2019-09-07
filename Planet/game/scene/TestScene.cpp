@@ -73,7 +73,7 @@ void TestScene::draw() {
         ir->setModelMatrix(model);
         ir->setViewMatrix(view);
         ir->setProjectionMatrix(projection);
-        drawModel->draw();
+        drawModel->getIRModel()->draw();
 #if DEBUG
         ImGui::PushStyleColor(ImGuiCol_TitleBgActive,
                               ImVec4(0.0f, 0.7f, 0.2f, 1.0f));

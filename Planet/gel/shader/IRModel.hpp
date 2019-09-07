@@ -4,6 +4,7 @@
 #include <glm/glm.hpp>
 #include <memory>
 #include "../util/SharedHelper.hpp"
+#include "NameRule.hpp"
 
 namespace gel {
 class IRMesh;
@@ -16,6 +17,7 @@ class IRModel : public std::enable_shared_from_this<IRModel> {
         static std::shared_ptr<IRModel> create();
 
         ~IRModel();
+        void draw();
         std::shared_ptr<IRMesh> getMesh() const;
 
         void setModelMatrix(const glm::mat4 modelMatrix);
@@ -29,12 +31,15 @@ class IRModel : public std::enable_shared_from_this<IRModel> {
 
         glm::mat4 getNormalMatrix() const;
 
+        NameRule getNameRule() const;
+
        private:
         explicit IRModel();
         glm::mat4 modelMatrix;
         glm::mat4 viewMatrix;
         glm::mat4 projectionMatrix;
         std::shared_ptr<IRMesh> mesh;
+        NameRule nameRule;
 };
 }  // namespace gel
 #endif

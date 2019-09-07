@@ -39,10 +39,6 @@ void FbxModel::unload(const std::string& path) {
         fbxScene->Destroy();
 }
 
-void FbxModel::draw() { drawIR(model->getMesh()); }
-
-AABB FbxModel::getAABB() const { return aabb; }
-
 std::shared_ptr<IRModel> FbxModel::getIRModel() const { return model; }
 
 // private

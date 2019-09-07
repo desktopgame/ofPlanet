@@ -11,6 +11,8 @@ std::shared_ptr<IRModel> IRModel::create() {
 }
 IRModel::~IRModel() {}
 
+void IRModel::draw() { mesh->draw(); }
+
 std::shared_ptr<IRMesh> IRModel::getMesh() const { return mesh; }
 void IRModel::setModelMatrix(const glm::mat4 modelMatrix) {
         this->modelMatrix = modelMatrix;
@@ -30,11 +32,13 @@ glm::mat4 IRModel::getNormalMatrix() const {
         normalMatrix = glm::transpose(normalMatrix);
         return normalMatrix;
 }
+NameRule IRModel::getNameRule() const { return nameRule; }
 // private
 IRModel::IRModel()
     : mesh(nullptr),
       modelMatrix(glm::mat4(1.0f)),
       viewMatrix(glm::mat4(1.0f)),
-      projectionMatrix(glm::mat4(1.0f)) {}
+      projectionMatrix(glm::mat4(1.0f)),
+      nameRule() {}
 
 }  // namespace gel

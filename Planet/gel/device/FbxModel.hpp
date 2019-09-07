@@ -17,8 +17,6 @@ class FbxModel : public IModel {
                  const std::string& colorShaderName, const NameRule& nameRule);
         void load(const std::string& path) override;
         void unload(const std::string& path) override;
-        void draw() override;
-        AABB getAABB() const override;
         std::shared_ptr<IRModel> getIRModel() const override;
 
        private:

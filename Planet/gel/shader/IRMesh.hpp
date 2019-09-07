@@ -15,6 +15,7 @@ class IRMesh : public std::enable_shared_from_this<IRMesh> {
         explicit IRMesh(const std::weak_ptr<IRModel>& model,
                         const std::string& name);
         ~IRMesh();
+        void draw();
         std::shared_ptr<IRMesh> addMesh(const std::shared_ptr<IRMesh>& mesh);
         std::shared_ptr<IRMesh> addMesh(const std::string& name);
         std::shared_ptr<IRMesh> getMesh(int index) const;
