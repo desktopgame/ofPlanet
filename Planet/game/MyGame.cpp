@@ -60,13 +60,6 @@ void MyGame::onUpdate() {
                 isExitNow = true;
                 return;
         }
-#if DEBUG
-        if (glfwGetKey(win, GLFW_KEY_0) == GLFW_PRESS) {
-                sceneManager.bind("play");
-        } else if (glfwGetKey(win, GLFW_KEY_1) == GLFW_PRESS) {
-                sceneManager.bind("test");
-        }
-#endif
         sceneManager.update();
 }
 

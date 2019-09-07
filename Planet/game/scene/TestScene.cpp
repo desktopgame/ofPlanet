@@ -14,7 +14,8 @@ TestScene::TestScene(const std::shared_ptr<gel::GameDevice>& gameDevice)
       position(0, 0, 0),
       scale(0.01f, 0.01f, 0.01f),
       rotation(0, 0, 0),
-      lightPos(0, 0, 0) {
+      lightPos(0, 0, 0),
+      filename("./assets/model/RedBox.fbx") {
         plane.init(0.5f);
         glEnableClientState(GL_NORMAL_ARRAY);
         glEnableClientState(GL_VERTEX_ARRAY);
@@ -67,13 +68,15 @@ void TestScene::draw() {
         shader.unuse();
 
         // bind matrix
-        auto drawModel = gameDevice->getModelManager()->getModel(
-            "./assets/model/untitled.fbx");
-        auto ir = drawModel->getIRModel();
+        if (gel::exists(filename)) {
+                this->imodel =
+                    gameDevice->getModelManager()->getModel(filename);
+        }
+        auto ir = imodel->getIRModel();
         ir->setModelMatrix(model);
         ir->setViewMatrix(view);
         ir->setProjectionMatrix(projection);
-        drawModel->getIRModel()->draw();
+        imodel->getIRModel()->draw();
 #if DEBUG
         ImGui::PushStyleColor(ImGuiCol_TitleBgActive,
                               ImVec4(0.0f, 0.7f, 0.2f, 1.0f));
@@ -82,10 +85,17 @@ void TestScene::draw() {
         ImGui::SetNextWindowSize(ImVec2(200, 300), ImGuiSetCond_Once);
 
         ImGui::Begin("config 1");
-        ImGui::SliderFloat3("Translate", &position.x, -1000, 1000);
+
+        char buf[512];
+        std::memset(buf, '\0', 512);
+        sprintf(buf, "%s", filename.c_str());
+        ImGui::InputText("File", buf, 512);
+        this->filename = buf;
+
+        ImGui::SliderFloat3("Translate", &position.x, -1, 1);
         ImGui::SliderFloat3("Rotation", &rotation.x, 0, 360);
-        ImGui::SliderFloat3("Scale", &scale.x, 0, 1000);
-        ImGui::SliderFloat3("Light", &lightPos.x, -10, 10);
+        ImGui::SliderFloat3("Scale", &scale.x, 0, 2);
+        ImGui::SliderFloat3("Light", &lightPos.x, -1, 1);
         ImGui::End();
 
         ImGui::PopStyleColor();

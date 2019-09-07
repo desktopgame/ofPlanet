@@ -1,6 +1,7 @@
 #ifndef GAME_SCENE_TESTSCENE_HPP
 #define GAME_SCENE_TESTSCENE_HPP
 #include <glm/glm.hpp>
+#include <string>
 #include "../../gel/gel.hpp"
 #define INDEX_SIZE (36)
 class TestScene : public gel::IScene {
@@ -18,8 +19,10 @@ class TestScene : public gel::IScene {
         glm::vec3 scale;
         glm::vec3 rotation;
         glm::vec3 lightPos;
+        std::string filename;
         gel::Shader& shader;
         gel::Plane plane;
+        std::shared_ptr<gel::IModel> imodel;
         std::shared_ptr<gel::GameDevice> gameDevice;
 };
 #endif

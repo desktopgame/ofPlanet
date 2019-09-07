@@ -78,7 +78,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>C:\Work\PlanetSln\Planet\packages\glm.0.9.9.500\build\native\include;C:\Program Files\Autodesk\FBX\FBX SDK\2019.2\include;C:\Program Files (x86)\OpenAL 1.1 SDK\ALUT\freealut-freealut_1_1_0\include;C:\Program Files (x86)\OpenAL 1.1 SDK\include;$(SolutionDir)packages\freeglut.2.8.1.15\build\native\include\GL;$(SolutionDir)packages\glew.1.9.0.1\build\native\include\GL;$(SolutionDir)packages\glfw.3.3.0.1\build\native\include\GLFW;$(SolutionDir)packages\libpng.1.6.28.1\build\native\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <PreprocessorDefinitions>DEBUG;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;DEBUG;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
