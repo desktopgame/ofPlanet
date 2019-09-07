@@ -20,6 +20,7 @@ void MyGame::onInit() {
         sreg.put("SkyBox", "./skybox.vert", "./skybox.frag");
         sreg.put("Color", "./color.vert", "./color.frag");
         sreg.put("Noise", "./noise.vert", "./noise.frag");
+        sreg.put("CRT", "./crt.vert", "./crt.frag");
         // Anisotropic filtering
         float filter;
         glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &filter);

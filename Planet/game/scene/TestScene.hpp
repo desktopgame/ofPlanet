@@ -15,6 +15,7 @@ class TestScene : public gel::IScene {
         std::string getNextScene() const override;
 
        private:
+        float gameTime;
         glm::vec3 position;
         glm::vec3 scale;
         glm::vec3 rotation;
@@ -22,6 +23,7 @@ class TestScene : public gel::IScene {
         std::string filename;
         gel::Shader& shader;
         gel::Plane plane;
+        gel::ScreenBuffer screenBuffer;
         std::shared_ptr<gel::IModel> imodel;
         std::shared_ptr<gel::GameDevice> gameDevice;
 };

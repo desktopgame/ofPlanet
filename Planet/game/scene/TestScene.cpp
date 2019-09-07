@@ -15,14 +15,19 @@ TestScene::TestScene(const std::shared_ptr<gel::GameDevice>& gameDevice)
       scale(0.01f, 0.01f, 0.01f),
       rotation(0, 0, 0),
       lightPos(0, 0, 0),
-      filename("./assets/model/RedBox.fbx") {
+      filename("./assets/model/RedBox.fbx"),
+      screenBuffer(gel::ShaderRegistry::getInstance().get("CRT"),
+                   gel::NameRule(), gel::Game::getInstance()->getWindowWidth(),
+                   gel::Game::getInstance()->getWindowHeight()) {
         plane.init(0.5f);
         glEnableClientState(GL_NORMAL_ARRAY);
         glEnableClientState(GL_VERTEX_ARRAY);
         glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+        screenBuffer.init();
 }
 
 void TestScene::show() {
+        this->gameTime = 0;
         glfwSetInputMode(gel::Game::getInstance()->getWindow(), GLFW_CURSOR,
                          GLFW_CURSOR_NORMAL);
         glEnable(GL_TEXTURE_2D);
@@ -32,6 +37,8 @@ void TestScene::show() {
 }
 void TestScene::update() {}
 void TestScene::draw() {
+        float delta = gel::Game::getInstance()->getDeltaTime();
+        this->gameTime += delta;
         GLFWwindow* wd = gel::Game::getInstance()->getWindow();
         if (glfwGetKey(wd, GLFW_KEY_UP) == GLFW_PRESS) {
                 rotation.x += 0.5f;
@@ -59,13 +66,22 @@ void TestScene::draw() {
         auto view =
             glm::lookAt(glm::vec3(0, -3, 5), glm::vec3(), glm::vec3(0, 1, 0));
         auto mvp = projection * view * model;
-        gel::Shader& ss = gel::ShaderRegistry::getInstance().get("ColorFixed");
-        ss.use();
-        ss.setUniform4f("uLightPos", lightPos.x, lightPos.y, lightPos.z, 1);
-        ss.unuse();
+        // set shader option
+        gel::Shader& colorShader =
+            gel::ShaderRegistry::getInstance().get("ColorFixed");
+        gel::Shader& noiseShader =
+            gel::ShaderRegistry::getInstance().get("CRT");
+        colorShader.use();
+        colorShader.setUniform4f("uLightPos", lightPos.x, lightPos.y,
+                                 lightPos.z, 1);
+        colorShader.unuse();
         shader.use();
         shader.setUniform4f("uLightPos", lightPos.x, lightPos.y, lightPos.z, 1);
         shader.unuse();
+        noiseShader.use();
+        noiseShader.setUniform1i("enabled", 1);
+        noiseShader.setUniform1f("Time", gameTime);
+        noiseShader.unuse();
 
         // bind matrix
         if (gel::exists(filename)) {
@@ -76,7 +92,10 @@ void TestScene::draw() {
         ir->setModelMatrix(model);
         ir->setViewMatrix(view);
         ir->setProjectionMatrix(projection);
+        screenBuffer.bind();
         imodel->getIRModel()->draw();
+        screenBuffer.unbind();
+        screenBuffer.render();
 #if DEBUG
         ImGui::PushStyleColor(ImGuiCol_TitleBgActive,
                               ImVec4(0.0f, 0.7f, 0.2f, 1.0f));
@@ -92,10 +111,10 @@ void TestScene::draw() {
         ImGui::InputText("File", buf, 512);
         this->filename = buf;
 
-        ImGui::SliderFloat3("Translate", &position.x, -1, 1);
+        ImGui::SliderFloat3("Translate", &position.x, -10, 10);
         ImGui::SliderFloat3("Rotation", &rotation.x, 0, 360);
-        ImGui::SliderFloat3("Scale", &scale.x, 0, 2);
-        ImGui::SliderFloat3("Light", &lightPos.x, -1, 1);
+        ImGui::SliderFloat3("Scale", &scale.x, 0, 0.5f);
+        ImGui::SliderFloat3("Light", &lightPos.x, -10, 10);
         ImGui::End();
 
         ImGui::PopStyleColor();

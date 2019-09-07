@@ -77,7 +77,7 @@ void PlayScene::draw() {
                                          glm::value_ptr(camera->getMVP()));
         circleShader.unuse();
         gel::Shader& noiseShader =
-            gel::ShaderRegistry::getInstance().get("Noise");
+            gel::ShaderRegistry::getInstance().get("CRT");
         noiseShader.use();
         // check warp
         auto player = planet.getPlayer();
