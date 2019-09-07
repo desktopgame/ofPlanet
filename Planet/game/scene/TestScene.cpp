@@ -85,7 +85,7 @@ void TestScene::draw() {
         ImGui::SliderFloat3("Translate", &position.x, -1000, 1000);
         ImGui::SliderFloat3("Rotation", &rotation.x, 0, 360);
         ImGui::SliderFloat3("Scale", &scale.x, 0, 1000);
-        ImGui::SliderFloat3("Light", &lightPos.x, 0, 1000);
+        ImGui::SliderFloat3("Light", &lightPos.x, -10, 10);
         ImGui::End();
 
         ImGui::PopStyleColor();
