@@ -14,14 +14,11 @@ class TestScene : public gel::IScene {
         std::string getNextScene() const override;
 
        private:
+        glm::vec3 position;
+        glm::vec3 scale;
+        glm::vec3 rotation;
         gel::Shader& shader;
-        glm::mat4 model;
-        glm::mat4 view;
-        glm::mat4 projection;
-        glm::mat4 mvp;
         gel::Plane plane;
-        float angleX;
-        float angleY;
         std::shared_ptr<gel::GameDevice> gameDevice;
 };
 #endif

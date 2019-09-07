@@ -67,16 +67,17 @@ void FbxModel::procIRRec(FbxNode* node, std::shared_ptr<IRMesh> mesh,
 }
 
 void FbxModel::procIR(FbxNode* node, std::shared_ptr<IRMesh> mesh, int depth) {
-        if (!hasMeshAttr(node)) {
-                return;
-        }
+        // set local transform
         FbxDouble3 pos = node->LclTranslation.Get();
         FbxDouble3 rot = node->LclRotation.Get();
         FbxDouble3 scl = node->LclScaling.Get();
         mesh->setLocalPosition(glm::vec4(pos[0], pos[1], pos[2], 1.0f));
         mesh->setLocalRotation(glm::vec4(rot[0], rot[1], rot[2], 0.0f));
         mesh->setLocalScale(glm::vec4(scl[0], scl[1], scl[2], 1.0f));
-
+        // ignore if not mesh
+        if (!hasMeshAttr(node)) {
+                return;
+        }
         procIRVertex(node, mesh);
         procIRIndex(node, mesh);
         procIRNormal(node, mesh);

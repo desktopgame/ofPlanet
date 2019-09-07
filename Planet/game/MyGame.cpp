@@ -9,6 +9,7 @@ MyGame::MyGame()
       isExitNow(false) {}
 
 void MyGame::init() {
+        this->outputDebugMessage = false;
         // init shader
         gel::ShaderRegistry& sreg = gel::ShaderRegistry::getInstance();
         sreg.put("Texture2D", "./texture2D.vert", "./texture2D.frag");

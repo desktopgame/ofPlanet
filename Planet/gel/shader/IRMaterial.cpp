@@ -110,7 +110,7 @@ void IRMaterial::draw(std::shared_ptr<IRMesh>& mesh, const NameRule& nameRule) {
         glEnableClientState(GL_NORMAL_ARRAY);
         auto& shader = ShaderRegistry::getInstance().get(getShader());
         auto model = mesh->getModel().lock();
-        auto modelMatrix = model->getModelMatrix() * mesh->getLocalMatrix();
+        auto modelMatrix = model->getModelMatrix() * mesh->getTreeMatrix();
         auto viewMatrix = model->getViewMatrix();
         auto projMatrix = model->getProjectionMatrix();
         auto normalMatrix = viewMatrix * modelMatrix;
