@@ -138,9 +138,10 @@ class Game {
                                     const GLchar* message,
                                     const void* user_param);
         virtual void onExit();
-        virtual void init();
-        virtual void update();
-        virtual void draw();
+
+        virtual void onInit();
+        virtual void onUpdate();
+        virtual void onDraw();
 };
 }  // namespace gel
 #endif

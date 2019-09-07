@@ -6,9 +6,9 @@ class MyGame : public gel::Game {
         MyGame();
 
        protected:
-        void init() override;
-        void update() override;
-        void draw() override;
+        void onInit() override;
+        void onUpdate() override;
+        void onDraw() override;
         bool isExitNow;
         gel::SceneManager sceneManager;
         std::shared_ptr<gel::GameDevice> gameDevice;

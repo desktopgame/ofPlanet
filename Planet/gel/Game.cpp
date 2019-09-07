@@ -82,7 +82,7 @@ int Game::mainLoop(int argc, char* argv[], const char* title, int width,
                 ::fprintf(stderr, "fatal error: FbxManager::Create()");
                 ::abort();
         }
-        init();
+        onInit();
         glfwSetTime(0.0);
         glfwSwapInterval(1);
         // init Imgui
@@ -95,8 +95,8 @@ int Game::mainLoop(int argc, char* argv[], const char* title, int width,
                 gui::internal::newFrame();
 #endif
                 this->oldTime = glfwGetTime();
-                update();
-                draw();
+                onUpdate();
+                onDraw();
                 double nowTime = glfwGetTime();
                 this->deltaTime = nowTime - oldTime;
                 this->oldTime = nowTime;
@@ -140,10 +140,10 @@ glm::vec2 Game::getSolutionSize() const {
 }
 
 // protecteds
-void Game::init() {}
-void Game::update() {}
+void Game::onInit() {}
+void Game::onUpdate() {}
 
-void Game::draw() {}
+void Game::onDraw() {}
 
 void Game::bridgeMouseButton(GLFWwindow* window, int button, int action,
                              int mods) {

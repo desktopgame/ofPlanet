@@ -8,7 +8,7 @@ MyGame::MyGame()
       gameDevice(gel::GameDevice::make_shared("./assets")),
       isExitNow(false) {}
 
-void MyGame::init() {
+void MyGame::onInit() {
         this->outputDebugMessage = false;
         // init shader
         gel::ShaderRegistry& sreg = gel::ShaderRegistry::getInstance();
@@ -50,7 +50,7 @@ void MyGame::init() {
         sceneManager.bind("test");
 }
 
-void MyGame::update() {
+void MyGame::onUpdate() {
         auto win = gel::Game::getInstance()->getWindow();
         if (glfwGetKey(win, GLFW_KEY_ESCAPE) == GLFW_PRESS ||
             (glfwGetKey(win, 'Q') == GLFW_PRESS &&
@@ -70,7 +70,7 @@ void MyGame::update() {
         sceneManager.update();
 }
 
-void MyGame::draw() {
+void MyGame::onDraw() {
         if (isExitNow) {
                 return;
         }
