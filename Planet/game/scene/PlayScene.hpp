@@ -21,6 +21,7 @@ class PlayScene : public gel::IScene {
         float gameTime;
         float noiseTime;
         int score;
+        std::shared_ptr<gel::IModel> tModel;
         std::shared_ptr<gel::GameDevice> gameDevice;
         CrossHairUI crossHair;
         Planet planet;

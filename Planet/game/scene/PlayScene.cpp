@@ -4,6 +4,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/raw_data.hpp>
 #include <iostream>
+#include "../../gel/shader/IRModel.hpp"
 #include "../world/BlockRegistry.hpp"
 #include "../world/gen/Generator.hpp"
 PlayScene::PlayScene(const std::shared_ptr<gel::GameDevice>& gameDevice)
@@ -18,6 +19,8 @@ PlayScene::PlayScene(const std::shared_ptr<gel::GameDevice>& gameDevice)
       warp(gel::ShaderRegistry::getInstance().get("Color"), gel::NameRule()),
       random() {
         screenBuffer.init();
+        this->tModel = gameDevice->getModelManager()->getModel(
+            "./assets/model/Sphere.fbx");
         gel::CubeMapDesc desc;
         desc.front = "./assets/image/skybox/SkyBoxSide.png";
         desc.back = "./assets/image/skybox/SkyBoxSide.png";
@@ -90,11 +93,28 @@ void PlayScene::draw() {
                 this->noiseTime = 0.0f;
         }
         noiseShader.unuse();
+        gel::Shader& colorShader =
+            gel::ShaderRegistry::getInstance().get("ColorFixed");
+        colorShader.use();
+        colorShader.setUniformMatrix4fv("uMVPMatrix", 1, GL_FALSE,
+                                        glm::value_ptr(camera->getMVP()));
+        colorShader.setUniformMatrix4fv("uNormalMatrix", 1, GL_FALSE,
+                                        glm::value_ptr(camera->getNormal()));
+        colorShader.setUniform4f("uLightPos", 64, 48, 64, 1.0f);
+        colorShader.unuse();
+        // set matrix
+        auto irtModel = tModel->getIRModel();
+        irtModel->setModelMatrix(
+            glm::scale(glm::translate(glm::mat4(1.0f), glm::vec3(64, 36, 64)),
+                       glm::vec3(0.01f, 0.01f, 0.01f)));
+        irtModel->setViewMatrix(camera->getView());
+        irtModel->setProjectionMatrix(camera->getProjection());
         // double buffered rendering
         screenBuffer.bind();
         skybox.draw();
         planet.draw();
         warp.draw();
+        irtModel->draw();
         screenBuffer.unbind();
         screenBuffer.render();
         crossHair.draw(planet.getCamera());

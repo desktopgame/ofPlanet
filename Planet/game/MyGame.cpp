@@ -48,7 +48,7 @@ void MyGame::onInit() {
         sceneManager.put("title", std::make_shared<TitleScene>(gameDevice));
         sceneManager.put("tutorial",
                          std::make_shared<TutorialScene>(gameDevice));
-        sceneManager.bind("test");
+        sceneManager.bind("play");
 }
 
 void MyGame::onUpdate() {
