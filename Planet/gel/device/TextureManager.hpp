@@ -24,6 +24,11 @@ class TextureManager {
          */
         void loadPng(const std::string& path);
         /**
+         * load a .jpeg file
+         * @param path
+         */
+        void loadJpeg(const std::string& path);
+        /**
          * return a texture.
          * @param path
          * @return

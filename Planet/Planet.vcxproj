@@ -83,7 +83,7 @@
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)packages\libjpeg.9.2.0.1\build\native\lib\v140\Win32\Debug\static\cdecl;C:\Program Files\Autodesk\FBX\FBX SDK\2019.2\lib\vs2017\x86\debug;C:\Program Files (x86)\OpenAL 1.1 SDK\ALUT\build\debug;C:\Program Files (x86)\OpenAL 1.1 SDK\libs\Win32\EFX-Util_MT;C:\Program Files (x86)\OpenAL 1.1 SDK\libs\Win32;$(SolutionDir)packages\zlib.v140.windesktop.msvcstl.dyn.rt-dyn.1.2.8.8\lib\native\v140\windesktop\msvcstl\dyn\rt-dyn\Win32\Debug;$(SolutionDir)packages\libpng.1.6.28.1\build\native\lib\Win32\v140\dynamic\Debug;$(SolutionDir)packages\glfw.3.3.0.1\build\native\lib\static\v142\win32;$(SolutionDir)packages\glew.1.9.0.1\build\native\lib\v110\Win32\Debug\static;$(SolutionDir)packages\freeglut.2.8.1.15\build\native\lib\v110\Win32\Debug\static;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>freeglut.lib;glew.lib;glfw3.lib;zlib-md.lib;libpng16.lib;alut.lib;OpenAL32.lib;EFX-Util.lib;libfbxsdk.lib;libxml2-md.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>jpeg.lib;freeglut.lib;glew.lib;glfw3.lib;zlib-md.lib;libpng16.lib;alut.lib;OpenAL32.lib;EFX-Util.lib;libfbxsdk.lib;libxml2-md.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
       <Command>goclangfmt -directory $(SolutionDir) -ignore imgui</Command>
@@ -160,12 +160,14 @@
     <ClCompile Include="gel\content\ContentManager.cpp" />
     <ClCompile Include="gel\content\EchoPipeline.cpp" />
     <ClCompile Include="gel\content\FbxPipeline.cpp" />
+    <ClCompile Include="gel\content\JpegPipeline.cpp" />
     <ClCompile Include="gel\content\PngPipeline.cpp" />
     <ClCompile Include="gel\content\WavePipeline.cpp" />
     <ClCompile Include="gel\device\AudioManager.cpp" />
     <ClCompile Include="gel\device\BmpTexture.cpp" />
     <ClCompile Include="gel\device\FbxModel.cpp" />
     <ClCompile Include="gel\device\GameDevice.cpp" />
+    <ClCompile Include="gel\device\JpegTexture.cpp" />
     <ClCompile Include="gel\device\ModelManager.cpp" />
     <ClCompile Include="gel\device\PngTexture.cpp" />
     <ClCompile Include="gel\device\TextureManager.cpp" />
@@ -257,6 +259,7 @@
     <ClInclude Include="gel\content\EchoPipeline.hpp" />
     <ClInclude Include="gel\content\FbxPipeline.hpp" />
     <ClInclude Include="gel\content\IContentPipeline.hpp" />
+    <ClInclude Include="gel\content\JpegPipeline.hpp" />
     <ClInclude Include="gel\content\PngPipeline.hpp" />
     <ClInclude Include="gel\content\ProxyPipeline.hpp" />
     <ClInclude Include="gel\content\WavePipeline.hpp" />
@@ -268,6 +271,7 @@
     <ClInclude Include="gel\device\IModel.hpp" />
     <ClInclude Include="gel\device\IAudio.hpp" />
     <ClInclude Include="gel\device\ITexture.hpp" />
+    <ClInclude Include="gel\device\JpegTexture.hpp" />
     <ClInclude Include="gel\device\ModelManager.hpp" />
     <ClInclude Include="gel\device\PngTexture.hpp" />
     <ClInclude Include="gel\device\TextureManager.hpp" />

@@ -1,6 +1,7 @@
 #include "TextureManager.hpp"
 #include "BmpTexture.hpp"
 #include "ITexture.hpp"
+#include "JpegTexture.hpp"
 #include "PngTexture.hpp"
 namespace gel {
 TextureManager::TextureManager() : texMap() {}
@@ -15,6 +16,12 @@ void TextureManager::loadPng(const std::string& path) {
         auto png = std::make_shared<PngTexture>();
         png->load(path);
         texMap[path] = png;
+}
+
+void TextureManager::loadJpeg(const std::string& path) {
+        auto jpeg = std::make_shared<JpegTexture>();
+        jpeg->load(path);
+        texMap[path] = jpeg;
 }
 
 std::shared_ptr<ITexture> TextureManager::getTexture(const std::string& path) {

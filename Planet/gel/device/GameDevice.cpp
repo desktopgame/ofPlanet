@@ -3,6 +3,7 @@
 #include "../content/ContentManager.hpp"
 #include "../content/EchoPipeline.hpp"
 #include "../content/FbxPipeline.hpp"
+#include "../content/JpegPipeline.hpp"
 #include "../content/PngPipeline.hpp"
 #include "../content/ProxyPipeline.hpp"
 #include "../content/WavePipeline.hpp"
@@ -25,6 +26,12 @@ GameDevice::GameDevice(const std::string& assetRootDir)
         contentManager->add(
             std::make_shared<gel::ProxyPipeline<gel::FbxPipeline> >(
                 ".fbx", modelManager));
+        contentManager->add(
+            std::make_shared<gel::ProxyPipeline<gel::JpegPipeline> >(
+                ".jpeg", textureManager));
+        contentManager->add(
+            std::make_shared<gel::ProxyPipeline<gel::JpegPipeline> >(
+                ".jpg", textureManager));
 }
 std::shared_ptr<GameDevice> GameDevice::make_shared(
     const std::string& assetRootDir) {

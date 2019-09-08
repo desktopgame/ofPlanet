@@ -18,12 +18,18 @@ TestScene::TestScene(const std::shared_ptr<gel::GameDevice>& gameDevice)
       filename("./assets/model/RedBox.fbx"),
       screenBuffer(gel::ShaderRegistry::getInstance().get("CRT"),
                    gel::NameRule(), gel::Game::getInstance()->getWindowWidth(),
-                   gel::Game::getInstance()->getWindowHeight()) {
+                   gel::Game::getInstance()->getWindowHeight()),
+      sprite(gel::ShaderRegistry::getInstance().get("Texture2D")),
+      camera(std::make_shared<gel::Camera>()) {
         plane.init(0.5f);
         glEnableClientState(GL_NORMAL_ARRAY);
         glEnableClientState(GL_VERTEX_ARRAY);
         glEnableClientState(GL_TEXTURE_COORD_ARRAY);
         screenBuffer.init();
+        sprite.init(gameDevice->getTextureManager()
+                        ->getTexture("./assets/image/sample.jpg")
+                        ->getID(),
+                    glm::vec2(32, 32), glm::vec2(150, 146), 1.0f);
 }
 
 void TestScene::show() {
@@ -37,6 +43,12 @@ void TestScene::show() {
 }
 void TestScene::update() {}
 void TestScene::draw() {
+        glm::vec2 windowSize = gel::Game::getInstance()->getWindowSize();
+        glm::vec2 solutionSize = gel::Game::getInstance()->getSolutionSize();
+        glViewport(0, 0, windowSize.x, windowSize.y);
+        camera->screenWidth = windowSize.x;
+        camera->screenHeight = windowSize.y;
+        camera->calculate();
         float delta = gel::Game::getInstance()->getDeltaTime();
         this->gameTime += delta;
         GLFWwindow* wd = gel::Game::getInstance()->getWindow();
@@ -92,10 +104,11 @@ void TestScene::draw() {
         ir->setModelMatrix(model);
         ir->setViewMatrix(view);
         ir->setProjectionMatrix(projection);
-        screenBuffer.bind();
+        //        screenBuffer.bind();
         imodel->getIRModel()->draw();
-        screenBuffer.unbind();
-        screenBuffer.render();
+        sprite.draw(camera);
+//        screenBuffer.unbind();
+//        screenBuffer.render();
 #if DEBUG
         ImGui::PushStyleColor(ImGuiCol_TitleBgActive,
                               ImVec4(0.0f, 0.7f, 0.2f, 1.0f));

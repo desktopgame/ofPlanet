@@ -21,8 +21,10 @@ class TestScene : public gel::IScene {
         glm::vec3 rotation;
         glm::vec3 lightPos;
         std::string filename;
+        gel::Sprite sprite;
         gel::Shader& shader;
         gel::Plane plane;
+        std::shared_ptr<gel::Camera> camera;
         gel::ScreenBuffer screenBuffer;
         std::shared_ptr<gel::IModel> imodel;
         std::shared_ptr<gel::GameDevice> gameDevice;
