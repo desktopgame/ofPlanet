@@ -170,6 +170,7 @@
     <ClCompile Include="gel\device\JpegTexture.cpp" />
     <ClCompile Include="gel\device\ModelManager.cpp" />
     <ClCompile Include="gel\device\PngTexture.cpp" />
+    <ClCompile Include="gel\device\TextureIO.cpp" />
     <ClCompile Include="gel\device\TextureManager.cpp" />
     <ClCompile Include="gel\device\WaveAudio.cpp" />
     <ClCompile Include="gel\Game.cpp" />
@@ -274,6 +275,7 @@
     <ClInclude Include="gel\device\JpegTexture.hpp" />
     <ClInclude Include="gel\device\ModelManager.hpp" />
     <ClInclude Include="gel\device\PngTexture.hpp" />
+    <ClInclude Include="gel\device\TextureIO.hpp" />
     <ClInclude Include="gel\device\TextureManager.hpp" />
     <ClInclude Include="gel\device\WaveAudio.hpp" />
     <ClInclude Include="gel\fbxsdk.hpp" />

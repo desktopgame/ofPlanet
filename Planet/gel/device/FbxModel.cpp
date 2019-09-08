@@ -3,6 +3,7 @@
 #include <cassert>
 #include <iostream>
 #include <stdexcept>
+#include "../device/TextureIO.hpp"
 #include "../shader/IRMaterial.hpp"
 #include "../shader/IRMesh.hpp"
 #include "../shader/IRShape.hpp"
@@ -278,12 +279,11 @@ void FbxModel::procIRTexture(FbxNode* node, std::shared_ptr<IRMesh> mesh,
             fbxMat->FindProperty(FbxSurfaceMaterial::sDiffuse);
         FbxFileTexture* tex = IProperty.GetSrcObject<FbxFileTexture>();
         if (tex) {
-                auto ptex = std::make_shared<PngTexture>();
                 auto path = tex->GetFileName();
                 if (!exists(path)) {
                         throw std::logic_error("file is not found");
                 }
-                ptex->load(path);
+                auto ptex = TextureIO::load(path);
                 mesh->addTexture(ptex);
                 irMat->setTexture(mesh->getTextureCount());
                 irMat->setShader(textureShaderName);
