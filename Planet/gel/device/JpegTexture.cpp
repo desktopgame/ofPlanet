@@ -4,43 +4,43 @@
 namespace gel {
 JpegTexture::JpegTexture() : textureId(0), width(0), height(0), data(NULL) {}
 void JpegTexture::load(const std::string& path) {
-		struct jpeg_decompress_struct jpeg;
-		struct jpeg_error_mgr err;
-		JSAMPLE *tmp;
-		jpeg.err = jpeg_std_error(&err);
+        struct jpeg_decompress_struct jpeg;
+        struct jpeg_error_mgr err;
+        JSAMPLE* tmp;
+        jpeg.err = jpeg_std_error(&err);
         FILE* fi = fopen(path.c_str(), "rb");
         if (fi == NULL) {
                 perror("JpegTexture#load");
                 return;
         }
 
-		jpeg_create_decompress(&jpeg);
-		jpeg_stdio_src(&jpeg, fi);
-		jpeg_read_header(&jpeg, TRUE);
-		jpeg_start_decompress(&jpeg);
+        jpeg_create_decompress(&jpeg);
+        jpeg_stdio_src(&jpeg, fi);
+        jpeg_read_header(&jpeg, TRUE);
+        jpeg_start_decompress(&jpeg);
 
-		this->data = (unsigned char*)std::malloc(
-			sizeof(unsigned char) * jpeg.output_width * jpeg.output_height *
-			jpeg.out_color_components);
-		if (this->data == NULL) {
-			perror("JpegTexture#load");
-			fclose(fi);
-			jpeg_destroy_decompress(&jpeg);
-			return;
-		}
+        this->data = (unsigned char*)std::malloc(
+            sizeof(unsigned char) * jpeg.output_width * jpeg.output_height *
+            jpeg.out_color_components);
+        if (this->data == NULL) {
+                perror("JpegTexture#load");
+                fclose(fi);
+                jpeg_destroy_decompress(&jpeg);
+                return;
+        }
 
-		for (int j = 0; j < jpeg.output_height; j++) {
-			tmp = this->data +
-				j * jpeg.out_color_components * jpeg.output_width;
-			jpeg_read_scanlines(&jpeg, &tmp, 1);
-		}
+        for (int j = 0; j < jpeg.output_height; j++) {
+                tmp = this->data +
+                      j * jpeg.out_color_components * jpeg.output_width;
+                jpeg_read_scanlines(&jpeg, &tmp, 1);
+        }
 
-		this->height = jpeg.output_height;
-		this->width = jpeg.output_width;
-		this->ch = jpeg.out_color_components;
+        this->height = jpeg.output_height;
+        this->width = jpeg.output_width;
+        this->ch = jpeg.out_color_components;
 
-		jpeg_finish_decompress(&jpeg);
-		jpeg_destroy_decompress(&jpeg);
+        jpeg_finish_decompress(&jpeg);
+        jpeg_destroy_decompress(&jpeg);
         // generate texture
         glGenTextures(1, &(this->textureId));
         glBindTexture(GL_TEXTURE_2D, this->textureId);
@@ -53,7 +53,10 @@ void JpegTexture::load(const std::string& path) {
         glDisable(GL_TEXTURE_2D);
         glBindTexture(GL_TEXTURE_2D, 0);
 }
-void JpegTexture::unload(const std::string& path) { std::free(data); }
+void JpegTexture::unload(const std::string& path) {
+        glDeleteTextures(1, &(this->textureId));
+        std::free(data);
+}
 GLuint JpegTexture::getID() const { return textureId; }
 unsigned char* JpegTexture::getData() const { return data; }
 int JpegTexture::getWidth() const { return width; }
