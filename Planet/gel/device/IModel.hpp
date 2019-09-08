@@ -11,7 +11,7 @@ class IModel {
         IModel() = default;
         virtual ~IModel() = default;
         virtual void load(const std::string& path) = 0;
-        virtual void unload(const std::string& path) = 0;
+        virtual void unload() = 0;
         virtual std::shared_ptr<IRModel> getIRModel() const = 0;
 };
 }  // namespace gel

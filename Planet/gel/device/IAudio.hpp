@@ -11,7 +11,7 @@ class IAudio {
         virtual void play() const = 0;
         virtual GLuint getBuffer() const = 0;
         virtual GLuint getSource() const = 0;
-        virtual void unload(const std::string& path) = 0;
+        virtual void unload() = 0;
 };
 }  // namespace gel
 #endif

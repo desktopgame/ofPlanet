@@ -35,7 +35,7 @@ void FbxModel::load(const std::string& path) {
         fbxImporter->Destroy();
 }
 
-void FbxModel::unload(const std::string& path) {}
+void FbxModel::unload() {}
 
 std::shared_ptr<IRModel> FbxModel::getIRModel() const { return model; }
 

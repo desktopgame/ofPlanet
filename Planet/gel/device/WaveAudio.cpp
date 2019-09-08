@@ -12,7 +12,7 @@ GLuint WaveAudio::getBuffer() const { return this->buf; }
 
 GLuint WaveAudio::getSource() const { return this->src; }
 
-void WaveAudio::unload(const std::string& path) {
+void WaveAudio::unload() {
         alDeleteBuffers(1, &(this->buf));
         alDeleteSources(1, &(this->src));
 }

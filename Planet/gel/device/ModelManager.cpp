@@ -20,7 +20,7 @@ void ModelManager::unload(const std::string& path) {
         if (modelMap.count(path)) {
                 auto fbxModel = modelMap.at(path);
                 modelMap.erase(path);
-                fbxModel->unload(path);
+                fbxModel->unload();
         }
 }
 

@@ -11,7 +11,7 @@ class WaveAudio : public IAudio {
         void play() const override;
         GLuint getBuffer() const override;
         GLuint getSource() const override;
-        void unload(const std::string& path) override;
+        void unload() override;
 
        private:
         ALuint src;

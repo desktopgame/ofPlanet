@@ -16,7 +16,7 @@ class FbxModel : public IModel {
         FbxModel(FbxManager* fbxManager, const std::string& textureShaderName,
                  const std::string& colorShaderName, const NameRule& nameRule);
         void load(const std::string& path) override;
-        void unload(const std::string& path) override;
+        void unload() override;
         std::shared_ptr<IRModel> getIRModel() const override;
 
        private:

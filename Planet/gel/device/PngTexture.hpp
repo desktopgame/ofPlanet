@@ -8,7 +8,7 @@ class PngTexture : public ITexture {
        public:
         PngTexture();
         void load(const std::string& path) override;
-        void unload(const std::string& path) override;
+        void unload() override;
         GLuint getID() const override;
         unsigned char* getData() const override;
         int getWidth() const override;

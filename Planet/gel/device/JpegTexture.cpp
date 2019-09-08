@@ -53,7 +53,7 @@ void JpegTexture::load(const std::string& path) {
         glDisable(GL_TEXTURE_2D);
         glBindTexture(GL_TEXTURE_2D, 0);
 }
-void JpegTexture::unload(const std::string& path) {
+void JpegTexture::unload() {
         glDeleteTextures(1, &(this->textureId));
         std::free(data);
 }

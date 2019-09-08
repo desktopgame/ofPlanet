@@ -84,7 +84,7 @@ void PngTexture::load(const std::string& path) {
         glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void PngTexture::unload(const std::string& path) {
+void PngTexture::unload() {
         glDeleteTextures(1, &(this->textureId));
         free(this->data);
 }

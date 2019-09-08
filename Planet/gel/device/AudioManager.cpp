@@ -31,7 +31,7 @@ GLuint AudioManager::getSource(const std::string& path) const {
 
 void AudioManager::unload(const std::string& path) {
         if (audioMap.count(path)) {
-                audioMap.at(path)->unload(path);
+                audioMap.at(path)->unload();
                 audioMap.erase(path);
         }
 }

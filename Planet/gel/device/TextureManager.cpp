@@ -33,7 +33,7 @@ std::shared_ptr<ITexture> TextureManager::getTexture(const std::string& path) {
 
 void TextureManager::unload(const std::string& path) {
         if (texMap.count(path)) {
-                texMap.at(path)->unload(path);
+                texMap.at(path)->unload();
         }
 }
 }  // namespace gel
