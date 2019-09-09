@@ -7,7 +7,9 @@ namespace gel {
 class WaveAudio : public IAudio {
        public:
         WaveAudio() = default;
-        void load(const std::string& path) override;
+        ~WaveAudio() = default;
+        void loadOnAsync(const std::string& path) override;
+        void loadOnGLThread(const std::string& path) override;
         void play() const override;
         GLuint getBuffer() const override;
         GLuint getSource() const override;

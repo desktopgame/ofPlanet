@@ -5,7 +5,9 @@ namespace gel {
 class BmpTexture : public ITexture {
        public:
         BmpTexture();
-        void load(const std::string& path) override;
+        ~BmpTexture() = default;
+        void loadOnAsync(const std::string& path) override;
+        void loadOnGLThread(const std::string& path) override;
         void unload() override;
         GLuint getID() const override;
         unsigned char* getData() const override;

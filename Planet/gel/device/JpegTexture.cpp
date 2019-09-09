@@ -3,7 +3,8 @@
 // https://daeudaeu.com/programming/c-language/libjpeg/
 namespace gel {
 JpegTexture::JpegTexture() : textureId(0), width(0), height(0), data(NULL) {}
-void JpegTexture::load(const std::string& path) {
+void JpegTexture::loadOnAsync(const std::string& path) {}
+void JpegTexture::loadOnGLThread(const std::string& path) {
         struct jpeg_decompress_struct jpeg;
         struct jpeg_error_mgr err;
         JSAMPLE* tmp;

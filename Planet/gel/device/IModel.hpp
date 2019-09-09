@@ -3,15 +3,14 @@
 #include <memory>
 #include <string>
 #include "../math/AABB.hpp"
+#include "IAsset.hpp"
 
 namespace gel {
 class IRModel;
-class IModel {
+class IModel : public IAsset {
        public:
         IModel() = default;
         virtual ~IModel() = default;
-        virtual void load(const std::string& path) = 0;
-        virtual void unload() = 0;
         virtual std::shared_ptr<IRModel> getIRModel() const = 0;
 };
 }  // namespace gel

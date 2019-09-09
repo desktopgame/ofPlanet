@@ -5,7 +5,9 @@
 namespace gel {
 BmpTexture::BmpTexture() : tid(0), width(0), height(0) {}
 
-void BmpTexture::load(const std::string& path) {
+void BmpTexture::loadOnAsync(const std::string& path) {}
+
+void BmpTexture::loadOnGLThread(const std::string& path) {
         readBMP(path.c_str());
         // generate texture
         glGenTextures(1, &(this->tid));
