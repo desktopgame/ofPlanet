@@ -1,4 +1,5 @@
 #include "MyGame.hpp"
+#include "scene/LoadScene.hpp"
 #include "scene/PlayScene.hpp"
 #include "scene/TestScene.hpp"
 #include "scene/TitleScene.hpp"
@@ -25,14 +26,16 @@ void MyGame::onInit() {
         float filter;
         glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &filter);
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, filter);
-        gameDevice->getContentManager()->load();
-        sceneManager.put("load", std::make_shared<PlayScene>(gameDevice));
+        sceneManager.put("load", std::make_shared<LoadScene>(gameDevice));
         sceneManager.bind("load");
 }
 
-void MyGame::onLoad() {}
+void MyGame::onLoad() {
+        gameDevice->getContentManager()->load(Thread::OnBackground);
+}
 
 void MyGame::onStart() {
+        gameDevice->getContentManager()->load(Thread::OnGL);
         // init block
         auto tm = gameDevice->getTextureManager();
         BlockRegistry& reg = BlockRegistry::getInstance();

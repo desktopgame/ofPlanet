@@ -2,7 +2,12 @@
 #define GEL_CONTENT_PROXYPIPELINE_H
 #include <memory>
 #include <string>
+#include <unordered_map>
 #include "IContentPipeline.hpp"
+
+#define STAT_NOTLOADED (1)
+#define STAT_BACKGROUND (2)
+#define STAT_GL (3)
 
 namespace gel {
 template <typename T>
@@ -17,10 +22,12 @@ class ProxyPipeline : public IContentPipeline {
        private:
         std::string extension;
         std::shared_ptr<T> proxy;
+        std::unordered_map<std::string, unsigned int> statMap;
 };
 template <typename T>
 template <typename... Args>
-ProxyPipeline<T>::ProxyPipeline(const std::string& extension, Args... args) {
+ProxyPipeline<T>::ProxyPipeline(const std::string& extension, Args... args)
+    : statMap() {
         this->extension = extension;
         this->proxy = std::make_shared<T>(args...);
 }
@@ -34,6 +41,25 @@ bool ProxyPipeline<T>::accept(const std::string& path) {
 template <typename T>
 void ProxyPipeline<T>::load(const std::string& path, Thread thread) {
         // T requires loadOn method
+        if (!statMap.count(path)) {
+                statMap[path] = STAT_NOTLOADED;
+        }
+        switch (thread) {
+                case Thread::OnBackground:
+                        if (statMap[path] != STAT_NOTLOADED) {
+                                throw std::logic_error(path +
+                                                       " is already loaded");
+                        }
+                        statMap[path] = STAT_BACKGROUND;
+                        break;
+                case Thread::OnGL:
+                        if (statMap[path] != STAT_BACKGROUND) {
+                                throw std::logic_error(path +
+                                                       " is already loaded");
+                        }
+                        statMap[path] = STAT_GL;
+                        break;
+        }
         proxy->load(path, thread);
 }
 

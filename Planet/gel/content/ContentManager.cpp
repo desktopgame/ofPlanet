@@ -30,7 +30,7 @@ void ContentManager::remove(const std::shared_ptr<IContentPipeline>& pipe) {
         pipes.erase(itrNewEnd, pipes.end());
 }
 
-void ContentManager::load(const std::string& path) {
+void ContentManager::loadFully(const std::string& path) {
         auto iter = files.begin();
         while (iter != files.end()) {
                 if (*iter != path) {
@@ -47,12 +47,11 @@ void ContentManager::load(const std::string& path) {
         }
 }
 
-void ContentManager::load() {
+void ContentManager::load(Thread thread) {
         std::for_each(files.begin(), files.end(), [&](auto file) {
                 std::for_each(pipes.begin(), pipes.end(), [&](auto p) {
                         if (p->accept(file)) {
-                                p->load(file, Thread::OnBackground);
-                                p->load(file, Thread::OnGL);
+                                p->load(file, thread);
                         }
                 });
         });

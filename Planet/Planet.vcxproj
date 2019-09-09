@@ -131,6 +131,7 @@
     <ClCompile Include="game\main.cpp" />
     <ClCompile Include="game\MyGame.cpp" />
     <ClCompile Include="game\resources.cpp" />
+    <ClCompile Include="game\scene\LoadScene.cpp" />
     <ClCompile Include="game\scene\PlayScene.cpp" />
     <ClCompile Include="game\scene\TestScene.cpp" />
     <ClCompile Include="game\scene\TitleScene.cpp" />
@@ -232,6 +233,7 @@
     <ClInclude Include="game\input\MouseScroll.hpp" />
     <ClInclude Include="game\MyGame.hpp" />
     <ClInclude Include="game\resources.hpp" />
+    <ClInclude Include="game\scene\LoadScene.hpp" />
     <ClInclude Include="game\scene\PlayScene.hpp" />
     <ClInclude Include="game\scene\TestScene.hpp" />
     <ClInclude Include="game\scene\TitleScene.hpp" />

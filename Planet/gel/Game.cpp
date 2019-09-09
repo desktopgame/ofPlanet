@@ -322,6 +322,7 @@ int Game::onGLInit(int argc, char* argv[], const char* title, int width,
         std::cout << "    GLSL: " << glGetString(GL_SHADING_LANGUAGE_VERSION)
                   << std::endl;
 #endif
+        return 0;
 }
 
 void Game::onMainLoop1() {

@@ -15,6 +15,7 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include "../Thread.hpp"
 
 namespace gel {
 class IContentPipeline;
@@ -46,11 +47,12 @@ class ContentManager {
          * and, remove specified file from files cache.
          * @param path
          */
-        void load(const std::string& path);
+        void loadFully(const std::string& path);
         /**
          * load a all asset.
+         * @param thread
          */
-        void load();
+        void load(Thread thread);
         /**
          * unload a all asset.
          */
