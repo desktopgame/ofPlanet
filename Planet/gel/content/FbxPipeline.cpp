@@ -6,7 +6,9 @@ FbxPipeline::FbxPipeline(const std::shared_ptr<ModelManager>& modelManager)
 
 bool FbxPipeline::accept(const std::string& path) { return true; }
 
-void FbxPipeline::load(const std::string& path) { modelManager->loadFbx(path); }
+void FbxPipeline::load(const std::string& path, Thread thread) {
+        modelManager->loadFbx(path);
+}
 
 void FbxPipeline::unload(const std::string& path) {
         modelManager->unload(path);

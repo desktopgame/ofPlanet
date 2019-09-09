@@ -8,22 +8,22 @@ TextureManager::TextureManager() : texMap() {}
 
 void TextureManager::loadBmp(const std::string& path) {
         auto bmp = std::make_shared<BmpTexture>();
-        bmp->loadOnAsync(path);
-        bmp->loadOnGLThread(path);
+        bmp->load(path, Thread::OnBackground);
+        bmp->load(path, Thread::OnGL);
         texMap[path] = bmp;
 }
 
 void TextureManager::loadPng(const std::string& path) {
         auto png = std::make_shared<PngTexture>();
-        png->loadOnAsync(path);
-        png->loadOnGLThread(path);
+        png->load(path, Thread::OnBackground);
+        png->load(path, Thread::OnGL);
         texMap[path] = png;
 }
 
 void TextureManager::loadJpeg(const std::string& path) {
         auto jpeg = std::make_shared<JpegTexture>();
-        jpeg->loadOnAsync(path);
-        jpeg->loadOnGLThread(path);
+        jpeg->load(path, Thread::OnBackground);
+        jpeg->load(path, Thread::OnGL);
         texMap[path] = jpeg;
 }
 

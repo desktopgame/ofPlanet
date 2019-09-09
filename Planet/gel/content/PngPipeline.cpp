@@ -6,7 +6,7 @@ PngPipeline::PngPipeline(const std::shared_ptr<TextureManager>& textureManager)
 
 bool PngPipeline::accept(const std::string& path) { return true; }
 
-void PngPipeline::load(const std::string& path) {
+void PngPipeline::load(const std::string& path, Thread thread) {
         textureManager->loadPng(path);
 }
 

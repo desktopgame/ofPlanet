@@ -12,9 +12,7 @@
 namespace gel {
 PngTexture::PngTexture() : textureId(0), width(0), height(0), data(NULL) {}
 
-void PngTexture::loadOnAsync(const std::string& path) {}
-
-void PngTexture::loadOnGLThread(const std::string& path) {
+void PngTexture::load(const std::string& path, Thread thread) {
         FILE* fp = fopen(path.c_str(), "rb");
         // check file exists
         if (!fp) {

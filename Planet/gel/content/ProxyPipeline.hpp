@@ -11,7 +11,7 @@ class ProxyPipeline : public IContentPipeline {
         template <typename... Args>
         ProxyPipeline(const std::string& extension, Args... args);
         bool accept(const std::string& path) override;
-        void load(const std::string& path) override;
+        void load(const std::string& path, Thread thread) override;
         void unload(const std::string& path) override;
 
        private:
@@ -32,9 +32,9 @@ bool ProxyPipeline<T>::accept(const std::string& path) {
 }
 
 template <typename T>
-void ProxyPipeline<T>::load(const std::string& path) {
-        // T requires load method
-        proxy->load(path);
+void ProxyPipeline<T>::load(const std::string& path, Thread thread) {
+        // T requires loadOn method
+        proxy->load(path, thread);
 }
 
 template <typename T>

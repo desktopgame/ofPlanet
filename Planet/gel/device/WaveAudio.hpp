@@ -8,8 +8,7 @@ class WaveAudio : public IAudio {
        public:
         WaveAudio() = default;
         ~WaveAudio() = default;
-        void loadOnAsync(const std::string& path) override;
-        void loadOnGLThread(const std::string& path) override;
+        void load(const std::string& path, Thread thread) override;
         void play() const override;
         GLuint getBuffer() const override;
         GLuint getSource() const override;

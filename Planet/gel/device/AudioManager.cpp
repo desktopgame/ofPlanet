@@ -5,8 +5,8 @@ namespace gel {
 AudioManager::AudioManager() : audioMap() {}
 void AudioManager::loadWave(const std::string& path) {
         auto playable = std::make_shared<WaveAudio>();
-        playable->loadOnAsync(path);
-        playable->loadOnGLThread(path);
+        playable->load(path, Thread::OnBackground);
+        playable->load(path, Thread::OnGL);
         audioMap[path] = playable;
 }
 

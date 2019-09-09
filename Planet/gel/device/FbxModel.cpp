@@ -20,9 +20,7 @@ FbxModel::FbxModel(FbxManager* fbxManager, const std::string& textureShaderName,
       colorShaderName(colorShaderName),
       nameRule(nameRule) {}
 
-void FbxModel::loadOnAsync(const std::string& path) {}
-
-void FbxModel::loadOnGLThread(const std::string& path) {
+void FbxModel::load(const std::string& path, Thread thread) {
         this->fbxScene = FbxScene::Create(this->fbxManager, "Scene");
         this->fbxImporter = FbxImporter::Create(this->fbxManager, "Importer");
         if (!fbxImporter->Initialize(path.c_str())) {

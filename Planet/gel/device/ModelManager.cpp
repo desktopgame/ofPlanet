@@ -12,8 +12,8 @@ void ModelManager::loadFbx(const std::string& path) {
         auto fbxModel = std::make_shared<FbxModel>(
             Game::getInstance()->getFbxManager(), "TextureFixed", "ColorFixed",
             NameRule());
-        fbxModel->loadOnAsync(path);
-        fbxModel->loadOnGLThread(path);
+        fbxModel->load(path, Thread::OnBackground);
+        fbxModel->load(path, Thread::OnGL);
         modelMap[path] = fbxModel;
 }
 

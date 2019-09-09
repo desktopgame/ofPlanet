@@ -324,6 +324,7 @@
     <ClInclude Include="gel\shader\ShaderRegistry.hpp" />
     <ClInclude Include="gel\shader\Sprite.hpp" />
     <ClInclude Include="gel\shader\VertexArray.hpp" />
+    <ClInclude Include="gel\Thread.hpp" />
     <ClInclude Include="gel\ui\GUI.hpp" />
     <ClInclude Include="gel\ui\imgui\imconfig.h" />
     <ClInclude Include="gel\ui\imgui\ImCurveEdit.h" />

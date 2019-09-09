@@ -8,7 +8,7 @@ class JpegPipeline : public IContentPipeline {
        public:
         JpegPipeline(const std::shared_ptr<TextureManager>& textureManager);
         bool accept(const std::string& path) override;
-        void load(const std::string& path) override;
+        void load(const std::string& path, Thread thread) override;
         void unload(const std::string& path) override;
 
        private:

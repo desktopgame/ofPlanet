@@ -2,6 +2,7 @@
 #define GEL_GAME_HPP
 #include <mutex>
 #include <thread>
+#include "Thread.hpp"
 #include "fbxsdk.hpp"
 #include "gli.hpp"
 namespace gel {

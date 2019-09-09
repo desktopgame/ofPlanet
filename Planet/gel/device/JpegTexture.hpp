@@ -7,8 +7,7 @@ class JpegTexture : public ITexture {
        public:
         JpegTexture();
         ~JpegTexture() = default;
-        void loadOnAsync(const std::string& path) override;
-        void loadOnGLThread(const std::string& path) override;
+        void load(const std::string& path, Thread thread) override;
         void unload() override;
         GLuint getID() const override;
         unsigned char* getData() const override;

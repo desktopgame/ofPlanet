@@ -26,8 +26,15 @@ void MyGame::onInit() {
         glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &filter);
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, filter);
         gameDevice->getContentManager()->load();
-        auto tm = gameDevice->getTextureManager();
+        sceneManager.put("load", std::make_shared<PlayScene>(gameDevice));
+        sceneManager.bind("load");
+}
+
+void MyGame::onLoad() {}
+
+void MyGame::onStart() {
         // init block
+        auto tm = gameDevice->getTextureManager();
         BlockRegistry& reg = BlockRegistry::getInstance();
         reg.addBlock(TexturePack::side3(
             tm, "./assets/image/block/GrassDirtBlock", ".png"));

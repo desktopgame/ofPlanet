@@ -2,7 +2,7 @@
 #include <iostream>
 namespace gel {
 bool EchoPipeline::accept(const std::string& path) { return true; }
-void EchoPipeline::load(const std::string& path) {
+void EchoPipeline::load(const std::string& path, Thread thread) {
         std::cout << path << std::endl;
 }
 void EchoPipeline::unload(const std::string& path) {}

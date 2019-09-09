@@ -16,8 +16,7 @@ class FbxModel : public IModel {
         FbxModel(FbxManager* fbxManager, const std::string& textureShaderName,
                  const std::string& colorShaderName, const NameRule& nameRule);
         ~FbxModel() = default;
-        void loadOnAsync(const std::string& path) override;
-        void loadOnGLThread(const std::string& path) override;
+        void load(const std::string& path, Thread thread) override;
         void unload() override;
         std::shared_ptr<IRModel> getIRModel() const override;
 

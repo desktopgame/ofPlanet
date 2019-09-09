@@ -6,7 +6,7 @@ BmpPipeline::BmpPipeline(const std::shared_ptr<TextureManager>& textureManager)
 
 bool BmpPipeline::accept(const std::string& path) { return true; }
 
-void BmpPipeline::load(const std::string& path) {
+void BmpPipeline::load(const std::string& path, Thread thread) {
         textureManager->loadBmp(path);
 }
 

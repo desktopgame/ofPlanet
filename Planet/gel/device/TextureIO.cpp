@@ -15,8 +15,8 @@ std::shared_ptr<ITexture> TextureIO::load(const std::string path) {
                 ret = std::make_shared<JpegTexture>();
         }
         if (ret) {
-                ret->loadOnAsync(path);
-                ret->loadOnGLThread(path);
+                ret->load(path, Thread::OnBackground);
+                ret->load(path, Thread::OnGL);
         }
         return ret;
 }

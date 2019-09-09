@@ -7,6 +7,8 @@ class MyGame : public gel::Game {
 
        protected:
         void onInit() override;
+        void onLoad() override;
+        void onStart() override;
         void onUpdate() override;
         void onDraw() override;
         void onFinish() override;

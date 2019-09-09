@@ -38,7 +38,8 @@ void ContentManager::load(const std::string& path) {
                 }
                 std::for_each(pipes.begin(), pipes.end(), [&, path](auto p) {
                         if (p->accept(path)) {
-                                p->load(path);
+                                p->load(path, Thread::OnBackground);
+                                p->load(path, Thread::OnGL);
                         }
                 });
                 files.erase(iter);
@@ -50,7 +51,8 @@ void ContentManager::load() {
         std::for_each(files.begin(), files.end(), [&](auto file) {
                 std::for_each(pipes.begin(), pipes.end(), [&](auto p) {
                         if (p->accept(file)) {
-                                p->load(file);
+                                p->load(file, Thread::OnBackground);
+                                p->load(file, Thread::OnGL);
                         }
                 });
         });

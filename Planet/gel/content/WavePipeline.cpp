@@ -4,7 +4,7 @@ WavePipeline::WavePipeline(const std::shared_ptr<AudioManager>& audioManager)
     : audioManager(audioManager) {}
 bool WavePipeline::accept(const std::string& path) { return true; }
 
-void WavePipeline::load(const std::string& path) {
+void WavePipeline::load(const std::string& path, Thread thread) {
         audioManager->loadWave(path);
 }
 

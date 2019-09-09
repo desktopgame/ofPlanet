@@ -6,7 +6,7 @@ JpegPipeline::JpegPipeline(
     : textureManager(textureManager) {}
 
 bool JpegPipeline::accept(const std::string& path) { return true; }
-void JpegPipeline::load(const std::string& path) {
+void JpegPipeline::load(const std::string& path, Thread thread) {
         textureManager->loadJpeg(path);
 }
 void JpegPipeline::unload(const std::string& path) {

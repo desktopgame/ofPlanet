@@ -9,7 +9,7 @@ class WavePipeline : public IContentPipeline {
        public:
         WavePipeline(const std::shared_ptr<AudioManager>& audioManager);
         bool accept(const std::string& path) override;
-        void load(const std::string& path) override;
+        void load(const std::string& path, Thread thread) override;
         void unload(const std::string& path) override;
 
        private:
