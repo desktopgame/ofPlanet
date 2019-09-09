@@ -1,11 +1,32 @@
 #ifndef GEL_GAME_HPP
 #define GEL_GAME_HPP
+#include <mutex>
+#include <thread>
 #include "fbxsdk.hpp"
 #include "gli.hpp"
 namespace gel {
 /**
  * Game is provide mainloop and many callback.
  * client will be extend this class for game develop.
+ *
+ * callback flow:
+ * mainLoop
+ * |
+ * onInit
+ * |
+ * onLoad(on another thread)
+ * |
+ * *---onStart(on GL thread, when after a finished onLoad)
+ * |
+ * onUpdate
+ * |
+ * onDraw
+ * |
+ * other event(key, mouse, error, etc...)
+ * |
+ * onFinish
+ * |
+ * onExit
  */
 class Game {
        public:
@@ -104,6 +125,7 @@ class Game {
         double oldTime;
         float deltaTime;
         bool outputDebugMessage;
+        std::thread loadThread;
         static void bridgeMouseButton(GLFWwindow* window, int button,
                                       int action, int mods);
         static void bridgeCursorMove(GLFWwindow* window, double x, double y);
@@ -140,9 +162,20 @@ class Game {
         virtual void onExit();
 
         virtual void onInit();
+        virtual void onLoad();
+        virtual void onStart();
         virtual void onUpdate();
         virtual void onDraw();
         virtual void onFinish();
+
+       private:
+        bool finishedThread;
+        std::mutex finishedMutex;
+        int onGLInit(int argc, char* argv[], const char* title, int width,
+                     int height, bool fullScreen);
+        void onMainLoop1();
+        void onMainLoop2();
+        void onBackground();
 };
 }  // namespace gel
 #endif

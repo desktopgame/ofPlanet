@@ -14,7 +14,9 @@ Game::Game()
       view(1.0f),
       projection(1.0f),
       outputDebugMessage(true),
-      deltaTime(0) {
+      deltaTime(0),
+      finishedThread(false),
+      finishedMutex() {
         if (Game::instance != nullptr) {
                 throw std::logic_error("should be game instance single");
         }
@@ -25,57 +27,10 @@ Game::~Game() {}
 
 int Game::mainLoop(int argc, char* argv[], const char* title, int width,
                    int height, bool fullScreen) {
-        std::atexit(bridgeExit);
-        this->mWidth = width;
-        this->mHeight = height;
-        this->solutionWidth = width;
-        this->solutionHeight = height;
-        // glutInit(&argc, argv);
-        if (!glfwInit()) return -1;
-        if (!alutInit(&argc, argv)) return -1;
-        // create window
-        GLFWwindow* window = NULL;
-        if (fullScreen) {
-                GLFWmonitor* monitor = glfwGetPrimaryMonitor();
-                const GLFWvidmode* mode = glfwGetVideoMode(monitor);
-                glfwWindowHint(GLFW_RED_BITS, mode->redBits);
-                glfwWindowHint(GLFW_GREEN_BITS, mode->greenBits);
-                glfwWindowHint(GLFW_BLUE_BITS, mode->blueBits);
-                glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
-                window = glfwCreateWindow(mode->width, mode->height, title,
-                                          monitor, NULL);
-                this->mWidth = width = mode->width;
-                this->mHeight = height = mode->height;
-        } else {
-                glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-                window = glfwCreateWindow(width, height, title, NULL, NULL);
+        int status = onGLInit(argc, argv, title, width, height, fullScreen);
+        if (status != 0) {
+                return status;
         }
-        this->mWindow = window;
-        if (!window) {
-                glfwTerminate();
-                return -1;
-        }
-        glfwMakeContextCurrent(window);
-        if (glewInit() != GLEW_OK) return -1;
-        // glslInit
-        glfwSetMouseButtonCallback(window, Game::bridgeMouseButton);
-        glfwSetCursorPosCallback(window, Game::bridgeCursorMove);
-        glfwSetCursorEnterCallback(window, Game::bridgeCursorEnter);
-        glfwSetScrollCallback(window, Game::bridgeScroll);
-        glfwSetKeyCallback(window, Game::bridgeKey);
-        glfwSetCharCallback(window, Game::bridgeChar);
-        glfwSetWindowSizeCallback(window, Game::bridgeResize);
-#if DEBUG
-        glfwSetErrorCallback(Game::bridgeError);
-        glDebugMessageCallback(
-            reinterpret_cast<GLDEBUGPROC>(Game::bridgeDebugMessage), NULL);
-        glEnable(GL_DEBUG_OUTPUT);
-        std::cout << "OpenGL" << std::endl;
-        std::cout << "    Vendor: " << glGetString(GL_VENDOR) << std::endl;
-        std::cout << "    Version: " << glGetString(GL_VERSION) << std::endl;
-        std::cout << "    GLSL: " << glGetString(GL_SHADING_LANGUAGE_VERSION)
-                  << std::endl;
-#endif
         // init fbx manager
         this->fbxManager = FbxManager::Create();
         if (this->fbxManager == NULL) {
@@ -85,26 +40,15 @@ int Game::mainLoop(int argc, char* argv[], const char* title, int width,
         onInit();
         glfwSetTime(0.0);
         glfwSwapInterval(1);
+        // start new thread
+        this->loadThread = std::thread(&Game::onBackground, this);
         // init Imgui
 #if DEBUG
-        gui::internal::init(window);
+        gui::internal::init(mWindow);
 #endif
-        // start mainloop
-        while (!glfwWindowShouldClose(window)) {
-#if DEBUG
-                gui::internal::newFrame();
-#endif
-                this->oldTime = glfwGetTime();
-                onUpdate();
-                onDraw();
-                double nowTime = glfwGetTime();
-                this->deltaTime = nowTime - oldTime;
-                this->oldTime = nowTime;
-
-#if DEBUG
-                gui::internal::endFrame();
-#endif
-        }
+        onMainLoop1();
+        onStart();
+        onMainLoop2();
 #if DEBUG
         gui::internal::destroy();
 #endif
@@ -141,13 +85,6 @@ glm::vec2 Game::getSolutionSize() const {
 }
 
 // protecteds
-void Game::onInit() {}
-void Game::onUpdate() {}
-
-void Game::onDraw() {}
-
-void Game::onFinish() {}
-
 void Game::bridgeMouseButton(GLFWwindow* window, int button, int action,
                              int mods) {
         Game::instance->onMouseButton(window, button, action, mods);
@@ -319,5 +256,118 @@ void Game::onDebugMessage(GLenum source, GLenum type, GLuint eid,
         }
 #endif
 }
+
 void Game::onExit() {}
+
+void Game::onInit() {}
+
+void Game::onLoad() {}
+void Game::onStart() {}
+void Game::onUpdate() {}
+
+void Game::onDraw() {}
+
+void Game::onFinish() {}
+
+int Game::onGLInit(int argc, char* argv[], const char* title, int width,
+                   int height, bool fullScreen) {
+        std::atexit(bridgeExit);
+        this->mWidth = width;
+        this->mHeight = height;
+        this->solutionWidth = width;
+        this->solutionHeight = height;
+        // glutInit(&argc, argv);
+        if (!glfwInit()) return -1;
+        if (!alutInit(&argc, argv)) return -1;
+        // create window
+        GLFWwindow* window = NULL;
+        if (fullScreen) {
+                GLFWmonitor* monitor = glfwGetPrimaryMonitor();
+                const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+                glfwWindowHint(GLFW_RED_BITS, mode->redBits);
+                glfwWindowHint(GLFW_GREEN_BITS, mode->greenBits);
+                glfwWindowHint(GLFW_BLUE_BITS, mode->blueBits);
+                glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
+                window = glfwCreateWindow(mode->width, mode->height, title,
+                                          monitor, NULL);
+                this->mWidth = width = mode->width;
+                this->mHeight = height = mode->height;
+        } else {
+                glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+                window = glfwCreateWindow(width, height, title, NULL, NULL);
+        }
+        this->mWindow = window;
+        if (!window) {
+                glfwTerminate();
+                return -1;
+        }
+        glfwMakeContextCurrent(window);
+        if (glewInit() != GLEW_OK) return -1;
+        // glslInit
+        glfwSetMouseButtonCallback(window, Game::bridgeMouseButton);
+        glfwSetCursorPosCallback(window, Game::bridgeCursorMove);
+        glfwSetCursorEnterCallback(window, Game::bridgeCursorEnter);
+        glfwSetScrollCallback(window, Game::bridgeScroll);
+        glfwSetKeyCallback(window, Game::bridgeKey);
+        glfwSetCharCallback(window, Game::bridgeChar);
+        glfwSetWindowSizeCallback(window, Game::bridgeResize);
+#if DEBUG
+        glfwSetErrorCallback(Game::bridgeError);
+        glDebugMessageCallback(
+            reinterpret_cast<GLDEBUGPROC>(Game::bridgeDebugMessage), NULL);
+        glEnable(GL_DEBUG_OUTPUT);
+        std::cout << "OpenGL" << std::endl;
+        std::cout << "    Vendor: " << glGetString(GL_VENDOR) << std::endl;
+        std::cout << "    Version: " << glGetString(GL_VERSION) << std::endl;
+        std::cout << "    GLSL: " << glGetString(GL_SHADING_LANGUAGE_VERSION)
+                  << std::endl;
+#endif
+}
+
+void Game::onMainLoop1() {
+        while (1) {
+#if DEBUG
+                gui::internal::newFrame();
+#endif
+                this->oldTime = glfwGetTime();
+                onUpdate();
+                onDraw();
+                double nowTime = glfwGetTime();
+                this->deltaTime = nowTime - oldTime;
+                this->oldTime = nowTime;
+
+#if DEBUG
+                gui::internal::endFrame();
+#endif
+                std::scoped_lock<std::mutex> lock(finishedMutex);
+                if (finishedThread) {
+                        break;
+                }
+        }
+}
+
+void Game::onMainLoop2() {
+        while (!glfwWindowShouldClose(mWindow)) {
+#if DEBUG
+                gui::internal::newFrame();
+#endif
+                this->oldTime = glfwGetTime();
+                onUpdate();
+                onDraw();
+                double nowTime = glfwGetTime();
+                this->deltaTime = nowTime - oldTime;
+                this->oldTime = nowTime;
+
+#if DEBUG
+                gui::internal::endFrame();
+#endif
+        }
+}
+
+void Game::onBackground() {
+        onLoad();
+        finishedMutex.lock();
+        this->finishedThread = true;
+        finishedMutex.unlock();
+}
 }  // namespace  gel
