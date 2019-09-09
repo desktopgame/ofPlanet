@@ -1,4 +1,6 @@
 #include "JpegPipeline.hpp"
+#include "../device/AssetDatabase.hpp"
+#include "../device/JpegTexture.hpp"
 #include "../device/TextureManager.hpp"
 namespace gel {
 JpegPipeline::JpegPipeline(
@@ -7,9 +9,9 @@ JpegPipeline::JpegPipeline(
 
 bool JpegPipeline::accept(const std::string& path) { return true; }
 void JpegPipeline::load(const std::string& path, Thread thread) {
-        textureManager->loadJpeg(path);
+        AssetDatabase::getOrNewAsset<JpegTexture>(path)->load(path, thread);
 }
 void JpegPipeline::unload(const std::string& path) {
-        textureManager->unload(path);
+        AssetDatabase::getOrNewAsset<JpegTexture>(path)->unload();
 }
 }  // namespace gel

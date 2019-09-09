@@ -164,6 +164,7 @@
     <ClCompile Include="gel\content\JpegPipeline.cpp" />
     <ClCompile Include="gel\content\PngPipeline.cpp" />
     <ClCompile Include="gel\content\WavePipeline.cpp" />
+    <ClCompile Include="gel\device\AssetDatabase.cpp" />
     <ClCompile Include="gel\device\AudioManager.cpp" />
     <ClCompile Include="gel\device\BmpTexture.cpp" />
     <ClCompile Include="gel\device\FbxModel.cpp" />
@@ -270,6 +271,7 @@
     <ClInclude Include="gel\content\PngPipeline.hpp" />
     <ClInclude Include="gel\content\ProxyPipeline.hpp" />
     <ClInclude Include="gel\content\WavePipeline.hpp" />
+    <ClInclude Include="gel\device\AssetDatabase.hpp" />
     <ClInclude Include="gel\device\AudioManager.hpp" />
     <ClInclude Include="gel\device\BmpTexture.hpp" />
     <ClInclude Include="gel\device\FbxModel.hpp" />

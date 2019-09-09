@@ -1,4 +1,7 @@
 #include "FbxPipeline.hpp"
+#include "../Game.hpp"
+#include "../device/AssetDatabase.hpp"
+#include "../device/FbxModel.hpp"
 #include "../device/ModelManager.hpp"
 namespace gel {
 FbxPipeline::FbxPipeline(const std::shared_ptr<ModelManager>& modelManager)
@@ -7,10 +10,15 @@ FbxPipeline::FbxPipeline(const std::shared_ptr<ModelManager>& modelManager)
 bool FbxPipeline::accept(const std::string& path) { return true; }
 
 void FbxPipeline::load(const std::string& path, Thread thread) {
-        modelManager->loadFbx(path);
+        auto fbxMgr = Game::getInstance()->getFbxManager();
+        auto tex = std::string("TextureFixed");
+        auto color = std::string("ColorFixed");
+        AssetDatabase::getOrNewAsset<FbxModel>(path, fbxMgr, tex, color,
+                                               NameRule())
+            ->load(path, thread);
 }
 
 void FbxPipeline::unload(const std::string& path) {
-        modelManager->unload(path);
+        AssetDatabase::removeAsset<FbxModel>(path)->unload();
 }
 }  // namespace gel
