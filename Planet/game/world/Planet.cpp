@@ -82,6 +82,15 @@ void Planet::update() {
         playerEntity->transform.rotation.y =
             std::clamp(playerEntity->transform.rotation.y, -90.0f, 90.0f);
         playerEntity->velocity.x = velocity.x;
+        if (playerEntity->transform.rotation.x > 360) {
+                playerEntity->transform.rotation.x -= 360;
+        }
+        if (playerEntity->transform.rotation.y > 360) {
+                playerEntity->transform.rotation.y -= 360;
+        }
+        if (playerEntity->transform.rotation.z > 360) {
+                playerEntity->transform.rotation.z -= 360;
+        }
         // jump player
         if (keyMove.isJumping()) {
                 playerEntity->velocity.y = velocity.y;

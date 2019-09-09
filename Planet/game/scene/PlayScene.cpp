@@ -20,7 +20,7 @@ PlayScene::PlayScene(const std::shared_ptr<gel::GameDevice>& gameDevice)
       random() {
         screenBuffer.init();
         this->tModel = gameDevice->getModelManager()->getModel(
-            "./assets/model/Sphere.fbx");
+            "./assets/model/Gun1028.fbx");
         gel::CubeMapDesc desc;
         desc.front = "./assets/image/skybox/SkyBoxSide.png";
         desc.back = "./assets/image/skybox/SkyBoxSide.png";
@@ -66,6 +66,11 @@ void PlayScene::draw() {
         gel::Shader& skyboxShader =
             gel::ShaderRegistry::getInstance().get("SkyBox");
         auto camera = planet.getCamera();
+        glm::vec2 windowSize = gel::Game::getInstance()->getWindowSize();
+        glm::vec2 solutionSize = gel::Game::getInstance()->getSolutionSize();
+        camera->screenWidth = windowSize.x;
+        camera->screenHeight = windowSize.y;
+        camera->calculate();
         skyboxShader.use();
         skyboxShader.setUniformMatrix4fv(
             "uProjectionMatrix", 1, GL_FALSE,
@@ -102,11 +107,29 @@ void PlayScene::draw() {
                                         glm::value_ptr(camera->getNormal()));
         colorShader.setUniform4f("uLightPos", 64, 48, 64, 1.0f);
         colorShader.unuse();
+        gel::Shader& texShader =
+            gel::ShaderRegistry::getInstance().get("TextureFixed");
+        texShader.use();
+        texShader.setUniformMatrix4fv("uMVPMatrix", 1, GL_FALSE,
+                                      glm::value_ptr(camera->getMVP()));
+        texShader.setUniformMatrix4fv("uNormalMatrix", 1, GL_FALSE,
+                                      glm::value_ptr(camera->getNormal()));
+        texShader.setUniform4f("uLightPos", 64, 48, 64, 1.0f);
+        texShader.unuse();
         // set matrix
         auto irtModel = tModel->getIRModel();
-        irtModel->setModelMatrix(
-            glm::scale(glm::translate(glm::mat4(1.0f), glm::vec3(64, 36, 64)),
-                       glm::vec3(0.01f, 0.01f, 0.01f)));
+        auto pos = camera->transform.position;
+        auto rot = camera->transform.rotation;
+
+        auto imat = glm::translate(glm::mat4(1.0f), pos);
+        //*
+        imat = glm::rotate(imat, 0.f, glm::vec3(0, 1, 0));
+        // imat = glm::rotate(imat, rot.x, glm::vec3(1, 0, 0));
+        // imat = glm::rotate(imat, rot.z, glm::vec3(0, 0, 1));
+        //*/
+        imat = glm::scale(imat, glm::vec3(0.5f));
+
+        irtModel->setModelMatrix(imat);
         irtModel->setViewMatrix(camera->getView());
         irtModel->setProjectionMatrix(camera->getProjection());
         // double buffered rendering

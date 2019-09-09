@@ -4,6 +4,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "../../gel/gli.hpp"
 #include "../../gel/shader/IRModel.hpp"
+#include "../../gel/ui/imgui/ImGuizmo.h"
 #include "../world/Block.hpp"
 #include "../world/BlockRegistry.hpp"
 #include "../world/Space.hpp"
@@ -11,11 +12,8 @@ TestScene::TestScene(const std::shared_ptr<gel::GameDevice>& gameDevice)
     : gameDevice(gameDevice),
       shader(gel::ShaderRegistry::getInstance().get("TextureFixed")),
       plane(shader),
-      position(0, 0, 0),
-      scale(0.01f, 0.01f, 0.01f),
-      rotation(0, 0, 0),
-      lightPos(0, 0, 0),
-      filename("./assets/model/RedBox.fbx"),
+      model(1.0f),
+      filename("./assets/model/Gun1028.fbx"),
       screenBuffer(gel::ShaderRegistry::getInstance().get("CRT"),
                    gel::NameRule(), gel::Game::getInstance()->getWindowWidth(),
                    gel::Game::getInstance()->getWindowHeight()),
@@ -43,36 +41,20 @@ void TestScene::show() {
 }
 void TestScene::update() {}
 void TestScene::draw() {
+        float delta = gel::Game::getInstance()->getDeltaTime();
+        this->gameTime += delta;
+        GLFWwindow* wd = gel::Game::getInstance()->getWindow();
+        glClearColor(0.3f, 0.3f, 1.0f, 0.0f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glViewport(0, 0, 1280, 720);
+        // calculate camera
         glm::vec2 windowSize = gel::Game::getInstance()->getWindowSize();
         glm::vec2 solutionSize = gel::Game::getInstance()->getSolutionSize();
         glViewport(0, 0, windowSize.x, windowSize.y);
         camera->screenWidth = windowSize.x;
         camera->screenHeight = windowSize.y;
         camera->calculate();
-        float delta = gel::Game::getInstance()->getDeltaTime();
-        this->gameTime += delta;
-        GLFWwindow* wd = gel::Game::getInstance()->getWindow();
-        if (glfwGetKey(wd, GLFW_KEY_UP) == GLFW_PRESS) {
-                rotation.x += 0.5f;
-        } else if (glfwGetKey(wd, GLFW_KEY_DOWN) == GLFW_PRESS) {
-                rotation.x -= 0.5f;
-        }
-        if (glfwGetKey(wd, GLFW_KEY_RIGHT) == GLFW_PRESS) {
-                rotation.y += 0.5f;
-        } else if (glfwGetKey(wd, GLFW_KEY_LEFT) == GLFW_PRESS) {
-                rotation.y -= 0.5f;
-        }
-        if (rotation.x > 360) rotation.x -= 360;
-        if (rotation.y > 360) rotation.y -= 360;
-        glClearColor(0.3f, 0.3f, 1.0f, 0.0f);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glViewport(0, 0, 1280, 720);
         // calculate matrix
-        auto model = glm::translate(glm::mat4(1.0f), position);
-        model = glm::rotate(model, rotation.y, glm::vec3(0, 1, 0));
-        model = glm::rotate(model, rotation.x, glm::vec3(1, 0, 0));
-        model = glm::rotate(model, rotation.z, glm::vec3(0, 0, 1));
-        model = glm::scale(model, scale);
         auto projection =
             glm::perspective(30.0f, 1280.0f / 720.0f, 1.0f, 1000.0f);
         auto view =
@@ -110,28 +92,70 @@ void TestScene::draw() {
 //        screenBuffer.unbind();
 //        screenBuffer.render();
 #if DEBUG
-        ImGui::PushStyleColor(ImGuiCol_TitleBgActive,
-                              ImVec4(0.0f, 0.7f, 0.2f, 1.0f));
-        ImGui::PushStyleColor(ImGuiCol_TitleBg, ImVec4(0.0f, 0.3f, 0.1f, 1.0f));
-        ImGui::SetNextWindowPos(ImVec2(20, 20), ImGuiSetCond_Once);
-        ImGui::SetNextWindowSize(ImVec2(200, 300), ImGuiSetCond_Once);
+        static ImGuizmo::OPERATION mCurrentGizmoOperation(ImGuizmo::ROTATE);
+        static ImGuizmo::MODE mCurrentGizmoMode(ImGuizmo::WORLD);
+        if (ImGui::IsKeyPressed(90))
+                mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
+        if (ImGui::IsKeyPressed(69)) mCurrentGizmoOperation = ImGuizmo::ROTATE;
+        if (ImGui::IsKeyPressed(82))  // r Key
+                mCurrentGizmoOperation = ImGuizmo::SCALE;
+        if (ImGui::RadioButton("Translate",
+                               mCurrentGizmoOperation == ImGuizmo::TRANSLATE))
+                mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
+        ImGui::SameLine();
+        if (ImGui::RadioButton("Rotate",
+                               mCurrentGizmoOperation == ImGuizmo::ROTATE))
+                mCurrentGizmoOperation = ImGuizmo::ROTATE;
+        ImGui::SameLine();
+        if (ImGui::RadioButton("Scale",
+                               mCurrentGizmoOperation == ImGuizmo::SCALE))
+                mCurrentGizmoOperation = ImGuizmo::SCALE;
+        float matrixTranslation[3], matrixRotation[3], matrixScale[3];
+        ImGuizmo::DecomposeMatrixToComponents(glm::value_ptr(model),
+                                              matrixTranslation, matrixRotation,
+                                              matrixScale);
+        ImGui::InputFloat3("Tr", matrixTranslation, 3);
+        ImGui::InputFloat3("Rt", matrixRotation, 3);
+        ImGui::InputFloat3("Sc", matrixScale, 3);
+        ImGuizmo::RecomposeMatrixFromComponents(matrixTranslation,
+                                                matrixRotation, matrixScale,
+                                                glm::value_ptr(model));
 
-        ImGui::Begin("config 1");
+        if (mCurrentGizmoOperation != ImGuizmo::SCALE) {
+                if (ImGui::RadioButton("Local",
+                                       mCurrentGizmoMode == ImGuizmo::LOCAL))
+                        mCurrentGizmoMode = ImGuizmo::LOCAL;
+                ImGui::SameLine();
+                if (ImGui::RadioButton("World",
+                                       mCurrentGizmoMode == ImGuizmo::WORLD))
+                        mCurrentGizmoMode = ImGuizmo::WORLD;
+        }
+        static bool useSnap(false);
+        if (ImGui::IsKeyPressed(83)) useSnap = !useSnap;
+        ImGui::Checkbox("", &useSnap);
+        ImGui::SameLine();
+        glm::vec3 snap = glm::vec3(0);
+        switch (mCurrentGizmoOperation) {
+                case ImGuizmo::TRANSLATE:
+                        // snap = config.mSnapTranslation;
+                        ImGui::InputFloat3("Snap", &snap.x);
+                        break;
+                case ImGuizmo::ROTATE:
+                        // snap = config.mSnapRotation;
+                        ImGui::InputFloat("Angle Snap", &snap.x);
+                        break;
+                case ImGuizmo::SCALE:
+                        // snap = config.mSnapScale;
+                        ImGui::InputFloat("Scale Snap", &snap.x);
+                        break;
+        }
+        ImGuiIO& io = ImGui::GetIO();
+        ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
+        ImGuizmo::Manipulate(glm::value_ptr(view), glm::value_ptr(projection),
+                             mCurrentGizmoOperation, mCurrentGizmoMode,
+                             glm::value_ptr(model), NULL,
+                             useSnap ? &snap.x : NULL);
 
-        char buf[512];
-        std::memset(buf, '\0', 512);
-        sprintf(buf, "%s", filename.c_str());
-        ImGui::InputText("File", buf, 512);
-        this->filename = buf;
-
-        ImGui::SliderFloat3("Translate", &position.x, -10, 10);
-        ImGui::SliderFloat3("Rotation", &rotation.x, 0, 360);
-        ImGui::SliderFloat3("Scale", &scale.x, 0, 0.5f);
-        ImGui::SliderFloat3("Light", &lightPos.x, -10, 10);
-        ImGui::End();
-
-        ImGui::PopStyleColor();
-        ImGui::PopStyleColor();
         gel::gui::render();
 #endif
 }
