@@ -22,10 +22,12 @@ void ContentManager::add(const std::shared_ptr<IContentPipeline>& pipe) {
 }
 
 void ContentManager::remove(const std::shared_ptr<IContentPipeline>& pipe) {
-        //        auto iter = std::find(pipes.begin(), pipes.end(),
-        //                              [pipe](auto& e) -> bool { return e ==
-        //                              pipe; });
-        // pipes.erase(iter);
+        auto itrNewEnd =
+            std::remove_if(pipes.begin(), pipes.end(),
+                           [pipe](std::shared_ptr<IContentPipeline> e) -> bool {
+                                   return e == pipe;
+                           });
+        pipes.erase(itrNewEnd, pipes.end());
 }
 
 void ContentManager::load() {
