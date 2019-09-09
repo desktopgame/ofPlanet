@@ -23,6 +23,12 @@ class IContentPipeline;
  */
 class ContentManager {
        public:
+        /**
+         * create files cache by specifid path.
+         * still not running content load on construct.
+         * need call loadXXX function for real content laod
+         * @param rootDir
+         */
         ContentManager(const std::string& rootDir);
         /**
          * add pipeline.
@@ -35,6 +41,12 @@ class ContentManager {
          */
         void remove(const std::shared_ptr<IContentPipeline>& pipe);
 
+        /**
+         * load a asset.
+         * and, remove specified file from files cache.
+         * @param path
+         */
+        void load(const std::string& path);
         /**
          * load a all asset.
          */

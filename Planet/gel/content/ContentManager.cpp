@@ -30,6 +30,22 @@ void ContentManager::remove(const std::shared_ptr<IContentPipeline>& pipe) {
         pipes.erase(itrNewEnd, pipes.end());
 }
 
+void ContentManager::load(const std::string& path) {
+        auto iter = files.begin();
+        while (iter != files.end()) {
+                if (*iter != path) {
+                        continue;
+                }
+                std::for_each(pipes.begin(), pipes.end(), [&, path](auto p) {
+                        if (p->accept(path)) {
+                                p->load(path);
+                        }
+                });
+                files.erase(iter);
+                break;
+        }
+}
+
 void ContentManager::load() {
         std::for_each(files.begin(), files.end(), [&](auto file) {
                 std::for_each(pipes.begin(), pipes.end(), [&](auto p) {
