@@ -1,10 +1,8 @@
 #include "PngPipeline.hpp"
 #include "../device/AssetDatabase.hpp"
 #include "../device/PngTexture.hpp"
-#include "../device/TextureManager.hpp"
 namespace gel {
-PngPipeline::PngPipeline(const std::shared_ptr<TextureManager>& textureManager)
-    : textureManager(textureManager) {}
+PngPipeline::PngPipeline() {}
 
 bool PngPipeline::accept(const std::string& path) { return true; }
 

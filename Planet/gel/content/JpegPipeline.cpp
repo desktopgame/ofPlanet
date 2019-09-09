@@ -1,11 +1,8 @@
 #include "JpegPipeline.hpp"
 #include "../device/AssetDatabase.hpp"
 #include "../device/JpegTexture.hpp"
-#include "../device/TextureManager.hpp"
 namespace gel {
-JpegPipeline::JpegPipeline(
-    const std::shared_ptr<TextureManager>& textureManager)
-    : textureManager(textureManager) {}
+JpegPipeline::JpegPipeline() {}
 
 bool JpegPipeline::accept(const std::string& path) { return true; }
 void JpegPipeline::load(const std::string& path, Thread thread) {

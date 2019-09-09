@@ -1,4 +1,5 @@
 #include "TutorialScene.hpp"
+#include "../../gel/device/AssetDatabase.hpp"
 
 TutorialScene::TutorialScene(const std::shared_ptr<gel::GameDevice>& gameDevice)
     : sprites(),
@@ -14,12 +15,12 @@ TutorialScene::TutorialScene(const std::shared_ptr<gel::GameDevice>& gameDevice)
             "./assets/image/tutorial/tutorial_warp.png",
             "./assets/image/tutorial/tutorial_wait.png",
         };
-        auto tm = gameDevice->getTextureManager();
         for (auto path : spritePaths) {
                 gel::Sprite sprite(
                     gel::ShaderRegistry::getInstance().get("Texture2D"));
-                sprite.init(tm->getTexture(path)->getID(), glm::vec2(),
-                            glm::vec2(1280, 720), 1);
+                sprite.init(
+                    gel::AssetDatabase::getAsset<gel::ITexture>(path)->getID(),
+                    glm::vec2(), glm::vec2(1280, 720), 1);
                 sprites.push_back(sprite);
         }
         auto wsize = gel::Game::getInstance()->getWindowSize();

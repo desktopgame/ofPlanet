@@ -1,12 +1,11 @@
 #include "TexturePack.hpp"
+#include "../../gel/device/AssetDatabase.hpp"
 namespace gel {}
 
 TexturePack::TexturePack() {}
 
-TexturePack TexturePack::side1(
-    const std::shared_ptr<gel::TextureManager>& textureManager,
-    const std::string& path) {
-        auto tid = textureManager->getTexture(path)->getID();
+TexturePack TexturePack::side1(const std::string& path) {
+        auto tid = gel::AssetDatabase::getAsset<gel::ITexture>(path)->getID();
         TexturePack p;
         p.posXTex = tid;
         p.posYTex = tid;
@@ -17,15 +16,17 @@ TexturePack TexturePack::side1(
         return p;
 }
 
-TexturePack TexturePack::side3(
-    const std::shared_ptr<gel::TextureManager>& textureManager,
-    const std::string& prefix, const std::string& suffix) {
+TexturePack TexturePack::side3(const std::string& prefix,
+                               const std::string& suffix) {
         auto topID =
-            textureManager->getTexture(prefix + "Top" + suffix)->getID();
-        auto sideID =
-            textureManager->getTexture(prefix + "Side" + suffix)->getID();
-        auto bottomID =
-            textureManager->getTexture(prefix + "Bottom" + suffix)->getID();
+            gel::AssetDatabase::getAsset<gel::ITexture>(prefix + "Top" + suffix)
+                ->getID();
+        auto sideID = gel::AssetDatabase::getAsset<gel::ITexture>(
+                          prefix + "Side" + suffix)
+                          ->getID();
+        auto bottomID = gel::AssetDatabase::getAsset<gel::ITexture>(
+                            prefix + "Bottom" + suffix)
+                            ->getID();
         TexturePack p;
         p.posXTex = sideID;
         p.posYTex = topID;
@@ -36,8 +37,7 @@ TexturePack TexturePack::side3(
         return p;
 }
 
-TexturePack TexturePack::side6(
-    const std::shared_ptr<gel::TextureManager>& textureManager,
-    const std::string& prefix, const std::string& suffix) {
+TexturePack TexturePack::side6(const std::string& prefix,
+                               const std::string& suffix) {
         return TexturePack();
 }

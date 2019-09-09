@@ -37,28 +37,27 @@ void MyGame::onLoad() {
 void MyGame::onStart() {
         gameDevice->getContentManager()->load(Thread::OnGL);
         // init block
-        auto tm = gameDevice->getTextureManager();
         BlockRegistry& reg = BlockRegistry::getInstance();
-        reg.addBlock(TexturePack::side3(
-            tm, "./assets/image/block/GrassDirtBlock", ".png"));
         reg.addBlock(
-            TexturePack::side1(tm, "./assets/image/block/DirtBlockSide.png"));
+            TexturePack::side3("./assets/image/block/GrassDirtBlock", ".png"));
         reg.addBlock(
-            TexturePack::side1(tm, "./assets/image/block/SandBlockSide.png"));
+            TexturePack::side1("./assets/image/block/DirtBlockSide.png"));
         reg.addBlock(
-            TexturePack::side1(tm, "./assets/image/block/StoneBlockSide.png"));
+            TexturePack::side1("./assets/image/block/SandBlockSide.png"));
         reg.addBlock(
-            TexturePack::side1(tm, "./assets/image/block/WoodBlockSide.png"));
+            TexturePack::side1("./assets/image/block/StoneBlockSide.png"));
         reg.addBlock(
-            TexturePack::side1(tm, "./assets/image/block/LeafBlockSide.png"));
+            TexturePack::side1("./assets/image/block/WoodBlockSide.png"));
         reg.addBlock(
-            TexturePack::side1(tm, "./assets/image/block/WaterBlockTop.png"));
+            TexturePack::side1("./assets/image/block/LeafBlockSide.png"));
+        reg.addBlock(
+            TexturePack::side1("./assets/image/block/WaterBlockTop.png"));
         sceneManager.put("play", std::make_shared<PlayScene>(gameDevice));
         sceneManager.put("test", std::make_shared<TestScene>(gameDevice));
         sceneManager.put("title", std::make_shared<TitleScene>(gameDevice));
         sceneManager.put("tutorial",
                          std::make_shared<TutorialScene>(gameDevice));
-        sceneManager.bind("test");
+        sceneManager.bind("play");
 }
 
 void MyGame::onUpdate() {

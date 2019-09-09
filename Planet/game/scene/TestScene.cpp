@@ -2,6 +2,7 @@
 #include <glm/ext/matrix_clip_space.hpp>
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include "../../gel/device/AssetDatabase.hpp"
 #include "../../gel/gli.hpp"
 #include "../../gel/shader/IRModel.hpp"
 #include "../../gel/ui/imgui/ImGuizmo.h"
@@ -24,8 +25,8 @@ TestScene::TestScene(const std::shared_ptr<gel::GameDevice>& gameDevice)
         glEnableClientState(GL_VERTEX_ARRAY);
         glEnableClientState(GL_TEXTURE_COORD_ARRAY);
         screenBuffer.init();
-        sprite.init(gameDevice->getTextureManager()
-                        ->getTexture("./assets/image/sample.jpg")
+        sprite.init(gel::AssetDatabase::getAsset<gel::ITexture>(
+                        "./assets/image/sample.jpg")
                         ->getID(),
                     glm::vec2(32, 32), glm::vec2(150, 146), 1.0f);
 }
@@ -80,7 +81,7 @@ void TestScene::draw() {
         // bind matrix
         if (gel::exists(filename)) {
                 this->imodel =
-                    gameDevice->getModelManager()->getModel(filename);
+                    gel::AssetDatabase::getAsset<gel::IModel>(filename);
         }
         auto ir = imodel->getIRModel();
         ir->setModelMatrix(model);

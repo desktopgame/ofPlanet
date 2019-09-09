@@ -2,8 +2,7 @@
 #include "../device/AssetDatabase.hpp"
 #include "../device/WaveAudio.hpp"
 namespace gel {
-WavePipeline::WavePipeline(const std::shared_ptr<AudioManager>& audioManager)
-    : audioManager(audioManager) {}
+WavePipeline::WavePipeline() {}
 bool WavePipeline::accept(const std::string& path) { return true; }
 
 void WavePipeline::load(const std::string& path, Thread thread) {

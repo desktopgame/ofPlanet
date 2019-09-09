@@ -33,9 +33,6 @@
     <ClCompile Include="gel\content\WavePipeline.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="gel\device\AudioManager.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="gel\device\BmpTexture.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -45,13 +42,7 @@
     <ClCompile Include="gel\device\GameDevice.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="gel\device\ModelManager.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="gel\device\PngTexture.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="gel\device\TextureManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="gel\device\WaveAudio.cpp">
@@ -69,13 +60,7 @@
     <ClCompile Include="gel\gsystem\LineRenderer.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="gel\gsystem\Number.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="gel\gsystem\Random.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="gel\gsystem\Text.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="gel\gsystem\Timer.cpp">
@@ -225,9 +210,6 @@
     <ClCompile Include="game\ui\CursorUI.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="game\ui\DebugUI.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="game\world\biome\BasicBiome.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -344,9 +326,6 @@
     <ClInclude Include="gel\content\WavePipeline.hpp">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="gel\device\AudioManager.hpp">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="gel\device\BmpTexture.hpp">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -365,13 +344,7 @@
     <ClInclude Include="gel\device\ITexture.hpp">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="gel\device\ModelManager.hpp">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="gel\device\PngTexture.hpp">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="gel\device\TextureManager.hpp">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="gel\device\WaveAudio.hpp">
@@ -398,16 +371,10 @@
     <ClInclude Include="gel\gsystem\LineRenderer.hpp">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="gel\gsystem\Number.hpp">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="gel\gsystem\Random.hpp">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="gel\gsystem\ScoreTable.hpp">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="gel\gsystem\Text.hpp">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="gel\gsystem\Timer.hpp">
@@ -582,9 +549,6 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="game\ui\CursorUI.hpp">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="game\ui\DebugUI.hpp">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="game\world\biome\BasicBiome.hpp">

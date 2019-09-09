@@ -4,6 +4,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/raw_data.hpp>
 #include <iostream>
+#include "../../gel/device/AssetDatabase.hpp"
 #include "../../gel/shader/IRModel.hpp"
 #include "../world/BlockRegistry.hpp"
 #include "../world/gen/Generator.hpp"
@@ -11,7 +12,7 @@ PlayScene::PlayScene(const std::shared_ptr<gel::GameDevice>& gameDevice)
     : gameDevice(gameDevice),
       planet(gel::ShaderRegistry::getInstance().get("Texture3D")),
       eKeyTrigger('E'),
-      crossHair(gameDevice->getTextureManager()),
+      crossHair(),
       screenBuffer(gel::ShaderRegistry::getInstance().get("Noise"),
                    gel::NameRule(), gel::Game::getInstance()->getWindowWidth(),
                    gel::Game::getInstance()->getWindowHeight()),
@@ -19,7 +20,7 @@ PlayScene::PlayScene(const std::shared_ptr<gel::GameDevice>& gameDevice)
       warp(gel::ShaderRegistry::getInstance().get("Color"), gel::NameRule()),
       random() {
         screenBuffer.init();
-        this->tModel = gameDevice->getModelManager()->getModel(
+        this->tModel = gel::AssetDatabase::getAsset<gel::IModel>(
             "./assets/model/Gun1028.fbx");
         gel::CubeMapDesc desc;
         desc.front = "./assets/image/skybox/SkyBoxSide.png";
@@ -28,8 +29,7 @@ PlayScene::PlayScene(const std::shared_ptr<gel::GameDevice>& gameDevice)
         desc.right = "./assets/image/skybox/SkyBoxSide.png";
         desc.top = "./assets/image/skybox/SkyBoxTop.png";
         desc.bottom = "./assets/image/skybox/SkyBoxBottom.png";
-        skybox.init(gameDevice->getTextureManager(), desc,
-                    glm::vec3(128, 64, 128), 64, 64);
+        skybox.init(desc, glm::vec3(128, 64, 128), 64, 64);
 }
 
 PlayScene::~PlayScene() {

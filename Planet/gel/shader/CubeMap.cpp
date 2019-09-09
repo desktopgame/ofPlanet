@@ -1,5 +1,6 @@
 #include "CubeMap.hpp"
 #include <stdexcept>
+#include "../device/AssetDatabase.hpp"
 #include "../device/ITexture.hpp"
 namespace gel {
 CubeMap::CubeMap(Shader& shader, const NameRule& nameRule)
@@ -8,8 +9,7 @@ CubeMap::CubeMap(Shader& shader, const NameRule& nameRule)
       vao(),
       vertex(GL_ARRAY_BUFFER, GL_DYNAMIC_DRAW) {}
 
-void CubeMap::init(const std::shared_ptr<TextureManager>& textureManager,
-                   const CubeMapDesc& desc, const glm::vec3 scale,
+void CubeMap::init(const CubeMapDesc& desc, const glm::vec3 scale,
                    const int width, const int height) {
         vao.init();
         vertex.init();
@@ -72,7 +72,7 @@ void CubeMap::init(const std::shared_ptr<TextureManager>& textureManager,
         vertex.unbind();
         shader.unuse();
         // load texture
-        this->texture = loadCubeMap(textureManager, desc, width, height);
+        this->texture = loadCubeMap(desc, width, height);
 }
 void CubeMap::destroy() {
         vao.destroy();
@@ -106,25 +106,24 @@ void CubeMap::draw() {
 }
 
 // private
-GLuint CubeMap::loadCubeMap(
-    const std::shared_ptr<TextureManager>& textureManager,
-    const CubeMapDesc& desc, const int width, const int height) {
+GLuint CubeMap::loadCubeMap(const CubeMapDesc& desc, const int width,
+                            const int height) {
         unsigned int textureID;
         glGenTextures(1, &textureID);
         glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
 
         const unsigned char* front =
-            textureManager->getTexture(desc.front)->getData();
+            AssetDatabase::getAsset<ITexture>(desc.front)->getData();
         const unsigned char* back =
-            textureManager->getTexture(desc.back)->getData();
+            AssetDatabase::getAsset<ITexture>(desc.back)->getData();
         const unsigned char* left =
-            textureManager->getTexture(desc.left)->getData();
+            AssetDatabase::getAsset<ITexture>(desc.left)->getData();
         const unsigned char* right =
-            textureManager->getTexture(desc.right)->getData();
+            AssetDatabase::getAsset<ITexture>(desc.right)->getData();
         const unsigned char* top =
-            textureManager->getTexture(desc.top)->getData();
+            AssetDatabase::getAsset<ITexture>(desc.top)->getData();
         const unsigned char* bottom =
-            textureManager->getTexture(desc.bottom)->getData();
+            AssetDatabase::getAsset<ITexture>(desc.bottom)->getData();
 
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S,
                         GL_CLAMP_TO_EDGE);

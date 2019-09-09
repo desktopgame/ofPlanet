@@ -1,7 +1,6 @@
 #ifndef GEL_SHADER_CUBEMAP_HPP
 #define GEL_SHADER_CUBEMAP_HPP
 #include <string>
-#include "../device/TextureManager.hpp"
 #include "Buffer.hpp"
 #include "NameRule.hpp"
 #include "Shader.hpp"
@@ -20,17 +19,14 @@ struct CubeMapDesc {
 class CubeMap {
        public:
         explicit CubeMap(Shader& shader, const NameRule& nameRule);
-        void init(const std::shared_ptr<TextureManager>& textureManager,
-                  const CubeMapDesc& desc, const glm::vec3 scale, int width,
+        void init(const CubeMapDesc& desc, const glm::vec3 scale, int width,
                   const int height);
         void destroy();
         void draw();
 
        private:
-        static GLuint loadCubeMap(
-            const std::shared_ptr<TextureManager>& textureManager,
-            const CubeMapDesc& desc, const int width, const int height);
-        std::shared_ptr<TextureManager> textureManager;
+        static GLuint loadCubeMap(const CubeMapDesc& desc, const int width,
+                                  const int height);
         GLuint texture;
         Shader& shader;
         NameRule nameRule;

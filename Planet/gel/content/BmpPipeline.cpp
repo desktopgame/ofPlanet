@@ -1,10 +1,8 @@
 #include "BmpPipeline.hpp"
 #include "../device/AssetDatabase.hpp"
 #include "../device/BmpTexture.hpp"
-#include "../device/TextureManager.hpp"
 namespace gel {
-BmpPipeline::BmpPipeline(const std::shared_ptr<TextureManager>& textureManager)
-    : textureManager(textureManager) {}
+BmpPipeline::BmpPipeline() {}
 
 bool BmpPipeline::accept(const std::string& path) { return true; }
 

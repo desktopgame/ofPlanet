@@ -1,4 +1,5 @@
 #include "TitleScene.hpp"
+#include "../../gel/device/AssetDatabase.hpp"
 #include "../resources.hpp"
 
 TitleScene::TitleScene(const std::shared_ptr<gel::GameDevice>& gameDevice)
@@ -12,19 +13,29 @@ TitleScene::TitleScene(const std::shared_ptr<gel::GameDevice>& gameDevice)
       optionSprite(gel::ShaderRegistry::getInstance().get("Texture2D")),
       exitSprite(gel::ShaderRegistry::getInstance().get("Texture2D")),
       camera(std::make_shared<gel::Camera>()) {
-        auto tm = gameDevice->getTextureManager();
         screenBuffer.init();
-        titleSprite.init(tm->getTexture(res::TITLE_IMG_PATH)->getID(),
-                         res::TITLE_IMG_POS, res::TITLE_IMG_SIZE, 1.0f);
-        playSprite.init(tm->getTexture(res::PLAY_Y_IMG_PATH)->getID(),
-                        tm->getTexture(res::PLAY_IMG_PATH)->getID(),
-                        res::PLAY_IMG_POS, res::PLAY_IMG_SIZE);
-        optionSprite.init(tm->getTexture(res::OPTION_Y_IMG_PATH)->getID(),
-                          tm->getTexture(res::OPTION_IMG_PATH)->getID(),
-                          res::OPTION_IMG_POS, res::OPTION_IMG_SIZE);
-        exitSprite.init(tm->getTexture(res::EXIT_Y_IMG_PATH)->getID(),
-                        tm->getTexture(res::EXIT_IMG_PATH)->getID(),
-                        res::EXIT_IMG_POS, res::EXIT_IMG_SIZE);
+        titleSprite.init(
+            gel::AssetDatabase::getAsset<gel::ITexture>(res::TITLE_IMG_PATH)
+                ->getID(),
+            res::TITLE_IMG_POS, res::TITLE_IMG_SIZE, 1.0f);
+        playSprite.init(
+            gel::AssetDatabase::getAsset<gel::ITexture>(res::PLAY_Y_IMG_PATH)
+                ->getID(),
+            gel::AssetDatabase::getAsset<gel::ITexture>(res::PLAY_IMG_PATH)
+                ->getID(),
+            res::PLAY_IMG_POS, res::PLAY_IMG_SIZE);
+        optionSprite.init(
+            gel::AssetDatabase::getAsset<gel::ITexture>(res::OPTION_Y_IMG_PATH)
+                ->getID(),
+            gel::AssetDatabase::getAsset<gel::ITexture>(res::OPTION_IMG_PATH)
+                ->getID(),
+            res::OPTION_IMG_POS, res::OPTION_IMG_SIZE);
+        exitSprite.init(
+            gel::AssetDatabase::getAsset<gel::ITexture>(res::EXIT_Y_IMG_PATH)
+                ->getID(),
+            gel::AssetDatabase::getAsset<gel::ITexture>(res::EXIT_IMG_PATH)
+                ->getID(),
+            res::EXIT_IMG_POS, res::EXIT_IMG_SIZE);
 }
 
 TitleScene::~TitleScene() {

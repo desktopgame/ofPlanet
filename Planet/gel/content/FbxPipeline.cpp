@@ -2,10 +2,8 @@
 #include "../Game.hpp"
 #include "../device/AssetDatabase.hpp"
 #include "../device/FbxModel.hpp"
-#include "../device/ModelManager.hpp"
 namespace gel {
-FbxPipeline::FbxPipeline(const std::shared_ptr<ModelManager>& modelManager)
-    : modelManager(modelManager) {}
+FbxPipeline::FbxPipeline() {}
 
 bool FbxPipeline::accept(const std::string& path) { return true; }
 
