@@ -18,6 +18,7 @@ class LoadScene : public gel::IScene {
         bool isFinished() const override;
 
        private:
+		   gel::Sprite background;
         std::shared_ptr<gel::GameDevice> gameDevice;
 		std::vector <gel::Sprite> sprites;
 		void addSprite(std::shared_ptr<gel::ITexture> texture);

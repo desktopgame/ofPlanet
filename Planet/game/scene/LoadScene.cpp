@@ -2,11 +2,14 @@
 #include "../../gel/asset/AssetDatabase.hpp"
 
 LoadScene::LoadScene(const std::shared_ptr<gel::GameDevice>& gameDevice)
-    : gameDevice(gameDevice), finished(false), sprites(), timer(0.06f), camera(std::make_shared<gel::Camera>()) {
+    : gameDevice(gameDevice), finished(false), sprites(), timer(0.06f), camera(std::make_shared<gel::Camera>()),
+     background(gel::ShaderRegistry::getInstance().get("Texture2D"), gel::NameRule()) {
 	addSprite(gel::AssetDatabase::getAsset<gel::ITexture>("./assets/image/Progress00.png"));
 	addSprite(gel::AssetDatabase::getAsset<gel::ITexture>("./assets/image/Progress01.png"));
 	addSprite(gel::AssetDatabase::getAsset<gel::ITexture>("./assets/image/Progress02.png"));
 	addSprite(gel::AssetDatabase::getAsset<gel::ITexture>("./assets/image/Progress03.png"));
+	auto bgTex = gel::AssetDatabase::getAsset<gel::ITexture>("./assets/image/Loading.png");
+	background.init(bgTex->getID(), glm::vec2(0, 0), glm::vec2(1280, 720), 1.0f);
 }
 
 LoadScene::~LoadScene() {}
@@ -34,6 +37,7 @@ void LoadScene::draw() {
 	camera->screenWidth = wnd.x;
 	camera->screenHeight = wnd.y;
 	camera->calculate();
+	background.draw(camera);
 	sprites[index].draw(camera);
 }
 

@@ -30,6 +30,7 @@ void MyGame::onInit() {
 		gameDevice->getContentManager()->loadFully("./assets/image/Progress01.png");
 		gameDevice->getContentManager()->loadFully("./assets/image/Progress02.png");
 		gameDevice->getContentManager()->loadFully("./assets/image/Progress03.png");
+		gameDevice->getContentManager()->loadFully("./assets/image/Loading.png");
 		sceneManager.put("load", std::make_shared<LoadScene>(gameDevice));
 		sceneManager.bind("load");
 }
