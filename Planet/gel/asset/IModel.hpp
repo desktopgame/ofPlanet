@@ -1,5 +1,5 @@
-#ifndef GEL_DEVICE_IMODEL_HPP
-#define GEL_DEVICE_IMODEL_HPP
+#ifndef GEL_ASSET_IMODEL_HPP
+#define GEL_ASSET_IMODEL_HPP
 #include <memory>
 #include <string>
 #include "../math/AABB.hpp"

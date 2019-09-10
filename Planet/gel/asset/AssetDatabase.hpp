@@ -1,6 +1,6 @@
 #pragma once
-#ifndef GEL_DEVICE_ASSETDATABASE_HPP
-#define GEL_DEVICE_ASSETDATABASE_HPP
+#ifndef GEL_ASSET_ASSETDATABASE_HPP
+#define GEL_ASSET_ASSETDATABASE_HPP
 #include <memory>
 #include <string>
 #include <unordered_map>

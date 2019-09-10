@@ -1,5 +1,5 @@
-#ifndef GEL_DEVICE_PNGTEXTURE_HPP
-#define GEL_DEVICE_PNGTEXTURE_HPP
+#ifndef GEL_ASSET_PNGTEXTURE_HPP
+#define GEL_ASSET_PNGTEXTURE_HPP
 #include <glm/glm.hpp>
 #include "ITexture.hpp"
 namespace gel {

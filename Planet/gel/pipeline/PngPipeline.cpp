@@ -1,6 +1,6 @@
 #include "PngPipeline.hpp"
-#include "../device/AssetDatabase.hpp"
-#include "../device/PngTexture.hpp"
+#include "../asset/AssetDatabase.hpp"
+#include "../asset/PngTexture.hpp"
 namespace gel {
 PngPipeline::PngPipeline() {}
 

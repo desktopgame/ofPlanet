@@ -1,5 +1,5 @@
-#ifndef GEL_DEVICE_AUDIO_HPP
-#define GEL_DEVICE_AUDIO_HPP
+#ifndef GEL_ASSET_AUDIO_HPP
+#define GEL_ASSET_AUDIO_HPP
 #include <string>
 #include "../gli.hpp"
 #include "IAsset.hpp"

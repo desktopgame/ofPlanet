@@ -3,7 +3,7 @@
 #define GEL_SHADER_IRMESH_HPP
 #include <memory>
 #include <vector>
-#include "../device/ITexture.hpp"
+#include "../asset/ITexture.hpp"
 
 namespace gel {
 class IRMaterial;

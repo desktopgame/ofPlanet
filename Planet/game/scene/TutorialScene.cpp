@@ -1,5 +1,5 @@
 #include "TutorialScene.hpp"
-#include "../../gel/device/AssetDatabase.hpp"
+#include "../../gel/asset/AssetDatabase.hpp"
 
 TutorialScene::TutorialScene(const std::shared_ptr<gel::GameDevice>& gameDevice)
     : sprites(),

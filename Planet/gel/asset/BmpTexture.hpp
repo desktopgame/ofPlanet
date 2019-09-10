@@ -1,5 +1,5 @@
-#ifndef GEL_DEVICE_BMPTEXTURE_HPP
-#define GEL_DEVICE_BMPTEXTURE_HPP
+#ifndef GEL_ASSET_BMPTEXTURE_HPP
+#define GEL_ASSET_BMPTEXTURE_HPP
 #include "ITexture.hpp"
 namespace gel {
 class BmpTexture : public ITexture {

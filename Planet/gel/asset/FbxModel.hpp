@@ -1,5 +1,5 @@
-#ifndef GEL_DEVICE_FBXMODEL_HPP
-#define GEL_DEVICE_FBXMODEL_HPP
+#ifndef GEL_ASSET_FBXMODEL_HPP
+#define GEL_ASSET_FBXMODEL_HPP
 #include <glm/glm.hpp>
 #include <memory>
 #include <vector>

@@ -1,5 +1,5 @@
 #include "TitleScene.hpp"
-#include "../../gel/device/AssetDatabase.hpp"
+#include "../../gel/asset/AssetDatabase.hpp"
 #include "../resources.hpp"
 
 TitleScene::TitleScene(const std::shared_ptr<gel::GameDevice>& gameDevice)

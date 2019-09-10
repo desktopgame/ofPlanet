@@ -1,6 +1,6 @@
 #include "WavePipeline.hpp"
-#include "../device/AssetDatabase.hpp"
-#include "../device/WaveAudio.hpp"
+#include "../asset/AssetDatabase.hpp"
+#include "../asset/WaveAudio.hpp"
 namespace gel {
 WavePipeline::WavePipeline() {}
 bool WavePipeline::accept(const std::string& path) { return true; }

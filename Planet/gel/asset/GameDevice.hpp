@@ -1,5 +1,5 @@
-#ifndef GEL_DEVICE_GAMEDEVICE_HPP
-#define GEL_DEVICE_GAMEDEVICE_HPP
+#ifndef GEL_ASSET_GAMEDEVICE_HPP
+#define GEL_ASSET_GAMEDEVICE_HPP
 #include <memory>
 #include "../pipeline/ContentManager.hpp"
 namespace gel {

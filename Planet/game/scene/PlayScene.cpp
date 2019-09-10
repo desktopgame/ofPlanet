@@ -4,7 +4,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/raw_data.hpp>
 #include <iostream>
-#include "../../gel/device/AssetDatabase.hpp"
+#include "../../gel/asset/AssetDatabase.hpp"
 #include "../../gel/shader/IRModel.hpp"
 #include "../world/BlockRegistry.hpp"
 #include "../world/gen/Generator.hpp"

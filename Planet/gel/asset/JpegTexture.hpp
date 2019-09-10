@@ -1,6 +1,6 @@
 #pragma once
-#ifndef GEL_DEVICE_JPEGTEXTURE_HPP
-#define GEL_DEVICE_JPEGTEXTURE_HPP
+#ifndef GEL_ASSET_JPEGTEXTURE_HPP
+#define GEL_ASSET_JPEGTEXTURE_HPP
 #include "ITexture.hpp"
 namespace gel {
 class JpegTexture : public ITexture {

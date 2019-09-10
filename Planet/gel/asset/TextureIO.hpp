@@ -1,6 +1,6 @@
 #pragma once
-#ifndef GEL_DEVICE_TEXTUREIO_HPP
-#define GEL_DEVICE_TEXTUREIO_HPP
+#ifndef GEL_ASSET_TEXTUREIO_HPP
+#define GEL_ASSET_TEXTUREIO_HPP
 #include <memory>
 #include "ITexture.hpp"
 

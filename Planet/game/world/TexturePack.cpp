@@ -1,5 +1,5 @@
 #include "TexturePack.hpp"
-#include "../../gel/device/AssetDatabase.hpp"
+#include "../../gel/asset/AssetDatabase.hpp"
 namespace gel {}
 
 TexturePack::TexturePack() {}

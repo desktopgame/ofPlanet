@@ -3,7 +3,7 @@
 #include <cassert>
 #include <iostream>
 #include <stdexcept>
-#include "../device/TextureIO.hpp"
+#include "../asset/TextureIO.hpp"
 #include "../shader/IRMaterial.hpp"
 #include "../shader/IRMesh.hpp"
 #include "../shader/IRShape.hpp"

@@ -1,7 +1,7 @@
 #include "FbxPipeline.hpp"
 #include "../Game.hpp"
-#include "../device/AssetDatabase.hpp"
-#include "../device/FbxModel.hpp"
+#include "../asset/AssetDatabase.hpp"
+#include "../asset/FbxModel.hpp"
 namespace gel {
 FbxPipeline::FbxPipeline() {}
 

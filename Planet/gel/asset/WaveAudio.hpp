@@ -1,5 +1,5 @@
-#ifndef GEL_DEVICE_WAVEAUDIO_HPP
-#define GEL_DEVICE_WAVEAUDIO_HPP
+#ifndef GEL_ASSET_WAVEAUDIO_HPP
+#define GEL_ASSET_WAVEAUDIO_HPP
 #include <AL/alut.h>
 #include "IAudio.hpp"
 #include "WaveAudio.hpp"

@@ -1,6 +1,6 @@
 #include "JpegPipeline.hpp"
-#include "../device/AssetDatabase.hpp"
-#include "../device/JpegTexture.hpp"
+#include "../asset/AssetDatabase.hpp"
+#include "../asset/JpegTexture.hpp"
 namespace gel {
 JpegPipeline::JpegPipeline() {}
 

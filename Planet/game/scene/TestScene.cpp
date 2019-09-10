@@ -2,7 +2,7 @@
 #include <glm/ext/matrix_clip_space.hpp>
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include "../../gel/device/AssetDatabase.hpp"
+#include "../../gel/asset/AssetDatabase.hpp"
 #include "../../gel/gli.hpp"
 #include "../../gel/shader/IRModel.hpp"
 #include "../../gel/ui/imgui/ImGuizmo.h"

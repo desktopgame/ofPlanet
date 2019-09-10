@@ -1,7 +1,7 @@
 #include "CubeMap.hpp"
 #include <stdexcept>
-#include "../device/AssetDatabase.hpp"
-#include "../device/ITexture.hpp"
+#include "../asset/AssetDatabase.hpp"
+#include "../asset/ITexture.hpp"
 namespace gel {
 CubeMap::CubeMap(Shader& shader, const NameRule& nameRule)
     : shader(shader),

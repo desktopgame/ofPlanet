@@ -1,6 +1,6 @@
 #pragma once
-#ifndef GEL_DEVICE_IASSET_HPP
-#define GEL_DEVICE_IASSET_HPP
+#ifndef GEL_ASSET_IASSET_HPP
+#define GEL_ASSET_IASSET_HPP
 #include <string>
 #include "../Thread.hpp"
 

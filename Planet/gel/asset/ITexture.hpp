@@ -1,5 +1,5 @@
-#ifndef GEL_DEVICE_ITEXTURE_HPP
-#define GEL_DEVICE_ITEXTURE_HPP
+#ifndef GEL_ASSET_ITEXTURE_HPP
+#define GEL_ASSET_ITEXTURE_HPP
 #include <glm/glm.hpp>
 #include <string>
 #include "../gli.hpp"

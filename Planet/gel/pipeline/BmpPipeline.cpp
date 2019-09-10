@@ -1,6 +1,6 @@
 #include "BmpPipeline.hpp"
-#include "../device/AssetDatabase.hpp"
-#include "../device/BmpTexture.hpp"
+#include "../asset/AssetDatabase.hpp"
+#include "../asset/BmpTexture.hpp"
 namespace gel {
 BmpPipeline::BmpPipeline() {}
 
