@@ -12,7 +12,6 @@
 #include "gsystem/Duration.hpp"
 #include "gsystem/LineRenderer.hpp"
 #include "gsystem/Random.hpp"
-#include "gsystem/ScoreTable.hpp"
 #include "gsystem/Timer.hpp"
 #include "gsystem/Transform.hpp"
 #include "math/AABB.hpp"

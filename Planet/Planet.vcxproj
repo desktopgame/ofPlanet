@@ -285,7 +285,6 @@
     <ClInclude Include="gel\gsystem\Duration.hpp" />
     <ClInclude Include="gel\gsystem\LineRenderer.hpp" />
     <ClInclude Include="gel\gsystem\Random.hpp" />
-    <ClInclude Include="gel\gsystem\ScoreTable.hpp" />
     <ClInclude Include="gel\gsystem\Timer.hpp" />
     <ClInclude Include="gel\gsystem\Transform.hpp" />
     <ClInclude Include="gel\math\AABB.hpp" />
