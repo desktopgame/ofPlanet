@@ -22,21 +22,22 @@ FbxModel::FbxModel(FbxManager* fbxManager, const std::string& textureShaderName,
 
 void FbxModel::load(const std::string& path, Thread thread) {
         if (thread == Thread::OnBackground) {
-                return;
-        }
-        this->fbxScene = FbxScene::Create(this->fbxManager, "Scene");
-        this->fbxImporter = FbxImporter::Create(this->fbxManager, "Importer");
-        if (!fbxImporter->Initialize(path.c_str())) {
-                throw std::logic_error("fatal error: FbxImporter#Initialize");
-        }
-        if (!fbxImporter->Import(fbxScene)) {
-                throw std::logic_error("fatal error: FbxImporter#Initialize");
-        }
-        FbxGeometryConverter geometryConverter(fbxManager);
-        geometryConverter.Triangulate(fbxScene, true);
-        auto rootNode = fbxScene->GetRootNode();
-        procIRRec(rootNode, model->getMesh(), 0);
-        fbxImporter->Destroy();
+
+			this->fbxScene = FbxScene::Create(this->fbxManager, "Scene");
+			this->fbxImporter = FbxImporter::Create(this->fbxManager, "Importer");
+			if (!fbxImporter->Initialize(path.c_str())) {
+				throw std::logic_error("fatal error: FbxImporter#Initialize");
+			}
+			if (!fbxImporter->Import(fbxScene)) {
+				throw std::logic_error("fatal error: FbxImporter#Initialize");
+			}
+			FbxGeometryConverter geometryConverter(fbxManager);
+			geometryConverter.Triangulate(fbxScene, true);
+		} else if (thread == Thread::OnGL) {
+			auto rootNode = fbxScene->GetRootNode();
+			procIRRec(rootNode, model->getMesh(), 0);
+			fbxImporter->Destroy();
+		}
 }
 
 void FbxModel::unload() {}
