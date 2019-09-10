@@ -39,6 +39,7 @@ void ContentManager::loadFully(const std::string& path) {
 		ContentLoadEvent evt;
         while (iter != files.end()) {
                 if (*iter != path) {
+						++iter;
                         continue;
                 }
 				evt.path = path;

@@ -26,14 +26,17 @@ void MyGame::onInit() {
         float filter;
         glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &filter);
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, filter);
-        sceneManager.put("load", std::make_shared<LoadScene>(gameDevice));
-        sceneManager.bind("load");
-        gameDevice->getContentManager()->onContentLoad().connect(
-            [](gel::ContentLoadEvent e) { std::cout << e.path << std::endl; });
+		gameDevice->getContentManager()->loadFully("./assets/image/Progress00.png");
+		gameDevice->getContentManager()->loadFully("./assets/image/Progress01.png");
+		gameDevice->getContentManager()->loadFully("./assets/image/Progress02.png");
+		gameDevice->getContentManager()->loadFully("./assets/image/Progress03.png");
+		sceneManager.put("load", std::make_shared<LoadScene>(gameDevice));
+		sceneManager.bind("load");
 }
 
 void MyGame::onLoad() {
         gameDevice->getContentManager()->load(Thread::OnBackground);
+		std::this_thread::sleep_for(std::chrono::seconds(1));
 }
 
 void MyGame::onStart() {

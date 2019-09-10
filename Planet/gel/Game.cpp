@@ -340,10 +340,12 @@ void Game::onMainLoop1() {
 #if DEBUG
                 gui::internal::endFrame();
 #endif
-                std::scoped_lock<std::mutex> lock(finishedMutex);
-                if (finishedThread) {
-                        break;
-                }
+				{
+					std::scoped_lock<std::mutex> lock(finishedMutex);
+					if (finishedThread) {
+						break;
+					}
+				}
         }
 }
 

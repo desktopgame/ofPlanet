@@ -19,6 +19,11 @@ class LoadScene : public gel::IScene {
 
        private:
         std::shared_ptr<gel::GameDevice> gameDevice;
+		std::vector <gel::Sprite> sprites;
+		void addSprite(std::shared_ptr<gel::ITexture> texture);
         bool finished;
+		gel::Timer timer;
+		std::shared_ptr<gel::Camera> camera;
+		int index;
 };
 #endif
