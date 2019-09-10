@@ -12,18 +12,28 @@
 #define DBGPRINT(VALUE)
 #endif
 #endif
+#include <functional>
 #include <memory>
 #include <string>
 #include <vector>
 #include "../Thread.hpp"
+#include "../signal/Signal.hpp"
 
 namespace gel {
 class IContentPipeline;
+struct ContentLoadEvent {
+        std::string path;
+};
+struct ContentUnloadEvent {
+        std::string path;
+};
 /**
  * ContentManager is list of ContentPipeline.
  */
 class ContentManager {
        public:
+        using LoadFunc = std::function<void(const ContentLoadEvent)>;
+        using UnloadFunc = std::function<void(const ContentUnloadEvent)>;
         /**
          * create files cache by specifid path.
          * still not running content load on construct.
@@ -58,12 +68,30 @@ class ContentManager {
          */
         void unload();
 
+        /**
+         * return a content count.
+         * @return
+         */
+        int getContentCount() const;
+
+        /**
+         * @return
+         */
+        Signal<ContentLoadEvent>& onContentLoad();
+
+        /**
+         * @return
+         */
+        Signal<ContentUnloadEvent>& onContentUnload();
+
        private:
         void collect(const std::string& dir, int depth);
         static bool isSystemFileWindows(DWORD d);
         std::string rootDir;
         std::vector<std::string> files;
         std::vector<std::shared_ptr<IContentPipeline> > pipes;
+        Signal<ContentLoadEvent> contentLoadSlot;
+        Signal<ContentUnloadEvent> contentUnoadSlot;
 };
 }  // namespace gel
 #endif

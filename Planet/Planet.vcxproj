@@ -76,7 +76,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)packages\rxcpp.4.0.0\build\native\include;$(SolutionDir)packages\libjpeg.9.2.0.1\build\native\include;C:\Work\PlanetSln\Planet\packages\glm.0.9.9.500\build\native\include;C:\Program Files\Autodesk\FBX\FBX SDK\2019.2\include;C:\Program Files (x86)\OpenAL 1.1 SDK\ALUT\freealut-freealut_1_1_0\include;C:\Program Files (x86)\OpenAL 1.1 SDK\include;$(SolutionDir)packages\freeglut.2.8.1.15\build\native\include\GL;$(SolutionDir)packages\glew.1.9.0.1\build\native\include\GL;$(SolutionDir)packages\glfw.3.3.0.1\build\native\include\GLFW;$(SolutionDir)packages\libpng.1.6.28.1\build\native\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)packages\libjpeg.9.2.0.1\build\native\include;C:\Work\PlanetSln\Planet\packages\glm.0.9.9.500\build\native\include;C:\Program Files\Autodesk\FBX\FBX SDK\2019.2\include;C:\Program Files (x86)\OpenAL 1.1 SDK\ALUT\freealut-freealut_1_1_0\include;C:\Program Files (x86)\OpenAL 1.1 SDK\include;$(SolutionDir)packages\freeglut.2.8.1.15\build\native\include\GL;$(SolutionDir)packages\glew.1.9.0.1\build\native\include\GL;$(SolutionDir)packages\glfw.3.3.0.1\build\native\include\GLFW;$(SolutionDir)packages\libpng.1.6.28.1\build\native\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;DEBUG;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -86,7 +86,8 @@
       <AdditionalDependencies>jpeg.lib;freeglut.lib;glew.lib;glfw3.lib;zlib-md.lib;libpng16.lib;alut.lib;OpenAL32.lib;EFX-Util.lib;libfbxsdk.lib;libxml2-md.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
-      <Command>goclangfmt -directory $(SolutionDir) -ignore imgui</Command>
+      <Command>
+      </Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -203,6 +204,7 @@
     <ClCompile Include="gel\shader\ShaderRegistry.cpp" />
     <ClCompile Include="gel\shader\Sprite.cpp" />
     <ClCompile Include="gel\shader\VertexArray.cpp" />
+    <ClCompile Include="gel\signal\Connection.cpp" />
     <ClCompile Include="gel\ui\GUI.cpp" />
     <ClCompile Include="gel\ui\imgui\ImCurveEdit.cpp" />
     <ClCompile Include="gel\ui\imgui\ImGradient.cpp" />
@@ -315,6 +317,10 @@
     <ClInclude Include="gel\shader\ShaderRegistry.hpp" />
     <ClInclude Include="gel\shader\Sprite.hpp" />
     <ClInclude Include="gel\shader\VertexArray.hpp" />
+    <ClInclude Include="gel\signal\Connection.hpp" />
+    <ClInclude Include="gel\signal\IConnectable.hpp" />
+    <ClInclude Include="gel\signal\Signal.hpp" />
+    <ClInclude Include="gel\signal\Slot.hpp" />
     <ClInclude Include="gel\Thread.hpp" />
     <ClInclude Include="gel\ui\GUI.hpp" />
     <ClInclude Include="gel\ui\imgui\imconfig.h" />
@@ -359,7 +365,6 @@
     <Import Project="..\packages\glm.0.9.9.500\build\native\glm.targets" Condition="Exists('..\packages\glm.0.9.9.500\build\native\glm.targets')" />
     <Import Project="..\packages\libjpeg.redist.9.2.0.1\build\native\libjpeg.redist.targets" Condition="Exists('..\packages\libjpeg.redist.9.2.0.1\build\native\libjpeg.redist.targets')" />
     <Import Project="..\packages\libjpeg.9.2.0.1\build\native\libjpeg.targets" Condition="Exists('..\packages\libjpeg.9.2.0.1\build\native\libjpeg.targets')" />
-    <Import Project="..\packages\rxcpp.4.0.0\build\native\rxcpp.targets" Condition="Exists('..\packages\rxcpp.4.0.0\build\native\rxcpp.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
@@ -377,6 +382,5 @@
     <Error Condition="!Exists('..\packages\glm.0.9.9.500\build\native\glm.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\glm.0.9.9.500\build\native\glm.targets'))" />
     <Error Condition="!Exists('..\packages\libjpeg.redist.9.2.0.1\build\native\libjpeg.redist.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\libjpeg.redist.9.2.0.1\build\native\libjpeg.redist.targets'))" />
     <Error Condition="!Exists('..\packages\libjpeg.9.2.0.1\build\native\libjpeg.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\libjpeg.9.2.0.1\build\native\libjpeg.targets'))" />
-    <Error Condition="!Exists('..\packages\rxcpp.4.0.0\build\native\rxcpp.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\rxcpp.4.0.0\build\native\rxcpp.targets'))" />
   </Target>
 </Project>

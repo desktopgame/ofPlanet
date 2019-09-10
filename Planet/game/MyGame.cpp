@@ -28,6 +28,8 @@ void MyGame::onInit() {
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, filter);
         sceneManager.put("load", std::make_shared<LoadScene>(gameDevice));
         sceneManager.bind("load");
+        gameDevice->getContentManager()->onContentLoad().connect(
+            [](gel::ContentLoadEvent e) { std::cout << e.path << std::endl; });
 }
 
 void MyGame::onLoad() {

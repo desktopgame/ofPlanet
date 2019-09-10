@@ -13,7 +13,11 @@
 
 namespace gel {
 ContentManager::ContentManager(const std::string& rootDir)
-    : rootDir(rootDir), files(), pipes() {
+    : rootDir(rootDir),
+      files(),
+      pipes(),
+      contentLoadSlot(),
+      contentUnoadSlot() {
         collect(rootDir, 0);
 }
 
@@ -32,14 +36,17 @@ void ContentManager::remove(const std::shared_ptr<IContentPipeline>& pipe) {
 
 void ContentManager::loadFully(const std::string& path) {
         auto iter = files.begin();
+		ContentLoadEvent evt;
         while (iter != files.end()) {
                 if (*iter != path) {
                         continue;
                 }
+				evt.path = path;
                 std::for_each(pipes.begin(), pipes.end(), [&, path](auto p) {
                         if (p->accept(path)) {
                                 p->load(path, Thread::OnBackground);
                                 p->load(path, Thread::OnGL);
+                                contentLoadSlot(evt);
                         }
                 });
                 files.erase(iter);
@@ -47,24 +54,42 @@ void ContentManager::loadFully(const std::string& path) {
         }
 }
 
-void ContentManager::load(Thread thread) {
+void ContentManager::load(Thread thread) {	;
+		ContentLoadEvent evt;
         std::for_each(files.begin(), files.end(), [&](auto file) {
+				evt.path = file;
                 std::for_each(pipes.begin(), pipes.end(), [&](auto p) {
                         if (p->accept(file)) {
                                 p->load(file, thread);
+                                contentLoadSlot(evt);
                         }
                 });
         });
 }
 
 void ContentManager::unload() {
+		ContentUnloadEvent evt;
         std::for_each(files.begin(), files.end(), [&](auto file) {
+				evt.path = file;
                 std::for_each(pipes.begin(), pipes.end(), [&](auto p) {
                         if (p->accept(file)) {
                                 p->unload(file);
+                                contentUnoadSlot(evt);
                         }
                 });
         });
+}
+
+int ContentManager::getContentCount() const {
+        return static_cast<int>(files.size());
+}
+
+Signal<ContentLoadEvent>& ContentManager::onContentLoad() {
+        return contentLoadSlot;
+}
+
+Signal<ContentUnloadEvent>& ContentManager::onContentUnload() {
+        return contentUnoadSlot;
 }
 
 // private
