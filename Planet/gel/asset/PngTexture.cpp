@@ -13,6 +13,54 @@ namespace gel {
 PngTexture::PngTexture() : textureId(0), width(0), height(0), data(NULL) {}
 
 void PngTexture::load(const std::string& path, Thread thread) {
+        if (thread == Thread::OnBackground) {
+                loadBackground(path, thread);
+        } else if (thread == Thread::OnGL) {
+                // generate texture
+                glGenTextures(1, &(this->textureId));
+                glBindTexture(GL_TEXTURE_2D, this->textureId);
+                // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,
+                // GL_NEAREST); glTexParameteri(GL_TEXTURE_2D,
+                // GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
+                                GL_LINEAR_MIPMAP_LINEAR);
+                glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S,
+                                GL_CLAMP_TO_EDGE);
+                glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T,
+                                GL_CLAMP_TO_EDGE);
+                glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R,
+                                GL_CLAMP_TO_EDGE);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 4);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,
+                                GL_LINEAR);
+                glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE);
+                glEnable(GL_TEXTURE_2D);
+                glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, this->width,
+                             this->height, 0, GL_RGBA, GL_UNSIGNED_BYTE,
+                             this->data);
+                glGenerateMipmap(GL_TEXTURE_2D);
+                glDisable(GL_TEXTURE_2D);
+                glBindTexture(GL_TEXTURE_2D, 0);
+        }
+}
+
+void PngTexture::unload() {
+        glDeleteTextures(1, &(this->textureId));
+        free(this->data);
+}
+
+GLuint PngTexture::getID() const { return textureId; }
+
+unsigned char* PngTexture::getData() const { return data; }
+
+int PngTexture::getWidth() const { return width; }
+
+int PngTexture::getHeight() const { return height; }
+
+glm::vec2 PngTexture::getSize() const { return glm::vec2(width, height); }
+
+void PngTexture::loadBackground(const std::string& path, Thread thread) {
         FILE* fp = fopen(path.c_str(), "rb");
         // check file exists
         if (!fp) {
@@ -56,47 +104,10 @@ void PngTexture::load(const std::string& path, Thread thread) {
                 png_read_row(pPng, &(this->data[i * rowSize]), NULL);
         }
         png_read_end(pPng, pInfo);
-        // generate texture
-        glGenTextures(1, &(this->textureId));
-        glBindTexture(GL_TEXTURE_2D, this->textureId);
-        // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-        // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
-                        GL_LINEAR_MIPMAP_LINEAR);
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S,
-                        GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T,
-                        GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R,
-                        GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 4);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE);
-        glEnable(GL_TEXTURE_2D);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, this->width, this->height, 0,
-                     GL_RGBA, GL_UNSIGNED_BYTE, this->data);
-        glGenerateMipmap(GL_TEXTURE_2D);
-        glDisable(GL_TEXTURE_2D);
+
         png_destroy_info_struct(pPng, &pInfo);
         png_destroy_read_struct(&pPng, NULL, NULL);
         fclose(fp);
-        glBindTexture(GL_TEXTURE_2D, 0);
 }
-
-void PngTexture::unload() {
-        glDeleteTextures(1, &(this->textureId));
-        free(this->data);
-}
-
-GLuint PngTexture::getID() const { return textureId; }
-
-unsigned char* PngTexture::getData() const { return data; }
-
-int PngTexture::getWidth() const { return width; }
-
-int PngTexture::getHeight() const { return height; }
-
-glm::vec2 PngTexture::getSize() const { return glm::vec2(width, height); }
 
 }  // namespace gel

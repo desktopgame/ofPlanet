@@ -4,6 +4,35 @@
 namespace gel {
 JpegTexture::JpegTexture() : textureId(0), width(0), height(0), data(NULL) {}
 void JpegTexture::load(const std::string& path, Thread thread) {
+        if (thread == Thread::OnBackground) {
+                loadBackground(path, thread);
+        } else if (thread == Thread::OnGL) {
+                // generate texture
+                glGenTextures(1, &(this->textureId));
+                glBindTexture(GL_TEXTURE_2D, this->textureId);
+                glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
+                                GL_LINEAR);
+                glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,
+                                GL_LINEAR);
+                glEnable(GL_TEXTURE_2D);
+                glTexImage2D(GL_TEXTURE_2D, 0, 3, width, height, 0, GL_RGB,
+                             GL_UNSIGNED_BYTE, data);
+                glGenerateMipmap(GL_TEXTURE_2D);
+                glDisable(GL_TEXTURE_2D);
+                glBindTexture(GL_TEXTURE_2D, 0);
+        }
+}
+void JpegTexture::unload() {
+        glDeleteTextures(1, &(this->textureId));
+        std::free(data);
+}
+GLuint JpegTexture::getID() const { return textureId; }
+unsigned char* JpegTexture::getData() const { return data; }
+int JpegTexture::getWidth() const { return width; }
+int JpegTexture::getHeight() const { return height; }
+glm::vec2 JpegTexture::getSize() const { return glm::vec2(width, height); }
+
+void JpegTexture::loadBackground(const std::string& path, Thread thread) {
         struct jpeg_decompress_struct jpeg;
         struct jpeg_error_mgr err;
         JSAMPLE* tmp;
@@ -41,25 +70,5 @@ void JpegTexture::load(const std::string& path, Thread thread) {
 
         jpeg_finish_decompress(&jpeg);
         jpeg_destroy_decompress(&jpeg);
-        // generate texture
-        glGenTextures(1, &(this->textureId));
-        glBindTexture(GL_TEXTURE_2D, this->textureId);
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glEnable(GL_TEXTURE_2D);
-        glTexImage2D(GL_TEXTURE_2D, 0, 3, width, height, 0, GL_RGB,
-                     GL_UNSIGNED_BYTE, data);
-        glGenerateMipmap(GL_TEXTURE_2D);
-        glDisable(GL_TEXTURE_2D);
-        glBindTexture(GL_TEXTURE_2D, 0);
 }
-void JpegTexture::unload() {
-        glDeleteTextures(1, &(this->textureId));
-        std::free(data);
-}
-GLuint JpegTexture::getID() const { return textureId; }
-unsigned char* JpegTexture::getData() const { return data; }
-int JpegTexture::getWidth() const { return width; }
-int JpegTexture::getHeight() const { return height; }
-glm::vec2 JpegTexture::getSize() const { return glm::vec2(width, height); }
 }  // namespace gel

@@ -17,6 +17,7 @@ class PngTexture : public ITexture {
         glm::vec2 getSize() const override;
 
        private:
+        void loadBackground(const std::string& path, Thread thread);
         unsigned int width;
         unsigned int height;
         int depth;

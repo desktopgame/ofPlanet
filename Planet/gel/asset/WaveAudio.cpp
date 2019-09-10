@@ -1,6 +1,9 @@
 #include "WaveAudio.hpp"
 namespace gel {
 void WaveAudio::load(const std::string& path, Thread thread) {
+        if (thread == Thread::OnBackground) {
+                return;
+        }
         this->buf = alutCreateBufferFromFile(path.c_str());
         alGenSources(1, &(this->src));
         alSourcei(this->src, AL_BUFFER, this->buf);

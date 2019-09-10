@@ -6,14 +6,19 @@ namespace gel {
 BmpTexture::BmpTexture() : tid(0), width(0), height(0) {}
 
 void BmpTexture::load(const std::string& path, Thread thread) {
-        readBMP(path.c_str());
-        // generate texture
-        glGenTextures(1, &(this->tid));
-        glBindTexture(GL_TEXTURE_2D, this->tid);
-        glTexImage2D(GL_TEXTURE_2D, 0, 3, this->width, this->height, 0, GL_RGB,
-                     GL_UNSIGNED_BYTE, this->data);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        if (thread == Thread::OnBackground) {
+                readBMP(path.c_str());
+        } else if (thread == Thread::OnGL) {
+                // generate texture
+                glGenTextures(1, &(this->tid));
+                glBindTexture(GL_TEXTURE_2D, this->tid);
+                glTexImage2D(GL_TEXTURE_2D, 0, 3, this->width, this->height, 0,
+                             GL_RGB, GL_UNSIGNED_BYTE, this->data);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,
+                                GL_NEAREST);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
+                                GL_NEAREST);
+        }
 }
 
 void BmpTexture::unload() {

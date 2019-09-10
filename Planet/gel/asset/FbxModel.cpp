@@ -21,6 +21,9 @@ FbxModel::FbxModel(FbxManager* fbxManager, const std::string& textureShaderName,
       nameRule(nameRule) {}
 
 void FbxModel::load(const std::string& path, Thread thread) {
+        if (thread == Thread::OnBackground) {
+                return;
+        }
         this->fbxScene = FbxScene::Create(this->fbxManager, "Scene");
         this->fbxImporter = FbxImporter::Create(this->fbxManager, "Importer");
         if (!fbxImporter->Initialize(path.c_str())) {
