@@ -1,12 +1,12 @@
 #include "GameDevice.hpp"
-#include "../content/BmpPipeline.hpp"
-#include "../content/ContentManager.hpp"
-#include "../content/EchoPipeline.hpp"
-#include "../content/FbxPipeline.hpp"
-#include "../content/JpegPipeline.hpp"
-#include "../content/PngPipeline.hpp"
-#include "../content/ProxyPipeline.hpp"
-#include "../content/WavePipeline.hpp"
+#include "../pipeline/BmpPipeline.hpp"
+#include "../pipeline/ContentManager.hpp"
+#include "../pipeline/EchoPipeline.hpp"
+#include "../pipeline/FbxPipeline.hpp"
+#include "../pipeline/JpegPipeline.hpp"
+#include "../pipeline/PngPipeline.hpp"
+#include "../pipeline/ProxyPipeline.hpp"
+#include "../pipeline/WavePipeline.hpp"
 
 namespace gel {
 GameDevice::GameDevice(const std::string& assetRootDir)

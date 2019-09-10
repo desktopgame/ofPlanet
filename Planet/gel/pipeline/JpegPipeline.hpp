@@ -1,5 +1,5 @@
-#ifndef GEL_CONTENT_JPEGPIPELINE_HPP
-#define GEL_CONTENT_JPEGPIPELINE_HPP
+#ifndef GEL_PIPELINE_JPEGPIPELINE_HPP
+#define GEL_PIPELINE_JPEGPIPELINE_HPP
 #include "IContentPipeline.hpp"
 
 namespace gel {

@@ -1,12 +1,12 @@
-#ifndef GEL_CONTENT_WAVEPIPELINE_HPP
-#define GEL_CONTENT_WAVEPIPELINE_HPP
+#ifndef GEL_PIPELINE_BMPPIPELINE_HPP
+#define GEL_PIPELINE_BMPPIPELINE_HPP
 #include <memory>
+#include <string>
 #include "IContentPipeline.hpp"
-
 namespace gel {
-class WavePipeline : public IContentPipeline {
+class BmpPipeline : public IContentPipeline {
        public:
-        WavePipeline();
+        BmpPipeline();
         bool accept(const std::string& path) override;
         void load(const std::string& path, Thread thread) override;
         void unload(const std::string& path) override;

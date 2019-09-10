@@ -1,17 +1,14 @@
-#ifndef GEL_CONTENT_PNGPIPELINE_HPP
-#define GEL_CONTENT_PNGPIPELINE_HPP
-#include <memory>
-#include <string>
+#ifndef GEL_PIPELINE_ECHOPIPELINE_HPP
+#define GEL_PIPELINE_ECHOPIPELINE_HPP
 #include "IContentPipeline.hpp"
 namespace gel {
-class PngPipeline : public IContentPipeline {
+
+class EchoPipeline : public IContentPipeline {
        public:
-        PngPipeline();
+        EchoPipeline() = default;
         bool accept(const std::string& path) override;
         void load(const std::string& path, Thread thread) override;
         void unload(const std::string& path) override;
-
-       private:
 };
 }  // namespace gel
 #endif

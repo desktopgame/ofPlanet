@@ -1,5 +1,5 @@
-#ifndef GEL_CONTENT_ICONTENTPIPELINE_HPP
-#define GEL_CONTENT_ICONTENTPIPELINE_HPP
+#ifndef GEL_PIPELINE_ICONTENTPIPELINE_HPP
+#define GEL_PIPELINE_ICONTENTPIPELINE_HPP
 #include <string>
 #include "../Thread.hpp"
 namespace gel {

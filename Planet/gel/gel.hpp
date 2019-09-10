@@ -4,7 +4,6 @@
 #include "gli.hpp"
 // GLI
 #include "Game.hpp"
-#include "content/ContentManager.hpp"
 #include "device/GameDevice.hpp"
 #include "device/IAudio.hpp"
 #include "device/IModel.hpp"
@@ -20,6 +19,7 @@
 #include "math/Quadrangle.hpp"
 #include "math/Rectangle.hpp"
 #include "math/Triangle.hpp"
+#include "pipeline/ContentManager.hpp"
 #include "scene/IScene.hpp"
 #include "scene/SceneManager.hpp"
 #include "shader/Circle.hpp"

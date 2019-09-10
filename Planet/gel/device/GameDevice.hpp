@@ -1,7 +1,7 @@
 #ifndef GEL_DEVICE_GAMEDEVICE_HPP
 #define GEL_DEVICE_GAMEDEVICE_HPP
 #include <memory>
-#include "../content/ContentManager.hpp"
+#include "../pipeline/ContentManager.hpp"
 namespace gel {
 /**
  * GameDevice is object to reference a common game resources.

@@ -1,5 +1,5 @@
-#ifndef GEL_CONTENT_PROXYPIPELINE_H
-#define GEL_CONTENT_PROXYPIPELINE_H
+#ifndef GEL_PIPELINE_PROXYPIPELINE_H
+#define GEL_PIPELINE_PROXYPIPELINE_H
 #include <memory>
 #include <string>
 #include <unordered_map>
