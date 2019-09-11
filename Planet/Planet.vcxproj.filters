@@ -261,9 +261,6 @@
     <ClCompile Include="gel\pipeline\ContentManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="gel\pipeline\EchoPipeline.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="gel\pipeline\FbxPipeline.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -594,9 +591,6 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="gel\pipeline\ContentManager.hpp">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="gel\pipeline\EchoPipeline.hpp">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="gel\pipeline\FbxPipeline.hpp">

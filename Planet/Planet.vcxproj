@@ -159,7 +159,6 @@
     <ClCompile Include="game\world\World.cpp" />
     <ClCompile Include="gel\pipeline\BmpPipeline.cpp" />
     <ClCompile Include="gel\pipeline\ContentManager.cpp" />
-    <ClCompile Include="gel\pipeline\EchoPipeline.cpp" />
     <ClCompile Include="gel\pipeline\FbxPipeline.cpp" />
     <ClCompile Include="gel\pipeline\JpegPipeline.cpp" />
     <ClCompile Include="gel\pipeline\PngPipeline.cpp" />
@@ -258,7 +257,6 @@
     <ClInclude Include="game\world\World.hpp" />
     <ClInclude Include="gel\pipeline\BmpPipeline.hpp" />
     <ClInclude Include="gel\pipeline\ContentManager.hpp" />
-    <ClInclude Include="gel\pipeline\EchoPipeline.hpp" />
     <ClInclude Include="gel\pipeline\FbxPipeline.hpp" />
     <ClInclude Include="gel\pipeline\IContentPipeline.hpp" />
     <ClInclude Include="gel\pipeline\JpegPipeline.hpp" />
