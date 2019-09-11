@@ -11,13 +11,13 @@
 #include "../shader/IRMaterial.hpp"
 #include "../shader/IRModel.hpp"
 #include "../util/io.hpp"
+#include "../gli.hpp"
 #include "PngTexture.hpp"
 namespace gel {
 FbxModel::FbxModel(FbxManager* fbxManager, const std::string& textureShaderName,
                    const std::string& colorShaderName, const NameRule& nameRule)
     : fbxManager(fbxManager),
       fbxScene(nullptr),
-      aabb(),
       model(IRModel::create()),
       textureShaderName(textureShaderName),
       colorShaderName(colorShaderName),

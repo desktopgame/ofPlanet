@@ -2,7 +2,6 @@
 #define GEL_ASSET_WAVEAUDIO_HPP
 #include <AL/alut.h>
 #include "IAudio.hpp"
-#include "WaveAudio.hpp"
 namespace gel {
 class WaveAudio : public IAudio {
        public:

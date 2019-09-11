@@ -3,7 +3,6 @@
 #include <glm/glm.hpp>
 #include <memory>
 #include <vector>
-#include "../gli.hpp"
 #include "../shader/NameRule.hpp"
 #include "IModel.hpp"
 #include "fbxsdk.h"
@@ -52,7 +51,6 @@ class FbxModel : public IModel {
         std::string colorShaderName;
         NameRule nameRule;
         std::shared_ptr<IRModel> model;
-        AABB aabb;
 };
 }  // namespace gel
 #endif
