@@ -63,7 +63,7 @@ int Game::mainLoop(int argc, char* argv[], const char* title, int width,
         this->loadThread = std::thread(&Game::onBackground, this);
         // init Imgui
 #if DEBUG
-        gui::internal::init(mWindow);
+        gui::internal::init(window);
 #endif
         onMainLoop1();
         onStart();
@@ -75,11 +75,11 @@ int Game::mainLoop(int argc, char* argv[], const char* title, int width,
         fbxManager->Destroy();
         alutExit();
         glfwTerminate();
-        glfwDestroyWindow(mWindow);
+        glfwDestroyWindow(window);
         return 0;
 }
 
-GLFWwindow* Game::getWindow() const { return this->mWindow; }
+GLFWwindow* Game::getWindow() const { return this->window; }
 
 float Game::getDeltaTime() const { return this->deltaTime; }
 
@@ -91,13 +91,13 @@ std::shared_ptr<ContentManager> Game::getContentManager() const {
 
 Game* Game::getInstance() { return instance; }
 
-int Game::getWindowWidth() const { return mWidth; }
+int Game::getWindowWidth() const { return width; }
 
-int Game::getWindowHeight() const { return mHeight; }
+int Game::getWindowHeight() const { return height; }
 
-float Game::getWindowAspect() const { return ((float)mWidth / (float)mHeight); }
+float Game::getWindowAspect() const { return ((float)width / (float)height); }
 
-glm::vec2 Game::getWindowSize() const { return glm::vec2(mWidth, mHeight); }
+glm::vec2 Game::getWindowSize() const { return glm::vec2(width, height); }
 
 int Game::getSolutionWidth() const { return solutionWidth; }
 
@@ -169,8 +169,8 @@ void Game::onError(int error, const char* description) {
 }
 
 void Game::onResize(GLFWwindow* window, int width, int height) {
-        this->mWidth = width;
-        this->mHeight = height;
+        this->width = width;
+        this->height = height;
 }
 
 void Game::onDebugMessage(GLenum source, GLenum type, GLuint eid,
@@ -295,8 +295,8 @@ void Game::onFinish() {}
 int Game::onGLInit(int argc, char* argv[], const char* title, int width,
                    int height, bool fullScreen) {
         std::atexit(bridgeExit);
-        this->mWidth = width;
-        this->mHeight = height;
+        this->width = width;
+        this->height = height;
         this->solutionWidth = width;
         this->solutionHeight = height;
         // glutInit(&argc, argv);
@@ -313,13 +313,13 @@ int Game::onGLInit(int argc, char* argv[], const char* title, int width,
                 glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
                 window = glfwCreateWindow(mode->width, mode->height, title,
                                           monitor, NULL);
-                this->mWidth = width = mode->width;
-                this->mHeight = height = mode->height;
+                this->width = width = mode->width;
+                this->height = height = mode->height;
         } else {
                 glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
                 window = glfwCreateWindow(width, height, title, NULL, NULL);
         }
-        this->mWindow = window;
+        this->window = window;
         if (!window) {
                 glfwTerminate();
                 return -1;
@@ -373,7 +373,7 @@ void Game::onMainLoop1() {
 }
 
 void Game::onMainLoop2() {
-        while (!glfwWindowShouldClose(mWindow)) {
+        while (!glfwWindowShouldClose(window)) {
 #if DEBUG
                 gui::internal::newFrame();
 #endif

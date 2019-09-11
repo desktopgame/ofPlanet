@@ -80,7 +80,7 @@ void MyGame::onDraw() {
                 return;
         }
         sceneManager.draw();
-        glfwSwapBuffers(mWindow);
+        glfwSwapBuffers(window);
         glfwPollEvents();
 }
 

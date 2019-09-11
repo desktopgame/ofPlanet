@@ -124,10 +124,10 @@ class Game {
 
        protected:
         static Game* instance;
-        GLFWwindow* mWindow;
+        GLFWwindow* window;
         FbxManager* fbxManager;
-        int mWidth;
-        int mHeight;
+        int width;
+        int height;
         int solutionWidth;
         int solutionHeight;
         double oldTime;
