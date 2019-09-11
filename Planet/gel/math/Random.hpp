@@ -1,5 +1,5 @@
-#ifndef GEL_GSYSTEM_RANDOM_HPP
-#define GEL_GSYSTEM_RANDOM_HPP
+#ifndef GEL_MATH_RANDOM_HPP
+#define GEL_MATH_RANDOM_HPP
 #include <random>
 namespace gel {
 class Random {

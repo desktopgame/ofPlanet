@@ -27,9 +27,6 @@
     <ClCompile Include="gel\gsystem\LineRenderer.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="gel\gsystem\Random.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="gel\gsystem\Timer.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -300,6 +297,9 @@
     <ClCompile Include="gel\input\Input.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="gel\math\Random.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gel\fbxsdk.hpp">
@@ -321,9 +321,6 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="gel\gsystem\LineRenderer.hpp">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="gel\gsystem\Random.hpp">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="gel\gsystem\Timer.hpp">
@@ -663,6 +660,9 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="gel\input\Input.hpp">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="gel\math\Random.hpp">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
