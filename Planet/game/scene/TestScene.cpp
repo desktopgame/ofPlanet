@@ -21,7 +21,8 @@ TestScene::TestScene()
       camera(std::make_shared<gel::Camera>()),
       position(0),
       scale(1),
-      rotation(0) {
+      rotation(0),
+      drag() {
         plane.init(0.5f);
         glEnableClientState(GL_NORMAL_ARRAY);
         glEnableClientState(GL_VERTEX_ARRAY);
@@ -43,6 +44,11 @@ void TestScene::show() {
         glDisable(GL_CULL_FACE);
 }
 void TestScene::update() {
+	drag.update();
+	if (drag.isDrag()) {
+		this->position.x += drag.getDifference().x;
+		this->position.y += drag.getDifference().y;
+	}
 }
 void TestScene::draw() {
         float delta = gel::Game::getInstance()->getDeltaTime();

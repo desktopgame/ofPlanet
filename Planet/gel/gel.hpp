@@ -17,6 +17,8 @@
 #include "math/Quadrangle.hpp"
 #include "math/Rectangle.hpp"
 #include "math/Triangle.hpp"
+#include "input/Input.hpp"
+#include "input/Drag.hpp"
 #include "pipeline/ContentManager.hpp"
 #include "scene/IScene.hpp"
 #include "scene/SceneManager.hpp"

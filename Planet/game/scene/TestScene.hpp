@@ -16,6 +16,7 @@ class TestScene : public gel::IScene {
 
        private:
         float gameTime;
+		gel::Drag drag;
         glm::vec3 position;
         glm::vec3 scale;
         glm::vec3 rotation;
