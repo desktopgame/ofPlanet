@@ -5,7 +5,7 @@
 
 class TitleScene : public gel::IScene {
        public:
-        explicit TitleScene(const std::shared_ptr<gel::GameDevice>& gameDevice);
+        explicit TitleScene();
         ~TitleScene();
         void show() override;
         void update() override;
@@ -22,6 +22,5 @@ class TitleScene : public gel::IScene {
         ButtonUI optionSprite;
         ButtonUI exitSprite;
         gel::ScreenBuffer screenBuffer;
-        std::shared_ptr<gel::GameDevice> gameDevice;
 };
 #endif

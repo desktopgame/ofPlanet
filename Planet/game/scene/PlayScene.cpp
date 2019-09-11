@@ -8,9 +8,8 @@
 #include "../../gel/shader/IRModel.hpp"
 #include "../world/BlockRegistry.hpp"
 #include "../world/gen/Generator.hpp"
-PlayScene::PlayScene(const std::shared_ptr<gel::GameDevice>& gameDevice)
-    : gameDevice(gameDevice),
-      planet(gel::ShaderRegistry::getInstance().get("Texture3D")),
+PlayScene::PlayScene()
+    : planet(gel::ShaderRegistry::getInstance().get("Texture3D")),
       eKeyTrigger('E'),
       crossHair(),
       screenBuffer(gel::ShaderRegistry::getInstance().get("Noise"),

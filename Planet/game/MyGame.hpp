@@ -14,6 +14,5 @@ class MyGame : public gel::Game {
         void onFinish() override;
         bool isExitNow;
         gel::SceneManager sceneManager;
-        std::shared_ptr<gel::GameDevice> gameDevice;
 };
 #endif

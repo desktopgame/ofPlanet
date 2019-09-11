@@ -2,9 +2,8 @@
 #include "../../gel/asset/AssetDatabase.hpp"
 #include "../resources.hpp"
 
-TitleScene::TitleScene(const std::shared_ptr<gel::GameDevice>& gameDevice)
-    : gameDevice(gameDevice),
-      finished(false),
+TitleScene::TitleScene()
+    : finished(false),
       screenBuffer(gel::ShaderRegistry::getInstance().get("Screen"),
                    gel::NameRule(), gel::Game::getInstance()->getWindowWidth(),
                    gel::Game::getInstance()->getWindowHeight()),

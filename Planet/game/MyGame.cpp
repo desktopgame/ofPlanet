@@ -4,10 +4,7 @@
 #include "scene/TestScene.hpp"
 #include "scene/TitleScene.hpp"
 #include "scene/TutorialScene.hpp"
-MyGame::MyGame()
-    : sceneManager(),
-      gameDevice(gel::GameDevice::make_shared("./assets")),
-      isExitNow(false) {}
+MyGame::MyGame() : sceneManager(), isExitNow(false) {}
 
 void MyGame::onInit() {
         this->outputDebugMessage = false;
@@ -26,22 +23,22 @@ void MyGame::onInit() {
         float filter;
         glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &filter);
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, filter);
-		gameDevice->getContentManager()->loadFully("./assets/image/Progress00.png");
-		gameDevice->getContentManager()->loadFully("./assets/image/Progress01.png");
-		gameDevice->getContentManager()->loadFully("./assets/image/Progress02.png");
-		gameDevice->getContentManager()->loadFully("./assets/image/Progress03.png");
-		gameDevice->getContentManager()->loadFully("./assets/image/Loading.png");
-		sceneManager.put("load", std::make_shared<LoadScene>(gameDevice));
-		sceneManager.bind("load");
+        getContentManager()->loadFully("./assets/image/Progress00.png");
+        getContentManager()->loadFully("./assets/image/Progress01.png");
+        getContentManager()->loadFully("./assets/image/Progress02.png");
+        getContentManager()->loadFully("./assets/image/Progress03.png");
+        getContentManager()->loadFully("./assets/image/Loading.png");
+        sceneManager.put("load", std::make_shared<LoadScene>());
+        sceneManager.bind("load");
 }
 
 void MyGame::onLoad() {
-        gameDevice->getContentManager()->load(Thread::OnBackground);
-		std::this_thread::sleep_for(std::chrono::seconds(1));
+        getContentManager()->load(Thread::OnBackground);
+        std::this_thread::sleep_for(std::chrono::seconds(1));
 }
 
 void MyGame::onStart() {
-        gameDevice->getContentManager()->load(Thread::OnGL);
+        getContentManager()->load(Thread::OnGL);
         // init block
         BlockRegistry& reg = BlockRegistry::getInstance();
         reg.addBlock(
@@ -58,11 +55,10 @@ void MyGame::onStart() {
             TexturePack::side1("./assets/image/block/LeafBlockSide.png"));
         reg.addBlock(
             TexturePack::side1("./assets/image/block/WaterBlockTop.png"));
-        sceneManager.put("play", std::make_shared<PlayScene>(gameDevice));
-        sceneManager.put("test", std::make_shared<TestScene>(gameDevice));
-        sceneManager.put("title", std::make_shared<TitleScene>(gameDevice));
-        sceneManager.put("tutorial",
-                         std::make_shared<TutorialScene>(gameDevice));
+        sceneManager.put("play", std::make_shared<PlayScene>());
+        sceneManager.put("test", std::make_shared<TestScene>());
+        sceneManager.put("title", std::make_shared<TitleScene>());
+        sceneManager.put("tutorial", std::make_shared<TutorialScene>());
         sceneManager.bind("test");
 }
 
@@ -71,7 +67,7 @@ void MyGame::onUpdate() {
         if (glfwGetKey(win, GLFW_KEY_ESCAPE) == GLFW_PRESS ||
             (glfwGetKey(win, 'Q') == GLFW_PRESS &&
              glfwGetKey(win, 'X') == GLFW_PRESS)) {
-                gameDevice->getContentManager()->unload();
+                getContentManager()->unload();
                 glfwSetWindowShouldClose(win, GL_TRUE);
                 isExitNow = true;
                 return;
@@ -88,4 +84,4 @@ void MyGame::onDraw() {
         glfwPollEvents();
 }
 
-void MyGame::onFinish() { gameDevice->getContentManager()->unload(); }
+void MyGame::onFinish() { getContentManager()->unload(); }

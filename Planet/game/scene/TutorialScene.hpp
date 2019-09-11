@@ -5,8 +5,7 @@
 
 class TutorialScene : public gel::IScene {
        public:
-        explicit TutorialScene(
-            const std::shared_ptr<gel::GameDevice>& gameDevice);
+        explicit TutorialScene();
         ~TutorialScene();
         void show() override;
         void update() override;
@@ -18,7 +17,6 @@ class TutorialScene : public gel::IScene {
        private:
         gel::MouseTrigger mouseTrigger;
         std::shared_ptr<gel::Camera> camera;
-        std::shared_ptr<gel::GameDevice> gameDevice;
         std::vector<gel::Sprite> sprites;
         int page;
         bool finished;

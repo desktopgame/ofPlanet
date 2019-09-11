@@ -7,7 +7,7 @@
 
 class PlayScene : public gel::IScene {
        public:
-        explicit PlayScene(const std::shared_ptr<gel::GameDevice>& gameDevice);
+        explicit PlayScene();
         ~PlayScene();
         void show() override;
         void update() override;
@@ -22,7 +22,7 @@ class PlayScene : public gel::IScene {
         float noiseTime;
         int score;
         std::shared_ptr<gel::IModel> tModel;
-        std::shared_ptr<gel::GameDevice> gameDevice;
+        std::shared_ptr<gel::ContentManager> contentManager;
         CrossHairUI crossHair;
         Planet planet;
         WarpPoint warp;

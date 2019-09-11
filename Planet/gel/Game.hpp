@@ -6,6 +6,7 @@
 #include "fbxsdk.hpp"
 #include "gli.hpp"
 namespace gel {
+class ContentManager;
 /**
  * Game is provide mainloop and many callback.
  * client will be extend this class for game develop.
@@ -106,6 +107,12 @@ class Game {
         FbxManager* getFbxManager() const;
 
         /**
+         * return a content manager.
+         * @return
+         */
+        std::shared_ptr<ContentManager> getContentManager() const;
+
+        /**
          * return a unique instance.
          * @return
          */
@@ -127,6 +134,7 @@ class Game {
         float deltaTime;
         bool outputDebugMessage;
         std::thread loadThread;
+        std::shared_ptr<ContentManager> contentManager;
         static void bridgeMouseButton(GLFWwindow* window, int button,
                                       int action, int mods);
         static void bridgeCursorMove(GLFWwindow* window, double x, double y);

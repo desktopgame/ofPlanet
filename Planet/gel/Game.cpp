@@ -5,6 +5,12 @@
 #include <sstream>
 #include <string>
 #include "gel.hpp"
+#include "pipeline/BmpPipeline.hpp"
+#include "pipeline/FbxPipeline.hpp"
+#include "pipeline/JpegPipeline.hpp"
+#include "pipeline/PngPipeline.hpp"
+#include "pipeline/ProxyPipeline.hpp"
+#include "pipeline/WavePipeline.hpp"
 #include "ui/GUI.hpp"
 namespace gel {
 Game* Game::instance = nullptr;
@@ -16,11 +22,24 @@ Game::Game()
       outputDebugMessage(true),
       deltaTime(0),
       finishedThread(false),
-      finishedMutex() {
+      finishedMutex(),
+      contentManager(std::make_shared<ContentManager>("./assets")) {
         if (Game::instance != nullptr) {
                 throw std::logic_error("should be game instance single");
         }
         Game::instance = this;
+        contentManager->add(
+            std::make_shared<gel::ProxyPipeline<gel::WavePipeline> >(".wav"));
+        contentManager->add(
+            std::make_shared<gel::ProxyPipeline<gel::BmpPipeline> >(".bmp"));
+        contentManager->add(
+            std::make_shared<gel::ProxyPipeline<gel::PngPipeline> >(".png"));
+        contentManager->add(
+            std::make_shared<gel::ProxyPipeline<gel::FbxPipeline> >(".fbx"));
+        contentManager->add(
+            std::make_shared<gel::ProxyPipeline<gel::JpegPipeline> >(".jpeg"));
+        contentManager->add(
+            std::make_shared<gel::ProxyPipeline<gel::JpegPipeline> >(".jpg"));
 }
 
 Game::~Game() {}
@@ -65,6 +84,10 @@ GLFWwindow* Game::getWindow() const { return this->mWindow; }
 float Game::getDeltaTime() const { return this->deltaTime; }
 
 FbxManager* Game::getFbxManager() const { return fbxManager; }
+
+std::shared_ptr<ContentManager> Game::getContentManager() const {
+        return contentManager;
+}
 
 Game* Game::getInstance() { return instance; }
 
@@ -340,12 +363,12 @@ void Game::onMainLoop1() {
 #if DEBUG
                 gui::internal::endFrame();
 #endif
-				{
-					std::scoped_lock<std::mutex> lock(finishedMutex);
-					if (finishedThread) {
-						break;
-					}
-				}
+                {
+                        std::scoped_lock<std::mutex> lock(finishedMutex);
+                        if (finishedThread) {
+                                break;
+                        }
+                }
         }
 }
 

@@ -4,7 +4,6 @@
 #include "gli.hpp"
 // GLI
 #include "Game.hpp"
-#include "asset/GameDevice.hpp"
 #include "asset/IAudio.hpp"
 #include "asset/IModel.hpp"
 #include "asset/ITexture.hpp"

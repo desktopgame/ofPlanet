@@ -9,9 +9,8 @@
 #include "../world/Block.hpp"
 #include "../world/BlockRegistry.hpp"
 #include "../world/Space.hpp"
-TestScene::TestScene(const std::shared_ptr<gel::GameDevice>& gameDevice)
-    : gameDevice(gameDevice),
-      shader(gel::ShaderRegistry::getInstance().get("TextureFixed")),
+TestScene::TestScene()
+    : shader(gel::ShaderRegistry::getInstance().get("TextureFixed")),
       plane(shader),
       model(1.0f),
       filename("./assets/model/Gun1028.fbx"),
@@ -157,17 +156,18 @@ void TestScene::draw() {
                              glm::value_ptr(model), NULL,
                              useSnap ? &snap.x : NULL);
 
-		ImGui::PushStyleColor(ImGuiCol_TitleBgActive, ImVec4(0.0f, 0.7f, 0.2f, 1.0f));
-		ImGui::PushStyleColor(ImGuiCol_TitleBg, ImVec4(0.0f, 0.3f, 0.1f, 1.0f));
-		ImGui::SetNextWindowPos(ImVec2(20, 20), ImGuiSetCond_Once);
-		ImGui::SetNextWindowSize(ImVec2(200, 300), ImGuiSetCond_Once);
+        ImGui::PushStyleColor(ImGuiCol_TitleBgActive,
+                              ImVec4(0.0f, 0.7f, 0.2f, 1.0f));
+        ImGui::PushStyleColor(ImGuiCol_TitleBg, ImVec4(0.0f, 0.3f, 0.1f, 1.0f));
+        ImGui::SetNextWindowPos(ImVec2(20, 20), ImGuiSetCond_Once);
+        ImGui::SetNextWindowSize(ImVec2(200, 300), ImGuiSetCond_Once);
 
-		ImGui::Begin("config 1");
-		ImGui::DragFloat3("light", &lightPos.x, -1000, 1000);
-		ImGui::End();
+        ImGui::Begin("config 1");
+        ImGui::DragFloat3("light", &lightPos.x, -1000, 1000);
+        ImGui::End();
 
-		ImGui::PopStyleColor();
-		ImGui::PopStyleColor();
+        ImGui::PopStyleColor();
+        ImGui::PopStyleColor();
         gel::gui::render();
 #endif
 }

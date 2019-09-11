@@ -8,7 +8,7 @@
 
 class LoadScene : public gel::IScene {
        public:
-        explicit LoadScene(const std::shared_ptr<gel::GameDevice>& gameDevice);
+        explicit LoadScene();
         ~LoadScene();
         void show() override;
         void update() override;
@@ -18,13 +18,12 @@ class LoadScene : public gel::IScene {
         bool isFinished() const override;
 
        private:
-		   gel::Sprite background;
-        std::shared_ptr<gel::GameDevice> gameDevice;
-		std::vector <gel::Sprite> sprites;
-		void addSprite(std::shared_ptr<gel::ITexture> texture);
+        gel::Sprite background;
+        std::vector<gel::Sprite> sprites;
+        void addSprite(std::shared_ptr<gel::ITexture> texture);
         bool finished;
-		gel::Timer timer;
-		std::shared_ptr<gel::Camera> camera;
-		int index;
+        gel::Timer timer;
+        std::shared_ptr<gel::Camera> camera;
+        int index;
 };
 #endif

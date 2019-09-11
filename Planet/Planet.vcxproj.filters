@@ -285,9 +285,6 @@
     <ClCompile Include="gel\asset\FbxModel.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="gel\asset\GameDevice.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="gel\asset\JpegTexture.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -630,9 +627,6 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="gel\asset\fbxsdk.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="gel\asset\GameDevice.hpp">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="gel\asset\IAsset.hpp">

@@ -6,7 +6,7 @@
 #define INDEX_SIZE (36)
 class TestScene : public gel::IScene {
        public:
-        explicit TestScene(const std::shared_ptr<gel::GameDevice>& gameDevice);
+        explicit TestScene();
         void show() override;
         void update() override;
         void draw() override;
@@ -28,6 +28,5 @@ class TestScene : public gel::IScene {
         std::shared_ptr<gel::Camera> camera;
         gel::ScreenBuffer screenBuffer;
         std::shared_ptr<gel::IModel> imodel;
-        std::shared_ptr<gel::GameDevice> gameDevice;
 };
 #endif

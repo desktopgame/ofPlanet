@@ -36,13 +36,13 @@ void ContentManager::remove(const std::shared_ptr<IContentPipeline>& pipe) {
 
 void ContentManager::loadFully(const std::string& path) {
         auto iter = files.begin();
-		ContentLoadEvent evt;
+        ContentLoadEvent evt;
         while (iter != files.end()) {
                 if (*iter != path) {
-						++iter;
+                        ++iter;
                         continue;
                 }
-				evt.path = path;
+                evt.path = path;
                 std::for_each(pipes.begin(), pipes.end(), [&, path](auto p) {
                         if (p->accept(path)) {
                                 p->load(path, Thread::OnBackground);
@@ -55,10 +55,11 @@ void ContentManager::loadFully(const std::string& path) {
         }
 }
 
-void ContentManager::load(Thread thread) {	;
-		ContentLoadEvent evt;
+void ContentManager::load(Thread thread) {
+        ;
+        ContentLoadEvent evt;
         std::for_each(files.begin(), files.end(), [&](auto file) {
-				evt.path = file;
+                evt.path = file;
                 std::for_each(pipes.begin(), pipes.end(), [&](auto p) {
                         if (p->accept(file)) {
                                 p->load(file, thread);
@@ -69,9 +70,9 @@ void ContentManager::load(Thread thread) {	;
 }
 
 void ContentManager::unload() {
-		ContentUnloadEvent evt;
+        ContentUnloadEvent evt;
         std::for_each(files.begin(), files.end(), [&](auto file) {
-				evt.path = file;
+                evt.path = file;
                 std::for_each(pipes.begin(), pipes.end(), [&](auto p) {
                         if (p->accept(file)) {
                                 p->unload(file);

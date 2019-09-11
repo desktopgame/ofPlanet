@@ -167,7 +167,6 @@
     <ClCompile Include="gel\asset\AssetDatabase.cpp" />
     <ClCompile Include="gel\asset\BmpTexture.cpp" />
     <ClCompile Include="gel\asset\FbxModel.cpp" />
-    <ClCompile Include="gel\asset\GameDevice.cpp" />
     <ClCompile Include="gel\asset\JpegTexture.cpp" />
     <ClCompile Include="gel\asset\PngTexture.cpp" />
     <ClCompile Include="gel\asset\TextureIO.cpp" />
@@ -270,7 +269,6 @@
     <ClInclude Include="gel\asset\BmpTexture.hpp" />
     <ClInclude Include="gel\asset\FbxModel.hpp" />
     <ClInclude Include="gel\asset\fbxsdk.h" />
-    <ClInclude Include="gel\asset\GameDevice.hpp" />
     <ClInclude Include="gel\asset\IAsset.hpp" />
     <ClInclude Include="gel\asset\IModel.hpp" />
     <ClInclude Include="gel\asset\IAudio.hpp" />

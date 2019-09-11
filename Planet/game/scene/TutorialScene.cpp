@@ -1,11 +1,10 @@
 #include "TutorialScene.hpp"
 #include "../../gel/asset/AssetDatabase.hpp"
 
-TutorialScene::TutorialScene(const std::shared_ptr<gel::GameDevice>& gameDevice)
+TutorialScene::TutorialScene()
     : sprites(),
       page(0),
       finished(false),
-      gameDevice(gameDevice),
       camera(std::make_shared<gel::Camera>()),
       mouseTrigger(GLFW_MOUSE_BUTTON_LEFT) {
         std::vector<std::string> spritePaths = std::vector<std::string>{
