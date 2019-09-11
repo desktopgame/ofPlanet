@@ -18,7 +18,10 @@ TestScene::TestScene()
                    gel::NameRule(), gel::Game::getInstance()->getWindowWidth(),
                    gel::Game::getInstance()->getWindowHeight()),
       sprite(gel::ShaderRegistry::getInstance().get("Texture2D")),
-      camera(std::make_shared<gel::Camera>()) {
+      camera(std::make_shared<gel::Camera>()),
+      position(0),
+      scale(1),
+      rotation(0) {
         plane.init(0.5f);
         glEnableClientState(GL_NORMAL_ARRAY);
         glEnableClientState(GL_VERTEX_ARRAY);
@@ -39,7 +42,8 @@ void TestScene::show() {
         glEnable(GL_BLEND);
         glDisable(GL_CULL_FACE);
 }
-void TestScene::update() {}
+void TestScene::update() {
+}
 void TestScene::draw() {
         float delta = gel::Game::getInstance()->getDeltaTime();
         this->gameTime += delta;
@@ -55,6 +59,12 @@ void TestScene::draw() {
         camera->screenHeight = windowSize.y;
         camera->calculate();
         // calculate matrix
+		this->model = glm::mat4(1.0f);
+		this->model = glm::translate(model, position);
+		this->model = glm::rotate(model, rotation.y, glm::vec3(0, 1, 0));
+		this->model = glm::rotate(model, rotation.x, glm::vec3(1, 0, 0));
+		this->model = glm::rotate(model, rotation.z, glm::vec3(0, 0, 1));
+		this->model = glm::scale(model, scale);
         auto projection =
             glm::perspective(30.0f, 1280.0f / 720.0f, 1.0f, 1000.0f);
         auto view =
@@ -91,85 +101,6 @@ void TestScene::draw() {
         sprite.draw(camera);
 //        screenBuffer.unbind();
 //        screenBuffer.render();
-#if DEBUG
-        static ImGuizmo::OPERATION mCurrentGizmoOperation(ImGuizmo::ROTATE);
-        static ImGuizmo::MODE mCurrentGizmoMode(ImGuizmo::WORLD);
-        if (ImGui::IsKeyPressed(90))
-                mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
-        if (ImGui::IsKeyPressed(69)) mCurrentGizmoOperation = ImGuizmo::ROTATE;
-        if (ImGui::IsKeyPressed(82))  // r Key
-                mCurrentGizmoOperation = ImGuizmo::SCALE;
-        if (ImGui::RadioButton("Translate",
-                               mCurrentGizmoOperation == ImGuizmo::TRANSLATE))
-                mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
-        ImGui::SameLine();
-        if (ImGui::RadioButton("Rotate",
-                               mCurrentGizmoOperation == ImGuizmo::ROTATE))
-                mCurrentGizmoOperation = ImGuizmo::ROTATE;
-        ImGui::SameLine();
-        if (ImGui::RadioButton("Scale",
-                               mCurrentGizmoOperation == ImGuizmo::SCALE))
-                mCurrentGizmoOperation = ImGuizmo::SCALE;
-        float matrixTranslation[3], matrixRotation[3], matrixScale[3];
-        ImGuizmo::DecomposeMatrixToComponents(glm::value_ptr(model),
-                                              matrixTranslation, matrixRotation,
-                                              matrixScale);
-        ImGui::InputFloat3("Tr", matrixTranslation, 3);
-        ImGui::InputFloat3("Rt", matrixRotation, 3);
-        ImGui::InputFloat3("Sc", matrixScale, 3);
-        ImGuizmo::RecomposeMatrixFromComponents(matrixTranslation,
-                                                matrixRotation, matrixScale,
-                                                glm::value_ptr(model));
-
-        if (mCurrentGizmoOperation != ImGuizmo::SCALE) {
-                if (ImGui::RadioButton("Local",
-                                       mCurrentGizmoMode == ImGuizmo::LOCAL))
-                        mCurrentGizmoMode = ImGuizmo::LOCAL;
-                ImGui::SameLine();
-                if (ImGui::RadioButton("World",
-                                       mCurrentGizmoMode == ImGuizmo::WORLD))
-                        mCurrentGizmoMode = ImGuizmo::WORLD;
-        }
-        static bool useSnap(false);
-        if (ImGui::IsKeyPressed(83)) useSnap = !useSnap;
-        ImGui::Checkbox("", &useSnap);
-        ImGui::SameLine();
-        glm::vec3 snap = glm::vec3(0);
-        switch (mCurrentGizmoOperation) {
-                case ImGuizmo::TRANSLATE:
-                        // snap = config.mSnapTranslation;
-                        ImGui::InputFloat3("Snap", &snap.x);
-                        break;
-                case ImGuizmo::ROTATE:
-                        // snap = config.mSnapRotation;
-                        ImGui::InputFloat("Angle Snap", &snap.x);
-                        break;
-                case ImGuizmo::SCALE:
-                        // snap = config.mSnapScale;
-                        ImGui::InputFloat("Scale Snap", &snap.x);
-                        break;
-        }
-        ImGuiIO& io = ImGui::GetIO();
-        ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
-        ImGuizmo::Manipulate(glm::value_ptr(view), glm::value_ptr(projection),
-                             mCurrentGizmoOperation, mCurrentGizmoMode,
-                             glm::value_ptr(model), NULL,
-                             useSnap ? &snap.x : NULL);
-
-        ImGui::PushStyleColor(ImGuiCol_TitleBgActive,
-                              ImVec4(0.0f, 0.7f, 0.2f, 1.0f));
-        ImGui::PushStyleColor(ImGuiCol_TitleBg, ImVec4(0.0f, 0.3f, 0.1f, 1.0f));
-        ImGui::SetNextWindowPos(ImVec2(20, 20), ImGuiSetCond_Once);
-        ImGui::SetNextWindowSize(ImVec2(200, 300), ImGuiSetCond_Once);
-
-        ImGui::Begin("config 1");
-        ImGui::DragFloat3("light", &lightPos.x, -1000, 1000);
-        ImGui::End();
-
-        ImGui::PopStyleColor();
-        ImGui::PopStyleColor();
-        gel::gui::render();
-#endif
 }
 void TestScene::hide() {}
 bool TestScene::isFinished() const { return false; }

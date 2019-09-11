@@ -157,6 +157,7 @@
     <ClCompile Include="game\world\TexturePack.cpp" />
     <ClCompile Include="game\world\WarpPoint.cpp" />
     <ClCompile Include="game\world\World.cpp" />
+    <ClCompile Include="gel\input\Input.cpp" />
     <ClCompile Include="gel\pipeline\BmpPipeline.cpp" />
     <ClCompile Include="gel\pipeline\ContentManager.cpp" />
     <ClCompile Include="gel\pipeline\FbxPipeline.cpp" />
@@ -255,6 +256,7 @@
     <ClInclude Include="game\world\TexturePack.hpp" />
     <ClInclude Include="game\world\WarpPoint.hpp" />
     <ClInclude Include="game\world\World.hpp" />
+    <ClInclude Include="gel\input\Input.hpp" />
     <ClInclude Include="gel\pipeline\BmpPipeline.hpp" />
     <ClInclude Include="gel\pipeline\ContentManager.hpp" />
     <ClInclude Include="gel\pipeline\FbxPipeline.hpp" />

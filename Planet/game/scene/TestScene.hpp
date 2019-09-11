@@ -16,9 +16,9 @@ class TestScene : public gel::IScene {
 
        private:
         float gameTime;
-        // glm::vec3 position;
-        // glm::vec3 scale;
-        // glm::vec3 rotation;
+        glm::vec3 position;
+        glm::vec3 scale;
+        glm::vec3 rotation;
         glm::vec3 lightPos;
         std::string filename;
         gel::Sprite sprite;
