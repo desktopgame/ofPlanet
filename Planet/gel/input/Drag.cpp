@@ -2,19 +2,19 @@
 #include "Input.hpp"
 
 namespace gel {
-	Drag::Drag() : clicked(false)
+	Drag::Drag(MouseButton button) : clicked(false), button(button)
 	{
 	}
 	void Drag::update()
 	{
 		if (!clicked) {
-			if (Input::isMousePress(MouseButton::Left)) {
+			if (Input::isMousePress(button)) {
 				this->clicked = true;
 				this->oldPosition = Input::getMousePosition();
 				this->newPosition = oldPosition;
 			}
 		} else {
-			if (Input::isMousePress(MouseButton::Left)) {
+			if (Input::isMousePress(button)) {
 				this->oldPosition = this->newPosition;
 				this->newPosition = Input::getMousePosition();
 			}

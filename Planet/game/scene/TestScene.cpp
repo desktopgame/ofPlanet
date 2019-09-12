@@ -22,7 +22,7 @@ TestScene::TestScene()
       position(0),
       scale(1),
       rotation(0),
-      drag() {
+	  leftDrag(gel::MouseButton::Left) {
         plane.init(0.5f);
         glEnableClientState(GL_NORMAL_ARRAY);
         glEnableClientState(GL_VERTEX_ARRAY);
@@ -44,10 +44,12 @@ void TestScene::show() {
         glDisable(GL_CULL_FACE);
 }
 void TestScene::update() {
-	drag.update();
-	if (drag.isDrag()) {
-		this->position.x += drag.getDifference().x;
-		this->position.y += drag.getDifference().y;
+	leftDrag.update();
+	if (leftDrag.isDrag()) {
+		this->position.x += leftDrag.getDifference().x;
+		this->position.y += leftDrag.getDifference().y;
+		if (rotation.x > 360) rotation.x -= 360;
+		if (rotation.y > 360) rotation.y -= 360;
 	}
 }
 void TestScene::draw() {
