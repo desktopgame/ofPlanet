@@ -81,6 +81,7 @@ void ScreenBuffer::render() {
         glDrawArrays(GL_TRIANGLES, 0, 6);
         vao.unbind();
         shader->unuse();
+		glEnable(GL_DEPTH_TEST);
 }
 // private
 void ScreenBuffer::initRect() {
