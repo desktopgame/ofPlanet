@@ -9,7 +9,8 @@ namespace gel {
 enum class PlaneType { Forward, Backward, Left, Right, Top, Bottom };
 class Plane {
        public:
-        explicit Plane(const std::shared_ptr<Shader>& shader, const NameRule& nameRule);
+        explicit Plane(const std::shared_ptr<Shader>& shader,
+                       const NameRule& nameRule);
         explicit Plane(const std::shared_ptr<Shader>& shader);
         void init(float size);
         void destroy();

@@ -8,7 +8,8 @@
 namespace gel {
 class Line {
        public:
-        explicit Line(const std::shared_ptr<Shader>& shader, const NameRule& nameRule);
+        explicit Line(const std::shared_ptr<Shader>& shader,
+                      const NameRule& nameRule);
         void init(const glm::vec4 start, const glm::vec4 end, glm::vec4 color);
         void update(const glm::vec4 start, const glm::vec4 end);
         void destroy();

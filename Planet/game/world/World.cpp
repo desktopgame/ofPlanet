@@ -1,6 +1,7 @@
 #include "World.hpp"
 
-World::World(const std::shared_ptr< gel::Shader>& shader, int xSize, int ySize, int zSize)
+World::World(const std::shared_ptr<gel::Shader>& shader, int xSize, int ySize,
+             int zSize)
     : table(),
       _XSize(xSize),
       _YSize(ySize),

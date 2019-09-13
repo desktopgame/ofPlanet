@@ -120,9 +120,9 @@ void IRMaterial::draw(std::shared_ptr<IRMesh>& mesh, const NameRule& nameRule) {
 
         shader->use();
         shader->setUniformMatrix4fv(nameRule.uniformMVPMatrix, 1, GL_FALSE,
-                                   glm::value_ptr(mvp));
+                                    glm::value_ptr(mvp));
         shader->setUniformMatrix4fv(nameRule.uniformNormalMatrix, 1, GL_FALSE,
-                                   glm::value_ptr(normalMatrix));
+                                    glm::value_ptr(normalMatrix));
 
         if (textureNo > 0) {
                 glEnableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -135,7 +135,7 @@ void IRMaterial::draw(std::shared_ptr<IRMesh>& mesh, const NameRule& nameRule) {
                 if (getType() == IRMaterialType::Color) {
                         Color4 color = getMainColor();
                         shader->setUniform4f(nameRule.uniformColor, color.r,
-                                            color.g, color.b, color.a);
+                                             color.g, color.b, color.a);
                 }
         }
         if (!triangles.empty()) {
@@ -200,15 +200,15 @@ void IRMaterial::applyTriangleVertex(const NameRule& nameRule) {
                 glEnableVertexAttribArray(uvAttrib);
         } else {
                 shader->setUniform4f(nameRule.uniformColor, mainColor.r,
-                                    mainColor.g, mainColor.b, mainColor.a);
+                                     mainColor.g, mainColor.b, mainColor.a);
         }
         shader->setUniform1f(nameRule.uniformShininess, shininess);
         shader->setUniform4f(nameRule.uniformAmbient, ambient.r, ambient.g,
-                            ambient.b, ambient.a);
+                             ambient.b, ambient.a);
         shader->setUniform4f(nameRule.uniformDiffuse, diffuse.r, diffuse.g,
-                            diffuse.b, diffuse.a);
+                             diffuse.b, diffuse.a);
         shader->setUniform4f(nameRule.uniformSpecular, specular.r, specular.g,
-                            specular.b, specular.a);
+                             specular.b, specular.a);
         triVAO.unbind();
         triVertex.unbind();
         triNormal.unbind();
@@ -237,15 +237,15 @@ void IRMaterial::applyQuadVertex(const NameRule& nameRule) {
                 glEnableVertexAttribArray(uvAttrib);
         } else {
                 shader->setUniform4f(nameRule.uniformColor, mainColor.r,
-                                    mainColor.g, mainColor.b, mainColor.a);
+                                     mainColor.g, mainColor.b, mainColor.a);
         }
         shader->setUniform1f(nameRule.uniformShininess, shininess);
         shader->setUniform4f(nameRule.uniformAmbient, ambient.r, ambient.g,
-                            ambient.b, ambient.a);
+                             ambient.b, ambient.a);
         shader->setUniform4f(nameRule.uniformDiffuse, diffuse.r, diffuse.g,
-                            diffuse.b, diffuse.a);
+                             diffuse.b, diffuse.a);
         shader->setUniform4f(nameRule.uniformSpecular, specular.r, specular.g,
-                            specular.b, specular.a);
+                             specular.b, specular.a);
         quadVAO.unbind();
         quadVertex.unbind();
         quadNormal.unbind();

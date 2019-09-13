@@ -12,7 +12,7 @@ float Planet::EYE_HEIGHT = 2.5f;
 float Planet::MOVE_SPEED = 0.20f;
 float Planet::JUMP_SPEED = 0.60f;
 float Planet::ROTATE_SPEED = 4.0f;
-Planet::Planet(const std::shared_ptr< gel::Shader>& shader)
+Planet::Planet(const std::shared_ptr<gel::Shader>& shader)
     : shader(shader),
       world(shader, WSIZE_X, WSIZE_Y, WSIZE_Z),
       playerEntity(std::make_shared<EntityPhysics>()),
@@ -129,9 +129,9 @@ void Planet::draw() {
         shader->setUniform4fv("uSpecular", 1, specular);
         shader->setUniform4fv("uAmbient", 1, ambient);
         shader->setUniformMatrix4fv("uMVPMatrix", 1, GL_FALSE,
-                                   glm::value_ptr(playerCamera->getMVP()));
+                                    glm::value_ptr(playerCamera->getMVP()));
         shader->setUniformMatrix4fv("uNormalMatrix", 1, GL_FALSE,
-                                   glm::value_ptr(playerCamera->getNormal()));
+                                    glm::value_ptr(playerCamera->getNormal()));
         shader->unuse();
         /*
                 auto& beamShader =

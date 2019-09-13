@@ -15,11 +15,15 @@ PlayScene::PlayScene()
       screenBuffer(gel::ShaderRegistry::getInstance().get("Noise"),
                    gel::NameRule(), gel::Game::getInstance()->getWindowWidth(),
                    gel::Game::getInstance()->getWindowHeight()),
+      gunScrBuffer(gel::ShaderRegistry::getInstance().get("Noise"),
+                   gel::NameRule(), gel::Game::getInstance()->getWindowWidth(),
+                   gel::Game::getInstance()->getWindowHeight()),
       skybox(gel::ShaderRegistry::getInstance().get("SkyBox"), gel::NameRule()),
       warp(gel::ShaderRegistry::getInstance().get("Color"), gel::NameRule()),
       random(),
-	  gPos(0,-10,4),
+      gPos(0, -10, 4),
       gRot(0.0f, 0.0f, 9.2f) {
+        gunScrBuffer.init();
         screenBuffer.init();
         this->tModel = gel::AssetDatabase::getAsset<gel::IModel>(
             "./assets/model/Gun1028.fbx");
@@ -64,8 +68,7 @@ void PlayScene::draw() {
         float delta = gel::Game::getInstance()->getDeltaTime();
         this->gameTime += delta;
         // apply matrix
-        auto skyboxShader =
-            gel::ShaderRegistry::getInstance().get("SkyBox");
+        auto skyboxShader = gel::ShaderRegistry::getInstance().get("SkyBox");
         auto camera = planet.getCamera();
         glm::vec2 windowSize = gel::Game::getInstance()->getWindowSize();
         glm::vec2 solutionSize = gel::Game::getInstance()->getSolutionSize();
@@ -77,16 +80,14 @@ void PlayScene::draw() {
             "uProjectionMatrix", 1, GL_FALSE,
             glm::value_ptr(camera->getProjection()));
         skyboxShader->setUniformMatrix4fv("uViewMatrix", 1, GL_FALSE,
-                                         glm::value_ptr(camera->getView()));
+                                          glm::value_ptr(camera->getView()));
         skyboxShader->unuse();
-        auto circleShader =
-            gel::ShaderRegistry::getInstance().get("Color");
+        auto circleShader = gel::ShaderRegistry::getInstance().get("Color");
         circleShader->use();
         circleShader->setUniformMatrix4fv("uMVPMatrix", 1, GL_FALSE,
-                                         glm::value_ptr(camera->getMVP()));
+                                          glm::value_ptr(camera->getMVP()));
         circleShader->unuse();
-        auto noiseShader =
-            gel::ShaderRegistry::getInstance().get("CRT");
+        auto noiseShader = gel::ShaderRegistry::getInstance().get("CRT");
         noiseShader->use();
         // check warp
         auto player = planet.getPlayer();
@@ -99,75 +100,78 @@ void PlayScene::draw() {
                 this->noiseTime = 0.0f;
         }
         noiseShader->unuse();
-        auto colorShader =
-            gel::ShaderRegistry::getInstance().get("ColorFixed");
+        auto colorShader = gel::ShaderRegistry::getInstance().get("ColorFixed");
         colorShader->use();
         colorShader->setUniformMatrix4fv("uMVPMatrix", 1, GL_FALSE,
-                                        glm::value_ptr(camera->getMVP()));
+                                         glm::value_ptr(camera->getMVP()));
         colorShader->setUniformMatrix4fv("uNormalMatrix", 1, GL_FALSE,
-                                        glm::value_ptr(camera->getNormal()));
+                                         glm::value_ptr(camera->getNormal()));
         colorShader->setUniform4f("uLightPos", 64, 48, 64, 1.0f);
         colorShader->unuse();
-        auto texShader =
-            gel::ShaderRegistry::getInstance().get("TextureFixed");
+        auto texShader = gel::ShaderRegistry::getInstance().get("TextureFixed");
         texShader->use();
         texShader->setUniformMatrix4fv("uMVPMatrix", 1, GL_FALSE,
-                                      glm::value_ptr(camera->getMVP()));
+                                       glm::value_ptr(camera->getMVP()));
         texShader->setUniformMatrix4fv("uNormalMatrix", 1, GL_FALSE,
-                                      glm::value_ptr(camera->getNormal()));
+                                       glm::value_ptr(camera->getNormal()));
         texShader->setUniform4f("uLightPos", 64, 48, 64, 1.0f);
         texShader->unuse();
         // set matrix
         auto irtModel = tModel->getIRModel();
         auto pos = camera->transform.position;
         auto rot = camera->transform.rotation;
-		auto look = glm::lookAt(pos, pos + camera->transform.forward(), glm::vec3(0, 1, 0));
+        auto look = glm::lookAt(pos, pos + camera->transform.forward(),
+                                glm::vec3(0, 1, 0));
 
-		auto gModel = glm::mat4(1.0f);
-		auto gTranslate = glm::translate(gModel, gPos);
-		auto gRotate =
-			glm::rotate(gModel, gRot.y, glm::vec3(0, 1, 0)) *
-			glm::rotate(gModel, gRot.x, glm::vec3(1, 0, 0)) *
-			glm::rotate(gModel, gRot.z, glm::vec3(0, 0, 1));
-		auto gScale = glm::scale(gModel, glm::vec3(0.1f, 0.1f, 0.1f));
-		gModel = gTranslate * gRotate * gScale;
+        auto gModel = glm::mat4(1.0f);
+        auto gTranslate = glm::translate(gModel, gPos);
+        auto gRotate = glm::rotate(gModel, gRot.y, glm::vec3(0, 1, 0)) *
+                       glm::rotate(gModel, gRot.x, glm::vec3(1, 0, 0)) *
+                       glm::rotate(gModel, gRot.z, glm::vec3(0, 0, 1));
+        auto gScale = glm::scale(gModel, glm::vec3(0.1f, 0.1f, 0.1f));
+        gModel = gTranslate * gRotate * gScale;
 
-		auto gView = glm::lookAt(glm::vec3(0,0,0), glm::vec3(0,0,-1), glm::vec3(0, -1, 0));
+        auto gView = glm::lookAt(glm::vec3(0, 0, 0), glm::vec3(0, 0, -1),
+                                 glm::vec3(0, -1, 0));
 
         irtModel->setModelMatrix(gModel);
         irtModel->setViewMatrix(gView);
         irtModel->setProjectionMatrix(camera->getProjection());
+        gunScrBuffer.bind();
+        texShader->use();
+        texShader->setUniform4f("uLightPos", 0, 0, 0, 1.0f);
+        texShader->unuse();
+        irtModel->draw();
+        gunScrBuffer.unbind();
         // double buffered rendering
         screenBuffer.bind();
         skybox.draw();
         planet.draw();
         warp.draw();
 
-		texShader->use();
-		texShader->setUniform4f("uLightPos", 0, 0, 0, 1.0f);
-		texShader->unuse();
-		irtModel->draw();
         screenBuffer.unbind();
         screenBuffer.render();
+        gunScrBuffer.render();
         crossHair.draw(planet.getCamera());
         if (noiseTime > 3.0f) {
                 warp.destroy();
                 goNextPlanet();
         }
 
-		ImGui::PushStyleColor(ImGuiCol_TitleBgActive, ImVec4(0.0f, 0.7f, 0.2f, 1.0f));
-		ImGui::PushStyleColor(ImGuiCol_TitleBg, ImVec4(0.0f, 0.3f, 0.1f, 1.0f));
-		ImGui::SetNextWindowPos(ImVec2(20, 20), ImGuiSetCond_Once);
-		ImGui::SetNextWindowSize(ImVec2(200, 300), ImGuiSetCond_Once);
+        ImGui::PushStyleColor(ImGuiCol_TitleBgActive,
+                              ImVec4(0.0f, 0.7f, 0.2f, 1.0f));
+        ImGui::PushStyleColor(ImGuiCol_TitleBg, ImVec4(0.0f, 0.3f, 0.1f, 1.0f));
+        ImGui::SetNextWindowPos(ImVec2(20, 20), ImGuiSetCond_Once);
+        ImGui::SetNextWindowSize(ImVec2(200, 300), ImGuiSetCond_Once);
 
-		ImGui::Begin("config 1");
-		ImGui::DragFloat3("gPos", &gPos.x, -100, 100);
-		ImGui::DragFloat3("gRot", &gRot.x, 0, 360);
-		ImGui::End();
+        ImGui::Begin("config 1");
+        ImGui::DragFloat3("gPos", &gPos.x, -100, 100);
+        ImGui::DragFloat3("gRot", &gRot.x, 0, 360);
+        ImGui::End();
 
-		ImGui::PopStyleColor();
-		ImGui::PopStyleColor();
-		gel::gui::render();
+        ImGui::PopStyleColor();
+        ImGui::PopStyleColor();
+        gel::gui::render();
 }
 
 void PlayScene::hide() {}

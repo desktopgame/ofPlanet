@@ -14,17 +14,20 @@ ShaderRegistry::~ShaderRegistry() {
 
 void ShaderRegistry::put(const std::string& name, const std::string& vertFile,
                          const std::string& fragFile) {
-		auto s = std::make_shared<Shader>();
+        auto s = std::make_shared<Shader>();
         s->link(gel::readAllText(vertFile), gel::readAllText(fragFile));
         put(name, s);
 }
 
-void ShaderRegistry::put(const std::string& name, const std::shared_ptr<Shader>& shader) {
+void ShaderRegistry::put(const std::string& name,
+                         const std::shared_ptr<Shader>& shader) {
         map.insert_or_assign(name, shader);
 }
 
 void ShaderRegistry::remove(const std::string& name) { map.erase(name); }
-std::shared_ptr<Shader> ShaderRegistry::get(const std::string& name) { return map.at(name); }
+std::shared_ptr<Shader> ShaderRegistry::get(const std::string& name) {
+        return map.at(name);
+}
 
 ShaderRegistry& ShaderRegistry::getInstance() {
         static ShaderRegistry instance;

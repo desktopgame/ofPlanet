@@ -5,7 +5,8 @@
 
 class WarpPoint {
        public:
-        explicit WarpPoint(const std::shared_ptr<gel::Shader>& shader, const gel::NameRule& nameRule);
+        explicit WarpPoint(const std::shared_ptr<gel::Shader>& shader,
+                           const gel::NameRule& nameRule);
         void init(const glm::vec4 basePoint);
         void destroy();
         void draw();

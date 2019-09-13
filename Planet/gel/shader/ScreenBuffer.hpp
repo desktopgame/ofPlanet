@@ -12,8 +12,8 @@
 namespace gel {
 class ScreenBuffer {
        public:
-        explicit ScreenBuffer(const std::shared_ptr<Shader>& shader, const NameRule nameRule,
-                              int width, int height);
+        explicit ScreenBuffer(const std::shared_ptr<Shader>& shader,
+                              const NameRule nameRule, int width, int height);
         void init();
         void destroy();
         void bind();

@@ -15,7 +15,8 @@ Plane::Plane(const std::shared_ptr<Shader>& shader, const NameRule& nameRule)
       nameRule(nameRule),
       initFlag(false) {}
 
-Plane::Plane(const std::shared_ptr<Shader>& shader) : Plane(shader, NameRule()) {}
+Plane::Plane(const std::shared_ptr<Shader>& shader)
+    : Plane(shader, NameRule()) {}
 
 void Plane::init(float size) {
         initFlag.check(false, "already initalized");
@@ -88,8 +89,8 @@ void Plane::render(Buffer<float> posBuf, int count) {
         glVertexAttribDivisor(shader->getAttribLocation(nameRule.attribUV), 0);
         glVertexAttribDivisor(shader->getAttribLocation(nameRule.attribNormal),
                               0);
-        glVertexAttribDivisor(shader->getAttribLocation(nameRule.attribPosition),
-                              1);
+        glVertexAttribDivisor(
+            shader->getAttribLocation(nameRule.attribPosition), 1);
 
         glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, NULL,
                                 count);

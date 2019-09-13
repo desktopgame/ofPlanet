@@ -10,7 +10,8 @@
 namespace gel {
 class Sprite {
        public:
-        explicit Sprite(const std::shared_ptr<Shader>& shader, const NameRule nameRule);
+        explicit Sprite(const std::shared_ptr<Shader>& shader,
+                        const NameRule nameRule);
         explicit Sprite(const std::shared_ptr<Shader>& shader);
         void init(const GLuint texture, const glm::vec2 pos,
                   const glm::vec2 size, const float alpha);

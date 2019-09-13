@@ -3,7 +3,8 @@
 #include "../asset/AssetDatabase.hpp"
 #include "../asset/ITexture.hpp"
 namespace gel {
-CubeMap::CubeMap(const std::shared_ptr<Shader>& shader, const NameRule& nameRule)
+CubeMap::CubeMap(const std::shared_ptr<Shader>& shader,
+                 const NameRule& nameRule)
     : shader(shader),
       nameRule(nameRule),
       vao(),

@@ -4,14 +4,13 @@
 #include <iostream>
 #include <stdexcept>
 #include "../asset/TextureIO.hpp"
+#include "../gli.hpp"
 #include "../shader/IRMaterial.hpp"
 #include "../shader/IRMesh.hpp"
+#include "../shader/IRModel.hpp"
 #include "../shader/IRShape.hpp"
 #include "../shader/ShaderRegistry.hpp"
-#include "../shader/IRMaterial.hpp"
-#include "../shader/IRModel.hpp"
 #include "../util/io.hpp"
-#include "../gli.hpp"
 #include "PngTexture.hpp"
 namespace gel {
 FbxModel::FbxModel(FbxManager* fbxManager, const std::string& textureShaderName,

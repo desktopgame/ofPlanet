@@ -22,7 +22,7 @@ TestScene::TestScene()
       position(0),
       scale(1),
       rotation(0),
-	  leftDrag(gel::MouseButton::Left) {
+      leftDrag(gel::MouseButton::Left) {
         plane.init(0.5f);
         glEnableClientState(GL_NORMAL_ARRAY);
         glEnableClientState(GL_VERTEX_ARRAY);
@@ -44,13 +44,13 @@ void TestScene::show() {
         glDisable(GL_CULL_FACE);
 }
 void TestScene::update() {
-	leftDrag.update();
-	if (leftDrag.isDrag()) {
-		this->position.x += leftDrag.getDifference().x;
-		this->position.y += leftDrag.getDifference().y;
-		if (rotation.x > 360) rotation.x -= 360;
-		if (rotation.y > 360) rotation.y -= 360;
-	}
+        leftDrag.update();
+        if (leftDrag.isDrag()) {
+                this->position.x += leftDrag.getDifference().x;
+                this->position.y += leftDrag.getDifference().y;
+                if (rotation.x > 360) rotation.x -= 360;
+                if (rotation.y > 360) rotation.y -= 360;
+        }
 }
 void TestScene::draw() {
         float delta = gel::Game::getInstance()->getDeltaTime();
@@ -67,28 +67,27 @@ void TestScene::draw() {
         camera->screenHeight = windowSize.y;
         camera->calculate();
         // calculate matrix
-		this->model = glm::mat4(1.0f);
-		this->model = glm::translate(model, position);
-		this->model = glm::rotate(model, rotation.y, glm::vec3(0, 1, 0));
-		this->model = glm::rotate(model, rotation.x, glm::vec3(1, 0, 0));
-		this->model = glm::rotate(model, rotation.z, glm::vec3(0, 0, 1));
-		this->model = glm::scale(model, scale);
+        this->model = glm::mat4(1.0f);
+        this->model = glm::translate(model, position);
+        this->model = glm::rotate(model, rotation.y, glm::vec3(0, 1, 0));
+        this->model = glm::rotate(model, rotation.x, glm::vec3(1, 0, 0));
+        this->model = glm::rotate(model, rotation.z, glm::vec3(0, 0, 1));
+        this->model = glm::scale(model, scale);
         auto projection =
             glm::perspective(30.0f, 1280.0f / 720.0f, 1.0f, 1000.0f);
         auto view =
             glm::lookAt(glm::vec3(0, -3, 5), glm::vec3(), glm::vec3(0, 1, 0));
         auto mvp = projection * view * model;
         // set shader option
-        auto colorShader =
-            gel::ShaderRegistry::getInstance().get("ColorFixed");
-        auto noiseShader =
-            gel::ShaderRegistry::getInstance().get("CRT");
+        auto colorShader = gel::ShaderRegistry::getInstance().get("ColorFixed");
+        auto noiseShader = gel::ShaderRegistry::getInstance().get("CRT");
         colorShader->use();
         colorShader->setUniform4f("uLightPos", lightPos.x, lightPos.y,
-                                 lightPos.z, 1);
+                                  lightPos.z, 1);
         colorShader->unuse();
         shader->use();
-        shader->setUniform4f("uLightPos", lightPos.x, lightPos.y, lightPos.z, 1);
+        shader->setUniform4f("uLightPos", lightPos.x, lightPos.y, lightPos.z,
+                             1);
         shader->unuse();
         noiseShader->use();
         noiseShader->setUniform1i("enabled", 1);
@@ -107,8 +106,8 @@ void TestScene::draw() {
         //        screenBuffer.bind();
         imodel->getIRModel()->draw();
         sprite.draw(camera);
-//        screenBuffer.unbind();
-//        screenBuffer.render();
+        //        screenBuffer.unbind();
+        //        screenBuffer.render();
 }
 void TestScene::hide() {}
 bool TestScene::isFinished() const { return false; }

@@ -32,9 +32,9 @@ void Circle::init(const glm::vec4 basePoint, const glm::vec4 color,
         GLuint vertexAttrib = shader->getAttribLocation(nameRule.attribVertex);
         vertex.bind();
         shader->setUniform4f(nameRule.uniformColor, color.x, color.y, color.z,
-                            color.w);
+                             color.w);
         shader->setUniform4f(nameRule.uniformPosition, basePoint.x, basePoint.y,
-                            basePoint.z, basePoint.w);
+                             basePoint.z, basePoint.w);
         glVertexAttribPointer(vertexAttrib, 4, GL_FLOAT, GL_FALSE, 0, NULL);
         glEnableVertexAttribArray(vertexAttrib);
         vao.unbind();
@@ -51,9 +51,9 @@ void Circle::draw() {
         glLineWidth(lineWidth);
         shader->use();
         shader->setUniform4f(nameRule.uniformColor, color.x, color.y, color.z,
-                            color.w);
+                             color.w);
         shader->setUniform4f(nameRule.uniformPosition, basePoint.x, basePoint.y,
-                            basePoint.z, basePoint.w);
+                             basePoint.z, basePoint.w);
         vao.bind();
         glDrawArrays(GL_LINE_LOOP, 0, 180);
         vao.unbind();

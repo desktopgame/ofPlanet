@@ -1,7 +1,7 @@
 #include "ScreenBuffer.hpp"
 namespace gel {
-ScreenBuffer::ScreenBuffer(const std::shared_ptr<Shader>& shader, const NameRule nameRule, int width,
-                           int height)
+ScreenBuffer::ScreenBuffer(const std::shared_ptr<Shader>& shader,
+                           const NameRule nameRule, int width, int height)
     : width(width),
       height(height),
       frameBuffer(),
@@ -60,7 +60,9 @@ void ScreenBuffer::destroy() {
 void ScreenBuffer::bind() {
         frameBuffer.bind();
         glEnable(GL_DEPTH_TEST);
-        glClearColor(0.3f, 0.3f, 1.0f, 0.0f);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glClearColor(0, 0, 0, 0.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
@@ -114,13 +116,13 @@ void ScreenBuffer::initRect() {
 
         vertex.bind();
         shader->setVertexAttribPointer(nameRule.attribVertex, 4, GL_FLOAT,
-                                      GL_FALSE, 0, NULL);
+                                       GL_FALSE, 0, NULL);
         glEnableVertexAttribArray(
             shader->getAttribLocation(nameRule.attribVertex));
 
         uv.bind();
         shader->setVertexAttribPointer(nameRule.attribUV, 2, GL_FLOAT, GL_FALSE,
-                                      0, NULL);
+                                       0, NULL);
         glEnableVertexAttribArray(shader->getAttribLocation(nameRule.attribUV));
 
         vao.unbind();

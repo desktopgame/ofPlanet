@@ -8,7 +8,7 @@
 
 class Planet {
        public:
-        explicit Planet(const std::shared_ptr< gel::Shader>& shader);
+        explicit Planet(const std::shared_ptr<gel::Shader>& shader);
         void update();
         void draw();
 
@@ -29,7 +29,7 @@ class Planet {
         static float MOVE_SPEED;
         static float JUMP_SPEED;
         static float ROTATE_SPEED;
-        std::shared_ptr< gel::Shader> shader;
+        std::shared_ptr<gel::Shader> shader;
         gel::AABB worldAABB;
         gel::Random random;
         World world;

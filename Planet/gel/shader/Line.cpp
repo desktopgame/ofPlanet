@@ -27,7 +27,7 @@ void Line::init(const glm::vec4 start, const glm::vec4 end, glm::vec4 color) {
         shader->use();
         shader->setUniform4f(nameRule.uniformPosition, 0, 0, 0, 0);
         shader->setUniform4f(nameRule.uniformColor, color.x, color.y, color.z,
-                            color.w);
+                             color.w);
         vao.bind();
         GLuint vertexAttrib = shader->getAttribLocation(nameRule.attribVertex);
         vertex.bind();

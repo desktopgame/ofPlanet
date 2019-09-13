@@ -10,7 +10,8 @@ Sprite::Sprite(const std::shared_ptr<Shader>& shader, const NameRule nameRule)
       model(),
       initFlag(false) {}
 
-Sprite::Sprite(const std::shared_ptr<Shader>& shader) : Sprite(shader, NameRule()) {}
+Sprite::Sprite(const std::shared_ptr<Shader>& shader)
+    : Sprite(shader, NameRule()) {}
 
 void Sprite::init(const GLuint texture, const glm::vec2 pos,
                   const glm::vec2 size, const float alpha) {
@@ -90,8 +91,9 @@ void Sprite::draw(const std::shared_ptr<gel::Camera>& camera) {
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glActiveTexture(GL_TEXTURE0);
         shader->use();
-        glUniformMatrix4fv(shader->getUniformLocation(nameRule.uniformMVPMatrix),
-                           1, false, glm::value_ptr(mvp));
+        glUniformMatrix4fv(
+            shader->getUniformLocation(nameRule.uniformMVPMatrix), 1, false,
+            glm::value_ptr(mvp));
         glBindTexture(GL_TEXTURE_2D, texture);
         vao.bind();
         glDrawArrays(GL_TRIANGLES, 0, 6);

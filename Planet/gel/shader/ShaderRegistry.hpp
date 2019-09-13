@@ -1,8 +1,8 @@
 #ifndef GEL_SHADER_SHADERRREGISTRY_HPP
 #define GEL_SHADER_SHADERRREGISTRY_HPP
+#include <memory>
 #include <string>
 #include <unordered_map>
-#include <memory>
 #include "../shader/Shader.hpp"
 
 namespace gel {
@@ -10,9 +10,10 @@ class ShaderRegistry {
        public:
         void put(const std::string& name, const std::string& vertFile,
                  const std::string& fragFile);
-        void put(const std::string& name, const std::shared_ptr<Shader>& shader);
+        void put(const std::string& name,
+                 const std::shared_ptr<Shader>& shader);
         void remove(const std::string& name);
-		std::shared_ptr<Shader> get(const std::string& name);
+        std::shared_ptr<Shader> get(const std::string& name);
 
        private:
         ShaderRegistry();
