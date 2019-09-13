@@ -15,8 +15,7 @@ TestScene::TestScene()
       model(1.0f),
       filename("./assets/model/Gun1028.fbx"),
       screenBuffer(gel::ShaderRegistry::getInstance().get("CRT"),
-                   gel::NameRule(), gel::Game::getInstance()->getWindowWidth(),
-                   gel::Game::getInstance()->getWindowHeight()),
+                   gel::NameRule()),
       sprite(gel::ShaderRegistry::getInstance().get("Texture2D")),
       camera(std::make_shared<gel::Camera>()),
       position(0),
@@ -27,7 +26,8 @@ TestScene::TestScene()
         glEnableClientState(GL_NORMAL_ARRAY);
         glEnableClientState(GL_VERTEX_ARRAY);
         glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-        screenBuffer.init();
+        screenBuffer.init(gel::Game::getInstance()->getWindowWidth(),
+			gel::Game::getInstance()->getWindowHeight());
         sprite.init(gel::AssetDatabase::getAsset<gel::ITexture>(
                         "./assets/image/sample.jpg")
                         ->getID(),

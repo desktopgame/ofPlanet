@@ -1,9 +1,9 @@
 #include "ScreenBuffer.hpp"
 namespace gel {
 ScreenBuffer::ScreenBuffer(const std::shared_ptr<Shader>& shader,
-                           const NameRule nameRule, int width, int height)
-    : width(width),
-      height(height),
+                           const NameRule nameRule)
+    : width(0),
+      height(0),
       frameBuffer(),
       renderBuffer(),
       shader(shader),
@@ -12,7 +12,9 @@ ScreenBuffer::ScreenBuffer(const std::shared_ptr<Shader>& shader,
       uv(GL_ARRAY_BUFFER, GL_DYNAMIC_DRAW),
       vao() {}
 
-void ScreenBuffer::init() {
+void ScreenBuffer::init(int width, int height) {
+		this->width = width;
+		this->height = height;
         initRect();
         // init frame buffer
         frameBuffer.init();

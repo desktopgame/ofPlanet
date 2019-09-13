@@ -13,18 +13,18 @@ PlayScene::PlayScene()
       eKeyTrigger('E'),
       crossHair(),
       screenBuffer(gel::ShaderRegistry::getInstance().get("Noise"),
-                   gel::NameRule(), gel::Game::getInstance()->getWindowWidth(),
-                   gel::Game::getInstance()->getWindowHeight()),
+                   gel::NameRule()),
       gunScrBuffer(gel::ShaderRegistry::getInstance().get("Noise"),
-                   gel::NameRule(), gel::Game::getInstance()->getWindowWidth(),
-                   gel::Game::getInstance()->getWindowHeight()),
+                   gel::NameRule()),
       skybox(gel::ShaderRegistry::getInstance().get("SkyBox"), gel::NameRule()),
       warp(gel::ShaderRegistry::getInstance().get("Color"), gel::NameRule()),
       random(),
       gPos(0, -10, 4),
       gRot(0.0f, 0.0f, 9.2f) {
-        gunScrBuffer.init();
-        screenBuffer.init();
+        gunScrBuffer.init(gel::Game::getInstance()->getWindowWidth(),
+                   gel::Game::getInstance()->getWindowHeight());
+        screenBuffer.init(gel::Game::getInstance()->getWindowWidth(),
+                   gel::Game::getInstance()->getWindowHeight());
         this->tModel = gel::AssetDatabase::getAsset<gel::IModel>(
             "./assets/model/Gun1028.fbx");
         gel::CubeMapDesc desc;

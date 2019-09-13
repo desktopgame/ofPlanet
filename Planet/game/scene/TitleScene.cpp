@@ -5,14 +5,14 @@
 TitleScene::TitleScene()
     : finished(false),
       screenBuffer(gel::ShaderRegistry::getInstance().get("Screen"),
-                   gel::NameRule(), gel::Game::getInstance()->getWindowWidth(),
-                   gel::Game::getInstance()->getWindowHeight()),
+                   gel::NameRule()),
       titleSprite(gel::ShaderRegistry::getInstance().get("Texture2D")),
       playSprite(gel::ShaderRegistry::getInstance().get("Texture2D")),
       optionSprite(gel::ShaderRegistry::getInstance().get("Texture2D")),
       exitSprite(gel::ShaderRegistry::getInstance().get("Texture2D")),
       camera(std::make_shared<gel::Camera>()) {
-        screenBuffer.init();
+        screenBuffer.init(gel::Game::getInstance()->getWindowWidth(),
+			gel::Game::getInstance()->getWindowHeight());
         titleSprite.init(
             gel::AssetDatabase::getAsset<gel::ITexture>(res::TITLE_IMG_PATH)
                 ->getID(),
