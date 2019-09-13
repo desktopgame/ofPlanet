@@ -10,7 +10,8 @@ ScreenBuffer::ScreenBuffer(const std::shared_ptr<Shader>& shader,
       nameRule(nameRule),
       vertex(GL_ARRAY_BUFFER, GL_DYNAMIC_DRAW),
       uv(GL_ARRAY_BUFFER, GL_DYNAMIC_DRAW),
-      vao() {}
+      vao(),
+      clearColor(0,0,0,1){}
 
 void ScreenBuffer::init(int width, int height) {
         this->width = width;
@@ -62,9 +63,7 @@ void ScreenBuffer::destroy() {
 void ScreenBuffer::bind() {
         frameBuffer.bind();
         glEnable(GL_DEPTH_TEST);
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        glClearColor(0, 0, 0, 0.0f);
+		glClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
@@ -72,7 +71,7 @@ void ScreenBuffer::unbind() { frameBuffer.unbind(); }
 
 void ScreenBuffer::render() {
         glDisable(GL_DEPTH_TEST);
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a);
         glClear(GL_COLOR_BUFFER_BIT);
 
         shader->use();
@@ -82,6 +81,18 @@ void ScreenBuffer::render() {
         vao.unbind();
         shader->unuse();
         glEnable(GL_DEPTH_TEST);
+}
+void ScreenBuffer::setClearColor(const Color4 clearColor)
+{
+	this->clearColor = clearColor;
+}
+Color4 ScreenBuffer::getClearColor() const
+{
+	return clearColor;
+}
+GLuint ScreenBuffer::getTextureID() const
+{
+	return texture;
 }
 // private
 void ScreenBuffer::initRect() {

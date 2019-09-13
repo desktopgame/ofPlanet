@@ -8,6 +8,7 @@
 #include "RenderBuffer.hpp"
 #include "Shader.hpp"
 #include "VertexArray.hpp"
+#include "Color4.hpp"
 
 namespace gel {
 class ScreenBuffer {
@@ -19,16 +20,22 @@ class ScreenBuffer {
         void bind();
         void unbind();
         void render();
-		GLuint texture;
+
+		void setClearColor(const Color4 clearColor);
+		Color4 getClearColor() const;
+
+		GLuint getTextureID() const;
 
        private:
         void initRect();
         int width;
         int height;
+		GLuint texture;
         FrameBuffer frameBuffer;
         RenderBuffer renderBuffer;
 
         std::shared_ptr<Shader> shader;
+		Color4 clearColor;
         NameRule nameRule;
         VertexArray vao;
         Buffer<GLfloat> vertex;

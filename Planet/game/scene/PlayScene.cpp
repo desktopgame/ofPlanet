@@ -24,6 +24,7 @@ PlayScene::PlayScene()
       pbuf(GL_PIXEL_PACK_BUFFER_ARB) {
         gunScrBuffer.init(gel::Game::getInstance()->getWindowWidth(),
                           gel::Game::getInstance()->getWindowHeight());
+		gunScrBuffer.setClearColor(gel::Color4(1, 0, 1, 1));
         screenBuffer.init(gel::Game::getInstance()->getWindowWidth(),
                           gel::Game::getInstance()->getWindowHeight());
 		pbuf.init(gel::Game::getInstance()->getWindowWidth(),
@@ -157,11 +158,11 @@ void PlayScene::draw() {
 				GLubyte g = data[4 * i + 1];
 				GLubyte b = data[4 * i + 2];
 				GLubyte a = data[4 * i + 3];
-				if (r == 0 && g == 0 && b == 0) {
-					data[4 * i + 0] = 255;
+				if (r == 255 && g == 0 && b == 255) {
+					data[4 * i + 0] = 0;
 					data[4 * i + 1] = 0;
 					data[4 * i + 2] = 0;
-					data[4 * i + 3] = 1;
+					data[4 * i + 3] = 0;
 				}
 			}
 			pbuf.unmap();
@@ -169,7 +170,7 @@ void PlayScene::draw() {
 		pbuf.unbind();
 		// apply to buffer
 		pbuf.bind(GL_PIXEL_UNPACK_BUFFER_ARB);
-		pbuf.transport(gunScrBuffer.texture);
+		pbuf.transport(gunScrBuffer.getTextureID());
 		pbuf.unbind();
         gunScrBuffer.unbind();
 		gunScrBuffer.render();
