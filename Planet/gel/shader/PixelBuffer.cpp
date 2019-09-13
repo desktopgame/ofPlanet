@@ -31,13 +31,14 @@ void PixelBuffer::unbind() {
 }
 GLubyte *PixelBuffer::read() const {
 		boundFlag.check(true, "should be call bind");
-        glReadPixels(0, 0, width, height, GL_BGRA, GL_UNSIGNED_BYTE, 0);
+		glBufferData(GL_PIXEL_UNPACK_BUFFER_ARB, width * height * ch, 0, GL_STREAM_DRAW_ARB);
         GLubyte *ptr =
             (GLubyte *)glMapBuffer(GL_PIXEL_PACK_BUFFER, GL_READ_WRITE);
         return ptr;
 }
 void PixelBuffer::transport(GLuint texture) const {
         boundFlag.check(true, "should be call bind");
+		glUnmapBuffer(GL_PIXEL_PACK_BUFFER_ARB);
         glBindTexture(GL_TEXTURE_2D, texture);
         glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_BGRA,
                         GL_UNSIGNED_BYTE, 0);
