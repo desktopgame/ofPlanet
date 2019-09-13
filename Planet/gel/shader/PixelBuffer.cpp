@@ -30,6 +30,7 @@ void PixelBuffer::unbind() {
         glBindBuffer(GL_PIXEL_PACK_BUFFER_ARB, 0);
 }
 GLubyte *PixelBuffer::read() const {
+		boundFlag.check(true, "should be call bind");
         glReadPixels(0, 0, width, height, GL_BGRA, GL_UNSIGNED_BYTE, 0);
         GLubyte *ptr =
             (GLubyte *)glMapBuffer(GL_PIXEL_PACK_BUFFER, GL_READ_WRITE);
