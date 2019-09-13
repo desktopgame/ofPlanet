@@ -64,10 +64,46 @@ void PixelBuffer::transport(GLuint texture) const
 }
 int PixelBuffer::getWidth() const { return width; }
 int PixelBuffer::getHeight() const { return height; }
+void PixelBuffer::replace(GLubyte* source, int width, int height, PixelMatch match, PixelReplace replace, Pixel oldPix, Pixel newPix)
+{
+	for (int i = 0; i < width*height; ++i) {
+		GLubyte r = source[4 * i + 0];
+		GLubyte g = source[4 * i + 1];
+		GLubyte b = source[4 * i + 2];
+		GLubyte a = source[4 * i + 3];
+		bool matchR = r == (oldPix.r);
+		bool matchG = g == (oldPix.g);
+		bool matchB = b == (oldPix.b);
+		bool matchA = a == (oldPix.a);
+		bool replaceColor = false;
+		if (match == PixelMatch::EqualRGB && matchR && matchG && matchB) {
+			replaceColor = true;
+		} else if (match == PixelMatch::EqualRGBA && matchR && matchG && matchB && matchA) {
+			replaceColor = true;
+		}
+		if (replaceColor) {
+			if (replace == PixelReplace::ReplaceRGB || replace == PixelReplace::ReplaceRGBA) {
+				source[4 * i + 0] = newPix.r;
+				source[4 * i + 1] = newPix.g;
+				source[4 * i + 2] = newPix.b;
+			}
+			if (replace == PixelReplace::ReplaceRGBA) {
+				source[4 * i + 3] = newPix.a;
+			}
+		}
+	}
+}
 void PixelBuffer::checkRead() const {
         assert(type == GL_PIXEL_PACK_BUFFER_ARB);
 }
 void PixelBuffer::checkWrite() const {
         assert(type == GL_PIXEL_UNPACK_BUFFER_ARB);
+}
+// Pixel
+Pixel::Pixel() : r(0), g(0), b(0), a(1) {
+}
+Pixel::Pixel(GLubyte r, GLubyte g, GLubyte b, GLubyte a)
+	:r(r),g(g),b(b),a(a)
+{
 }
 }  // namespace gel

@@ -155,19 +155,8 @@ void PlayScene::draw() {
 			// edit
 			GLubyte* data = pbuf.map();
 			if (data) {
-				for (int i = 0; i < pbuf.getWidth()*pbuf.getHeight(); ++i) {
-					GLubyte gray = (GLubyte)((data[4 * i] + data[4 * i + 1] + data[4 * i + 2]) / 3.0);
-					GLubyte r = data[4 * i + 0];
-					GLubyte g = data[4 * i + 1];
-					GLubyte b = data[4 * i + 2];
-					GLubyte a = data[4 * i + 3];
-					if (r == 255 && g == 0 && b == 255) {
-						data[4 * i + 0] = 0;
-						data[4 * i + 1] = 0;
-						data[4 * i + 2] = 0;
-						data[4 * i + 3] = 0;
-					}
-				}
+				gel::PixelBuffer::replace(data, pbuf.getWidth(), pbuf.getHeight(), gel::PixelMatch::EqualRGB, gel::PixelReplace::ReplaceRGBA,
+					gel::Pixel(255, 0, 255, 0), gel::Pixel(0, 0, 0, 0));
 				pbuf.unmap();
 			}
 			pbuf.unbind();
@@ -176,7 +165,7 @@ void PlayScene::draw() {
 			pbuf.transport(gunScrBuffer.getTextureID());
 			pbuf.unbind();
 			gunScrBuffer.unbind();
-			this->gunCache = true;
+			this->gunCache = true; 
 		}
 		// draw planet
 		screenBuffer.bind();
@@ -187,7 +176,7 @@ void PlayScene::draw() {
 		screenBuffer.unbind();
 		screenBuffer.render();
 		crossHair.draw(planet.getCamera());
-		//gunScrBuffer.render();
+		gunScrBuffer.render();
         if (noiseTime > 3.0f) {
                 warp.destroy();
                 goNextPlanet();
