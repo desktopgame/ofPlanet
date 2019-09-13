@@ -71,8 +71,10 @@ void ScreenBuffer::unbind() { frameBuffer.unbind(); }
 
 void ScreenBuffer::render() {
         glDisable(GL_DEPTH_TEST);
-        glClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a);
+        //glClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a);
         glClear(GL_COLOR_BUFFER_BIT);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glEnable(GL_BLEND);
 
         shader->use();
         glBindTexture(GL_TEXTURE_2D, texture);

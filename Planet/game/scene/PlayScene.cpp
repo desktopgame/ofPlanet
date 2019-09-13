@@ -47,6 +47,7 @@ PlayScene::~PlayScene() {
 }
 
 void PlayScene::show() {
+		this->gunCache = false;
         this->gameTime = 0.0f;
         this->score = 0;
         glfwSetInputMode(gel::Game::getInstance()->getWindow(), GLFW_CURSOR,
@@ -121,71 +122,72 @@ void PlayScene::draw() {
         texShader->setUniform4f("uLightPos", 64, 48, 64, 1.0f);
         texShader->unuse();
         // set matrix
-        auto irtModel = tModel->getIRModel();
-        auto pos = camera->transform.position;
-        auto rot = camera->transform.rotation;
-        auto look = glm::lookAt(pos, pos + camera->transform.forward(),
-                                glm::vec3(0, 1, 0));
+		if (!gunCache) {
 
-        auto gModel = glm::mat4(1.0f);
-        auto gTranslate = glm::translate(gModel, gPos);
-        auto gRotate = glm::rotate(gModel, gRot.y, glm::vec3(0, 1, 0)) *
-                       glm::rotate(gModel, gRot.x, glm::vec3(1, 0, 0)) *
-                       glm::rotate(gModel, gRot.z, glm::vec3(0, 0, 1));
-        auto gScale = glm::scale(gModel, glm::vec3(0.1f, 0.1f, 0.1f));
-        gModel = gTranslate * gRotate * gScale;
+			auto irtModel = tModel->getIRModel();
+			auto pos = camera->transform.position;
+			auto rot = camera->transform.rotation;
+			auto look = glm::lookAt(pos, pos + camera->transform.forward(),
+				glm::vec3(0, 1, 0));
 
-        auto gView = glm::lookAt(glm::vec3(0, 0, 0), glm::vec3(0, 0, -1),
-                                 glm::vec3(0, -1, 0));
+			auto gModel = glm::mat4(1.0f);
+			auto gTranslate = glm::translate(gModel, gPos);
+			auto gRotate = glm::rotate(gModel, gRot.y, glm::vec3(0, 1, 0)) *
+				glm::rotate(gModel, gRot.x, glm::vec3(1, 0, 0)) *
+				glm::rotate(gModel, gRot.z, glm::vec3(0, 0, 1));
+			auto gScale = glm::scale(gModel, glm::vec3(0.1f, 0.1f, 0.1f));
+			gModel = gTranslate * gRotate * gScale;
 
-        irtModel->setModelMatrix(gModel);
-        irtModel->setViewMatrix(gView);
-        irtModel->setProjectionMatrix(camera->getProjection());
-        gunScrBuffer.bind();
-        texShader->use();
-        texShader->setUniform4f("uLightPos", 0, 0, 0, 1.0f);
-        texShader->unuse();
-        irtModel->draw();
-		// read pixeles from frame buffer
-		pbuf.bind(GL_PIXEL_PACK_BUFFER_ARB);
-		pbuf.read();
-		// edit
-		GLubyte* data = pbuf.map();
-		if (data) {
-			for (int i = 0; i < pbuf.getWidth()*pbuf.getHeight(); ++i) {
-				GLubyte gray = (GLubyte)((data[4 * i] + data[4 * i + 1] + data[4 * i + 2]) / 3.0);
-				GLubyte r = data[4 * i + 0];
-				GLubyte g = data[4 * i + 1];
-				GLubyte b = data[4 * i + 2];
-				GLubyte a = data[4 * i + 3];
-				if (r == 255 && g == 0 && b == 255) {
-					data[4 * i + 0] = 0;
-					data[4 * i + 1] = 0;
-					data[4 * i + 2] = 0;
-					data[4 * i + 3] = 0;
+			auto gView = glm::lookAt(glm::vec3(0, 0, 0), glm::vec3(0, 0, -1),
+				glm::vec3(0, -1, 0));
+
+			irtModel->setModelMatrix(gModel);
+			irtModel->setViewMatrix(gView);
+			irtModel->setProjectionMatrix(camera->getProjection());
+			gunScrBuffer.bind();
+			texShader->use();
+			texShader->setUniform4f("uLightPos", 0, 0, 0, 1.0f);
+			texShader->unuse();
+			irtModel->draw();
+			// read pixeles from frame buffer
+			pbuf.bind(GL_PIXEL_PACK_BUFFER_ARB);
+			pbuf.read();
+			// edit
+			GLubyte* data = pbuf.map();
+			if (data) {
+				for (int i = 0; i < pbuf.getWidth()*pbuf.getHeight(); ++i) {
+					GLubyte gray = (GLubyte)((data[4 * i] + data[4 * i + 1] + data[4 * i + 2]) / 3.0);
+					GLubyte r = data[4 * i + 0];
+					GLubyte g = data[4 * i + 1];
+					GLubyte b = data[4 * i + 2];
+					GLubyte a = data[4 * i + 3];
+					if (r == 255 && g == 0 && b == 255) {
+						data[4 * i + 0] = 0;
+						data[4 * i + 1] = 0;
+						data[4 * i + 2] = 0;
+						data[4 * i + 3] = 0;
+					}
 				}
+				pbuf.unmap();
 			}
-			pbuf.unmap();
+			pbuf.unbind();
+			// apply to buffer
+			pbuf.bind(GL_PIXEL_UNPACK_BUFFER_ARB);
+			pbuf.transport(gunScrBuffer.getTextureID());
+			pbuf.unbind();
+			gunScrBuffer.unbind();
+			this->gunCache = true;
 		}
-		pbuf.unbind();
-		// apply to buffer
-		pbuf.bind(GL_PIXEL_UNPACK_BUFFER_ARB);
-		pbuf.transport(gunScrBuffer.getTextureID());
-		pbuf.unbind();
-        gunScrBuffer.unbind();
-		gunScrBuffer.render();
-        /*
-// double buffered rendering
-screenBuffer.bind();
-skybox.draw();
-planet.draw();
-warp.draw();
-
-screenBuffer.unbind();
-screenBuffer.render();
-        filterBuffer.render();
-crossHair.draw(planet.getCamera());
-        */
+		// draw planet
+		screenBuffer.bind();
+		skybox.draw();
+		planet.draw();
+		warp.draw();
+		
+		screenBuffer.unbind();
+		screenBuffer.render();
+		crossHair.draw(planet.getCamera());
+		//gunScrBuffer.render();
         if (noiseTime > 3.0f) {
                 warp.destroy();
                 goNextPlanet();
