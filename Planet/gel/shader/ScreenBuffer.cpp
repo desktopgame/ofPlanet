@@ -1,6 +1,6 @@
 #include "ScreenBuffer.hpp"
 namespace gel {
-ScreenBuffer::ScreenBuffer(Shader& shader, const NameRule nameRule, int width,
+ScreenBuffer::ScreenBuffer(const std::shared_ptr<Shader>& shader, const NameRule nameRule, int width,
                            int height)
     : width(width),
       height(height),
@@ -71,12 +71,12 @@ void ScreenBuffer::render() {
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        shader.use();
+        shader->use();
         glBindTexture(GL_TEXTURE_2D, texture);
         vao.bind();
         glDrawArrays(GL_TRIANGLES, 0, 6);
         vao.unbind();
-        shader.unuse();
+        shader->unuse();
 }
 // private
 void ScreenBuffer::initRect() {
@@ -108,23 +108,23 @@ void ScreenBuffer::initRect() {
         uv.update();
         uv.unbind();
         // setup vao
-        shader.use();
-        shader.setUniform1i("uTexture", 0);
+        shader->use();
+        shader->setUniform1i("uTexture", 0);
         vao.bind();
 
         vertex.bind();
-        shader.setVertexAttribPointer(nameRule.attribVertex, 4, GL_FLOAT,
+        shader->setVertexAttribPointer(nameRule.attribVertex, 4, GL_FLOAT,
                                       GL_FALSE, 0, NULL);
         glEnableVertexAttribArray(
-            shader.getAttribLocation(nameRule.attribVertex));
+            shader->getAttribLocation(nameRule.attribVertex));
 
         uv.bind();
-        shader.setVertexAttribPointer(nameRule.attribUV, 2, GL_FLOAT, GL_FALSE,
+        shader->setVertexAttribPointer(nameRule.attribUV, 2, GL_FLOAT, GL_FALSE,
                                       0, NULL);
-        glEnableVertexAttribArray(shader.getAttribLocation(nameRule.attribUV));
+        glEnableVertexAttribArray(shader->getAttribLocation(nameRule.attribUV));
 
         vao.unbind();
-        shader.unuse();
+        shader->unuse();
         vertex.unbind();
         uv.unbind();
 }

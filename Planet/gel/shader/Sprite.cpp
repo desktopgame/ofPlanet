@@ -1,7 +1,7 @@
 #include "Sprite.hpp"
 #include <glm/gtc/type_ptr.hpp>
 namespace gel {
-Sprite::Sprite(Shader& shader, const NameRule nameRule)
+Sprite::Sprite(const std::shared_ptr<Shader>& shader, const NameRule nameRule)
     : shader(shader),
       nameRule(nameRule),
       texture(0),
@@ -10,7 +10,7 @@ Sprite::Sprite(Shader& shader, const NameRule nameRule)
       model(),
       initFlag(false) {}
 
-Sprite::Sprite(Shader& shader) : Sprite(shader, NameRule()) {}
+Sprite::Sprite(const std::shared_ptr<Shader>& shader) : Sprite(shader, NameRule()) {}
 
 void Sprite::init(const GLuint texture, const glm::vec2 pos,
                   const glm::vec2 size, const float alpha) {
@@ -18,11 +18,11 @@ void Sprite::init(const GLuint texture, const glm::vec2 pos,
         this->position = pos;
         this->size = size;
         initFlag.enable();
-        shader.use();
-        shader.setUniform1f(nameRule.uniformAlpha, alpha);
-        shader.setUniform1i(nameRule.uniformTexture, 0);
-        GLuint vertexAttrib = shader.getAttribLocation(nameRule.attribVertex);
-        GLuint uvAttrib = shader.getAttribLocation(nameRule.attribUV);
+        shader->use();
+        shader->setUniform1f(nameRule.uniformAlpha, alpha);
+        shader->setUniform1i(nameRule.uniformTexture, 0);
+        GLuint vertexAttrib = shader->getAttribLocation(nameRule.attribVertex);
+        GLuint uvAttrib = shader->getAttribLocation(nameRule.attribUV);
 
         vao.init();
         vertex.init();
@@ -65,7 +65,7 @@ void Sprite::init(const GLuint texture, const glm::vec2 pos,
         glEnableVertexAttribArray(uvAttrib);
 
         vao.unbind();
-        shader.unuse();
+        shader->unuse();
         vertex.unbind();
         uv.unbind();
         this->model = glm::scale(model, glm::vec3(size, 1.0f));
@@ -89,15 +89,15 @@ void Sprite::draw(const std::shared_ptr<gel::Camera>& camera) {
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glActiveTexture(GL_TEXTURE0);
-        shader.use();
-        glUniformMatrix4fv(shader.getUniformLocation(nameRule.uniformMVPMatrix),
+        shader->use();
+        glUniformMatrix4fv(shader->getUniformLocation(nameRule.uniformMVPMatrix),
                            1, false, glm::value_ptr(mvp));
         glBindTexture(GL_TEXTURE_2D, texture);
         vao.bind();
         glDrawArrays(GL_TRIANGLES, 0, 6);
         vao.unbind();
         glBindTexture(GL_TEXTURE_2D, 0);
-        shader.unuse();
+        shader->unuse();
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_CULL_FACE);
 }

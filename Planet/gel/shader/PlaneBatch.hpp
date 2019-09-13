@@ -8,8 +8,8 @@
 namespace gel {
 class PlaneBatch {
        public:
-        explicit PlaneBatch(Shader& shader, const NameRule& nameRule);
-        explicit PlaneBatch(Shader& shader);
+        explicit PlaneBatch(const std::shared_ptr<Shader>& shader, const NameRule& nameRule);
+        explicit PlaneBatch(const std::shared_ptr<Shader>& shader);
         void init(float size);
         void destroy();
         void clear();
@@ -18,7 +18,7 @@ class PlaneBatch {
 
        private:
         Flag initFlag;
-        Shader& shader;
+        std::shared_ptr<Shader> shader;
         NameRule nameRule;
         Plane plane;
         std::unordered_map<GLuint, PlaneDraw> map;

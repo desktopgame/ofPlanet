@@ -3,7 +3,7 @@
 #include "../asset/AssetDatabase.hpp"
 #include "../asset/ITexture.hpp"
 namespace gel {
-CubeMap::CubeMap(Shader& shader, const NameRule& nameRule)
+CubeMap::CubeMap(const std::shared_ptr<Shader>& shader, const NameRule& nameRule)
     : shader(shader),
       nameRule(nameRule),
       vao(),
@@ -61,16 +61,16 @@ void CubeMap::init(const CubeMapDesc& desc, const glm::vec3 scale,
         vertex.update();
         vertex.unbind();
         // bind
-        GLuint vertexAttrib = shader.getAttribLocation(nameRule.attribVertex);
-        shader.use();
-        shader.setUniform1i("skybox", 0);
+        GLuint vertexAttrib = shader->getAttribLocation(nameRule.attribVertex);
+        shader->use();
+        shader->setUniform1i("skybox", 0);
         vao.bind();
         vertex.bind();
         glVertexAttribPointer(vertexAttrib, 4, GL_FLOAT, GL_FALSE, 0, NULL);
         glEnableVertexAttribArray(vertexAttrib);
         vao.unbind();
         vertex.unbind();
-        shader.unuse();
+        shader->unuse();
         // load texture
         this->texture = loadCubeMap(desc, width, height);
 }
@@ -87,7 +87,7 @@ void CubeMap::draw() {
         glEnable(GL_TEXTURE_GEN_T);
         glEnable(GL_TEXTURE_GEN_R);
 
-        shader.use();
+        shader->use();
         vao.bind();
         glDepthFunc(GL_LEQUAL);
         glActiveTexture(GL_TEXTURE0);
@@ -96,7 +96,7 @@ void CubeMap::draw() {
         glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
         glDepthFunc(GL_LESS);
         vao.unbind();
-        shader.unuse();
+        shader->unuse();
 
         glDisable(GL_ALPHA_TEST);
         glDisable(GL_TEXTURE_CUBE_MAP);

@@ -2,7 +2,7 @@
 
 const float WarpPoint::SCALE = 3.0f;
 
-WarpPoint::WarpPoint(gel::Shader& shader, const gel::NameRule& nameRule)
+WarpPoint::WarpPoint(const std::shared_ptr<gel::Shader>& shader, const gel::NameRule& nameRule)
     : circles(), shader(shader), nameRule(nameRule) {}
 
 void WarpPoint::init(const glm::vec4 basePoint) {

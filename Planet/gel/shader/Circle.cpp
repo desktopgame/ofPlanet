@@ -2,7 +2,7 @@
 #include <math.h>
 
 namespace gel {
-Circle::Circle(Shader& shader, const NameRule& nameRule)
+Circle::Circle(const std::shared_ptr<Shader>& shader, const NameRule& nameRule)
     : shader(shader),
       nameRule(nameRule),
       vao(),
@@ -27,18 +27,18 @@ void Circle::init(const glm::vec4 basePoint, const glm::vec4 color,
         vertex.update();
         vertex.unbind();
         // bind
-        shader.use();
+        shader->use();
         vao.bind();
-        GLuint vertexAttrib = shader.getAttribLocation(nameRule.attribVertex);
+        GLuint vertexAttrib = shader->getAttribLocation(nameRule.attribVertex);
         vertex.bind();
-        shader.setUniform4f(nameRule.uniformColor, color.x, color.y, color.z,
+        shader->setUniform4f(nameRule.uniformColor, color.x, color.y, color.z,
                             color.w);
-        shader.setUniform4f(nameRule.uniformPosition, basePoint.x, basePoint.y,
+        shader->setUniform4f(nameRule.uniformPosition, basePoint.x, basePoint.y,
                             basePoint.z, basePoint.w);
         glVertexAttribPointer(vertexAttrib, 4, GL_FLOAT, GL_FALSE, 0, NULL);
         glEnableVertexAttribArray(vertexAttrib);
         vao.unbind();
-        shader.unuse();
+        shader->unuse();
         vertex.unbind();
 }
 
@@ -49,14 +49,14 @@ void Circle::destroy() {
 
 void Circle::draw() {
         glLineWidth(lineWidth);
-        shader.use();
-        shader.setUniform4f(nameRule.uniformColor, color.x, color.y, color.z,
+        shader->use();
+        shader->setUniform4f(nameRule.uniformColor, color.x, color.y, color.z,
                             color.w);
-        shader.setUniform4f(nameRule.uniformPosition, basePoint.x, basePoint.y,
+        shader->setUniform4f(nameRule.uniformPosition, basePoint.x, basePoint.y,
                             basePoint.z, basePoint.w);
         vao.bind();
         glDrawArrays(GL_LINE_LOOP, 0, 180);
         vao.unbind();
-        shader.unuse();
+        shader->unuse();
 }
 }  // namespace gel

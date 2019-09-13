@@ -1,14 +1,14 @@
 #include "PlaneBatch.hpp"
 #include <stdexcept>
 namespace gel {
-PlaneBatch::PlaneBatch(Shader& shader, const NameRule& nameRule)
+PlaneBatch::PlaneBatch(const std::shared_ptr<Shader>& shader, const NameRule& nameRule)
     : nameRule(nameRule),
       map(),
       shader(shader),
       plane(shader, nameRule),
       initFlag(false) {}
 
-PlaneBatch::PlaneBatch(Shader& shader) : PlaneBatch(shader, NameRule()) {}
+PlaneBatch::PlaneBatch(const std::shared_ptr<Shader>& shader) : PlaneBatch(shader, NameRule()) {}
 
 void PlaneBatch::init(float size) {
         initFlag.check(false, "already initialized");

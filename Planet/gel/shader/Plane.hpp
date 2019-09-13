@@ -9,8 +9,8 @@ namespace gel {
 enum class PlaneType { Forward, Backward, Left, Right, Top, Bottom };
 class Plane {
        public:
-        explicit Plane(Shader& shader, const NameRule& nameRule);
-        explicit Plane(Shader& shader);
+        explicit Plane(const std::shared_ptr<Shader>& shader, const NameRule& nameRule);
+        explicit Plane(const std::shared_ptr<Shader>& shader);
         void init(float size);
         void destroy();
         void draw();
@@ -25,7 +25,7 @@ class Plane {
         static void addNormals(Buffer<GLfloat>& buf, int count, float x,
                                float y, float z, float w);
         Buffer<GLushort>& getIndexBufferFromType(const PlaneType type);
-        Shader& shader;
+        std::shared_ptr<Shader> shader;
         VertexArray vao;
         PlaneType type;
         NameRule nameRule;

@@ -5,7 +5,7 @@
 
 class WarpPoint {
        public:
-        explicit WarpPoint(gel::Shader& shader, const gel::NameRule& nameRule);
+        explicit WarpPoint(const std::shared_ptr<gel::Shader>& shader, const gel::NameRule& nameRule);
         void init(const glm::vec4 basePoint);
         void destroy();
         void draw();
@@ -14,7 +14,7 @@ class WarpPoint {
        private:
         static const float SCALE;
         glm::vec4 basePoint;
-        gel::Shader& shader;
+        std::shared_ptr<gel::Shader> shader;
         gel::NameRule nameRule;
         std::vector<gel::Circle> circles;
 };

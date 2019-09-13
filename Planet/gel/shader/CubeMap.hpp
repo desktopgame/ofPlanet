@@ -18,7 +18,7 @@ struct CubeMapDesc {
 
 class CubeMap {
        public:
-        explicit CubeMap(Shader& shader, const NameRule& nameRule);
+        explicit CubeMap(const std::shared_ptr<Shader>& shader, const NameRule& nameRule);
         void init(const CubeMapDesc& desc, const glm::vec3 scale, int width,
                   const int height);
         void destroy();
@@ -28,7 +28,7 @@ class CubeMap {
         static GLuint loadCubeMap(const CubeMapDesc& desc, const int width,
                                   const int height);
         GLuint texture;
-        Shader& shader;
+        std::shared_ptr<Shader> shader;
         NameRule nameRule;
         VertexArray vao;
         Buffer<float> vertex;

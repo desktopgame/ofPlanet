@@ -79,21 +79,21 @@ void TestScene::draw() {
             glm::lookAt(glm::vec3(0, -3, 5), glm::vec3(), glm::vec3(0, 1, 0));
         auto mvp = projection * view * model;
         // set shader option
-        gel::Shader& colorShader =
+        auto colorShader =
             gel::ShaderRegistry::getInstance().get("ColorFixed");
-        gel::Shader& noiseShader =
+        auto noiseShader =
             gel::ShaderRegistry::getInstance().get("CRT");
-        colorShader.use();
-        colorShader.setUniform4f("uLightPos", lightPos.x, lightPos.y,
+        colorShader->use();
+        colorShader->setUniform4f("uLightPos", lightPos.x, lightPos.y,
                                  lightPos.z, 1);
-        colorShader.unuse();
-        shader.use();
-        shader.setUniform4f("uLightPos", lightPos.x, lightPos.y, lightPos.z, 1);
-        shader.unuse();
-        noiseShader.use();
-        noiseShader.setUniform1i("enabled", 1);
-        noiseShader.setUniform1f("Time", gameTime);
-        noiseShader.unuse();
+        colorShader->unuse();
+        shader->use();
+        shader->setUniform4f("uLightPos", lightPos.x, lightPos.y, lightPos.z, 1);
+        shader->unuse();
+        noiseShader->use();
+        noiseShader->setUniform1i("enabled", 1);
+        noiseShader->setUniform1f("Time", gameTime);
+        noiseShader->unuse();
 
         // bind matrix
         if (gel::exists(filename)) {

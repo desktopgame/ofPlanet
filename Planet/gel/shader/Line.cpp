@@ -1,6 +1,6 @@
 #include "Line.hpp"
 namespace gel {
-Line::Line(Shader& shader, const NameRule& nameRule)
+Line::Line(const std::shared_ptr<Shader>& shader, const NameRule& nameRule)
     : shader(shader),
       nameRule(nameRule),
       start(),
@@ -24,18 +24,18 @@ void Line::init(const glm::vec4 start, const glm::vec4 end, glm::vec4 color) {
         vertex.update();
         vertex.unbind();
         // apply
-        shader.use();
-        shader.setUniform4f(nameRule.uniformPosition, 0, 0, 0, 0);
-        shader.setUniform4f(nameRule.uniformColor, color.x, color.y, color.z,
+        shader->use();
+        shader->setUniform4f(nameRule.uniformPosition, 0, 0, 0, 0);
+        shader->setUniform4f(nameRule.uniformColor, color.x, color.y, color.z,
                             color.w);
         vao.bind();
-        GLuint vertexAttrib = shader.getAttribLocation(nameRule.attribVertex);
+        GLuint vertexAttrib = shader->getAttribLocation(nameRule.attribVertex);
         vertex.bind();
         glVertexAttribPointer(vertexAttrib, 4, GL_FLOAT, GL_FALSE, 0, NULL);
         glEnableVertexAttribArray(vertexAttrib);
         vao.unbind();
         vertex.unbind();
-        shader.unuse();
+        shader->unuse();
 }
 
 void Line::update(const glm::vec4 start, const glm::vec4 end) {
@@ -55,10 +55,10 @@ void Line::destroy() {
 
 void Line::draw() {
         glLineWidth(lineWidth);
-        shader.use();
+        shader->use();
         vao.bind();
         glDrawArrays(GL_LINES, 0, 2);
         vao.unbind();
-        shader.unuse();
+        shader->unuse();
 }
 }  // namespace gel

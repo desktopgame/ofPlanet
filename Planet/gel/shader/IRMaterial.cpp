@@ -108,7 +108,7 @@ Color4 IRMaterial::getMainColor() const { return mainColor; }
 void IRMaterial::draw(std::shared_ptr<IRMesh>& mesh, const NameRule& nameRule) {
         glEnableClientState(GL_VERTEX_ARRAY);
         glEnableClientState(GL_NORMAL_ARRAY);
-        auto& shader = ShaderRegistry::getInstance().get(getShader());
+        auto shader = ShaderRegistry::getInstance().get(getShader());
         auto model = mesh->getModel().lock();
         auto modelMatrix = model->getModelMatrix() * mesh->getTreeMatrix();
         auto viewMatrix = model->getViewMatrix();
@@ -118,10 +118,10 @@ void IRMaterial::draw(std::shared_ptr<IRMesh>& mesh, const NameRule& nameRule) {
         normalMatrix = glm::inverse(normalMatrix);
         normalMatrix = glm::transpose(normalMatrix);
 
-        shader.use();
-        shader.setUniformMatrix4fv(nameRule.uniformMVPMatrix, 1, GL_FALSE,
+        shader->use();
+        shader->setUniformMatrix4fv(nameRule.uniformMVPMatrix, 1, GL_FALSE,
                                    glm::value_ptr(mvp));
-        shader.setUniformMatrix4fv(nameRule.uniformNormalMatrix, 1, GL_FALSE,
+        shader->setUniformMatrix4fv(nameRule.uniformNormalMatrix, 1, GL_FALSE,
                                    glm::value_ptr(normalMatrix));
 
         if (textureNo > 0) {
@@ -134,7 +134,7 @@ void IRMaterial::draw(std::shared_ptr<IRMesh>& mesh, const NameRule& nameRule) {
                 glDisableClientState(GL_TEXTURE_COORD_ARRAY);
                 if (getType() == IRMaterialType::Color) {
                         Color4 color = getMainColor();
-                        shader.setUniform4f(nameRule.uniformColor, color.r,
+                        shader->setUniform4f(nameRule.uniformColor, color.r,
                                             color.g, color.b, color.a);
                 }
         }
@@ -150,7 +150,7 @@ void IRMaterial::draw(std::shared_ptr<IRMesh>& mesh, const NameRule& nameRule) {
                 glDrawArrays(GL_QUADS, 0, quads.size());
                 quadVAO.unbind();
         }
-        shader.unuse();
+        shader->unuse();
         glDisableClientState(GL_VERTEX_ARRAY);
         glDisableClientState(GL_NORMAL_ARRAY);
         glDisableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -183,10 +183,10 @@ void IRMaterial::applyTriangleVertex(const NameRule& nameRule) {
         if (triangles.empty()) {
                 return;
         }
-        Shader& shader = ShaderRegistry::getInstance().get(getShader());
-        GLuint vertexAttrib = shader.getAttribLocation(nameRule.attribVertex);
-        GLuint uvAttrib = shader.getAttribLocation(nameRule.attribUV);
-        GLuint normalAttrib = shader.getAttribLocation(nameRule.attribNormal);
+        auto shader = ShaderRegistry::getInstance().get(getShader());
+        GLuint vertexAttrib = shader->getAttribLocation(nameRule.attribVertex);
+        GLuint uvAttrib = shader->getAttribLocation(nameRule.attribUV);
+        GLuint normalAttrib = shader->getAttribLocation(nameRule.attribNormal);
         triVAO.bind();
         triVertex.bind();
         glVertexAttribPointer(vertexAttrib, 4, GL_FLOAT, GL_FALSE, 0, NULL);
@@ -199,15 +199,15 @@ void IRMaterial::applyTriangleVertex(const NameRule& nameRule) {
                 glVertexAttribPointer(uvAttrib, 2, GL_FLOAT, GL_FALSE, 0, NULL);
                 glEnableVertexAttribArray(uvAttrib);
         } else {
-                shader.setUniform4f(nameRule.uniformColor, mainColor.r,
+                shader->setUniform4f(nameRule.uniformColor, mainColor.r,
                                     mainColor.g, mainColor.b, mainColor.a);
         }
-        shader.setUniform1f(nameRule.uniformShininess, shininess);
-        shader.setUniform4f(nameRule.uniformAmbient, ambient.r, ambient.g,
+        shader->setUniform1f(nameRule.uniformShininess, shininess);
+        shader->setUniform4f(nameRule.uniformAmbient, ambient.r, ambient.g,
                             ambient.b, ambient.a);
-        shader.setUniform4f(nameRule.uniformDiffuse, diffuse.r, diffuse.g,
+        shader->setUniform4f(nameRule.uniformDiffuse, diffuse.r, diffuse.g,
                             diffuse.b, diffuse.a);
-        shader.setUniform4f(nameRule.uniformSpecular, specular.r, specular.g,
+        shader->setUniform4f(nameRule.uniformSpecular, specular.r, specular.g,
                             specular.b, specular.a);
         triVAO.unbind();
         triVertex.unbind();
@@ -220,10 +220,10 @@ void IRMaterial::applyQuadVertex(const NameRule& nameRule) {
         if (quads.empty()) {
                 return;
         }
-        Shader& shader = ShaderRegistry::getInstance().get(getShader());
-        GLuint vertexAttrib = shader.getAttribLocation(nameRule.attribVertex);
-        GLuint uvAttrib = shader.getAttribLocation(nameRule.attribUV);
-        GLuint normalAttrib = shader.getAttribLocation(nameRule.attribNormal);
+        auto shader = ShaderRegistry::getInstance().get(getShader());
+        GLuint vertexAttrib = shader->getAttribLocation(nameRule.attribVertex);
+        GLuint uvAttrib = shader->getAttribLocation(nameRule.attribUV);
+        GLuint normalAttrib = shader->getAttribLocation(nameRule.attribNormal);
         quadVAO.bind();
         quadVertex.bind();
         glVertexAttribPointer(vertexAttrib, 4, GL_FLOAT, GL_FALSE, 0, NULL);
@@ -236,15 +236,15 @@ void IRMaterial::applyQuadVertex(const NameRule& nameRule) {
                 glVertexAttribPointer(uvAttrib, 2, GL_FLOAT, GL_FALSE, 0, NULL);
                 glEnableVertexAttribArray(uvAttrib);
         } else {
-                shader.setUniform4f(nameRule.uniformColor, mainColor.r,
+                shader->setUniform4f(nameRule.uniformColor, mainColor.r,
                                     mainColor.g, mainColor.b, mainColor.a);
         }
-        shader.setUniform1f(nameRule.uniformShininess, shininess);
-        shader.setUniform4f(nameRule.uniformAmbient, ambient.r, ambient.g,
+        shader->setUniform1f(nameRule.uniformShininess, shininess);
+        shader->setUniform4f(nameRule.uniformAmbient, ambient.r, ambient.g,
                             ambient.b, ambient.a);
-        shader.setUniform4f(nameRule.uniformDiffuse, diffuse.r, diffuse.g,
+        shader->setUniform4f(nameRule.uniformDiffuse, diffuse.r, diffuse.g,
                             diffuse.b, diffuse.a);
-        shader.setUniform4f(nameRule.uniformSpecular, specular.r, specular.g,
+        shader->setUniform4f(nameRule.uniformSpecular, specular.r, specular.g,
                             specular.b, specular.a);
         quadVAO.unbind();
         quadVertex.unbind();

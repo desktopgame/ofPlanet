@@ -8,7 +8,7 @@
 namespace gel {
 class Circle {
        public:
-        explicit Circle(Shader& shader, const NameRule& nameRule);
+        explicit Circle(const std::shared_ptr<Shader>& shader, const NameRule& nameRule);
         void init(const glm::vec4 basePoint, const glm::vec4 color,
                   float scale);
         void destroy();
@@ -18,7 +18,7 @@ class Circle {
        private:
         glm::vec4 basePoint;
         glm::vec4 color;
-        Shader& shader;
+        std::shared_ptr<Shader> shader;
         NameRule nameRule;
         VertexArray vao;
         Buffer<float> vertex;

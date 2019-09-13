@@ -62,7 +62,7 @@ void PlayScene::draw() {
         float delta = gel::Game::getInstance()->getDeltaTime();
         this->gameTime += delta;
         // apply matrix
-        gel::Shader& skyboxShader =
+        auto skyboxShader =
             gel::ShaderRegistry::getInstance().get("SkyBox");
         auto camera = planet.getCamera();
         glm::vec2 windowSize = gel::Game::getInstance()->getWindowSize();
@@ -70,51 +70,51 @@ void PlayScene::draw() {
         camera->screenWidth = windowSize.x;
         camera->screenHeight = windowSize.y;
         camera->calculate();
-        skyboxShader.use();
-        skyboxShader.setUniformMatrix4fv(
+        skyboxShader->use();
+        skyboxShader->setUniformMatrix4fv(
             "uProjectionMatrix", 1, GL_FALSE,
             glm::value_ptr(camera->getProjection()));
-        skyboxShader.setUniformMatrix4fv("uViewMatrix", 1, GL_FALSE,
+        skyboxShader->setUniformMatrix4fv("uViewMatrix", 1, GL_FALSE,
                                          glm::value_ptr(camera->getView()));
-        skyboxShader.unuse();
-        gel::Shader& circleShader =
+        skyboxShader->unuse();
+        auto circleShader =
             gel::ShaderRegistry::getInstance().get("Color");
-        circleShader.use();
-        circleShader.setUniformMatrix4fv("uMVPMatrix", 1, GL_FALSE,
+        circleShader->use();
+        circleShader->setUniformMatrix4fv("uMVPMatrix", 1, GL_FALSE,
                                          glm::value_ptr(camera->getMVP()));
-        circleShader.unuse();
-        gel::Shader& noiseShader =
+        circleShader->unuse();
+        auto noiseShader =
             gel::ShaderRegistry::getInstance().get("CRT");
-        noiseShader.use();
+        noiseShader->use();
         // check warp
         auto player = planet.getPlayer();
-        noiseShader.setUniform1f("Time", gameTime);
+        noiseShader->setUniform1f("Time", gameTime);
         if (warp.isHit(player->transform.position)) {
-                noiseShader.setUniform1i("enabled", 1);
+                noiseShader->setUniform1i("enabled", 1);
                 this->noiseTime += delta;
         } else {
-                noiseShader.setUniform1i("enabled", 0);
+                noiseShader->setUniform1i("enabled", 0);
                 this->noiseTime = 0.0f;
         }
-        noiseShader.unuse();
-        gel::Shader& colorShader =
+        noiseShader->unuse();
+        auto colorShader =
             gel::ShaderRegistry::getInstance().get("ColorFixed");
-        colorShader.use();
-        colorShader.setUniformMatrix4fv("uMVPMatrix", 1, GL_FALSE,
+        colorShader->use();
+        colorShader->setUniformMatrix4fv("uMVPMatrix", 1, GL_FALSE,
                                         glm::value_ptr(camera->getMVP()));
-        colorShader.setUniformMatrix4fv("uNormalMatrix", 1, GL_FALSE,
+        colorShader->setUniformMatrix4fv("uNormalMatrix", 1, GL_FALSE,
                                         glm::value_ptr(camera->getNormal()));
-        colorShader.setUniform4f("uLightPos", 64, 48, 64, 1.0f);
-        colorShader.unuse();
-        gel::Shader& texShader =
+        colorShader->setUniform4f("uLightPos", 64, 48, 64, 1.0f);
+        colorShader->unuse();
+        auto texShader =
             gel::ShaderRegistry::getInstance().get("TextureFixed");
-        texShader.use();
-        texShader.setUniformMatrix4fv("uMVPMatrix", 1, GL_FALSE,
+        texShader->use();
+        texShader->setUniformMatrix4fv("uMVPMatrix", 1, GL_FALSE,
                                       glm::value_ptr(camera->getMVP()));
-        texShader.setUniformMatrix4fv("uNormalMatrix", 1, GL_FALSE,
+        texShader->setUniformMatrix4fv("uNormalMatrix", 1, GL_FALSE,
                                       glm::value_ptr(camera->getNormal()));
-        texShader.setUniform4f("uLightPos", 64, 48, 64, 1.0f);
-        texShader.unuse();
+        texShader->setUniform4f("uLightPos", 64, 48, 64, 1.0f);
+        texShader->unuse();
         // set matrix
         auto irtModel = tModel->getIRModel();
         auto pos = camera->transform.position;

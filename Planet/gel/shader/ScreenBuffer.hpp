@@ -12,7 +12,7 @@
 namespace gel {
 class ScreenBuffer {
        public:
-        explicit ScreenBuffer(Shader& shader, const NameRule nameRule,
+        explicit ScreenBuffer(const std::shared_ptr<Shader>& shader, const NameRule nameRule,
                               int width, int height);
         void init();
         void destroy();
@@ -28,7 +28,7 @@ class ScreenBuffer {
         RenderBuffer renderBuffer;
         GLuint texture;
 
-        Shader& shader;
+        std::shared_ptr<Shader> shader;
         NameRule nameRule;
         VertexArray vao;
         Buffer<GLfloat> vertex;

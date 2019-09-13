@@ -6,7 +6,7 @@
 
 class ButtonUI {
        public:
-        explicit ButtonUI(gel::Shader& shader);
+        explicit ButtonUI(const std::shared_ptr<gel::Shader>& shader);
         void init(const GLuint onTexture, const GLuint offTexture,
                   const glm::vec2 pos, const glm::vec2 size);
         void destroy();

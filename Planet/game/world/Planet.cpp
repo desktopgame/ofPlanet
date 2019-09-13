@@ -12,7 +12,7 @@ float Planet::EYE_HEIGHT = 2.5f;
 float Planet::MOVE_SPEED = 0.20f;
 float Planet::JUMP_SPEED = 0.60f;
 float Planet::ROTATE_SPEED = 4.0f;
-Planet::Planet(gel::Shader& shader)
+Planet::Planet(const std::shared_ptr< gel::Shader>& shader)
     : shader(shader),
       world(shader, WSIZE_X, WSIZE_Y, WSIZE_Z),
       playerEntity(std::make_shared<EntityPhysics>()),
@@ -31,14 +31,14 @@ Planet::Planet(gel::Shader& shader)
       beamDraw(false),
       beamTime(),
       mouseTrigger(GLFW_MOUSE_BUTTON_LEFT) {
-        shader.use();
-        shader.setUniform1i("uTexture", 0);
-        shader.setUniform1f("uShininess", 50.0f);
-        shader.setUniform4fv("uDiffuse", 1, diffuse);
-        shader.setUniform4fv("uSpecular", 1, specular);
-        shader.setUniform4fv("uAmbient", 1, ambient);
-        shader.setUniform4f("uLightPos", 64, 32, 64, 1);
-        shader.unuse();
+        shader->use();
+        shader->setUniform1i("uTexture", 0);
+        shader->setUniform1f("uShininess", 50.0f);
+        shader->setUniform4fv("uDiffuse", 1, diffuse);
+        shader->setUniform4fv("uSpecular", 1, specular);
+        shader->setUniform4fv("uAmbient", 1, ambient);
+        shader->setUniform4f("uLightPos", 64, 32, 64, 1);
+        shader->unuse();
         biomeVec.push_back(std::make_unique<HillBiome>());
         biomeVec.push_back(std::make_unique<HillBiome>());
         biomeVec.push_back(std::make_unique<PlainBiome>());
@@ -124,21 +124,21 @@ void Planet::draw() {
         playerCamera->screenWidth = windowSize.x;
         playerCamera->screenHeight = windowSize.y;
         playerCamera->calculate();
-        shader.use();
-        shader.setUniform4fv("uDiffuse", 1, diffuse);
-        shader.setUniform4fv("uSpecular", 1, specular);
-        shader.setUniform4fv("uAmbient", 1, ambient);
-        shader.setUniformMatrix4fv("uMVPMatrix", 1, GL_FALSE,
+        shader->use();
+        shader->setUniform4fv("uDiffuse", 1, diffuse);
+        shader->setUniform4fv("uSpecular", 1, specular);
+        shader->setUniform4fv("uAmbient", 1, ambient);
+        shader->setUniformMatrix4fv("uMVPMatrix", 1, GL_FALSE,
                                    glm::value_ptr(playerCamera->getMVP()));
-        shader.setUniformMatrix4fv("uNormalMatrix", 1, GL_FALSE,
+        shader->setUniformMatrix4fv("uNormalMatrix", 1, GL_FALSE,
                                    glm::value_ptr(playerCamera->getNormal()));
-        shader.unuse();
+        shader->unuse();
         /*
                 auto& beamShader =
-           gel::ShaderRegistry::getInstance().get("Color"); beamShader.use();
-                beamShader.setUniformMatrix4fv("uMVPMatrix", 1, GL_FALSE,
+           gel::ShaderRegistry::getInstance().get("Color"); beamshader->use();
+                beamshader->setUniformMatrix4fv("uMVPMatrix", 1, GL_FALSE,
                                                glm::value_ptr(playerCamera->getMVP()));
-                beamShader.unuse();
+                beamshader->unuse();
         */
         world.draw();
 /*

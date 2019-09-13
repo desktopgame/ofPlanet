@@ -1,6 +1,6 @@
 #include "ButtonUI.hpp"
 
-ButtonUI::ButtonUI(gel::Shader& shader)
+ButtonUI::ButtonUI(const std::shared_ptr<gel::Shader>& shader)
     : onSprite(shader),
       offSprite(shader),
       mouseTrigger(GLFW_MOUSE_BUTTON_LEFT),

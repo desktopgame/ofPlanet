@@ -17,7 +17,7 @@
 #define POSITION_SIZE (((128 * 64 * 128) * 6) * 4)
 class World {
        public:
-        explicit World(gel::Shader& shader, int xSize, int ySize, int zSize);
+        explicit World(const std::shared_ptr< gel::Shader>& shader, int xSize, int ySize, int zSize);
         ~World();
         void save(const std::string& filename);
         void load(const std::string& filename);

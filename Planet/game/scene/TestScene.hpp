@@ -23,7 +23,7 @@ class TestScene : public gel::IScene {
         glm::vec3 lightPos;
         std::string filename;
         gel::Sprite sprite;
-        gel::Shader& shader;
+        std::shared_ptr<gel::Shader> shader;
         gel::Plane plane;
         glm::mat4 model;
         std::shared_ptr<gel::Camera> camera;
