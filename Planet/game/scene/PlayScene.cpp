@@ -151,23 +151,19 @@ void PlayScene::draw() {
 		// edit
 		GLubyte* data = pbuf.map();
 		if (data) {
-			/*
-			GLubyte* diter = data;
-			for (int y = 0; y < pbuf.getHeight(); y++) {
-				for (int x = 0; x < pbuf.getWidth(); x++) {
-					(*diter) = 0.0f;
-					++diter;
-				}
-			}
-			*/
-			//*
 			for (int i = 0; i < pbuf.getWidth()*pbuf.getHeight(); ++i) {
 				GLubyte gray = (GLubyte)((data[4 * i] + data[4 * i + 1] + data[4 * i + 2]) / 3.0);
-				data[4 * i] = gray;
-				data[4 * i + 1] = gray;
-				data[4 * i + 2] = gray;
+				GLubyte r = data[4 * i + 0];
+				GLubyte g = data[4 * i + 1];
+				GLubyte b = data[4 * i + 2];
+				GLubyte a = data[4 * i + 3];
+				if (r == 0 && g == 0 && b == 0) {
+					data[4 * i + 0] = 255;
+					data[4 * i + 1] = 0;
+					data[4 * i + 2] = 0;
+					data[4 * i + 3] = 1;
+				}
 			}
-			//*/
 			pbuf.unmap();
 		}
 		pbuf.unbind();
