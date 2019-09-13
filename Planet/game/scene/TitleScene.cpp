@@ -12,7 +12,7 @@ TitleScene::TitleScene()
       exitSprite(gel::ShaderRegistry::getInstance().get("Texture2D")),
       camera(std::make_shared<gel::Camera>()) {
         screenBuffer.init(gel::Game::getInstance()->getWindowWidth(),
-			gel::Game::getInstance()->getWindowHeight());
+                          gel::Game::getInstance()->getWindowHeight());
         titleSprite.init(
             gel::AssetDatabase::getAsset<gel::ITexture>(res::TITLE_IMG_PATH)
                 ->getID(),

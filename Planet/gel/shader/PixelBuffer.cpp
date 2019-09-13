@@ -1,6 +1,7 @@
 #include "PixelBuffer.hpp"
 namespace gel {
-PixelBuffer::PixelBuffer() : pbo(0), initFlag(false), boundFlag(false) {}
+PixelBuffer::PixelBuffer(GLenum type)
+    : pbo(0), initFlag(false), boundFlag(false), type(type) {}
 void PixelBuffer::init(int width, int height, int ch) {
         initFlag.check(false, "already initialized");
         initFlag.enable();
@@ -8,13 +9,11 @@ void PixelBuffer::init(int width, int height, int ch) {
         this->height = height;
         this->ch = ch;
         glGenBuffers(1, &pbo);
-        glBindBuffer(GL_PIXEL_UNPACK_BUFFER_ARB, pbo);
-        glBufferData(GL_PIXEL_UNPACK_BUFFER_ARB, width * height * ch, 0,
-                     GL_DYNAMIC_DRAW);
-        glBindBuffer(GL_PIXEL_UNPACK_BUFFER_ARB, 0);
+        glBindBuffer(type, pbo);
+        glBufferData(type, (width * height * ch), 0, GL_DYNAMIC_DRAW);
+        glBindBuffer(type, 0);
 }
 void PixelBuffer::destroy() {
-        glBindBuffer(GL_ARRAY_BUFFER, pbo);
         glDeleteBuffers(1, &pbo);
         this->pbo = 0;
         initFlag.disable();
@@ -23,27 +22,52 @@ void PixelBuffer::destroy() {
 void PixelBuffer::bind() {
         boundFlag.check(false, "already bound");
         boundFlag.enable();
-        glBindBuffer(GL_PIXEL_PACK_BUFFER_ARB, pbo);
+        glBindBuffer(type, pbo);
+}
+void PixelBuffer::bind(GLenum type)
+{
+	this->type = type;
+	bind();
 }
 void PixelBuffer::unbind() {
         boundFlag.disable();
-        glBindBuffer(GL_PIXEL_PACK_BUFFER_ARB, 0);
+        glBindBuffer(type, 0);
 }
-GLubyte *PixelBuffer::read() const {
-		boundFlag.check(true, "should be call bind");
-		glBufferData(GL_PIXEL_UNPACK_BUFFER_ARB, width * height * ch, 0, GL_STREAM_DRAW_ARB);
-        GLubyte *ptr =
-            (GLubyte *)glMapBuffer(GL_PIXEL_PACK_BUFFER, GL_READ_WRITE);
+void PixelBuffer::read() const {
+        boundFlag.check(true, "should be call bind");
+        checkRead();
+        glReadPixels(0, 0, width, height, GL_BGRA, GL_UNSIGNED_BYTE, 0);
+}
+void PixelBuffer::write() {
+        boundFlag.check(true, "should be call bind");
+        checkWrite();
+        glDrawPixels(width, height, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+}
+GLubyte *PixelBuffer::map() const {
+        boundFlag.check(true, "should be call bind");
+        checkRead();
+        GLubyte *ptr = (GLubyte *)glMapBuffer(type, GL_READ_WRITE);
         return ptr;
 }
-void PixelBuffer::transport(GLuint texture) const {
+void PixelBuffer::unmap() const {
         boundFlag.check(true, "should be call bind");
-		glUnmapBuffer(GL_PIXEL_PACK_BUFFER_ARB);
-        glBindTexture(GL_TEXTURE_2D, texture);
-        glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_BGRA,
-                        GL_UNSIGNED_BYTE, 0);
-        glBindTexture(GL_TEXTURE_2D, 0);
+        checkRead();
+        glUnmapBufferARB(type);
+}
+void PixelBuffer::transport(GLuint texture) const
+{
+	boundFlag.check(true, "should be call bind");
+	checkWrite();
+	glBindTexture(GL_TEXTURE_2D, texture);
+	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_BGRA, GL_UNSIGNED_BYTE, 0);
+	glBindTexture(GL_TEXTURE_2D, 0);
 }
 int PixelBuffer::getWidth() const { return width; }
 int PixelBuffer::getHeight() const { return height; }
+void PixelBuffer::checkRead() const {
+        assert(type == GL_PIXEL_PACK_BUFFER_ARB);
+}
+void PixelBuffer::checkWrite() const {
+        assert(type == GL_PIXEL_UNPACK_BUFFER_ARB);
+}
 }  // namespace gel

@@ -19,6 +19,7 @@ class ScreenBuffer {
         void bind();
         void unbind();
         void render();
+		GLuint texture;
 
        private:
         void initRect();
@@ -26,7 +27,6 @@ class ScreenBuffer {
         int height;
         FrameBuffer frameBuffer;
         RenderBuffer renderBuffer;
-        GLuint texture;
 
         std::shared_ptr<Shader> shader;
         NameRule nameRule;

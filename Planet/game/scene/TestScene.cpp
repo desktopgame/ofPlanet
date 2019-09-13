@@ -27,7 +27,7 @@ TestScene::TestScene()
         glEnableClientState(GL_VERTEX_ARRAY);
         glEnableClientState(GL_TEXTURE_COORD_ARRAY);
         screenBuffer.init(gel::Game::getInstance()->getWindowWidth(),
-			gel::Game::getInstance()->getWindowHeight());
+                          gel::Game::getInstance()->getWindowHeight());
         sprite.init(gel::AssetDatabase::getAsset<gel::ITexture>(
                         "./assets/image/sample.jpg")
                         ->getID(),

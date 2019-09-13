@@ -13,8 +13,8 @@ ScreenBuffer::ScreenBuffer(const std::shared_ptr<Shader>& shader,
       vao() {}
 
 void ScreenBuffer::init(int width, int height) {
-		this->width = width;
-		this->height = height;
+        this->width = width;
+        this->height = height;
         initRect();
         // init frame buffer
         frameBuffer.init();
@@ -81,7 +81,7 @@ void ScreenBuffer::render() {
         glDrawArrays(GL_TRIANGLES, 0, 6);
         vao.unbind();
         shader->unuse();
-		glEnable(GL_DEPTH_TEST);
+        glEnable(GL_DEPTH_TEST);
 }
 // private
 void ScreenBuffer::initRect() {

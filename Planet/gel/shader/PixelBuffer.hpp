@@ -7,20 +7,27 @@
 namespace gel {
 class PixelBuffer {
        public:
-        explicit PixelBuffer();
+        explicit PixelBuffer(GLenum type);
         void init(int width, int height, int ch);
         void destroy();
         void bind();
+		void bind(GLenum type);
         void unbind();
-        GLubyte* read() const;
-        void transport(GLuint texture) const;
+        void read() const;
+        void write();
+        GLubyte* map() const;
+        void unmap() const;
+		void transport(GLuint texture) const;
         int getWidth() const;
         int getHeight() const;
 
        private:
+        void checkRead() const;
+        void checkWrite() const;
         GLuint pbo;
         Flag initFlag;
         Flag boundFlag;
+        GLenum type;
         int width;
         int height;
         int ch;

@@ -20,11 +20,14 @@ PlayScene::PlayScene()
       warp(gel::ShaderRegistry::getInstance().get("Color"), gel::NameRule()),
       random(),
       gPos(0, -10, 4),
-      gRot(0.0f, 0.0f, 9.2f) {
+      gRot(0.0f, 0.0f, 9.2f),
+      pbuf(GL_PIXEL_PACK_BUFFER_ARB) {
         gunScrBuffer.init(gel::Game::getInstance()->getWindowWidth(),
-                   gel::Game::getInstance()->getWindowHeight());
+                          gel::Game::getInstance()->getWindowHeight());
         screenBuffer.init(gel::Game::getInstance()->getWindowWidth(),
-                   gel::Game::getInstance()->getWindowHeight());
+                          gel::Game::getInstance()->getWindowHeight());
+		pbuf.init(gel::Game::getInstance()->getWindowWidth(),
+			gel::Game::getInstance()->getWindowHeight(),4);
         this->tModel = gel::AssetDatabase::getAsset<gel::IModel>(
             "./assets/model/Gun1028.fbx");
         gel::CubeMapDesc desc;
@@ -142,17 +145,50 @@ void PlayScene::draw() {
         texShader->setUniform4f("uLightPos", 0, 0, 0, 1.0f);
         texShader->unuse();
         irtModel->draw();
+		// read pixeles from frame buffer
+		pbuf.bind(GL_PIXEL_PACK_BUFFER_ARB);
+		pbuf.read();
+		// edit
+		GLubyte* data = pbuf.map();
+		if (data) {
+			/*
+			GLubyte* diter = data;
+			for (int y = 0; y < pbuf.getHeight(); y++) {
+				for (int x = 0; x < pbuf.getWidth(); x++) {
+					(*diter) = 0.0f;
+					++diter;
+				}
+			}
+			*/
+			//*
+			for (int i = 0; i < pbuf.getWidth()*pbuf.getHeight(); ++i) {
+				GLubyte gray = (GLubyte)((data[4 * i] + data[4 * i + 1] + data[4 * i + 2]) / 3.0);
+				data[4 * i] = gray;
+				data[4 * i + 1] = gray;
+				data[4 * i + 2] = gray;
+			}
+			//*/
+			pbuf.unmap();
+		}
+		pbuf.unbind();
+		// apply to buffer
+		pbuf.bind(GL_PIXEL_UNPACK_BUFFER_ARB);
+		pbuf.transport(gunScrBuffer.texture);
+		pbuf.unbind();
         gunScrBuffer.unbind();
-        // double buffered rendering
-        screenBuffer.bind();
-        skybox.draw();
-        planet.draw();
-        warp.draw();
+		gunScrBuffer.render();
+        /*
+// double buffered rendering
+screenBuffer.bind();
+skybox.draw();
+planet.draw();
+warp.draw();
 
-        screenBuffer.unbind();
-        screenBuffer.render();
-        gunScrBuffer.render();
-        crossHair.draw(planet.getCamera());
+screenBuffer.unbind();
+screenBuffer.render();
+        filterBuffer.render();
+crossHair.draw(planet.getCamera());
+        */
         if (noiseTime > 3.0f) {
                 warp.destroy();
                 goNextPlanet();
