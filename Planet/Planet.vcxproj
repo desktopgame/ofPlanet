@@ -194,6 +194,7 @@
     <ClCompile Include="gel\shader\IRShape.cpp" />
     <ClCompile Include="gel\shader\Line.cpp" />
     <ClCompile Include="gel\shader\NameRule.cpp" />
+    <ClCompile Include="gel\shader\PixelBuffer.cpp" />
     <ClCompile Include="gel\shader\Plane.cpp" />
     <ClCompile Include="gel\shader\PlaneBatch.cpp" />
     <ClCompile Include="gel\shader\PlaneDraw.cpp" />
@@ -306,6 +307,7 @@
     <ClInclude Include="gel\shader\IRShape.hpp" />
     <ClInclude Include="gel\shader\Line.hpp" />
     <ClInclude Include="gel\shader\NameRule.hpp" />
+    <ClInclude Include="gel\shader\PixelBuffer.hpp" />
     <ClInclude Include="gel\shader\Plane.hpp" />
     <ClInclude Include="gel\shader\PlaneBatch.hpp" />
     <ClInclude Include="gel\shader\PlaneDraw.hpp" />
