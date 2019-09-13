@@ -17,7 +17,9 @@ PlayScene::PlayScene()
                    gel::Game::getInstance()->getWindowHeight()),
       skybox(gel::ShaderRegistry::getInstance().get("SkyBox"), gel::NameRule()),
       warp(gel::ShaderRegistry::getInstance().get("Color"), gel::NameRule()),
-      random() {
+      random(),
+	  gPos(0,-10,4),
+      gRot(0.0f, 0.0f, 9.2f) {
         screenBuffer.init();
         this->tModel = gel::AssetDatabase::getAsset<gel::IModel>(
             "./assets/model/Gun1028.fbx");
@@ -119,24 +121,32 @@ void PlayScene::draw() {
         auto irtModel = tModel->getIRModel();
         auto pos = camera->transform.position;
         auto rot = camera->transform.rotation;
+		auto look = glm::lookAt(pos, pos + camera->transform.forward(), glm::vec3(0, 1, 0));
 
-        auto imat = glm::translate(glm::mat4(1.0f), pos);
-        //*
-        imat = glm::rotate(imat, 0.f, glm::vec3(0, 1, 0));
-        // imat = glm::rotate(imat, rot.x, glm::vec3(1, 0, 0));
-        // imat = glm::rotate(imat, rot.z, glm::vec3(0, 0, 1));
-        //*/
-        imat = glm::scale(imat, glm::vec3(0.5f));
+		auto gModel = glm::mat4(1.0f);
+		auto gTranslate = glm::translate(gModel, gPos);
+		auto gRotate =
+			glm::rotate(gModel, gRot.y, glm::vec3(0, 1, 0)) *
+			glm::rotate(gModel, gRot.x, glm::vec3(1, 0, 0)) *
+			glm::rotate(gModel, gRot.z, glm::vec3(0, 0, 1));
+		auto gScale = glm::scale(gModel, glm::vec3(0.1f, 0.1f, 0.1f));
+		gModel = gTranslate * gRotate * gScale;
 
-        irtModel->setModelMatrix(imat);
-        irtModel->setViewMatrix(camera->getView());
+		auto gView = glm::lookAt(glm::vec3(0,0,0), glm::vec3(0,0,-1), glm::vec3(0, -1, 0));
+
+        irtModel->setModelMatrix(gModel);
+        irtModel->setViewMatrix(gView);
         irtModel->setProjectionMatrix(camera->getProjection());
         // double buffered rendering
         screenBuffer.bind();
         skybox.draw();
         planet.draw();
         warp.draw();
-        irtModel->draw();
+
+		texShader->use();
+		texShader->setUniform4f("uLightPos", 0, 0, 0, 1.0f);
+		texShader->unuse();
+		irtModel->draw();
         screenBuffer.unbind();
         screenBuffer.render();
         crossHair.draw(planet.getCamera());
@@ -144,6 +154,20 @@ void PlayScene::draw() {
                 warp.destroy();
                 goNextPlanet();
         }
+
+		ImGui::PushStyleColor(ImGuiCol_TitleBgActive, ImVec4(0.0f, 0.7f, 0.2f, 1.0f));
+		ImGui::PushStyleColor(ImGuiCol_TitleBg, ImVec4(0.0f, 0.3f, 0.1f, 1.0f));
+		ImGui::SetNextWindowPos(ImVec2(20, 20), ImGuiSetCond_Once);
+		ImGui::SetNextWindowSize(ImVec2(200, 300), ImGuiSetCond_Once);
+
+		ImGui::Begin("config 1");
+		ImGui::DragFloat3("gPos", &gPos.x, -100, 100);
+		ImGui::DragFloat3("gRot", &gRot.x, 0, 360);
+		ImGui::End();
+
+		ImGui::PopStyleColor();
+		ImGui::PopStyleColor();
+		gel::gui::render();
 }
 
 void PlayScene::hide() {}

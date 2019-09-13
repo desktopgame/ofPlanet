@@ -21,6 +21,8 @@ class PlayScene : public gel::IScene {
         float gameTime;
         float noiseTime;
         int score;
+		glm::vec3 gPos;
+		glm::vec3 gRot;
         std::shared_ptr<gel::IModel> tModel;
         std::shared_ptr<gel::ContentManager> contentManager;
         CrossHairUI crossHair;
