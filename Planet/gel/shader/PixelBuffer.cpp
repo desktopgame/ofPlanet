@@ -36,7 +36,7 @@ void PixelBuffer::unbind() {
 void PixelBuffer::read() const {
         boundFlag.check(true, "should be call bind");
         checkRead();
-        glReadPixels(0, 0, width, height, GL_BGRA, GL_UNSIGNED_BYTE, 0);
+        glReadPixels(0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, 0);
 }
 void PixelBuffer::write() {
         boundFlag.check(true, "should be call bind");
@@ -59,18 +59,18 @@ void PixelBuffer::transport(GLuint texture) const
 	boundFlag.check(true, "should be call bind");
 	checkWrite();
 	glBindTexture(GL_TEXTURE_2D, texture);
-	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_BGRA, GL_UNSIGNED_BYTE, 0);
+	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, 0);
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 int PixelBuffer::getWidth() const { return width; }
 int PixelBuffer::getHeight() const { return height; }
 void PixelBuffer::replace(GLubyte* source, int width, int height, PixelMatch match, PixelReplace replace, Pixel oldPix, Pixel newPix)
 {
-	for (int i = 0; i < width*height; ++i) {
-		GLubyte r = source[4 * i + 0];
-		GLubyte g = source[4 * i + 1];
-		GLubyte b = source[4 * i + 2];
-		GLubyte a = source[4 * i + 3];
+	for (int i = 0; i < width*height*4; i+=4) {
+		GLubyte r = source[i + 0];
+		GLubyte g = source[i + 1];
+		GLubyte b = source[i + 2];
+		GLubyte a = source[i + 3];
 		bool matchR = r == (oldPix.r);
 		bool matchG = g == (oldPix.g);
 		bool matchB = b == (oldPix.b);
@@ -83,12 +83,12 @@ void PixelBuffer::replace(GLubyte* source, int width, int height, PixelMatch mat
 		}
 		if (replaceColor) {
 			if (replace == PixelReplace::ReplaceRGB || replace == PixelReplace::ReplaceRGBA) {
-				source[4 * i + 0] = newPix.r;
-				source[4 * i + 1] = newPix.g;
-				source[4 * i + 2] = newPix.b;
+				source[i + 0] = newPix.r;
+				source[i + 1] = newPix.g;
+				source[i + 2] = newPix.b;
 			}
 			if (replace == PixelReplace::ReplaceRGBA) {
-				source[4 * i + 3] = newPix.a;
+				source[i + 3] = newPix.a;
 			}
 		}
 	}
