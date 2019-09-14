@@ -100,7 +100,7 @@ void PixelBuffer::checkWrite() const {
         assert(type == GL_PIXEL_UNPACK_BUFFER_ARB);
 }
 // Pixel
-Pixel::Pixel() : r(0), g(0), b(0), a(1) {
+Pixel::Pixel() : r(0), g(0), b(0), a(0) {
 }
 Pixel::Pixel(GLubyte r, GLubyte g, GLubyte b, GLubyte a)
 	:r(r),g(g),b(b),a(a)
