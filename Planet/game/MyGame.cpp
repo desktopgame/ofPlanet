@@ -20,6 +20,8 @@ void MyGame::onInit() {
         sreg.put("Noise", "./noise.vert", "./noise.frag");
         sreg.put("Gun", "./noise.vert", "./noise.frag");
         sreg.put("CRT", "./crt.vert", "./crt.frag");
+		GLfloat lineWidthRange[2] = { 0.0f, 0.0f };
+		glGetFloatv(GL_ALIASED_LINE_WIDTH_RANGE, lineWidthRange);
         // Anisotropic filtering
         float filter;
         glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &filter);

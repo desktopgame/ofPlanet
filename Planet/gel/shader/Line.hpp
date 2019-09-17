@@ -15,6 +15,7 @@ class Line {
         void destroy();
         void draw();
         float lineWidth;
+		glm::mat4 mvp;
 
        private:
         glm::vec4 start;

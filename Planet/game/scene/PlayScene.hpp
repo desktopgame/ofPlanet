@@ -8,6 +8,7 @@
 #include "../ui/StatusUI.hpp"
 #include "../world/Planet.hpp"
 #include "../world/WarpPoint.hpp"
+#include "../../gel/shader/Line.hpp"
 
 class PlayScene : public gel::IScene {
        public:
@@ -32,6 +33,7 @@ class PlayScene : public gel::IScene {
         WarpPoint warp;
         RightHandUI rhUI;
         StatusUI statusUI;
+		gel::Line beamLine;
         gel::Random random;
         gel::CubeMap skybox;
         gel::KeyTrigger eKeyTrigger;
