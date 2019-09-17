@@ -193,6 +193,7 @@
     <ClCompile Include="gel\shader\IRMesh.cpp" />
     <ClCompile Include="gel\shader\IRModel.cpp" />
     <ClCompile Include="gel\shader\IRShape.cpp" />
+    <ClCompile Include="gel\shader\Layer.cpp" />
     <ClCompile Include="gel\shader\Line.cpp" />
     <ClCompile Include="gel\shader\NameRule.cpp" />
     <ClCompile Include="gel\shader\PixelBuffer.cpp" />
@@ -308,6 +309,7 @@
     <ClInclude Include="gel\shader\IRMesh.hpp" />
     <ClInclude Include="gel\shader\IRModel.hpp" />
     <ClInclude Include="gel\shader\IRShape.hpp" />
+    <ClInclude Include="gel\shader\Layer.hpp" />
     <ClInclude Include="gel\shader\Line.hpp" />
     <ClInclude Include="gel\shader\NameRule.hpp" />
     <ClInclude Include="gel\shader\PixelBuffer.hpp" />
