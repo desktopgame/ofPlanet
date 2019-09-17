@@ -5,6 +5,7 @@
 #include <memory>
 #include "../../gel/asset/IModel.hpp"
 #include "../../gel/gel.hpp"
+#include "../../gel/shader/Sprite.hpp"
 class RightHandUI {
        public:
         explicit RightHandUI();
@@ -21,6 +22,8 @@ class RightHandUI {
         gel::Timer clickTimer;
         bool clicked;
         gel::ScreenBuffer gunScrBuffer;
+		gel::Sprite hartSprite;
+		gel::Sprite bulletSprite;
         bool gunCache;
 };
 #endif

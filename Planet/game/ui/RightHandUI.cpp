@@ -14,9 +14,13 @@ RightHandUI::RightHandUI()
       gRot(0.0f, 0.0f, 9.2f),
       clickTimer(0.5f),
       tModel(gel::AssetDatabase::getAsset<gel::IModel>(
-          "./assets/model/Gun1028.fbx")) {
+          "./assets/model/Gun1028.fbx")),
+      bulletSprite(gel::ShaderRegistry::getInstance().get("Texture2D"), gel::NameRule()),
+	  hartSprite(gel::ShaderRegistry::getInstance().get("Texture2D"), gel::NameRule()) {
         gunScrBuffer.init(gel::Game::getInstance()->getWindowWidth(),
                           gel::Game::getInstance()->getWindowHeight());
+		hartSprite.init(gel::AssetDatabase::getAsset<gel::ITexture>("./assets/image/hart_gray.png")->getID(), glm::vec2(0,0),glm::vec2(64,64),1.0f);
+		bulletSprite.init(gel::AssetDatabase::getAsset<gel::ITexture>("./assets/image/bullet_gray.png")->getID(), glm::vec2(0, 64), glm::vec2(64, 64), 1.0f);
 }
 void RightHandUI::reset() {
         this->gunCache = false;
@@ -50,6 +54,8 @@ void RightHandUI::update() {
 void RightHandUI::draw(std::weak_ptr<gel::Camera> cameraRef) {
         batch(cameraRef);
         gunScrBuffer.render();
+		hartSprite.draw(cameraRef.lock());
+		bulletSprite.draw(cameraRef.lock());
 }
 // private
 void RightHandUI::batch(std::weak_ptr<gel::Camera> cameraRef) {
