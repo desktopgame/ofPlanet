@@ -38,15 +38,24 @@ PlayScene::PlayScene()
 			if (ammo > 0) {
 				model->setAmmo(ammo - 1);
 				auto player = planet.getPlayer();
-				this->bStart = player->transform.position;
+				this->bStart = planet.getCamera()->transform.position;
 				this->bFwd = player->transform.forward();
 				this->bEnd = bFwd;
+				auto add = bFwd;
+				add.x *= 10;
+				add.y *= 10;
+				add.z *= 10;
+				this->bStart += add;
 				bEnd.x *= 128;
 				bEnd.y *= 128;
 				bEnd.z *= 128;
 				beamLine.update(glm::vec4(bStart.x, bStart.y, bStart.z, 1), glm::vec4(bEnd.x, bEnd.y, bEnd.z, 1));
 			}
 		});
+		rhUI.onEndAnimation().connect([this]() {
+			//beamLine.update(glm::vec4(0, 0, 0, 1), glm::vec4(0, 0, 0, 1));
+		});
+		beamLine.lineWidth = 20;
 		beamLine.init(glm::vec4(0, 0, 0, 1), glm::vec4(0, 0, 0, 1), glm::vec4(1,0,0,1));
 }
 
@@ -77,6 +86,17 @@ void PlayScene::show() {
         goNextPlanet();
 }
 void PlayScene::update() {
+		/*
+		if (rhUI.isAnimationNow()) {
+			auto scl = bFwd;
+			scl.x *= 10;
+			scl.y *= 10;
+			scl.z *= 10;
+			this->bStart += scl;
+			this->bEnd += scl;
+			beamLine.update(glm::vec4(bStart.x, bStart.y, bStart.z, 1), glm::vec4(bEnd.x, bEnd.y, bEnd.z, 1));
+		}
+		*/
         // open/close inventory
         eKeyTrigger.update();
         if (eKeyTrigger.isEnabled()) {
