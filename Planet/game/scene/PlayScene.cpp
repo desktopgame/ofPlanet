@@ -32,19 +32,19 @@ PlayScene::PlayScene()
         desc.bottom = "./assets/image/skybox/SkyBoxBottom.png";
         skybox.init(desc, glm::vec3(128, 64, 128), 64, 64);
         statusUI.init();
-		rhUI.onFire().connect([&]() {
+		rhUI.onStartAnimation().connect([this]() {
 			auto model = statusUI.getModel();
 			auto ammo = model->getAmmo();
 			if (ammo > 0) {
 				model->setAmmo(ammo - 1);
 				auto player = planet.getPlayer();
-				auto pos = player->transform.position;
-				auto fwd = player->transform.forward();
-				fwd.x *= 128;
-				fwd.y *= 128;
-				fwd.z *= 128;
-				auto end = pos + fwd;
-				beamLine.update(glm::vec4(pos.x, pos.y, pos.z, 1), glm::vec4(end.x,end.y,end.z, 1));
+				this->bStart = player->transform.position;
+				this->bFwd = player->transform.forward();
+				this->bEnd = bFwd;
+				bEnd.x *= 128;
+				bEnd.y *= 128;
+				bEnd.z *= 128;
+				beamLine.update(glm::vec4(bStart.x, bStart.y, bStart.z, 1), glm::vec4(bEnd.x, bEnd.y, bEnd.z, 1));
 			}
 		});
 		beamLine.init(glm::vec4(0, 0, 0, 1), glm::vec4(0, 0, 0, 1), glm::vec4(1,0,0,1));

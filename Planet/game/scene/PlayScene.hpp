@@ -28,6 +28,9 @@ class PlayScene : public gel::IScene {
         float noiseTime;
         int score;
         std::shared_ptr<gel::ContentManager> contentManager;
+		glm::vec3 bStart;
+		glm::vec3 bEnd;
+		glm::vec3 bFwd;
         CrossHairUI crossHair;
         Planet planet;
         WarpPoint warp;
