@@ -14,20 +14,13 @@ PlayScene::PlayScene()
       crossHair(),
       screenBuffer(gel::ShaderRegistry::getInstance().get("Noise"),
                    gel::NameRule()),
-      gunScrBuffer(gel::ShaderRegistry::getInstance().get("Noise"),
-                   gel::NameRule()),
       skybox(gel::ShaderRegistry::getInstance().get("SkyBox"), gel::NameRule()),
       warp(gel::ShaderRegistry::getInstance().get("Color"), gel::NameRule()),
       random(),
-      gPos(0, -10, 4),
-      gRot(0.0f, 0.0f, 9.2f),
-	  clickTimer(0.5f){
-        gunScrBuffer.init(gel::Game::getInstance()->getWindowWidth(),
-                          gel::Game::getInstance()->getWindowHeight());
+      rhUI(gel::AssetDatabase::getAsset<gel::IModel>(
+		  "./assets/model/Gun1028.fbx")) {
         screenBuffer.init(gel::Game::getInstance()->getWindowWidth(),
                           gel::Game::getInstance()->getWindowHeight());
-        this->tModel = gel::AssetDatabase::getAsset<gel::IModel>(
-            "./assets/model/Gun1028.fbx");
         gel::CubeMapDesc desc;
         desc.front = "./assets/image/skybox/SkyBoxSide.png";
         desc.back = "./assets/image/skybox/SkyBoxSide.png";
@@ -44,10 +37,9 @@ PlayScene::~PlayScene() {
 }
 
 void PlayScene::show() {
-		this->gunCache = false;
+		rhUI.reset();
         this->gameTime = 0.0f;
         this->score = 0;
-		this->clicked = false;
         glfwSetInputMode(gel::Game::getInstance()->getWindow(), GLFW_CURSOR,
                          GLFW_CURSOR_DISABLED);
         glEnable(GL_TEXTURE_2D);
@@ -65,29 +57,7 @@ void PlayScene::update() {
         if (eKeyTrigger.isEnabled()) {
                 planet.pause(!planet.isPause());
         }
-		// start fire timer
-		if (gel::Input::isMousePress(gel::MouseButton::Left) && !clicked) {
-			this->clicked = true;
-			this->startGPos = gPos;
-			this->gunCache = false;
-			clickTimer.reset();
-		}
-		if (clicked) {
-			this->gunCache = false;
-			clickTimer.update();
-			const float HEIGHT = 1.0f;
-			float par = clickTimer.progress01();
-			if (par >= 0.5f) {
-				par -= 0.5f;
-				gPos.y -= (HEIGHT * par);
-			} else {
-				gPos.y += (HEIGHT * par);
-			}
-			if (clickTimer.isElapsed()) {
-				this->clicked = false;
-				this->gPos = startGPos;
-			}
-		}
+		rhUI.update();
         planet.update();
 }
 void PlayScene::draw() {
@@ -143,36 +113,7 @@ void PlayScene::draw() {
         texShader->setUniform4f("uLightPos", 64, 48, 64, 1.0f);
         texShader->unuse();
         // set matrix
-		if (!gunCache) {
-
-			auto irtModel = tModel->getIRModel();
-			auto pos = camera->transform.position;
-			auto rot = camera->transform.rotation;
-			auto look = glm::lookAt(pos, pos + camera->transform.forward(),
-				glm::vec3(0, 1, 0));
-
-			auto gModel = glm::mat4(1.0f);
-			auto gTranslate = glm::translate(gModel, gPos);
-			auto gRotate = glm::rotate(gModel, gRot.y, glm::vec3(0, 1, 0)) *
-				glm::rotate(gModel, gRot.x, glm::vec3(1, 0, 0)) *
-				glm::rotate(gModel, gRot.z, glm::vec3(0, 0, 1));
-			auto gScale = glm::scale(gModel, glm::vec3(0.1f, 0.1f, 0.1f));
-			gModel = gTranslate * gRotate * gScale;
-
-			auto gView = glm::lookAt(glm::vec3(0, 0, 0), glm::vec3(0, 0, -1),
-				glm::vec3(0, -1, 0));
-
-			irtModel->setModelMatrix(gModel);
-			irtModel->setViewMatrix(gView);
-			irtModel->setProjectionMatrix(camera->getProjection());
-			gunScrBuffer.bind();
-			texShader->use();
-			texShader->setUniform4f("uLightPos", 0, 0, 0, 1.0f);
-			texShader->unuse();
-			irtModel->draw();
-			gunScrBuffer.unbind();
-			this->gunCache = true; 
-		}
+		
 		// draw planet
 		screenBuffer.bind();
 		skybox.draw();
@@ -182,7 +123,7 @@ void PlayScene::draw() {
 		screenBuffer.unbind();
 		screenBuffer.render();
 		crossHair.draw(planet .getCamera());
-		gunScrBuffer.render();
+		rhUI.draw(planet.getCamera());
 		//gunScrBuffer.render();
         if (noiseTime > 3.0f) {
                 warp.destroy();
