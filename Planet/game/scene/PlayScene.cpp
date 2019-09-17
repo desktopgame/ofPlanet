@@ -20,14 +20,11 @@ PlayScene::PlayScene()
       warp(gel::ShaderRegistry::getInstance().get("Color"), gel::NameRule()),
       random(),
       gPos(0, -10, 4),
-      gRot(0.0f, 0.0f, 9.2f),
-      pbuf(GL_PIXEL_PACK_BUFFER_ARB) {
+      gRot(0.0f, 0.0f, 9.2f) {
         gunScrBuffer.init(gel::Game::getInstance()->getWindowWidth(),
                           gel::Game::getInstance()->getWindowHeight());
         screenBuffer.init(gel::Game::getInstance()->getWindowWidth(),
                           gel::Game::getInstance()->getWindowHeight());
-		pbuf.init(gel::Game::getInstance()->getWindowWidth(),
-			gel::Game::getInstance()->getWindowHeight(),4);
         this->tModel = gel::AssetDatabase::getAsset<gel::IModel>(
             "./assets/model/Gun1028.fbx");
         gel::CubeMapDesc desc;

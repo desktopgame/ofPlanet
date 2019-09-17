@@ -30,7 +30,6 @@ class PlayScene : public gel::IScene {
         CrossHairUI crossHair;
         Planet planet;
         WarpPoint warp;
-		gel::PixelBuffer pbuf;
         gel::Random random;
         gel::CubeMap skybox;
         gel::KeyTrigger eKeyTrigger;
