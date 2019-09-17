@@ -29,7 +29,7 @@ void Sprite::init(const GLuint texture, const glm::vec2 pos,
         vertex.init();
         uv.init();
 
-		reshape(pos, size);
+        reshape(pos, size);
 
         // apply
         vao.bind();
@@ -48,35 +48,34 @@ void Sprite::init(const GLuint texture, const glm::vec2 pos,
         this->model = glm::scale(model, glm::vec3(size, 1.0f));
 }
 
-void Sprite::reshape(const glm::vec2 pos, const glm::vec2 size)
-{
-	auto& vSeq = vertex.modify();
-	vSeq.clear();
-	vSeq.emitVec4(pos.x + 0, pos.y + size.y, 1, 1);
-	vSeq.emitVec4(pos.x + size.x, pos.y + 0, 1, 1);
-	vSeq.emitVec4(pos.x + 0, pos.y + 0, 1, 1);
-	vSeq.emitVec4(pos.x + 0, pos.y + size.y, 1, 1);
-	vSeq.emitVec4(pos.x + size.x, pos.y + size.y, 1, 1);
-	vSeq.emitVec4(pos.x + size.x, pos.y + 0, 1, 1);
+void Sprite::reshape(const glm::vec2 pos, const glm::vec2 size) {
+        auto& vSeq = vertex.modify();
+        vSeq.clear();
+        vSeq.emitVec4(pos.x + 0, pos.y + size.y, 1, 1);
+        vSeq.emitVec4(pos.x + size.x, pos.y + 0, 1, 1);
+        vSeq.emitVec4(pos.x + 0, pos.y + 0, 1, 1);
+        vSeq.emitVec4(pos.x + 0, pos.y + size.y, 1, 1);
+        vSeq.emitVec4(pos.x + size.x, pos.y + size.y, 1, 1);
+        vSeq.emitVec4(pos.x + size.x, pos.y + 0, 1, 1);
 
-	// emit
-	auto& uvSeq = uv.modify();
-	uvSeq.clear();
-	uvSeq.emitVec2(0, 1);
-	uvSeq.emitVec2(1, 0);
-	uvSeq.emitVec2(0, 0);
+        // emit
+        auto& uvSeq = uv.modify();
+        uvSeq.clear();
+        uvSeq.emitVec2(0, 1);
+        uvSeq.emitVec2(1, 0);
+        uvSeq.emitVec2(0, 0);
 
-	uvSeq.emitVec2(0, 1);
-	uvSeq.emitVec2(1, 1);
-	uvSeq.emitVec2(1, 0);
+        uvSeq.emitVec2(0, 1);
+        uvSeq.emitVec2(1, 1);
+        uvSeq.emitVec2(1, 0);
 
-	// update
-	vertex.bind();
-	vertex.update();
-	vertex.unbind();
-	uv.bind();
-	uv.update();
-	uv.unbind();
+        // update
+        vertex.bind();
+        vertex.update();
+        vertex.unbind();
+        uv.bind();
+        uv.update();
+        uv.unbind();
 }
 
 void Sprite::destroy() {

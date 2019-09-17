@@ -17,7 +17,6 @@ RightHandUI::RightHandUI()
           "./assets/model/Gun1028.fbx")) {
         gunScrBuffer.init(gel::Game::getInstance()->getWindowWidth(),
                           gel::Game::getInstance()->getWindowHeight());
-		
 }
 void RightHandUI::reset() {
         this->gunCache = false;

@@ -18,7 +18,7 @@ PlayScene::PlayScene()
       warp(gel::ShaderRegistry::getInstance().get("Color"), gel::NameRule()),
       random(),
       rhUI(),
-	 statusUI() {
+      statusUI() {
         screenBuffer.init(gel::Game::getInstance()->getWindowWidth(),
                           gel::Game::getInstance()->getWindowHeight());
         gel::CubeMapDesc desc;
@@ -29,7 +29,7 @@ PlayScene::PlayScene()
         desc.top = "./assets/image/skybox/SkyBoxTop.png";
         desc.bottom = "./assets/image/skybox/SkyBoxBottom.png";
         skybox.init(desc, glm::vec3(128, 64, 128), 64, 64);
-		statusUI.init();
+        statusUI.init();
 }
 
 PlayScene::~PlayScene() {
@@ -75,7 +75,7 @@ void PlayScene::draw() {
         // draw gun layer
         crossHair.draw(planet.getCamera());
         rhUI.draw(planet.getCamera());
-		statusUI.draw(planet.getCamera());
+        statusUI.draw(planet.getCamera());
         if (noiseTime > 3.0f) {
                 warp.destroy();
                 goNextPlanet();
