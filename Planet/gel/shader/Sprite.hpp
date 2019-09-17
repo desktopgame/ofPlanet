@@ -15,6 +15,7 @@ class Sprite {
         explicit Sprite(const std::shared_ptr<Shader>& shader);
         void init(const GLuint texture, const glm::vec2 pos,
                   const glm::vec2 size, const float alpha);
+		void reshape(const glm::vec2 pos, const glm::vec2 size);
         void destroy();
         void draw(const std::shared_ptr<gel::Camera>& camera);
         glm::vec2 getPosition() const;

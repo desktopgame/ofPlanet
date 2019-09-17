@@ -16,11 +16,21 @@ RightHandUI::RightHandUI()
       tModel(gel::AssetDatabase::getAsset<gel::IModel>(
           "./assets/model/Gun1028.fbx")),
       bulletSprite(gel::ShaderRegistry::getInstance().get("Texture2D"), gel::NameRule()),
-	  hartSprite(gel::ShaderRegistry::getInstance().get("Texture2D"), gel::NameRule()) {
+	  hartSprite(gel::ShaderRegistry::getInstance().get("Texture2D"), gel::NameRule()),
+	  fontTable() {
         gunScrBuffer.init(gel::Game::getInstance()->getWindowWidth(),
                           gel::Game::getInstance()->getWindowHeight());
 		hartSprite.init(gel::AssetDatabase::getAsset<gel::ITexture>("./assets/image/hart_gray.png")->getID(), glm::vec2(0,0),glm::vec2(64,64),1.0f);
 		bulletSprite.init(gel::AssetDatabase::getAsset<gel::ITexture>("./assets/image/bullet_gray.png")->getID(), glm::vec2(0, 64), glm::vec2(64, 64), 1.0f);
+		fontTable.init(std::vector<std::string>{
+			"abcdefghijklmn",
+			"opqrstuvwxyz.:",
+			"0123456789()"
+		}, [](char c, int row, int col) -> std::string {
+			std::string rs = std::to_string(row);
+			std::string cs = std::to_string(col);
+			return "./assets/image/font/ascii/FontTable64_" + rs + "_" + cs + ".png";
+		});
 }
 void RightHandUI::reset() {
         this->gunCache = false;
@@ -56,6 +66,8 @@ void RightHandUI::draw(std::weak_ptr<gel::Camera> cameraRef) {
         gunScrBuffer.render();
 		hartSprite.draw(cameraRef.lock());
 		bulletSprite.draw(cameraRef.lock());
+		fontTable.draw(cameraRef.lock(), glm::vec2(64, 0), glm::vec2(38, 0), "100");
+		fontTable.draw(cameraRef.lock(), glm::vec2(64, 64), glm::vec2(38, 0), "128");
 }
 // private
 void RightHandUI::batch(std::weak_ptr<gel::Camera> cameraRef) {

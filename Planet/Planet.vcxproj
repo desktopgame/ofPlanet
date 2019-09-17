@@ -188,6 +188,7 @@
     <ClCompile Include="gel\shader\Circle.cpp" />
     <ClCompile Include="gel\shader\Color4.cpp" />
     <ClCompile Include="gel\shader\CubeMap.cpp" />
+    <ClCompile Include="gel\shader\FontTable.cpp" />
     <ClCompile Include="gel\shader\FrameBuffer.cpp" />
     <ClCompile Include="gel\shader\IRMaterial.cpp" />
     <ClCompile Include="gel\shader\IRMesh.cpp" />
@@ -304,6 +305,7 @@
     <ClInclude Include="gel\shader\Circle.hpp" />
     <ClInclude Include="gel\shader\Color4.hpp" />
     <ClInclude Include="gel\shader\CubeMap.hpp" />
+    <ClInclude Include="gel\shader\FontTable.hpp" />
     <ClInclude Include="gel\shader\FrameBuffer.hpp" />
     <ClInclude Include="gel\shader\IRMaterial.hpp" />
     <ClInclude Include="gel\shader\IRMesh.hpp" />
