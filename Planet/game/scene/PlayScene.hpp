@@ -5,6 +5,7 @@
 #include "../../gel/shader/RawTexture.hpp"
 #include "../ui/CrossHairUI.hpp"
 #include "../ui/RightHandUI.hpp"
+#include "../ui/StatusUI.hpp"
 #include "../world/Planet.hpp"
 #include "../world/WarpPoint.hpp"
 
@@ -30,6 +31,7 @@ class PlayScene : public gel::IScene {
         Planet planet;
         WarpPoint warp;
         RightHandUI rhUI;
+		StatusUI statusUI;
         gel::Random random;
         gel::CubeMap skybox;
         gel::KeyTrigger eKeyTrigger;

@@ -21,11 +21,8 @@ class RightHandUI {
         glm::vec3 gRot;
         std::shared_ptr<gel::IModel> tModel;
         gel::Timer clickTimer;
-		gel::FontTable fontTable;
         bool clicked;
         gel::ScreenBuffer gunScrBuffer;
-		gel::Sprite hartSprite;
-		gel::Sprite bulletSprite;
         bool gunCache;
 };
 #endif

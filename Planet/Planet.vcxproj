@@ -141,6 +141,7 @@
     <ClCompile Include="game\ui\CrossHairUI.cpp" />
     <ClCompile Include="game\ui\CursorUI.cpp" />
     <ClCompile Include="game\ui\RightHandUI.cpp" />
+    <ClCompile Include="game\ui\StatusUI.cpp" />
     <ClCompile Include="game\world\biome\BasicBiome.cpp" />
     <ClCompile Include="game\world\biome\Biome.cpp" />
     <ClCompile Include="game\world\biome\DesertBiome.cpp" />
@@ -244,6 +245,7 @@
     <ClInclude Include="game\ui\CrossHairUI.hpp" />
     <ClInclude Include="game\ui\CursorUI.hpp" />
     <ClInclude Include="game\ui\RightHandUI.hpp" />
+    <ClInclude Include="game\ui\StatusUI.hpp" />
     <ClInclude Include="game\world\biome\BasicBiome.hpp" />
     <ClInclude Include="game\world\biome\Biome.hpp" />
     <ClInclude Include="game\world\biome\DesertBiome.hpp" />
