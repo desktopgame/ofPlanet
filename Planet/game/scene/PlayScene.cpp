@@ -8,6 +8,7 @@
 #include "../../gel/shader/IRModel.hpp"
 #include "../world/BlockRegistry.hpp"
 #include "../world/gen/Generator.hpp"
+#include "../ui/StatusModel.hpp"
 PlayScene::PlayScene()
     : planet(gel::ShaderRegistry::getInstance().get("Texture3D")),
       eKeyTrigger('E'),
@@ -30,6 +31,13 @@ PlayScene::PlayScene()
         desc.bottom = "./assets/image/skybox/SkyBoxBottom.png";
         skybox.init(desc, glm::vec3(128, 64, 128), 64, 64);
         statusUI.init();
+		rhUI.onFire().connect([&]() {
+			auto model = statusUI.getModel();
+			auto ammo = model->getAmmo();
+			if (ammo > 0) {
+				model->setAmmo(ammo - 1);
+			}
+		});
 }
 
 PlayScene::~PlayScene() {

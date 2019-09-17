@@ -14,7 +14,8 @@ RightHandUI::RightHandUI()
       gRot(0.0f, 0.0f, 9.2f),
       clickTimer(0.5f),
       tModel(gel::AssetDatabase::getAsset<gel::IModel>(
-          "./assets/model/Gun1028.fbx")) {
+          "./assets/model/Gun1028.fbx")),
+      fireSignal() {
         gunScrBuffer.init(gel::Game::getInstance()->getWindowWidth(),
                           gel::Game::getInstance()->getWindowHeight());
 }
@@ -29,6 +30,7 @@ void RightHandUI::update() {
                 this->startGPos = gPos;
                 this->gunCache = false;
                 clickTimer.reset();
+				fireSignal();
         }
         if (clicked) {
                 this->gunCache = false;
@@ -50,6 +52,10 @@ void RightHandUI::update() {
 void RightHandUI::draw(std::weak_ptr<gel::Camera> cameraRef) {
         batch(cameraRef);
         gunScrBuffer.render();
+}
+gel::Signal<>& RightHandUI::onFire()
+{
+	return fireSignal;
 }
 // private
 void RightHandUI::batch(std::weak_ptr<gel::Camera> cameraRef) {

@@ -7,12 +7,14 @@
 #include "../../gel/gel.hpp"
 #include "../../gel/shader/FontTable.hpp"
 #include "../../gel/shader/Sprite.hpp"
+#include "../../gel/signal/Signal.hpp"
 class RightHandUI {
        public:
         explicit RightHandUI();
         void reset();
         void update();
         void draw(std::weak_ptr<gel::Camera> cameraRef);
+		gel::Signal<>& onFire();
 
        private:
         void batch(std::weak_ptr<gel::Camera> cameraRef);
@@ -21,6 +23,7 @@ class RightHandUI {
         glm::vec3 gRot;
         std::shared_ptr<gel::IModel> tModel;
         gel::Timer clickTimer;
+		gel::Signal<> fireSignal;
         bool clicked;
         gel::ScreenBuffer gunScrBuffer;
         bool gunCache;
