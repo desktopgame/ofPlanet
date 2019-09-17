@@ -20,6 +20,7 @@ class PlayScene : public gel::IScene {
         bool isFinished() const override;
 
        private:
+		void configureShader(float delta);
         void goNextPlanet();
         float gameTime;
         float noiseTime;
