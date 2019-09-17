@@ -20,7 +20,8 @@ PlayScene::PlayScene()
       warp(gel::ShaderRegistry::getInstance().get("Color"), gel::NameRule()),
       random(),
       gPos(0, -10, 4),
-      gRot(0.0f, 0.0f, 9.2f) {
+      gRot(0.0f, 0.0f, 9.2f),
+	  clickTimer(0.5f){
         gunScrBuffer.init(gel::Game::getInstance()->getWindowWidth(),
                           gel::Game::getInstance()->getWindowHeight());
         screenBuffer.init(gel::Game::getInstance()->getWindowWidth(),
@@ -46,6 +47,7 @@ void PlayScene::show() {
 		this->gunCache = false;
         this->gameTime = 0.0f;
         this->score = 0;
+		this->clicked = false;
         glfwSetInputMode(gel::Game::getInstance()->getWindow(), GLFW_CURSOR,
                          GLFW_CURSOR_DISABLED);
         glEnable(GL_TEXTURE_2D);
@@ -63,6 +65,29 @@ void PlayScene::update() {
         if (eKeyTrigger.isEnabled()) {
                 planet.pause(!planet.isPause());
         }
+		// start fire timer
+		if (gel::Input::isMousePress(gel::MouseButton::Left) && !clicked) {
+			this->clicked = true;
+			this->startGPos = gPos;
+			this->gunCache = false;
+			clickTimer.reset();
+		}
+		if (clicked) {
+			this->gunCache = false;
+			clickTimer.update();
+			const float HEIGHT = 1.0f;
+			float par = clickTimer.progress01();
+			if (par >= 0.5f) {
+				par -= 0.5f;
+				gPos.y -= (HEIGHT * par);
+			} else {
+				gPos.y += (HEIGHT * par);
+			}
+			if (clickTimer.isElapsed()) {
+				this->clicked = false;
+				this->gPos = startGPos;
+			}
+		}
         planet.update();
 }
 void PlayScene::draw() {

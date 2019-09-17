@@ -23,6 +23,7 @@ class PlayScene : public gel::IScene {
         float gameTime;
         float noiseTime;
         int score;
+		glm::vec3 startGPos;
         glm::vec3 gPos;
         glm::vec3 gRot;
         std::shared_ptr<gel::IModel> tModel;
@@ -30,6 +31,8 @@ class PlayScene : public gel::IScene {
         CrossHairUI crossHair;
         Planet planet;
         WarpPoint warp;
+		gel::Timer clickTimer;
+		bool clicked;
         gel::Random random;
         gel::CubeMap skybox;
         gel::KeyTrigger eKeyTrigger;
