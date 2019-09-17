@@ -7,7 +7,7 @@
 #include "../../gel/asset/IModel.hpp"
 class RightHandUI {
 public:
-	explicit RightHandUI(const std::shared_ptr<gel::IModel>& tModel);
+	explicit RightHandUI();
 	void reset();
 	void update();
 	void draw(std::weak_ptr < gel::Camera> cameraRef);

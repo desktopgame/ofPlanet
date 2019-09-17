@@ -17,8 +17,7 @@ PlayScene::PlayScene()
       skybox(gel::ShaderRegistry::getInstance().get("SkyBox"), gel::NameRule()),
       warp(gel::ShaderRegistry::getInstance().get("Color"), gel::NameRule()),
       random(),
-      rhUI(gel::AssetDatabase::getAsset<gel::IModel>(
-		  "./assets/model/Gun1028.fbx")) {
+      rhUI() {
         screenBuffer.init(gel::Game::getInstance()->getWindowWidth(),
                           gel::Game::getInstance()->getWindowHeight());
         gel::CubeMapDesc desc;

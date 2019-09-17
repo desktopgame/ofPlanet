@@ -5,14 +5,17 @@
 #include <glm/gtx/raw_data.hpp>
 #include "../../gel/shader/IRModel.hpp"
 #include "../../gel/shader/Shader.hpp"
-	RightHandUI::RightHandUI(const std::shared_ptr<gel::IModel>& tModel)
-		:
-		gunScrBuffer(gel::ShaderRegistry::getInstance().get("Noise"),
-			gel::NameRule()),
-		gPos(0, -10, 4),
-		gRot(0.0f, 0.0f, 9.2f),
-		clickTimer(0.5f),
-		tModel(tModel)
+#include "../../gel/shader/Sprite.hpp"
+#include "../../gel/asset/AssetDatabase.hpp"
+RightHandUI::RightHandUI()
+	:
+	gunScrBuffer(gel::ShaderRegistry::getInstance().get("Noise"),
+		gel::NameRule()),
+	gPos(0, -10, 4),
+	gRot(0.0f, 0.0f, 9.2f),
+	clickTimer(0.5f),
+	tModel(gel::AssetDatabase::getAsset<gel::IModel>(
+		"./assets/model/Gun1028.fbx"))
 	{
 		gunScrBuffer.init(gel::Game::getInstance()->getWindowWidth(),
 			gel::Game::getInstance()->getWindowHeight());
