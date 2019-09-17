@@ -117,6 +117,8 @@ void Planet::update() {
 }
 
 void Planet::draw() {
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         // calculate matrix
         glm::vec2 windowSize = gel::Game::getInstance()->getWindowSize();
         glm::vec2 solutionSize = gel::Game::getInstance()->getSolutionSize();

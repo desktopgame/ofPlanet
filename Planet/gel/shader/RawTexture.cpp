@@ -20,6 +20,8 @@ namespace gel {
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 	void RawTexture::destroy()
 	{
@@ -28,11 +30,8 @@ namespace gel {
 	void RawTexture::render()
 	{
 		glDisable(GL_DEPTH_TEST);
-		//glClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 		shader->use();
 		glBindTexture(GL_TEXTURE_2D, textureID);
 		vao.bind();
@@ -40,6 +39,7 @@ namespace gel {
 		vao.unbind();
 		shader->unuse();
 		glEnable(GL_DEPTH_TEST);
+		glDisable(GL_BLEND);
 	}
 	GLuint RawTexture::getTextureID() const
 	{
