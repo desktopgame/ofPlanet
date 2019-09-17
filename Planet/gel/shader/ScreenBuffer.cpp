@@ -11,7 +11,7 @@ ScreenBuffer::ScreenBuffer(const std::shared_ptr<Shader>& shader,
       vertex(GL_ARRAY_BUFFER, GL_DYNAMIC_DRAW),
       uv(GL_ARRAY_BUFFER, GL_DYNAMIC_DRAW),
       vao(),
-      clearColor(0,0,0,0){}
+      clearColor(0, 0, 0, 0) {}
 
 void ScreenBuffer::init(int width, int height) {
         this->width = width;
@@ -30,7 +30,7 @@ void ScreenBuffer::init(int width, int height) {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+        glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
 
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
                                GL_TEXTURE_2D, texture, 0);
@@ -64,7 +64,7 @@ void ScreenBuffer::destroy() {
 void ScreenBuffer::bind() {
         frameBuffer.bind();
         glEnable(GL_DEPTH_TEST);
-		glClearColor(0,0,0,0);
+        glClearColor(0, 0, 0, 0);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
@@ -72,11 +72,12 @@ void ScreenBuffer::unbind() { frameBuffer.unbind(); }
 
 void ScreenBuffer::render() {
         glDisable(GL_DEPTH_TEST);
-        //glClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a);
-		//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		//glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+        // glClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a);
+        // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        // glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE,
+        // GL_ONE_MINUS_SRC_ALPHA);
         shader->use();
         glBindTexture(GL_TEXTURE_2D, texture);
         vao.bind();

@@ -20,7 +20,7 @@ class PlayScene : public gel::IScene {
         bool isFinished() const override;
 
        private:
-		void configureShader(float delta);
+        void configureShader(float delta);
         void goNextPlanet();
         float gameTime;
         float noiseTime;
@@ -29,7 +29,7 @@ class PlayScene : public gel::IScene {
         CrossHairUI crossHair;
         Planet planet;
         WarpPoint warp;
-		RightHandUI rhUI;
+        RightHandUI rhUI;
         gel::Random random;
         gel::CubeMap skybox;
         gel::KeyTrigger eKeyTrigger;

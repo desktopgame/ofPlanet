@@ -36,7 +36,7 @@ PlayScene::~PlayScene() {
 }
 
 void PlayScene::show() {
-		rhUI.reset();
+        rhUI.reset();
         this->gameTime = 0.0f;
         this->score = 0;
         glfwSetInputMode(gel::Game::getInstance()->getWindow(), GLFW_CURSOR,
@@ -56,23 +56,23 @@ void PlayScene::update() {
         if (eKeyTrigger.isEnabled()) {
                 planet.pause(!planet.isPause());
         }
-		rhUI.update();
+        rhUI.update();
         planet.update();
 }
 void PlayScene::draw() {
         float delta = gel::Game::getInstance()->getDeltaTime();
         this->gameTime += delta;
-		configureShader(delta);		
-		screenBuffer.bind();
-		// draw game layer
-		skybox.draw();
-		planet.draw();
-		warp.draw();		
-		screenBuffer.unbind();
-		screenBuffer.render();
-		// draw gun layer
-		crossHair.draw(planet .getCamera());
-		rhUI.draw(planet.getCamera());
+        configureShader(delta);
+        screenBuffer.bind();
+        // draw game layer
+        skybox.draw();
+        planet.draw();
+        warp.draw();
+        screenBuffer.unbind();
+        screenBuffer.render();
+        // draw gun layer
+        crossHair.draw(planet.getCamera());
+        rhUI.draw(planet.getCamera());
         if (noiseTime > 3.0f) {
                 warp.destroy();
                 goNextPlanet();
@@ -84,58 +84,56 @@ std::string PlayScene::getNextScene() const { return ""; }
 bool PlayScene::isFinished() const { return false; }
 
 // private
-void PlayScene::configureShader(float delta)
-{
-	// apply matrix
-	auto skyboxShader = gel::ShaderRegistry::getInstance().get("SkyBox");
-	auto camera = planet.getCamera();
-	glm::vec2 windowSize = gel::Game::getInstance()->getWindowSize();
-	glm::vec2 solutionSize = gel::Game::getInstance()->getSolutionSize();
-	camera->screenWidth = windowSize.x;
-	camera->screenHeight = windowSize.y;
-	camera->calculate();
-	skyboxShader->use();
-	skyboxShader->setUniformMatrix4fv(
-		"uProjectionMatrix", 1, GL_FALSE,
-		glm::value_ptr(camera->getProjection()));
-	skyboxShader->setUniformMatrix4fv("uViewMatrix", 1, GL_FALSE,
-		glm::value_ptr(camera->getView()));
-	skyboxShader->unuse();
-	auto circleShader = gel::ShaderRegistry::getInstance().get("Color");
-	circleShader->use();
-	circleShader->setUniformMatrix4fv("uMVPMatrix", 1, GL_FALSE,
-		glm::value_ptr(camera->getMVP()));
-	circleShader->unuse();
-	auto noiseShader = gel::ShaderRegistry::getInstance().get("CRT");
-	noiseShader->use();
-	// check warp
-	auto player = planet.getPlayer();
-	noiseShader->setUniform1f("Time", gameTime);
-	if (warp.isHit(player->transform.position)) {
-		noiseShader->setUniform1i("enabled", 1);
-		this->noiseTime += delta;
-	}
-	else {
-		noiseShader->setUniform1i("enabled", 0);
-		this->noiseTime = 0.0f;
-	}
-	noiseShader->unuse();
-	auto colorShader = gel::ShaderRegistry::getInstance().get("ColorFixed");
-	colorShader->use();
-	colorShader->setUniformMatrix4fv("uMVPMatrix", 1, GL_FALSE,
-		glm::value_ptr(camera->getMVP()));
-	colorShader->setUniformMatrix4fv("uNormalMatrix", 1, GL_FALSE,
-		glm::value_ptr(camera->getNormal()));
-	colorShader->setUniform4f("uLightPos", 64, 48, 64, 1.0f);
-	colorShader->unuse();
-	auto texShader = gel::ShaderRegistry::getInstance().get("TextureFixed");
-	texShader->use();
-	texShader->setUniformMatrix4fv("uMVPMatrix", 1, GL_FALSE,
-		glm::value_ptr(camera->getMVP()));
-	texShader->setUniformMatrix4fv("uNormalMatrix", 1, GL_FALSE,
-		glm::value_ptr(camera->getNormal()));
-	texShader->setUniform4f("uLightPos", 64, 48, 64, 1.0f);
-	texShader->unuse();
+void PlayScene::configureShader(float delta) {
+        // apply matrix
+        auto skyboxShader = gel::ShaderRegistry::getInstance().get("SkyBox");
+        auto camera = planet.getCamera();
+        glm::vec2 windowSize = gel::Game::getInstance()->getWindowSize();
+        glm::vec2 solutionSize = gel::Game::getInstance()->getSolutionSize();
+        camera->screenWidth = windowSize.x;
+        camera->screenHeight = windowSize.y;
+        camera->calculate();
+        skyboxShader->use();
+        skyboxShader->setUniformMatrix4fv(
+            "uProjectionMatrix", 1, GL_FALSE,
+            glm::value_ptr(camera->getProjection()));
+        skyboxShader->setUniformMatrix4fv("uViewMatrix", 1, GL_FALSE,
+                                          glm::value_ptr(camera->getView()));
+        skyboxShader->unuse();
+        auto circleShader = gel::ShaderRegistry::getInstance().get("Color");
+        circleShader->use();
+        circleShader->setUniformMatrix4fv("uMVPMatrix", 1, GL_FALSE,
+                                          glm::value_ptr(camera->getMVP()));
+        circleShader->unuse();
+        auto noiseShader = gel::ShaderRegistry::getInstance().get("CRT");
+        noiseShader->use();
+        // check warp
+        auto player = planet.getPlayer();
+        noiseShader->setUniform1f("Time", gameTime);
+        if (warp.isHit(player->transform.position)) {
+                noiseShader->setUniform1i("enabled", 1);
+                this->noiseTime += delta;
+        } else {
+                noiseShader->setUniform1i("enabled", 0);
+                this->noiseTime = 0.0f;
+        }
+        noiseShader->unuse();
+        auto colorShader = gel::ShaderRegistry::getInstance().get("ColorFixed");
+        colorShader->use();
+        colorShader->setUniformMatrix4fv("uMVPMatrix", 1, GL_FALSE,
+                                         glm::value_ptr(camera->getMVP()));
+        colorShader->setUniformMatrix4fv("uNormalMatrix", 1, GL_FALSE,
+                                         glm::value_ptr(camera->getNormal()));
+        colorShader->setUniform4f("uLightPos", 64, 48, 64, 1.0f);
+        colorShader->unuse();
+        auto texShader = gel::ShaderRegistry::getInstance().get("TextureFixed");
+        texShader->use();
+        texShader->setUniformMatrix4fv("uMVPMatrix", 1, GL_FALSE,
+                                       glm::value_ptr(camera->getMVP()));
+        texShader->setUniformMatrix4fv("uNormalMatrix", 1, GL_FALSE,
+                                       glm::value_ptr(camera->getNormal()));
+        texShader->setUniform4f("uLightPos", 64, 48, 64, 1.0f);
+        texShader->unuse();
 }
 
 void PlayScene::goNextPlanet() {

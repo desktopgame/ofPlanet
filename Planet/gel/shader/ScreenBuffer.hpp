@@ -3,12 +3,12 @@
 #include "../gli.hpp"
 #include "../util/Flag.hpp"
 #include "Buffer.hpp"
+#include "Color4.hpp"
 #include "FrameBuffer.hpp"
 #include "NameRule.hpp"
 #include "RenderBuffer.hpp"
 #include "Shader.hpp"
 #include "VertexArray.hpp"
-#include "Color4.hpp"
 
 namespace gel {
 class ScreenBuffer {
@@ -25,12 +25,12 @@ class ScreenBuffer {
         void initRect();
         int width;
         int height;
-		GLuint texture;
+        GLuint texture;
         FrameBuffer frameBuffer;
         RenderBuffer renderBuffer;
 
         std::shared_ptr<Shader> shader;
-		Color4 clearColor;
+        Color4 clearColor;
         NameRule nameRule;
         VertexArray vao;
         Buffer<GLfloat> vertex;

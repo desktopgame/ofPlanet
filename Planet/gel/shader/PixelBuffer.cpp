@@ -24,10 +24,9 @@ void PixelBuffer::bind() {
         boundFlag.enable();
         glBindBuffer(type, pbo);
 }
-void PixelBuffer::bind(GLenum type)
-{
-	this->type = type;
-	bind();
+void PixelBuffer::bind(GLenum type) {
+        this->type = type;
+        bind();
 }
 void PixelBuffer::unbind() {
         boundFlag.disable();
@@ -54,44 +53,48 @@ void PixelBuffer::unmap() const {
         checkRead();
         glUnmapBufferARB(type);
 }
-void PixelBuffer::transport(GLuint texture) const
-{
-	boundFlag.check(true, "should be call bind");
-	checkWrite();
-	glBindTexture(GL_TEXTURE_2D, texture);
-	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, 0);
-	glBindTexture(GL_TEXTURE_2D, 0);
+void PixelBuffer::transport(GLuint texture) const {
+        boundFlag.check(true, "should be call bind");
+        checkWrite();
+        glBindTexture(GL_TEXTURE_2D, texture);
+        glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_RGBA,
+                        GL_UNSIGNED_BYTE, 0);
+        glBindTexture(GL_TEXTURE_2D, 0);
 }
 int PixelBuffer::getWidth() const { return width; }
 int PixelBuffer::getHeight() const { return height; }
-void PixelBuffer::replace(GLubyte* source, int width, int height, PixelMatch match, PixelReplace replace, Pixel oldPix, Pixel newPix)
-{
-	for (int i = 0; i < width*height; i++) {
-		GLubyte r = source[i*4+0];
-		GLubyte g = source[i*4+1];
-		GLubyte b = source[i*4+2];
-		GLubyte a = source[i*4+3];
-		bool matchR = r == (oldPix.r);
-		bool matchG = g == (oldPix.g);
-		bool matchB = b == (oldPix.b);
-		bool matchA = a == (oldPix.a);
-		bool replaceColor = false;
-		if (match == PixelMatch::EqualRGB && matchR && matchG && matchB) {
-			replaceColor = true;
-		} else if (match == PixelMatch::EqualRGBA && matchR && matchG && matchB && matchA) {
-			replaceColor = true;
-		}
-		if (replaceColor) {
-			if (replace == PixelReplace::ReplaceRGB || replace == PixelReplace::ReplaceRGBA) {
-				source[i * 4 + 0] = newPix.r;
-				source[i * 4 + 1] = newPix.g;
-				source[i * 4 + 2] = newPix.b;
-			}
-			if (replace == PixelReplace::ReplaceRGBA) {
-				source[i * 4 + 3] = newPix.a;
-			}
-		}
-	}
+void PixelBuffer::replace(GLubyte *source, int width, int height,
+                          PixelMatch match, PixelReplace replace, Pixel oldPix,
+                          Pixel newPix) {
+        for (int i = 0; i < width * height; i++) {
+                GLubyte r = source[i * 4 + 0];
+                GLubyte g = source[i * 4 + 1];
+                GLubyte b = source[i * 4 + 2];
+                GLubyte a = source[i * 4 + 3];
+                bool matchR = r == (oldPix.r);
+                bool matchG = g == (oldPix.g);
+                bool matchB = b == (oldPix.b);
+                bool matchA = a == (oldPix.a);
+                bool replaceColor = false;
+                if (match == PixelMatch::EqualRGB && matchR && matchG &&
+                    matchB) {
+                        replaceColor = true;
+                } else if (match == PixelMatch::EqualRGBA && matchR && matchG &&
+                           matchB && matchA) {
+                        replaceColor = true;
+                }
+                if (replaceColor) {
+                        if (replace == PixelReplace::ReplaceRGB ||
+                            replace == PixelReplace::ReplaceRGBA) {
+                                source[i * 4 + 0] = newPix.r;
+                                source[i * 4 + 1] = newPix.g;
+                                source[i * 4 + 2] = newPix.b;
+                        }
+                        if (replace == PixelReplace::ReplaceRGBA) {
+                                source[i * 4 + 3] = newPix.a;
+                        }
+                }
+        }
 }
 void PixelBuffer::checkRead() const {
         assert(type == GL_PIXEL_PACK_BUFFER_ARB);
@@ -100,10 +103,7 @@ void PixelBuffer::checkWrite() const {
         assert(type == GL_PIXEL_UNPACK_BUFFER_ARB);
 }
 // Pixel
-Pixel::Pixel() : r(0), g(0), b(0), a(0) {
-}
+Pixel::Pixel() : r(0), g(0), b(0), a(0) {}
 Pixel::Pixel(GLubyte r, GLubyte g, GLubyte b, GLubyte a)
-	:r(r),g(g),b(b),a(a)
-{
-}
+    : r(r), g(g), b(b), a(a) {}
 }  // namespace gel
