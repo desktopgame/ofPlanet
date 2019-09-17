@@ -16,6 +16,8 @@ PlayScene::PlayScene()
                    gel::NameRule()),
       gunScrBuffer(gel::ShaderRegistry::getInstance().get("Noise"),
                    gel::NameRule()),
+      gunRawTexture(gel::ShaderRegistry::getInstance().get("Noise"),
+		  gel::NameRule()),
       skybox(gel::ShaderRegistry::getInstance().get("SkyBox"), gel::NameRule()),
       warp(gel::ShaderRegistry::getInstance().get("Color"), gel::NameRule()),
       random(),
@@ -24,6 +26,8 @@ PlayScene::PlayScene()
       pbuf(GL_PIXEL_PACK_BUFFER_ARB) {
         gunScrBuffer.init(gel::Game::getInstance()->getWindowWidth(),
                           gel::Game::getInstance()->getWindowHeight());
+		gunRawTexture.init(gel::Game::getInstance()->getWindowWidth(),
+			gel::Game::getInstance()->getWindowHeight());
 		gunScrBuffer.setClearColor(gel::Color4(1, 0, 1, 1));
         screenBuffer.init(gel::Game::getInstance()->getWindowWidth(),
                           gel::Game::getInstance()->getWindowHeight());
@@ -162,7 +166,7 @@ void PlayScene::draw() {
 			pbuf.unbind();
 			// apply to buffer
 			pbuf.bind(GL_PIXEL_UNPACK_BUFFER_ARB);
-			pbuf.transport(gunScrBuffer.getTextureID());
+			pbuf.transport(gunRawTexture.getTextureID());
 			pbuf.unbind();
 			gunScrBuffer.unbind();
 			this->gunCache = true; 
@@ -175,8 +179,9 @@ void PlayScene::draw() {
 		
 		screenBuffer.unbind();
 		screenBuffer.render();
-		crossHair.draw(planet.getCamera());
-		gunScrBuffer.render();
+		crossHair.draw(planet .getCamera());
+		gunRawTexture.render();
+		//gunScrBuffer.render();
         if (noiseTime > 3.0f) {
                 warp.destroy();
                 goNextPlanet();

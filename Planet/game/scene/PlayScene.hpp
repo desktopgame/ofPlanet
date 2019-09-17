@@ -2,6 +2,7 @@
 #define GAME_SCENE_PLAYSCENE_HPP
 #include "../../gel/gel.hpp"
 #include "../../gel/shader/PixelBuffer.hpp"
+#include "../../gel/shader/RawTexture.hpp"
 #include "../ui/CrossHairUI.hpp"
 #include "../world/Planet.hpp"
 #include "../world/WarpPoint.hpp"
@@ -35,6 +36,7 @@ class PlayScene : public gel::IScene {
         gel::KeyTrigger eKeyTrigger;
         gel::ScreenBuffer screenBuffer;
         gel::ScreenBuffer gunScrBuffer;
+		gel::RawTexture gunRawTexture;
 		bool gunCache;
 };
 #endif
