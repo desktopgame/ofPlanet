@@ -16,8 +16,6 @@ PlayScene::PlayScene()
                    gel::NameRule()),
       gunScrBuffer(gel::ShaderRegistry::getInstance().get("Noise"),
                    gel::NameRule()),
-      gunRawTexture(gel::ShaderRegistry::getInstance().get("Noise"),
-		  gel::NameRule()),
       skybox(gel::ShaderRegistry::getInstance().get("SkyBox"), gel::NameRule()),
       warp(gel::ShaderRegistry::getInstance().get("Color"), gel::NameRule()),
       random(),
@@ -26,9 +24,6 @@ PlayScene::PlayScene()
       pbuf(GL_PIXEL_PACK_BUFFER_ARB) {
         gunScrBuffer.init(gel::Game::getInstance()->getWindowWidth(),
                           gel::Game::getInstance()->getWindowHeight());
-		gunRawTexture.init(gel::Game::getInstance()->getWindowWidth(),
-			gel::Game::getInstance()->getWindowHeight());
-		gunScrBuffer.setClearColor(gel::Color4(1, 0, 1, 1));
         screenBuffer.init(gel::Game::getInstance()->getWindowWidth(),
                           gel::Game::getInstance()->getWindowHeight());
 		pbuf.init(gel::Game::getInstance()->getWindowWidth(),
@@ -153,21 +148,6 @@ void PlayScene::draw() {
 			texShader->setUniform4f("uLightPos", 0, 0, 0, 1.0f);
 			texShader->unuse();
 			irtModel->draw();
-			// read pixeles from frame buffer
-			pbuf.bind(GL_PIXEL_PACK_BUFFER_ARB);
-			pbuf.read();
-			// edit
-			GLubyte* data = pbuf.map();
-			if (data) {
-				gel::PixelBuffer::replace(data, pbuf.getWidth(), pbuf.getHeight(), gel::PixelMatch::EqualRGB, gel::PixelReplace::ReplaceRGBA,
-					gel::Pixel(255, 0, 255, 0), gel::Pixel(0, 0, 0, 0));
-				pbuf.unmap();
-			}
-			pbuf.unbind();
-			// apply to buffer
-			pbuf.bind(GL_PIXEL_UNPACK_BUFFER_ARB);
-			pbuf.transport(gunRawTexture.getTextureID());
-			pbuf.unbind();
 			gunScrBuffer.unbind();
 			this->gunCache = true; 
 		}
@@ -180,7 +160,7 @@ void PlayScene::draw() {
 		screenBuffer.unbind();
 		screenBuffer.render();
 		crossHair.draw(planet .getCamera());
-		gunRawTexture.render();
+		gunScrBuffer.render();
 		//gunScrBuffer.render();
         if (noiseTime > 3.0f) {
                 warp.destroy();

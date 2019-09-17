@@ -64,7 +64,7 @@ void ScreenBuffer::destroy() {
 void ScreenBuffer::bind() {
         frameBuffer.bind();
         glEnable(GL_DEPTH_TEST);
-		glClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a);
+		glClearColor(0,0,0,0);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
@@ -84,18 +84,6 @@ void ScreenBuffer::render() {
         vao.unbind();
         shader->unuse();
         glEnable(GL_DEPTH_TEST);
-}
-void ScreenBuffer::setClearColor(const Color4 clearColor)
-{
-	this->clearColor = clearColor;
-}
-Color4 ScreenBuffer::getClearColor() const
-{
-	return clearColor;
-}
-GLuint ScreenBuffer::getTextureID() const
-{
-	return texture;
 }
 // private
 void ScreenBuffer::initRect() {

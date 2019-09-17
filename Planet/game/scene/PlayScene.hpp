@@ -36,7 +36,6 @@ class PlayScene : public gel::IScene {
         gel::KeyTrigger eKeyTrigger;
         gel::ScreenBuffer screenBuffer;
         gel::ScreenBuffer gunScrBuffer;
-		gel::RawTexture gunRawTexture;
 		bool gunCache;
 };
 #endif

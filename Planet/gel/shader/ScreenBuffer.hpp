@@ -21,11 +21,6 @@ class ScreenBuffer {
         void unbind();
         void render();
 
-		void setClearColor(const Color4 clearColor);
-		Color4 getClearColor() const;
-
-		GLuint getTextureID() const;
-
        private:
         void initRect();
         int width;
