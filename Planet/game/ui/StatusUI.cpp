@@ -1,13 +1,15 @@
 #include "StatusUI.hpp"
 #include "../../gel/asset/AssetDatabase.hpp"
 #include "../../gel/shader/ShaderRegistry.hpp"
+#include "StatusModel.hpp"
 
 StatusUI::StatusUI()
     : bulletSprite(gel::ShaderRegistry::getInstance().get("Texture2D"),
                    gel::NameRule()),
       hartSprite(gel::ShaderRegistry::getInstance().get("Texture2D"),
                  gel::NameRule()),
-      fontTable() {}
+      fontTable(),
+      model(std::make_shared<StatusModel>(100,128)){}
 void StatusUI::init() {
         hartSprite.init(gel::AssetDatabase::getAsset<gel::ITexture>(
                             "./assets/image/hart_gray.png")
@@ -35,6 +37,11 @@ void StatusUI::destroy() {
 void StatusUI::draw(std::shared_ptr<gel::Camera> camera) {
         hartSprite.draw(camera);
         bulletSprite.draw(camera);
-        fontTable.draw(camera, glm::vec2(64, 0), glm::vec2(38, 0), "100");
-        fontTable.draw(camera, glm::vec2(64, 64), glm::vec2(38, 0), "128");
+        fontTable.draw(camera, glm::vec2(64, 0), glm::vec2(38, 0), std::to_string(model->getHP()));
+        fontTable.draw(camera, glm::vec2(64, 64), glm::vec2(38, 0), std::to_string(model->getAmmo()));
+}
+
+std::shared_ptr<StatusModel> StatusUI::getModel() const
+{
+	return model;
 }
