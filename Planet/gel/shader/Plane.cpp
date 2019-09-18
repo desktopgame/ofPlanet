@@ -19,33 +19,38 @@ Plane::Plane(const std::shared_ptr<Shader>& shader)
     : Plane(shader, NameRule()) {}
 
 void Plane::init(float size) {
-        initFlag.check(false, "already initalized");
-        this->size = size;
-        initFlag.enable();
-        shader->use();
-        vao.init();
-        initBuffers();
-        //
-        // init vao
-        //
-        this->vertexAttrib = shader->getAttribLocation(nameRule.attribVertex);
-        vao.bind();
-        vertexBuf.bind();
-        glVertexAttribPointer(vertexAttrib, 4, GL_FLOAT, GL_FALSE, 0, NULL);
-        glEnableVertexAttribArray(vertexAttrib);
-        this->normalAttrib = shader->getAttribLocation(nameRule.attribNormal);
-        normalBuf.bind();
-        glVertexAttribPointer(normalAttrib, 4, GL_FLOAT, GL_FALSE, 0, NULL);
-        glEnableVertexAttribArray(normalAttrib);
-        this->uvAttrib = shader->getAttribLocation(nameRule.attribUV);
-        uvBuf.bind();
-        glVertexAttribPointer(uvAttrib, 2, GL_FLOAT, GL_FALSE, 0, NULL);
-        glEnableVertexAttribArray(uvAttrib);
-        vao.unbind();
-        vertexBuf.unbind();
-        normalBuf.unbind();
-        uvBuf.unbind();
-        shader->unuse();
+	init(glm::vec3(size, size, size));
+}
+
+void Plane::init(glm::vec3 size)
+{
+	initFlag.check(false, "already initalized");
+	this->size = size;
+	initFlag.enable();
+	shader->use();
+	vao.init();
+	initBuffers();
+	//
+	// init vao
+	//
+	this->vertexAttrib = shader->getAttribLocation(nameRule.attribVertex);
+	vao.bind();
+	vertexBuf.bind();
+	glVertexAttribPointer(vertexAttrib, 4, GL_FLOAT, GL_FALSE, 0, NULL);
+	glEnableVertexAttribArray(vertexAttrib);
+	this->normalAttrib = shader->getAttribLocation(nameRule.attribNormal);
+	normalBuf.bind();
+	glVertexAttribPointer(normalAttrib, 4, GL_FLOAT, GL_FALSE, 0, NULL);
+	glEnableVertexAttribArray(normalAttrib);
+	this->uvAttrib = shader->getAttribLocation(nameRule.attribUV);
+	uvBuf.bind();
+	glVertexAttribPointer(uvAttrib, 2, GL_FLOAT, GL_FALSE, 0, NULL);
+	glEnableVertexAttribArray(uvAttrib);
+	vao.unbind();
+	vertexBuf.unbind();
+	normalBuf.unbind();
+	uvBuf.unbind();
+	shader->unuse();
 }
 
 void Plane::destroy() {
@@ -163,60 +168,60 @@ void Plane::initBuffers() {
         bottomIndexBuf.update();
         bottomIndexBuf.unbind();
         // front
-        vSeq.emitVec4(-size, -size, size, size);
-        vSeq.emitVec4(size, -size, size, size);
-        vSeq.emitVec4(size, size, size, size);
-        vSeq.emitVec4(-size, size, size, size);
+        vSeq.emitVec4(-size.x, -size.y, size.z, 1);
+        vSeq.emitVec4(size.x, -size.y, size.z, 1);
+        vSeq.emitVec4(size.x, size.y, size.z, 1);
+        vSeq.emitVec4(-size.x, size.y, size.z, 1);
         addNormals(normalBuf, 4, 0, 0, 1, 0);
         uvSeq.emitVec2(0, 1);
         uvSeq.emitVec2(1, 1);
         uvSeq.emitVec2(1, 0);
         uvSeq.emitVec2(0, 0);
         // top
-        vSeq.emitVec4(-size, size, size, size);
-        vSeq.emitVec4(size, size, size, size);
-        vSeq.emitVec4(size, size, -size, size);
-        vSeq.emitVec4(-size, size, -size, size);
+        vSeq.emitVec4(-size.x, size.y, size.z, 1);
+        vSeq.emitVec4(size.x, size.y, size.z, 1);
+        vSeq.emitVec4(size.x, size.y, -size.z, 1);
+        vSeq.emitVec4(-size.x, size.y, -size.z, 1);
         addNormals(normalBuf, 4, 0, 1, 0, 0);
         uvSeq.emitVec2(0, 0);
         uvSeq.emitVec2(1, 0);
         uvSeq.emitVec2(1, 1);
         uvSeq.emitVec2(0, 1);
         // back
-        vSeq.emitVec4(size, -size, -size, size);
-        vSeq.emitVec4(-size, -size, -size, size);
-        vSeq.emitVec4(-size, size, -size, size);
-        vSeq.emitVec4(size, size, -size, size);
+        vSeq.emitVec4(size.x, -size.y, -size.z, 1);
+        vSeq.emitVec4(-size.x, -size.y, -size.z, 1);
+        vSeq.emitVec4(-size.x, size.y, -size.z, 1);
+        vSeq.emitVec4(size.x, size.y, -size.z, 1);
         addNormals(normalBuf, 4, 0, 0, -1, 0);
         uvSeq.emitVec2(0, 1);
         uvSeq.emitVec2(1, 1);
         uvSeq.emitVec2(1, 0);
         uvSeq.emitVec2(0, 0);
         // bottom
-        vSeq.emitVec4(-size, -size, -size, size);
-        vSeq.emitVec4(size, -size, -size, size);
-        vSeq.emitVec4(size, -size, size, size);
-        vSeq.emitVec4(-size, -size, size, size);
+        vSeq.emitVec4(-size.x, -size.y, -size.z, 1);
+        vSeq.emitVec4(size.x, -size.y, -size.z, 1);
+        vSeq.emitVec4(size.x, -size.y, size.z, 1);
+        vSeq.emitVec4(-size.x, -size.y, size.z, 1);
         addNormals(normalBuf, 4, 0, -1, 0, 0);
         uvSeq.emitVec2(0, 0);
         uvSeq.emitVec2(1, 0);
         uvSeq.emitVec2(1, 1);
         uvSeq.emitVec2(0, 1);
         // left
-        vSeq.emitVec4(-size, -size, -size, size);
-        vSeq.emitVec4(-size, -size, size, size);
-        vSeq.emitVec4(-size, size, size, size);
-        vSeq.emitVec4(-size, size, -size, size);
+        vSeq.emitVec4(-size.x, -size.y, -size.z, 1);
+        vSeq.emitVec4(-size.x, -size.y, size.z, 1);
+        vSeq.emitVec4(-size.x, size.y, size.z, 1);
+        vSeq.emitVec4(-size.x, size.y, -size.z, 1);
         addNormals(normalBuf, 4, -1, 0, 0, 0);
         uvSeq.emitVec2(0, 1);
         uvSeq.emitVec2(1, 1);
         uvSeq.emitVec2(1, 0);
         uvSeq.emitVec2(0, 0);
         // right
-        vSeq.emitVec4(size, -size, size, size);
-        vSeq.emitVec4(size, -size, -size, size);
-        vSeq.emitVec4(size, size, -size, size);
-        vSeq.emitVec4(size, size, size, size);
+        vSeq.emitVec4(size.x, -size.y, size.z, 1);
+        vSeq.emitVec4(size.x, -size.y, -size.z, 1);
+        vSeq.emitVec4(size.x, size.y, -size.z, 1);
+        vSeq.emitVec4(size.x, size.y, size.z, 1);
         addNormals(normalBuf, 4, 1, 0, 0, 0);
         uvSeq.emitVec2(0, 1);
         uvSeq.emitVec2(1, 1);

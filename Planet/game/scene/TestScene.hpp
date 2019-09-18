@@ -3,6 +3,7 @@
 #include <glm/glm.hpp>
 #include <string>
 #include "../../gel/gel.hpp"
+#include "../../gel/shader/Box.hpp"
 #define INDEX_SIZE (36)
 class TestScene : public gel::IScene {
        public:
@@ -16,6 +17,7 @@ class TestScene : public gel::IScene {
 
        private:
         float gameTime;
+		gel::Box box;
         gel::Drag leftDrag;
         glm::vec3 position;
         glm::vec3 scale;

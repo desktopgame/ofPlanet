@@ -187,6 +187,7 @@
     <ClCompile Include="gel\math\Rectangle.cpp" />
     <ClCompile Include="gel\math\Triangle.cpp" />
     <ClCompile Include="gel\scene\SceneManager.cpp" />
+    <ClCompile Include="gel\shader\Box.cpp" />
     <ClCompile Include="gel\shader\Circle.cpp" />
     <ClCompile Include="gel\shader\Color4.cpp" />
     <ClCompile Include="gel\shader\CubeMap.cpp" />
@@ -306,6 +307,7 @@
     <ClInclude Include="gel\math\Triangle.hpp" />
     <ClInclude Include="gel\scene\IScene.hpp" />
     <ClInclude Include="gel\scene\SceneManager.hpp" />
+    <ClInclude Include="gel\shader\Box.hpp" />
     <ClInclude Include="gel\shader\Buffer.hpp" />
     <ClInclude Include="gel\shader\Circle.hpp" />
     <ClInclude Include="gel\shader\Color4.hpp" />
