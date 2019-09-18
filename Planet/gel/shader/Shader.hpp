@@ -58,6 +58,7 @@ class Shader {
         void setVertexAttribPointer(const std::string& attrib, int size,
                                     GLenum type, GLboolean normalized,
                                     int stride, const GLvoid* pointer) const;
+		void enableVertexAttribArray(const std::string& attrib) const;
 
         GLint getAttribLocation(const std::string& attrib) const;
         GLint getUniformLocation(const std::string& uniform) const;

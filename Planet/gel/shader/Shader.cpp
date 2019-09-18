@@ -178,6 +178,11 @@ void Shader::setVertexAttribPointer(const std::string& attrib, int size,
                               stride, pointer);
 }
 
+void Shader::enableVertexAttribArray(const std::string & attrib) const
+{
+	glEnableVertexAttribArray(getAttribLocation(attrib));
+}
+
 GLint Shader::getAttribLocation(const std::string& attrib) const {
         linkFlag.check(true, "should be call link()");
         return glGetAttribLocation(program, attrib.c_str());
