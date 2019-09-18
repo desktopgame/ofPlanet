@@ -17,7 +17,7 @@ class TestScene : public gel::IScene {
 
        private:
         float gameTime;
-		gel::Box box;
+        gel::Box box;
         gel::Drag leftDrag;
         glm::vec3 position;
         glm::vec3 scale;

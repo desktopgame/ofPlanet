@@ -6,9 +6,9 @@
 #include <iostream>
 #include "../../gel/asset/AssetDatabase.hpp"
 #include "../../gel/shader/IRModel.hpp"
+#include "../ui/StatusModel.hpp"
 #include "../world/BlockRegistry.hpp"
 #include "../world/gen/Generator.hpp"
-#include "../ui/StatusModel.hpp"
 PlayScene::PlayScene()
     : planet(gel::ShaderRegistry::getInstance().get("Texture3D")),
       eKeyTrigger('E'),
@@ -20,7 +20,8 @@ PlayScene::PlayScene()
       random(),
       rhUI(),
       statusUI(),
-	   beamLine(gel::ShaderRegistry::getInstance().get("Color"), gel::NameRule()) {
+      beamLine(gel::ShaderRegistry::getInstance().get("Color"),
+               gel::NameRule()) {
         screenBuffer.init(gel::Game::getInstance()->getWindowWidth(),
                           gel::Game::getInstance()->getWindowHeight());
         gel::CubeMapDesc desc;
@@ -32,38 +33,43 @@ PlayScene::PlayScene()
         desc.bottom = "./assets/image/skybox/SkyBoxBottom.png";
         skybox.init(desc, glm::vec3(128, 64, 128), 64, 64);
         statusUI.init();
-		rhUI.onStartAnimation().connect([this]() {
-			auto model = statusUI.getModel();
-			auto ammo = model->getAmmo();
-			if (ammo > 0) {
-				model->setAmmo(ammo - 1);
-				auto camera = planet.getCamera();
-				auto right = camera->transform.right();
-				auto back = camera->transform.backward();
-				auto down = glm::vec3(0, -1, 0);
-				back.x *= 5;
-				back.y *= 5;
-				back.z *= 5;
-				right.x *= 2;
-				right.y *= 2;
-				right.z *= 2;
-				down.y *= 2;
-				this->bStart = camera->transform.position/* + back + right + down*/;
-				this->bFwd = camera->transform.forward();
-				this->bEnd = camera->transform.position;
-				auto tmp = bFwd;
-				tmp.x *= 128;
-				tmp.y *= 128;
-				tmp.z *= 128;
-				bEnd += tmp;
-				beamLine.update(glm::vec4(bStart.x, bStart.y, bStart.z, 1), glm::vec4(bEnd.x, bEnd.y, bEnd.z, 1));
-			}
-		});
-		rhUI.onEndAnimation().connect([this]() {
-			//beamLine.update(glm::vec4(0, 0, 0, 1), glm::vec4(0, 0, 0, 1));
-		});
-		beamLine.lineWidth = 20;
-		beamLine.init(glm::vec4(0, 0, 0, 1), glm::vec4(0, 0, 0, 1), glm::vec4(1,0,0,1));
+        rhUI.onStartAnimation().connect([this]() {
+                auto model = statusUI.getModel();
+                auto ammo = model->getAmmo();
+                if (ammo > 0) {
+                        model->setAmmo(ammo - 1);
+                        auto camera = planet.getCamera();
+                        auto right = camera->transform.right();
+                        auto back = camera->transform.backward();
+                        auto down = glm::vec3(0, -1, 0);
+                        back.x *= 5;
+                        back.y *= 5;
+                        back.z *= 5;
+                        right.x *= 2;
+                        right.y *= 2;
+                        right.z *= 2;
+                        down.y *= 2;
+                        this->bStart = camera->transform
+                                           .position /* + back + right + down*/;
+                        this->bFwd = camera->transform.forward();
+                        this->bEnd = camera->transform.position;
+                        auto tmp = bFwd;
+                        tmp.x *= 128;
+                        tmp.y *= 128;
+                        tmp.z *= 128;
+                        bEnd += tmp;
+                        beamLine.update(
+                            glm::vec4(bStart.x, bStart.y, bStart.z, 1),
+                            glm::vec4(bEnd.x, bEnd.y, bEnd.z, 1));
+                }
+        });
+        rhUI.onEndAnimation().connect([this]() {
+                // beamLine.update(glm::vec4(0, 0, 0, 1), glm::vec4(0, 0, 0,
+                // 1));
+        });
+        beamLine.lineWidth = 20;
+        beamLine.init(glm::vec4(0, 0, 0, 1), glm::vec4(0, 0, 0, 1),
+                      glm::vec4(1, 0, 0, 1));
 }
 
 PlayScene::~PlayScene() {
@@ -72,12 +78,12 @@ PlayScene::~PlayScene() {
 }
 
 void PlayScene::show() {
-		auto camera = planet.getCamera();
-		glm::vec2 windowSize = gel::Game::getInstance()->getWindowSize();
-		glm::vec2 solutionSize = gel::Game::getInstance()->getSolutionSize();
-		camera->screenWidth = windowSize.x;
-		camera->screenHeight = windowSize.y;
-		camera->calculate();
+        auto camera = planet.getCamera();
+        glm::vec2 windowSize = gel::Game::getInstance()->getWindowSize();
+        glm::vec2 solutionSize = gel::Game::getInstance()->getSolutionSize();
+        camera->screenWidth = windowSize.x;
+        camera->screenHeight = windowSize.y;
+        camera->calculate();
         rhUI.reset();
         this->gameTime = 0.0f;
         this->score = 0;
@@ -93,17 +99,18 @@ void PlayScene::show() {
         goNextPlanet();
 }
 void PlayScene::update() {
-		/*
-		if (rhUI.isAnimationNow()) {
-			auto scl = bFwd;
-			scl.x *= 10;
-			scl.y *= 10;
-			scl.z *= 10;
-			this->bStart += scl;
-			this->bEnd += scl;
-			beamLine.update(glm::vec4(bStart.x, bStart.y, bStart.z, 1), glm::vec4(bEnd.x, bEnd.y, bEnd.z, 1));
-		}
-		*/
+        /*
+        if (rhUI.isAnimationNow()) {
+                auto scl = bFwd;
+                scl.x *= 10;
+                scl.y *= 10;
+                scl.z *= 10;
+                this->bStart += scl;
+                this->bEnd += scl;
+                beamLine.update(glm::vec4(bStart.x, bStart.y, bStart.z, 1),
+        glm::vec4(bEnd.x, bEnd.y, bEnd.z, 1));
+        }
+        */
         // open/close inventory
         eKeyTrigger.update();
         if (eKeyTrigger.isEnabled()) {
@@ -111,7 +118,7 @@ void PlayScene::update() {
         }
         rhUI.update();
         planet.update();
-		beamLine.mvp = planet.getCamera()->getMVP();
+        beamLine.mvp = planet.getCamera()->getMVP();
 }
 void PlayScene::draw() {
         float delta = gel::Game::getInstance()->getDeltaTime();
@@ -122,7 +129,7 @@ void PlayScene::draw() {
         skybox.draw();
         planet.draw();
         warp.draw();
-		beamLine.draw();
+        beamLine.draw();
         screenBuffer.unbind();
         screenBuffer.render();
         // draw gun layer
@@ -141,10 +148,10 @@ bool PlayScene::isFinished() const { return false; }
 
 // private
 void PlayScene::configureShader(float delta) {
-		auto camera = planet.getCamera();
+        auto camera = planet.getCamera();
         // apply matrix
         auto skyboxShader = gel::ShaderRegistry::getInstance().get("SkyBox");
-       
+
         skyboxShader->use();
         skyboxShader->setUniformMatrix4fv(
             "uProjectionMatrix", 1, GL_FALSE,

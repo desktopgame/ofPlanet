@@ -12,10 +12,10 @@ class StatusUI {
         void init();
         void destroy();
         void draw(std::shared_ptr<gel::Camera> camera);
-		std::shared_ptr<StatusModel> getModel() const;
+        std::shared_ptr<StatusModel> getModel() const;
 
        private:
-		std::shared_ptr<StatusModel> model;
+        std::shared_ptr<StatusModel> model;
         gel::FontTable fontTable;
         gel::Sprite hartSprite;
         gel::Sprite bulletSprite;

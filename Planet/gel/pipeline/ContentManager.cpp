@@ -56,12 +56,12 @@ void ContentManager::loadFully(const std::string& path) {
 }
 
 void ContentManager::loadFully(std::function<bool(const std::string&)> pred) {
-	std::vector<std::string> cp = files;
-	std::for_each(cp.begin(), cp.end(), [this, pred](std::string e) {
-		if (pred(e)) {
-			loadFully(e);
-		}
-	});
+        std::vector<std::string> cp = files;
+        std::for_each(cp.begin(), cp.end(), [this, pred](std::string e) {
+                if (pred(e)) {
+                        loadFully(e);
+                }
+        });
 }
 
 void ContentManager::load(Thread thread) {

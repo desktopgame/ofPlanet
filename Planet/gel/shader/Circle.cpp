@@ -18,10 +18,10 @@ void Circle::init(const glm::vec4 basePoint, const glm::vec4 color,
         vertex.init();
         // emit
         auto& vSeq = vertex.modify();
-		auto verties = Primitive::circleLine(0, scale);
-		for (auto v : verties) {
-			vSeq.emitVec4(v.x, v.y, v.z, 1.0f);
-		}
+        auto verties = Primitive::circleLine(0, scale);
+        for (auto v : verties) {
+                vSeq.emitVec4(v.x, v.y, v.z, 1.0f);
+        }
         vertex.bind();
         vertex.update();
         vertex.unbind();

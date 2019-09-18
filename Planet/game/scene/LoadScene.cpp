@@ -6,7 +6,7 @@ LoadScene::LoadScene()
       sprites(),
       timer(0.06f),
       camera(std::make_shared<gel::Camera>()),
-     fontTable() {
+      fontTable() {
         addSprite(gel::AssetDatabase::getAsset<gel::ITexture>(
             "./assets/image/Progress00.png"));
         addSprite(gel::AssetDatabase::getAsset<gel::ITexture>(
@@ -15,15 +15,16 @@ LoadScene::LoadScene()
             "./assets/image/Progress02.png"));
         addSprite(gel::AssetDatabase::getAsset<gel::ITexture>(
             "./assets/image/Progress03.png"));
-		fontTable.init(
-			std::vector<std::string>{"abcdefghijklmn",
-			"opqrstuvwxyz.:", "0123456789()", "ABCDEFGHIJKLMN", "OPQRSTUVWXYZ+-"},
-			[](char c, int row, int col) -> std::string {
-			std::string rs = std::to_string(row);
-			std::string cs = std::to_string(col);
-			return "./assets/image/font/ascii/FontTable64_" + rs + "_" +
-				cs + ".png";
-		});
+        fontTable.init(
+            std::vector<std::string>{"abcdefghijklmn",
+                                     "opqrstuvwxyz.:", "0123456789()",
+                                     "ABCDEFGHIJKLMN", "OPQRSTUVWXYZ+-"},
+            [](char c, int row, int col) -> std::string {
+                    std::string rs = std::to_string(row);
+                    std::string cs = std::to_string(col);
+                    return "./assets/image/font/ascii/FontTable64_" + rs + "_" +
+                           cs + ".png";
+            });
 }
 
 LoadScene::~LoadScene() {}
@@ -49,13 +50,12 @@ void LoadScene::draw() {
         camera->screenWidth = wnd.x;
         camera->screenHeight = wnd.y;
         camera->calculate();
-		fontTable.draw(camera, glm::vec2(0, wnd.y-64), glm::vec2(38, 0), "Loading...");
+        fontTable.draw(camera, glm::vec2(0, wnd.y - 64), glm::vec2(38, 0),
+                       "Loading...");
         sprites[index].draw(camera);
 }
 
-void LoadScene::hide() {
-	fontTable.destroy();
-}
+void LoadScene::hide() { fontTable.destroy(); }
 
 std::string LoadScene::getNextScene() const { return "play"; }
 

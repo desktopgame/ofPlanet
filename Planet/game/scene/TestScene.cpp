@@ -23,14 +23,14 @@ TestScene::TestScene()
       rotation(0),
       leftDrag(gel::MouseButton::Left),
       box(gel::ShaderRegistry::getInstance().get("ColorFixed"),
-		  gel::NameRule()) {
+          gel::NameRule()) {
         plane.init(0.5f);
         glEnableClientState(GL_NORMAL_ARRAY);
         glEnableClientState(GL_VERTEX_ARRAY);
         glEnableClientState(GL_TEXTURE_COORD_ARRAY);
         screenBuffer.init(gel::Game::getInstance()->getWindowWidth(),
                           gel::Game::getInstance()->getWindowHeight());
-		box.init(glm::vec4(1, 0, 0, 1), glm::vec3(1, 1, 1));
+        box.init(glm::vec4(1, 0, 0, 1), glm::vec3(1, 1, 1));
         sprite.init(gel::AssetDatabase::getAsset<gel::ITexture>(
                         "./assets/image/sample.jpg")
                         ->getID(),
@@ -81,23 +81,25 @@ void TestScene::draw() {
         auto view =
             glm::lookAt(glm::vec3(0, -3, 5), glm::vec3(), glm::vec3(0, 1, 0));
         auto mvp = projection * view * model;
-		glm::mat4 normalMatrix = view * model;
-		normalMatrix = glm::inverse(normalMatrix);
-		normalMatrix = glm::transpose(normalMatrix);
+        glm::mat4 normalMatrix = view * model;
+        normalMatrix = glm::inverse(normalMatrix);
+        normalMatrix = glm::transpose(normalMatrix);
         // set shader option
         auto colorShader = gel::ShaderRegistry::getInstance().get("ColorFixed");
         auto noiseShader = gel::ShaderRegistry::getInstance().get("CRT");
         colorShader->use();
-		gel::NameRule nameRule;
-		colorShader->setUniformMatrix4fv("uMVPMatrix", 1, GL_FALSE, glm::value_ptr(mvp));
-		colorShader->setUniformMatrix4fv("uNormalMatrix", 1, GL_FALSE, glm::value_ptr(normalMatrix));
+        gel::NameRule nameRule;
+        colorShader->setUniformMatrix4fv("uMVPMatrix", 1, GL_FALSE,
+                                         glm::value_ptr(mvp));
+        colorShader->setUniformMatrix4fv("uNormalMatrix", 1, GL_FALSE,
+                                         glm::value_ptr(normalMatrix));
         colorShader->setUniform4f("uLightPos", lightPos.x, lightPos.y,
                                   lightPos.z, 1);
-		colorShader->setUniform4f("uColor", 1,0,0,1);
-		shader->setUniform1f(nameRule.uniformShininess, 10.0f);
-		shader->setUniform4f(nameRule.uniformAmbient, 0.5f,0.5f,0.5f,1);
-		shader->setUniform4f(nameRule.uniformDiffuse, 0.5f, 0.5f, 0.5f, 1);
-		shader->setUniform4f(nameRule.uniformSpecular, 0.5f, 0.5f, 0.5f, 1);
+        colorShader->setUniform4f("uColor", 1, 0, 0, 1);
+        shader->setUniform1f(nameRule.uniformShininess, 10.0f);
+        shader->setUniform4f(nameRule.uniformAmbient, 0.5f, 0.5f, 0.5f, 1);
+        shader->setUniform4f(nameRule.uniformDiffuse, 0.5f, 0.5f, 0.5f, 1);
+        shader->setUniform4f(nameRule.uniformSpecular, 0.5f, 0.5f, 0.5f, 1);
         colorShader->unuse();
         shader->use();
         shader->setUniform4f("uLightPos", lightPos.x, lightPos.y, lightPos.z,
@@ -113,7 +115,7 @@ void TestScene::draw() {
                 this->imodel =
                     gel::AssetDatabase::getAsset<gel::IModel>(filename);
         }
-		box.draw();
+        box.draw();
 }
 void TestScene::hide() {}
 bool TestScene::isFinished() const { return false; }

@@ -59,12 +59,12 @@ class ContentManager {
          */
         void loadFully(const std::string& path);
 
-		/**
+        /**
          * load a asset.
          * and, remove specified file from files cache.
-		 * @param pred
-		 */
-		void loadFully(std::function<bool(const std::string&)> pred);
+         * @param pred
+         */
+        void loadFully(std::function<bool(const std::string&)> pred);
 
         /**
          * load a all asset.

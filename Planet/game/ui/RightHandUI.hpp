@@ -14,11 +14,11 @@ class RightHandUI {
         void reset();
         void update();
         void draw(std::weak_ptr<gel::Camera> cameraRef);
-		gel::Signal<>& onStartAnimation();
-		gel::Signal<>& onEndAnimation();
+        gel::Signal<>& onStartAnimation();
+        gel::Signal<>& onEndAnimation();
 
-		bool isAnimationNow() const;
-		float getAnimationProgress01() const;
+        bool isAnimationNow() const;
+        float getAnimationProgress01() const;
 
        private:
         void batch(std::weak_ptr<gel::Camera> cameraRef);
@@ -27,8 +27,8 @@ class RightHandUI {
         glm::vec3 gRot;
         std::shared_ptr<gel::IModel> tModel;
         gel::Timer clickTimer;
-		gel::Signal<> startAnimationSignal;
-		gel::Signal<> endAnimationSignal;
+        gel::Signal<> startAnimationSignal;
+        gel::Signal<> endAnimationSignal;
         bool clicked;
         gel::ScreenBuffer gunScrBuffer;
         bool gunCache;

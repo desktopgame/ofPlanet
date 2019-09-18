@@ -13,7 +13,7 @@ class Plane {
                        const NameRule& nameRule);
         explicit Plane(const std::shared_ptr<Shader>& shader);
         void init(float size);
-		void init(glm::vec3 size);
+        void init(glm::vec3 size);
         void destroy();
         void draw();
         void render(Buffer<float> posBuf, int count);
@@ -32,7 +32,7 @@ class Plane {
         PlaneType type;
         NameRule nameRule;
         Flag initFlag;
-		glm::vec3 size;
+        glm::vec3 size;
 
         GLuint vertexAttrib;
         GLuint normalAttrib;

@@ -20,17 +20,19 @@ void MyGame::onInit() {
         sreg.put("Noise", "./noise.vert", "./noise.frag");
         sreg.put("Gun", "./noise.vert", "./noise.frag");
         sreg.put("CRT", "./crt.vert", "./crt.frag");
-		GLfloat lineWidthRange[2] = { 0.0f, 0.0f };
-		glGetFloatv(GL_ALIASED_LINE_WIDTH_RANGE, lineWidthRange);
+        GLfloat lineWidthRange[2] = {0.0f, 0.0f};
+        glGetFloatv(GL_ALIASED_LINE_WIDTH_RANGE, lineWidthRange);
         // Anisotropic filtering
         float filter;
         glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &filter);
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, filter);
-		getContentManager()->loadFully([](const std::string& file) -> bool {
-			bool isFT = (file.find("./assets/image/font/ascii") != std::string::npos);
-			bool isProg = (file.find("./assets/image/Progress") != std::string::npos);
-			return isFT || isProg;
-		});
+        getContentManager()->loadFully([](const std::string& file) -> bool {
+                bool isFT = (file.find("./assets/image/font/ascii") !=
+                             std::string::npos);
+                bool isProg =
+                    (file.find("./assets/image/Progress") != std::string::npos);
+                return isFT || isProg;
+        });
         sceneManager.put("load", std::make_shared<LoadScene>());
         sceneManager.bind("load");
 }

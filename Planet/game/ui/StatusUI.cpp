@@ -9,7 +9,7 @@ StatusUI::StatusUI()
       hartSprite(gel::ShaderRegistry::getInstance().get("Texture2D"),
                  gel::NameRule()),
       fontTable(),
-      model(std::make_shared<StatusModel>(100,128)){}
+      model(std::make_shared<StatusModel>(100, 128)) {}
 void StatusUI::init() {
         hartSprite.init(gel::AssetDatabase::getAsset<gel::ITexture>(
                             "./assets/image/hart_gray.png")
@@ -20,8 +20,9 @@ void StatusUI::init() {
                               ->getID(),
                           glm::vec2(0, 64), glm::vec2(64, 64), 1.0f);
         fontTable.init(
-			std::vector<std::string>{"abcdefghijklmn",
-			"opqrstuvwxyz.:", "0123456789()", "ABCDEFGHIJKLMN", "OPQRSTUVWXYZ+-"},
+            std::vector<std::string>{"abcdefghijklmn",
+                                     "opqrstuvwxyz.:", "0123456789()",
+                                     "ABCDEFGHIJKLMN", "OPQRSTUVWXYZ+-"},
             [](char c, int row, int col) -> std::string {
                     std::string rs = std::to_string(row);
                     std::string cs = std::to_string(col);
@@ -37,11 +38,10 @@ void StatusUI::destroy() {
 void StatusUI::draw(std::shared_ptr<gel::Camera> camera) {
         hartSprite.draw(camera);
         bulletSprite.draw(camera);
-        fontTable.draw(camera, glm::vec2(64, 0), glm::vec2(38, 0), std::to_string(model->getHP()));
-        fontTable.draw(camera, glm::vec2(64, 64), glm::vec2(38, 0), std::to_string(model->getAmmo()));
+        fontTable.draw(camera, glm::vec2(64, 0), glm::vec2(38, 0),
+                       std::to_string(model->getHP()));
+        fontTable.draw(camera, glm::vec2(64, 64), glm::vec2(38, 0),
+                       std::to_string(model->getAmmo()));
 }
 
-std::shared_ptr<StatusModel> StatusUI::getModel() const
-{
-	return model;
-}
+std::shared_ptr<StatusModel> StatusUI::getModel() const { return model; }

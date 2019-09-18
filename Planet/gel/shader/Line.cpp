@@ -35,8 +35,9 @@ void Line::init(const glm::vec4 start, const glm::vec4 end, glm::vec4 color) {
         vao.bind();
         GLuint vertexAttrib = shader->getAttribLocation(nameRule.attribVertex);
         vertex.bind();
-		shader->setUniform4f("uPosition", 0, 0, 0, 0);
-		shader->setUniformMatrix4fv("uMVPMatrix", 1, GL_FALSE, glm::value_ptr(mvp));
+        shader->setUniform4f("uPosition", 0, 0, 0, 0);
+        shader->setUniformMatrix4fv("uMVPMatrix", 1, GL_FALSE,
+                                    glm::value_ptr(mvp));
         glVertexAttribPointer(vertexAttrib, 4, GL_FLOAT, GL_FALSE, 0, NULL);
         glEnableVertexAttribArray(vertexAttrib);
         vao.unbind();
@@ -60,11 +61,12 @@ void Line::destroy() {
 }
 
 void Line::draw() {
-		glEnable(GL_DEPTH_TEST);
-		shader->use();
-		shader->setUniform4f("uPosition", 0, 0, 0, 0);
-		shader->setUniformMatrix4fv("uMVPMatrix", 1, GL_FALSE, glm::value_ptr(mvp));
-		shader->unuse();
+        glEnable(GL_DEPTH_TEST);
+        shader->use();
+        shader->setUniform4f("uPosition", 0, 0, 0, 0);
+        shader->setUniformMatrix4fv("uMVPMatrix", 1, GL_FALSE,
+                                    glm::value_ptr(mvp));
+        shader->unuse();
         glLineWidth(lineWidth);
         shader->use();
         vao.bind();
