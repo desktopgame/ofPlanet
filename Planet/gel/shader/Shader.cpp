@@ -106,6 +106,16 @@ void Shader::setUniform2fv(const std::string& uniform, int count,
         glUniform2fv(getUniformLocation(uniform), count, v);
 }
 
+void Shader::setUniform2i(const std::string & uniform, int a, int b) const
+{
+	glUniform2i(getUniformLocation(uniform), a, b);
+}
+
+void Shader::setUniform2iv(const std::string & uniform, int count, int * v) const
+{
+	glUniform2iv(getUniformLocation(uniform), count, v);
+}
+
 void Shader::setUniform3f(const std::string& uniform, float a, float b,
                           float c) const {
         glUniform3f(getUniformLocation(uniform), a, b, c);
@@ -116,6 +126,16 @@ void Shader::setUniform3fv(const std::string& uniform, int count,
         glUniform3fv(getUniformLocation(uniform), count, v);
 }
 
+void Shader::setUniform3i(const std::string & uniform, int a, int b, int c) const
+{
+	glUniform3i(getUniformLocation(uniform), a, b, c);
+}
+
+void Shader::setUniform3iv(const std::string & uniform, int count, int * v) const
+{
+	glUniform3iv(getUniformLocation(uniform), count, v);
+}
+
 void Shader::setUniform4f(const std::string& uniform, float a, float b, float c,
                           float d) const {
         glUniform4f(getUniformLocation(uniform), a, b, c, d);
@@ -124,6 +144,16 @@ void Shader::setUniform4f(const std::string& uniform, float a, float b, float c,
 void Shader::setUniform4fv(const std::string& uniform, int count,
                            float* v) const {
         glUniform4fv(getUniformLocation(uniform), count, v);
+}
+
+void Shader::setUniform4i(const std::string & uniform, int a, int b, int c, int d) const
+{
+	glUniform4i(getUniformLocation(uniform), a, b, c, d);
+}
+
+void Shader::setUniform4iv(const std::string & uniform, int count, int * v) const
+{
+	glUniform4iv(getUniformLocation(uniform), count, v);
 }
 
 void Shader::setUniformMatrix2fv(const std::string& uniform, int count,

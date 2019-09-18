@@ -14,26 +14,40 @@ class Shader {
         void use();
         void unuse();
 
+		// Unit
         void setUniform1f(const std::string& uniform, float a) const;
         void setUniform1fv(const std::string& uniform, int count,
                            float* v) const;
         void setUniform1i(const std::string& uniform, int a) const;
         void setUniform1iv(const std::string& uniform, int count, int* v) const;
 
+		// Vec2
         void setUniform2f(const std::string& uniform, float a, float b) const;
         void setUniform2fv(const std::string& uniform, int count,
                            float* v) const;
 
+		void setUniform2i(const std::string& uniform, int a, int b) const;
+		void setUniform2iv(const std::string& uniform, int count, int* v) const;
+
+		// Vec3
         void setUniform3f(const std::string& uniform, float a, float b,
                           float c) const;
         void setUniform3fv(const std::string& uniform, int count,
                            float* v) const;
 
+		void setUniform3i(const std::string& uniform, int a, int b, int c) const;
+		void setUniform3iv(const std::string& uniform, int count, int* v) const;
+
+		// Vec4
         void setUniform4f(const std::string& uniform, float a, float b, float c,
                           float d) const;
         void setUniform4fv(const std::string& uniform, int count,
                            float* v) const;
 
+		void setUniform4i(const std::string& uniform, int a, int b, int c, int d) const;
+		void setUniform4iv(const std::string& uniform, int count, int* v) const;
+
+		// Matrix
         void setUniformMatrix2fv(const std::string& uniform, int count,
                                  GLboolean transpose, const float* v) const;
         void setUniformMatrix3fv(const std::string& uniform, int count,
