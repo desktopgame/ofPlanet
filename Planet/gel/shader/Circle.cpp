@@ -1,5 +1,6 @@
 #include "Circle.hpp"
 #include <math.h>
+#include "Primitive.hpp"
 
 namespace gel {
 Circle::Circle(const std::shared_ptr<Shader>& shader, const NameRule& nameRule)
@@ -17,12 +18,10 @@ void Circle::init(const glm::vec4 basePoint, const glm::vec4 color,
         vertex.init();
         // emit
         auto& vSeq = vertex.modify();
-        for (int i = 0; i < 360; i += 2) {
-                float rad = (float)i * (3.14f / 180.0f);
-                float x = std::cos(rad) * scale;
-                float z = std::sin(rad) * scale;
-                vSeq.emitVec4(x, 0, z, 1.0f);
-        }
+		auto verties = Primitive::circle(0, scale);
+		for (auto v : verties) {
+			vSeq.emitVec4(v.x, v.y, v.z, 1.0f);
+		}
         vertex.bind();
         vertex.update();
         vertex.unbind();

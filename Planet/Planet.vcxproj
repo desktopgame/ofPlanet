@@ -203,6 +203,7 @@
     <ClCompile Include="gel\shader\Plane.cpp" />
     <ClCompile Include="gel\shader\PlaneBatch.cpp" />
     <ClCompile Include="gel\shader\PlaneDraw.cpp" />
+    <ClCompile Include="gel\shader\Primitive.cpp" />
     <ClCompile Include="gel\shader\RawTexture.cpp" />
     <ClCompile Include="gel\shader\Reflection4.cpp" />
     <ClCompile Include="gel\shader\RenderBuffer.cpp" />
@@ -322,6 +323,7 @@
     <ClInclude Include="gel\shader\Plane.hpp" />
     <ClInclude Include="gel\shader\PlaneBatch.hpp" />
     <ClInclude Include="gel\shader\PlaneDraw.hpp" />
+    <ClInclude Include="gel\shader\Primitive.hpp" />
     <ClInclude Include="gel\shader\RawTexture.hpp" />
     <ClInclude Include="gel\shader\Reflection4.hpp" />
     <ClInclude Include="gel\shader\RenderBuffer.hpp" />
