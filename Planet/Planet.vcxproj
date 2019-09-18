@@ -208,6 +208,7 @@
     <ClCompile Include="gel\shader\RawTexture.cpp" />
     <ClCompile Include="gel\shader\Reflection4.cpp" />
     <ClCompile Include="gel\shader\RenderBuffer.cpp" />
+    <ClCompile Include="gel\shader\Renderer.cpp" />
     <ClCompile Include="gel\shader\ScreenBuffer.cpp" />
     <ClCompile Include="gel\shader\Shader.cpp" />
     <ClCompile Include="gel\shader\ShaderRegistry.cpp" />
@@ -329,6 +330,7 @@
     <ClInclude Include="gel\shader\RawTexture.hpp" />
     <ClInclude Include="gel\shader\Reflection4.hpp" />
     <ClInclude Include="gel\shader\RenderBuffer.hpp" />
+    <ClInclude Include="gel\shader\Renderer.hpp" />
     <ClInclude Include="gel\shader\ScreenBuffer.hpp" />
     <ClInclude Include="gel\shader\Sequence.hpp" />
     <ClInclude Include="gel\shader\Shader.hpp" />
@@ -356,6 +358,7 @@
     <ClInclude Include="gel\util\BlockingQueue.hpp" />
     <ClInclude Include="gel\util\collections.hpp" />
     <ClInclude Include="gel\util\CommandReader.hpp" />
+    <ClInclude Include="gel\util\enum.hpp" />
     <ClInclude Include="gel\util\error.hpp" />
     <ClInclude Include="gel\util\Flag.hpp" />
     <ClInclude Include="gel\util\io.hpp" />
