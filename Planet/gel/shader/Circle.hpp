@@ -4,6 +4,7 @@
 #include "NameRule.hpp"
 #include "Shader.hpp"
 #include "VertexArray.hpp"
+#include "Renderer.hpp"
 
 namespace gel {
 class Circle {
@@ -19,9 +20,8 @@ class Circle {
        private:
         glm::vec4 basePoint;
         glm::vec4 color;
-        std::shared_ptr<Shader> shader;
+		Renderer renderer;
         NameRule nameRule;
-        VertexArray vao;
         Buffer<float> vertex;
 };
 }  // namespace gel

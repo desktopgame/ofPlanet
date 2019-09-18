@@ -2,6 +2,7 @@
 #include <glm/ext/matrix_clip_space.hpp>
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <iostream>
 #include "ShaderRegistry.hpp"
 namespace gel {
 
@@ -32,8 +33,8 @@ RendererParameter Renderer::get(const std::string& name) const {
         return params.at(name);
 }
 void Renderer::apply() {
-        vao.bind();
         shader->use();
+		vao.bind();
         auto iter = params.begin();
         while (iter != params.end()) {
                 auto pair = *iter;
@@ -49,7 +50,7 @@ void Renderer::apply() {
                                 shader->setVertexAttribPointer(
                                     name, 1, GL_INT, GL_FALSE, 0, NULL);
                                 shader->enableVertexAttribArray(name);
-                                buf.unbind();
+                                //buf.unbind();
                         } else if (!!(type & RendererParameterType::IntVec2)) {
                                 Buffer<int> buf =
                                     std::get<Buffer<int> >(param.getValue());
@@ -57,7 +58,7 @@ void Renderer::apply() {
                                 shader->setVertexAttribPointer(
                                     name, 2, GL_INT, GL_FALSE, 0, NULL);
                                 shader->enableVertexAttribArray(name);
-                                buf.unbind();
+                                //buf.unbind();
                         } else if (!!(type & RendererParameterType::IntVec3)) {
                                 Buffer<int> buf =
                                     std::get<Buffer<int> >(param.getValue());
@@ -65,7 +66,7 @@ void Renderer::apply() {
                                 shader->setVertexAttribPointer(
                                     name, 3, GL_INT, GL_FALSE, 0, NULL);
                                 shader->enableVertexAttribArray(name);
-                                buf.unbind();
+                                //buf.unbind();
                         } else if (!!(type & RendererParameterType::IntVec4)) {
                                 Buffer<int> buf =
                                     std::get<Buffer<int> >(param.getValue());
@@ -73,7 +74,7 @@ void Renderer::apply() {
                                 shader->setVertexAttribPointer(
                                     name, 4, GL_INT, GL_FALSE, 0, NULL);
                                 shader->enableVertexAttribArray(name);
-                                buf.unbind();
+                                //buf.unbind();
                                 // Float
                         } else if (!!(type &
                                       RendererParameterType::FloatUnit)) {
@@ -83,7 +84,7 @@ void Renderer::apply() {
                                 shader->setVertexAttribPointer(
                                     name, 1, GL_FLOAT, GL_FALSE, 0, NULL);
                                 shader->enableVertexAttribArray(name);
-                                buf.unbind();
+                                //buf.unbind();
                         } else if (!!(type &
                                       RendererParameterType::FloatVec2)) {
                                 Buffer<float> buf =
@@ -92,7 +93,7 @@ void Renderer::apply() {
                                 shader->setVertexAttribPointer(
                                     name, 2, GL_FLOAT, GL_FALSE, 0, NULL);
                                 shader->enableVertexAttribArray(name);
-                                buf.unbind();
+                                //buf.unbind();
                         } else if (!!(type &
                                       RendererParameterType::FloatVec3)) {
                                 Buffer<float> buf =
@@ -101,7 +102,7 @@ void Renderer::apply() {
                                 shader->setVertexAttribPointer(
                                     name, 3, GL_FLOAT, GL_FALSE, 0, NULL);
                                 shader->enableVertexAttribArray(name);
-                                buf.unbind();
+                                //buf.unbind();
                         } else if (!!(type &
                                       RendererParameterType::FloatVec4)) {
                                 Buffer<float> buf =
@@ -110,7 +111,7 @@ void Renderer::apply() {
                                 shader->setVertexAttribPointer(
                                     name, 4, GL_FLOAT, GL_FALSE, 0, NULL);
                                 shader->enableVertexAttribArray(name);
-                                buf.unbind();
+                                //buf.unbind();
                         } else {
                                 throw std::logic_error(
                                     "Not supported attribute: " + name);
@@ -168,14 +169,16 @@ void Renderer::apply() {
                 }
                 ++iter;
         }
+		vao.unbind();
         shader->unuse();
-        vao.unbind();
 }
 
 void Renderer::drawArrays(GLenum mode, GLint first, GLsizei count) {
+		shader->use();
         vao.bind();
         glDrawArrays(mode, first, count);
         vao.unbind();
+		shader->unuse();
 }
 
 void Renderer::setShader(const std::string& shaderName) {
