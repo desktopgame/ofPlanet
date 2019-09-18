@@ -7,7 +7,7 @@
 namespace gel {
 class Primitive {
 public:
-	static std::vector<glm::vec3> circle(const float y, const float scale);
+	static std::vector<glm::vec3> circleLine(const float y, const float scale);
 private:
 	Primitive() = delete;
 	~Primitive() = delete;

@@ -18,7 +18,7 @@ void Circle::init(const glm::vec4 basePoint, const glm::vec4 color,
         vertex.init();
         // emit
         auto& vSeq = vertex.modify();
-		auto verties = Primitive::circle(0, scale);
+		auto verties = Primitive::circleLine(0, scale);
 		for (auto v : verties) {
 			vSeq.emitVec4(v.x, v.y, v.z, 1.0f);
 		}

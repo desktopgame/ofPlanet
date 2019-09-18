@@ -1,6 +1,6 @@
 #include "Primitive.hpp"
 namespace gel {
-	std::vector<glm::vec3> Primitive::circle(const float y, const float scale)
+	std::vector<glm::vec3> Primitive::circleLine(const float y, const float scale)
 	{
 		std::vector<glm::vec3> v;
 		for (int i = 0; i < 360; i += 2) {
