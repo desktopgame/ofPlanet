@@ -53,7 +53,9 @@ void LoadScene::draw() {
         sprites[index].draw(camera);
 }
 
-void LoadScene::hide() {}
+void LoadScene::hide() {
+	fontTable.destroy();
+}
 
 std::string LoadScene::getNextScene() const { return "play"; }
 
