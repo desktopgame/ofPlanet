@@ -19,6 +19,8 @@ class FontTable {
         void draw(std::shared_ptr<Camera> camera, glm::vec2 pos, char c);
         void draw(std::shared_ptr<Camera> camera, glm::vec2 pos,
                   glm::vec2 interval, const std::string str);
+		void draw(std::shared_ptr<Camera> camera, glm::vec2 pos,
+			glm::vec2 interval, const char* str);
 
        private:
         std::unordered_map<char, gel::Sprite> texMap;

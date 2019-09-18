@@ -5,6 +5,7 @@
 #include "../ui/CrossHairUI.hpp"
 #include "../world/Planet.hpp"
 #include "../world/WarpPoint.hpp"
+#include "../../gel/shader/FontTable.hpp"
 
 class LoadScene : public gel::IScene {
        public:
@@ -18,7 +19,7 @@ class LoadScene : public gel::IScene {
         bool isFinished() const override;
 
        private:
-        gel::Sprite background;
+		gel::FontTable fontTable;
         std::vector<gel::Sprite> sprites;
         void addSprite(std::shared_ptr<gel::ITexture> texture);
         bool finished;

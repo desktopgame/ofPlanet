@@ -37,18 +37,25 @@ PlayScene::PlayScene()
 			auto ammo = model->getAmmo();
 			if (ammo > 0) {
 				model->setAmmo(ammo - 1);
-				auto player = planet.getPlayer();
-				this->bStart = planet.getCamera()->transform.position;
-				this->bFwd = player->transform.forward();
-				this->bEnd = bFwd;
-				auto add = bFwd;
-				add.x *= 10;
-				add.y *= 10;
-				add.z *= 10;
-				this->bStart += add;
-				bEnd.x *= 128;
-				bEnd.y *= 128;
-				bEnd.z *= 128;
+				auto camera = planet.getCamera();
+				auto right = camera->transform.right();
+				auto back = camera->transform.backward();
+				auto down = glm::vec3(0, -1, 0);
+				back.x *= 5;
+				back.y *= 5;
+				back.z *= 5;
+				right.x *= 2;
+				right.y *= 2;
+				right.z *= 2;
+				down.y *= 2;
+				this->bStart = camera->transform.position/* + back + right + down*/;
+				this->bFwd = camera->transform.forward();
+				this->bEnd = camera->transform.position;
+				auto tmp = bFwd;
+				tmp.x *= 128;
+				tmp.y *= 128;
+				tmp.z *= 128;
+				bEnd += tmp;
 				beamLine.update(glm::vec4(bStart.x, bStart.y, bStart.z, 1), glm::vec4(bEnd.x, bEnd.y, bEnd.z, 1));
 			}
 		});

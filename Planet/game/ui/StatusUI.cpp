@@ -20,8 +20,8 @@ void StatusUI::init() {
                               ->getID(),
                           glm::vec2(0, 64), glm::vec2(64, 64), 1.0f);
         fontTable.init(
-            std::vector<std::string>{"abcdefghijklmn",
-                                     "opqrstuvwxyz.:", "0123456789()"},
+			std::vector<std::string>{"abcdefghijklmn",
+			"opqrstuvwxyz.:", "0123456789()", "ABCDEFGHIJKLMN", "OPQRSTUVWXYZ+-"},
             [](char c, int row, int col) -> std::string {
                     std::string rs = std::to_string(row);
                     std::string cs = std::to_string(col);

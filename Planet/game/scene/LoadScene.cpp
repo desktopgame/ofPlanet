@@ -6,8 +6,7 @@ LoadScene::LoadScene()
       sprites(),
       timer(0.06f),
       camera(std::make_shared<gel::Camera>()),
-      background(gel::ShaderRegistry::getInstance().get("Texture2D"),
-                 gel::NameRule()) {
+     fontTable() {
         addSprite(gel::AssetDatabase::getAsset<gel::ITexture>(
             "./assets/image/Progress00.png"));
         addSprite(gel::AssetDatabase::getAsset<gel::ITexture>(
@@ -16,10 +15,15 @@ LoadScene::LoadScene()
             "./assets/image/Progress02.png"));
         addSprite(gel::AssetDatabase::getAsset<gel::ITexture>(
             "./assets/image/Progress03.png"));
-        auto bgTex = gel::AssetDatabase::getAsset<gel::ITexture>(
-            "./assets/image/Loading.png");
-        background.init(bgTex->getID(), glm::vec2(0, 0), glm::vec2(1280, 720),
-                        1.0f);
+		fontTable.init(
+			std::vector<std::string>{"abcdefghijklmn",
+			"opqrstuvwxyz.:", "0123456789()", "ABCDEFGHIJKLMN", "OPQRSTUVWXYZ+-"},
+			[](char c, int row, int col) -> std::string {
+			std::string rs = std::to_string(row);
+			std::string cs = std::to_string(col);
+			return "./assets/image/font/ascii/FontTable64_" + rs + "_" +
+				cs + ".png";
+		});
 }
 
 LoadScene::~LoadScene() {}
@@ -45,7 +49,7 @@ void LoadScene::draw() {
         camera->screenWidth = wnd.x;
         camera->screenHeight = wnd.y;
         camera->calculate();
-        background.draw(camera);
+		fontTable.draw(camera, glm::vec2(0, wnd.y-64), glm::vec2(38, 0), "Loading...");
         sprites[index].draw(camera);
 }
 

@@ -44,4 +44,8 @@ void FontTable::draw(std::shared_ptr<Camera> camera, glm::vec2 pos,
                 npos += interval;
         }
 }
+void FontTable::draw(std::shared_ptr<Camera> camera, glm::vec2 pos, glm::vec2 interval, const char * str)
+{
+	draw(camera, pos, interval, std::string(str));
+}
 }  // namespace gel

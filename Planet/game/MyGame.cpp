@@ -26,11 +26,11 @@ void MyGame::onInit() {
         float filter;
         glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &filter);
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, filter);
-        getContentManager()->loadFully("./assets/image/Progress00.png");
-        getContentManager()->loadFully("./assets/image/Progress01.png");
-        getContentManager()->loadFully("./assets/image/Progress02.png");
-        getContentManager()->loadFully("./assets/image/Progress03.png");
-        getContentManager()->loadFully("./assets/image/Loading.png");
+		getContentManager()->loadFully([](const std::string& file) -> bool {
+			bool isFT = (file.find("./assets/image/font/ascii") != std::string::npos);
+			bool isProg = (file.find("./assets/image/Progress") != std::string::npos);
+			return isFT || isProg;
+		});
         sceneManager.put("load", std::make_shared<LoadScene>());
         sceneManager.bind("load");
 }
