@@ -28,7 +28,7 @@ enum class RendererParameterType : int {
 
         Matrix4x4 = 1 << 10,
 };
-DEF_ENUM_OPERATOR_HPP(RendererParameterType, int)
+DEF_ENUM_OPERATOR_HPP(RendererParameterType)
 
 using RendererParameterValue =
     std::variant<int, glm::ivec2, glm::ivec3, glm::ivec4, float, glm::vec2,
