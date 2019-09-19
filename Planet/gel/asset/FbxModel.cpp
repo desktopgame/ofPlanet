@@ -61,7 +61,6 @@ void FbxModel::drawIR(std::shared_ptr<IRMesh> mesh) {
 void FbxModel::procIRRec(FbxNode* node, std::shared_ptr<IRMesh> mesh,
                          int depth) {
         indent(depth);
-        std::cout << node->GetName() << std::endl;
         for (int i = 0; i < node->GetChildCount(); i++) {
                 FbxNode* child = node->GetChild(i);
                 procIRRec(child, mesh->addMesh(child->GetName()), depth + 1);
@@ -180,8 +179,6 @@ void FbxModel::procIRUV(FbxNode* node, std::shared_ptr<IRMesh> mesh) {
 void FbxModel::procIRMaterials(FbxNode* node, std::shared_ptr<IRMesh> mesh) {
         for (int i = 0; i < node->GetMaterialCount(); i++) {
                 auto mat = node->GetMaterial(i);
-                std::cout << "material [" << node->GetName() << "] "
-                          << mat->GetName() << std::endl;
                 procIRMaterial(node, mesh, mat);
         }
 }
