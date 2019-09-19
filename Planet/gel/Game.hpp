@@ -80,21 +80,6 @@ class Game {
         glm::vec2 getWindowSize() const;
 
         /**
-         * @return
-         */
-        int getSolutionWidth() const;
-
-        /**
-         * @return
-         */
-        int getSolutionHeight() const;
-
-        /**
-         * @return
-         */
-        glm::vec2 getSolutionSize() const;
-
-        /**
          * return a delta time.
          * @return
          */
@@ -128,8 +113,6 @@ class Game {
         FbxManager* fbxManager;
         int width;
         int height;
-        int solutionWidth;
-        int solutionHeight;
         double oldTime;
         float deltaTime;
         bool outputDebugMessage;

@@ -64,7 +64,6 @@ void TestScene::draw() {
         glViewport(0, 0, 1280, 720);
         // calculate camera
         glm::vec2 windowSize = gel::Game::getInstance()->getWindowSize();
-        glm::vec2 solutionSize = gel::Game::getInstance()->getSolutionSize();
         glViewport(0, 0, windowSize.x, windowSize.y);
         camera->screenWidth = windowSize.x;
         camera->screenHeight = windowSize.y;

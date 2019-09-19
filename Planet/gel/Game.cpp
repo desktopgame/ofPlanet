@@ -99,14 +99,6 @@ float Game::getWindowAspect() const { return ((float)width / (float)height); }
 
 glm::vec2 Game::getWindowSize() const { return glm::vec2(width, height); }
 
-int Game::getSolutionWidth() const { return solutionWidth; }
-
-int Game::getSolutionHeight() const { return solutionHeight; }
-
-glm::vec2 Game::getSolutionSize() const {
-        return glm::vec2(solutionWidth, solutionHeight);
-}
-
 // protecteds
 void Game::bridgeMouseButton(GLFWwindow* window, int button, int action,
                              int mods) {
@@ -299,8 +291,6 @@ int Game::onGLInit(int argc, char* argv[], const char* title, int width,
         std::atexit(bridgeExit);
         this->width = width;
         this->height = height;
-        this->solutionWidth = width;
-        this->solutionHeight = height;
         // glutInit(&argc, argv);
         if (!glfwInit()) return -1;
         if (!alutInit(&argc, argv)) return -1;

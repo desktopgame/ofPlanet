@@ -80,7 +80,6 @@ PlayScene::~PlayScene() {
 void PlayScene::show() {
         auto camera = planet.getCamera();
         glm::vec2 windowSize = gel::Game::getInstance()->getWindowSize();
-        glm::vec2 solutionSize = gel::Game::getInstance()->getSolutionSize();
         camera->screenWidth = windowSize.x;
         camera->screenHeight = windowSize.y;
         camera->calculate();

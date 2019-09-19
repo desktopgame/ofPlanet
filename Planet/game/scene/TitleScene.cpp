@@ -73,7 +73,6 @@ void TitleScene::update() {
 void TitleScene::draw() {
         // calculate matrix
         glm::vec2 windowSize = gel::Game::getInstance()->getWindowSize();
-        glm::vec2 solutionSize = gel::Game::getInstance()->getSolutionSize();
         glViewport(0, 0, windowSize.x, windowSize.y);
         camera->screenWidth = windowSize.x;
         camera->screenHeight = windowSize.y;
