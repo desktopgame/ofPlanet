@@ -5,7 +5,6 @@ LoadScene::LoadScene()
     : finished(false),
       sprites(),
       timer(0.06f),
-      camera(std::make_shared<gel::Camera>()),
       fontTable() {
         addSprite(gel::AssetDatabase::getAsset<gel::ITexture>(
             "./assets/image/Progress00.png"));
@@ -46,13 +45,11 @@ void LoadScene::draw() {
         glEnable(GL_DEPTH_TEST);
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        auto wnd = gel::Game::getInstance()->getWindowSize();
-        camera->screenWidth = wnd.x;
-        camera->screenHeight = wnd.y;
-        camera->calculate();
-        fontTable.draw(camera, glm::vec2(0, wnd.y - 64), glm::vec2(38, 0),
+		gel::Game* g = gel::getGame();
+		glm::vec2 wnd = g->getWindowSize();
+        fontTable.draw(glm::vec2(0, wnd.y - 64), glm::vec2(38, 0),
                        "Loading...");
-        sprites[index].draw(camera);
+        sprites[index].draw();
 }
 
 void LoadScene::hide() { fontTable.destroy(); }

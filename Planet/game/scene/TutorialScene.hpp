@@ -16,7 +16,6 @@ class TutorialScene : public gel::IScene {
 
        private:
         gel::MouseTrigger mouseTrigger;
-        std::shared_ptr<gel::Camera> camera;
         std::vector<gel::Sprite> sprites;
         int page;
         bool finished;

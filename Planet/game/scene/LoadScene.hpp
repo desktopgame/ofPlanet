@@ -24,7 +24,6 @@ class LoadScene : public gel::IScene {
         void addSprite(std::shared_ptr<gel::ITexture> texture);
         bool finished;
         gel::Timer timer;
-        std::shared_ptr<gel::Camera> camera;
         int index;
 };
 #endif

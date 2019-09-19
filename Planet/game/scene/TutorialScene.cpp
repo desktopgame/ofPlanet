@@ -5,7 +5,6 @@ TutorialScene::TutorialScene()
     : sprites(),
       page(0),
       finished(false),
-      camera(std::make_shared<gel::Camera>()),
       mouseTrigger(GLFW_MOUSE_BUTTON_LEFT) {
         std::vector<std::string> spritePaths = std::vector<std::string>{
             "./assets/image/tutorial/tutorial_control.png",
@@ -22,10 +21,6 @@ TutorialScene::TutorialScene()
                     glm::vec2(), glm::vec2(1280, 720), 1);
                 sprites.push_back(sprite);
         }
-        auto wsize = gel::Game::getInstance()->getWindowSize();
-        camera->screenWidth = wsize.x;
-        camera->screenHeight = wsize.y;
-        camera->calculate();
 }
 
 TutorialScene::~TutorialScene() {}
@@ -77,7 +72,7 @@ void TutorialScene::draw() {
         if (tmp >= sprites.size()) {
                 tmp = sprites.size() - 1;
         }
-        sprites[tmp].draw(camera);
+        sprites[tmp].draw();
 }
 
 void TutorialScene::hide() {

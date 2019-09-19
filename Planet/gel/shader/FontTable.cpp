@@ -31,21 +31,21 @@ void FontTable::destroy() {
         }
         texMap.clear();
 }
-void FontTable::draw(std::shared_ptr<Camera> camera, glm::vec2 pos, char c) {
+void FontTable::draw(glm::vec2 pos, char c) {
         gel::Sprite& sprite = texMap.at(c);
         sprite.reshape(pos, sprite.getSize());
-        sprite.draw(camera);
+        sprite.draw();
 }
-void FontTable::draw(std::shared_ptr<Camera> camera, glm::vec2 pos,
+void FontTable::draw(glm::vec2 pos,
                      glm::vec2 interval, const std::string str) {
         glm::vec2 npos = pos;
         for (char c : str) {
-                draw(camera, npos, c);
+                draw(npos, c);
                 npos += interval;
         }
 }
-void FontTable::draw(std::shared_ptr<Camera> camera, glm::vec2 pos,
+void FontTable::draw(glm::vec2 pos,
                      glm::vec2 interval, const char* str) {
-        draw(camera, pos, interval, std::string(str));
+        draw(pos, interval, std::string(str));
 }
 }  // namespace gel

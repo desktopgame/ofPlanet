@@ -4,6 +4,10 @@
 #include <memory>
 #include <sstream>
 #include <string>
+#include <glm/ext/matrix_clip_space.hpp>
+#include <glm/ext/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <glm/gtx/raw_data.hpp>
 #include "gel.hpp"
 #include "pipeline/BmpPipeline.hpp"
 #include "pipeline/FbxPipeline.hpp"
@@ -386,5 +390,21 @@ void Game::onBackground() {
         finishedMutex.lock();
         this->finishedThread = true;
         finishedMutex.unlock();
+}
+Game * getGame()
+{
+	return Game::getInstance();
+}
+glm::mat4 getProjection()
+{
+	Game* g = getGame();
+	return glm::perspective(30.0f, g->getWindowAspect(), 1.0f, 1000.0f);
+}
+glm::mat4 getOrtho()
+{
+	Game* g = getGame();
+	return glm::ortho(0.0f, static_cast<GLfloat>(g->getWindowWidth()),
+		static_cast<GLfloat>(g->getWindowHeight()), 0.0f,
+		-1.0f, 1.0f);
 }
 }  // namespace  gel

@@ -165,5 +165,22 @@ class Game {
         void onMainLoop2();
         void onBackground();
 };
+/**
+ * return a Game instance
+ * @return
+ */
+Game* getGame();
+
+/**
+ * return a projection matrix from window size.
+ * @return
+ */
+glm::mat4 getProjection();
+
+/**
+ * return a ortho matrix from window size.
+ * @return
+ */
+glm::mat4 getOrtho();
 }  // namespace gel
 #endif

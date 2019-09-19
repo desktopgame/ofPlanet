@@ -11,7 +11,7 @@ class ButtonUI {
                   const glm::vec2 pos, const glm::vec2 size);
         void destroy();
         void update();
-        void draw(const std::shared_ptr<gel::Camera>& camera);
+        void draw();
         bool isActive() const;
 
        private:

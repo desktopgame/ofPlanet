@@ -16,10 +16,10 @@ class FontTable {
         explicit FontTable();
         void init(const std::vector<std::string> lines, Rule rule);
         void destroy();
-        void draw(std::shared_ptr<Camera> camera, glm::vec2 pos, char c);
-        void draw(std::shared_ptr<Camera> camera, glm::vec2 pos,
+        void draw(glm::vec2 pos, char c);
+        void draw(glm::vec2 pos,
                   glm::vec2 interval, const std::string str);
-        void draw(std::shared_ptr<Camera> camera, glm::vec2 pos,
+        void draw(glm::vec2 pos,
                   glm::vec2 interval, const char* str);
 
        private:

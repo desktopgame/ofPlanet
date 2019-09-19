@@ -11,7 +11,7 @@ class StatusUI {
         explicit StatusUI();
         void init();
         void destroy();
-        void draw(std::shared_ptr<gel::Camera> camera);
+        void draw();
         std::shared_ptr<StatusModel> getModel() const;
 
        private:

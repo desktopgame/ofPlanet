@@ -9,8 +9,7 @@ TitleScene::TitleScene()
       titleSprite(gel::ShaderRegistry::getInstance().get("Texture2D")),
       playSprite(gel::ShaderRegistry::getInstance().get("Texture2D")),
       optionSprite(gel::ShaderRegistry::getInstance().get("Texture2D")),
-      exitSprite(gel::ShaderRegistry::getInstance().get("Texture2D")),
-      camera(std::make_shared<gel::Camera>()) {
+      exitSprite(gel::ShaderRegistry::getInstance().get("Texture2D")) {
         screenBuffer.init(gel::Game::getInstance()->getWindowWidth(),
                           gel::Game::getInstance()->getWindowHeight());
         titleSprite.init(
@@ -74,14 +73,11 @@ void TitleScene::draw() {
         // calculate matrix
         glm::vec2 windowSize = gel::Game::getInstance()->getWindowSize();
         glViewport(0, 0, windowSize.x, windowSize.y);
-        camera->screenWidth = windowSize.x;
-        camera->screenHeight = windowSize.y;
-        camera->calculate();
         screenBuffer.bind();
-        titleSprite.draw(camera);
-        playSprite.draw(camera);
+        titleSprite.draw();
+        playSprite.draw();
         // optionSprite.draw(camera);
-        exitSprite.draw(camera);
+        exitSprite.draw();
         screenBuffer.unbind();
         screenBuffer.render();
 }

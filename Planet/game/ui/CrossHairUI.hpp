@@ -6,7 +6,7 @@ class CrossHairUI {
        public:
         explicit CrossHairUI();
         ~CrossHairUI();
-        void draw(const std::shared_ptr<gel::Camera>& camera);
+        void draw();
 
        private:
         gel::Sprite sprite;

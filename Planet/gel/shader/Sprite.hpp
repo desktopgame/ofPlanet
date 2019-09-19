@@ -17,7 +17,7 @@ class Sprite {
                   const glm::vec2 size, const float alpha);
         void reshape(const glm::vec2 pos, const glm::vec2 size);
         void destroy();
-        void draw(const std::shared_ptr<gel::Camera>& camera);
+        void draw();
         glm::vec2 getPosition() const;
         glm::vec2 getSize() const;
 
@@ -27,8 +27,6 @@ class Sprite {
         GLuint texture;
         VertexArray vao;
         Flag initFlag;
-        glm::mat4 model;
-        glm::mat4 view;
         glm::mat4 projection;
         glm::mat4 mvp;
         glm::vec2 position;

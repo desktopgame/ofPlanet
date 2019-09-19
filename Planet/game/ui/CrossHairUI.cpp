@@ -11,6 +11,6 @@ CrossHairUI::CrossHairUI()
 
 CrossHairUI::~CrossHairUI() { sprite.destroy(); }
 
-void CrossHairUI::draw(const std::shared_ptr<gel::Camera>& camera) {
-        sprite.draw(camera);
+void CrossHairUI::draw() {
+        sprite.draw();
 }

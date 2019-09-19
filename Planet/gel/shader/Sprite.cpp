@@ -1,5 +1,6 @@
 #include "Sprite.hpp"
 #include <glm/gtc/type_ptr.hpp>
+#include "../Game.hpp"
 namespace gel {
 Sprite::Sprite(const std::shared_ptr<Shader>& shader, const NameRule nameRule)
     : shader(shader),
@@ -7,7 +8,6 @@ Sprite::Sprite(const std::shared_ptr<Shader>& shader, const NameRule nameRule)
       texture(0),
       vertex(GL_ARRAY_BUFFER, GL_DYNAMIC_DRAW),
       uv(GL_ARRAY_BUFFER, GL_DYNAMIC_DRAW),
-      model(),
       initFlag(false) {}
 
 Sprite::Sprite(const std::shared_ptr<Shader>& shader)
@@ -45,7 +45,6 @@ void Sprite::init(const GLuint texture, const glm::vec2 pos,
         shader->unuse();
         vertex.unbind();
         uv.unbind();
-        this->model = glm::scale(model, glm::vec3(size, 1.0f));
 }
 
 void Sprite::reshape(const glm::vec2 pos, const glm::vec2 size) {
@@ -86,10 +85,9 @@ void Sprite::destroy() {
         uv.destroy();
 }
 
-void Sprite::draw(const std::shared_ptr<gel::Camera>& camera) {
+void Sprite::draw() {
         initFlag.check(true, "should be initialize");
-        this->view = glm::inverse(camera->getInverseView());
-        this->projection = camera->getOrtho();
+		this->projection = gel::getOrtho();
         this->mvp = projection;
         glDisable(GL_CULL_FACE);
         glDisable(GL_DEPTH_TEST);

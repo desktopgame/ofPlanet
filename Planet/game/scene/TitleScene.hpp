@@ -16,7 +16,6 @@ class TitleScene : public gel::IScene {
 
        private:
         bool finished;
-        std::shared_ptr<gel::Camera> camera;
         gel::Sprite titleSprite;
         ButtonUI playSprite;
         ButtonUI optionSprite;

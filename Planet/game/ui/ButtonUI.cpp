@@ -19,19 +19,19 @@ void ButtonUI::destroy() {
 
 void ButtonUI::update() { mouseTrigger.update(); }
 
-void ButtonUI::draw(const std::shared_ptr<gel::Camera>& camera) {
+void ButtonUI::draw() {
         this->active = false;
         gel::Rectangle spriteRect =
             gel::Rectangle(onSprite.getPosition(), onSprite.getSize());
         double xp, yp;
         glfwGetCursorPos(gel::Game::getInstance()->getWindow(), &xp, &yp);
         if (spriteRect.contains((float)xp, (float)yp)) {
-                onSprite.draw(camera);
+                onSprite.draw();
                 if (mouseTrigger.isEnabled()) {
                         this->active = true;
                 }
         } else {
-                offSprite.draw(camera);
+                offSprite.draw();
         }
 }
 

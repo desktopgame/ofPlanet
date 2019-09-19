@@ -35,12 +35,12 @@ void StatusUI::destroy() {
         bulletSprite.destroy();
         fontTable.destroy();
 }
-void StatusUI::draw(std::shared_ptr<gel::Camera> camera) {
-        hartSprite.draw(camera);
-        bulletSprite.draw(camera);
-        fontTable.draw(camera, glm::vec2(64, 0), glm::vec2(38, 0),
+void StatusUI::draw() {
+        hartSprite.draw();
+        bulletSprite.draw();
+        fontTable.draw(glm::vec2(64, 0), glm::vec2(38, 0),
                        std::to_string(model->getHP()));
-        fontTable.draw(camera, glm::vec2(64, 64), glm::vec2(38, 0),
+        fontTable.draw(glm::vec2(64, 64), glm::vec2(38, 0),
                        std::to_string(model->getAmmo()));
 }
 
