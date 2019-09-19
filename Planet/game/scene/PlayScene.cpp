@@ -164,11 +164,11 @@ void PlayScene::configureShader(float delta) {
         circleShader->setUniformMatrix4fv("uMVPMatrix", 1, GL_FALSE,
                                           glm::value_ptr(camera->getMVP()));
         circleShader->unuse();
-        auto noiseShader = gel::ShaderRegistry::getInstance().get("CRT");
+        auto noiseShader = gel::ShaderRegistry::getInstance().get("Noise");
         noiseShader->use();
         // check warp
         auto player = planet.getPlayer();
-        noiseShader->setUniform1f("Time", gameTime);
+		noiseShader->setUniform1f("Time", gameTime);
         if (warp.isHit(player->transform.position)) {
                 noiseShader->setUniform1i("enabled", 1);
                 this->noiseTime += delta;
@@ -177,7 +177,7 @@ void PlayScene::configureShader(float delta) {
                 this->noiseTime = 0.0f;
         }
         noiseShader->unuse();
-        auto colorShader = gel::ShaderRegistry::getInstance().get("ColorFixed");
+		auto colorShader = gel::ShaderRegistry::getInstance().get("ColorFixed");
         colorShader->use();
         colorShader->setUniformMatrix4fv("uMVPMatrix", 1, GL_FALSE,
                                          glm::value_ptr(camera->getMVP()));

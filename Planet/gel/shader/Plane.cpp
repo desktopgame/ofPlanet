@@ -1,7 +1,7 @@
 #include "Plane.hpp"
 namespace gel {
 Plane::Plane(const std::shared_ptr<Shader>& shader, const NameRule& nameRule)
-    : shader(shader),
+    : renderer(shader),
       type(PlaneType::Forward),
       fwdIndexBuf(GL_ELEMENT_ARRAY_BUFFER, GL_DYNAMIC_DRAW),
       backIndexBuf(GL_ELEMENT_ARRAY_BUFFER, GL_DYNAMIC_DRAW),
@@ -24,34 +24,19 @@ void Plane::init(glm::vec3 size) {
         initFlag.check(false, "already initalized");
         this->size = size;
         initFlag.enable();
-        shader->use();
-        vao.init();
+        renderer.init();
         initBuffers();
         //
         // init vao
         //
-        this->vertexAttrib = shader->getAttribLocation(nameRule.attribVertex);
-        vao.bind();
-        vertexBuf.bind();
-        glVertexAttribPointer(vertexAttrib, 4, GL_FLOAT, GL_FALSE, 0, NULL);
-        glEnableVertexAttribArray(vertexAttrib);
-        this->normalAttrib = shader->getAttribLocation(nameRule.attribNormal);
-        normalBuf.bind();
-        glVertexAttribPointer(normalAttrib, 4, GL_FLOAT, GL_FALSE, 0, NULL);
-        glEnableVertexAttribArray(normalAttrib);
-        this->uvAttrib = shader->getAttribLocation(nameRule.attribUV);
-        uvBuf.bind();
-        glVertexAttribPointer(uvAttrib, 2, GL_FLOAT, GL_FALSE, 0, NULL);
-        glEnableVertexAttribArray(uvAttrib);
-        vao.unbind();
-        vertexBuf.unbind();
-        normalBuf.unbind();
-        uvBuf.unbind();
-        shader->unuse();
+		renderer.put(nameRule.attribVertex, RendererParameter(RendererParameterType::Attribute | RendererParameterType::FloatVec4, vertexBuf));
+		renderer.put(nameRule.attribNormal, RendererParameter(RendererParameterType::Attribute | RendererParameterType::FloatVec4, normalBuf));
+		renderer.put(nameRule.attribUV, RendererParameter(RendererParameterType::Attribute | RendererParameterType::FloatVec2, uvBuf));
+		renderer.apply();
 }
 
 void Plane::destroy() {
-        vao.destroy();
+		renderer.destroy();
         fwdIndexBuf.destroy();
         backIndexBuf.destroy();
         leftIndexBuf.destroy();
@@ -65,47 +50,39 @@ void Plane::destroy() {
 }
 
 void Plane::draw() {
-        shader->use();
         auto& src = getIndexBufferFromType(type);
-        vao.bind();
-        src.bind();
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
-        src.unbind();
-        vao.unbind();
-        shader->unuse();
+		renderer.drawElements(src, GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
 }
 
 void Plane::render(Buffer<float> posBuf, int count) {
         auto& src = getIndexBufferFromType(type);
         bind();
-        src.bind();
-        shader->use();
-        GLuint posAttrib = shader->getAttribLocation(nameRule.attribPosition);
 
-        posBuf.bind();
-        glVertexAttribPointer(posAttrib, 4, GL_FLOAT, GL_FALSE, 0, NULL);
-        glEnableVertexAttribArray(posAttrib);
+		renderer.put(nameRule.attribPosition, RendererParameter(RendererParameterType::Attribute | RendererParameterType::FloatVec4, posBuf));
+		renderer.apply();
+		auto sh = renderer.getShader();
+		auto vao = renderer.getVertexArray();
 
-        glVertexAttribDivisor(shader->getAttribLocation(nameRule.attribVertex),
-                              0);
-        glVertexAttribDivisor(shader->getAttribLocation(nameRule.attribUV), 0);
-        glVertexAttribDivisor(shader->getAttribLocation(nameRule.attribNormal),
-                              0);
-        glVertexAttribDivisor(
-            shader->getAttribLocation(nameRule.attribPosition), 1);
+		vao.bind();
+		sh->use();
+		src.bind();
+		posBuf.bind();
+		sh->setVertexAttribDivisor(nameRule.attribVertex, 0);
+		sh->setVertexAttribDivisor(nameRule.attribUV, 0);
+		sh->setVertexAttribDivisor(nameRule.attribNormal, 0);
+		sh->setVertexAttribDivisor(nameRule.attribPosition, 1);
+		posBuf.unbind();
+		src.unbind();
+		sh->unuse();
+		vao.unbind();
 
-        glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, NULL,
-                                count);
-        posBuf.unbind();
-
-        shader->unuse();
-        src.unbind();
+		renderer.drawElementsInstanced(src, GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, NULL, count);
         unbind();
 }
 
-void Plane::bind() { vao.bind(); }
+void Plane::bind() {  }
 
-void Plane::unbind() { vao.unbind(); }
+void Plane::unbind() {  }
 
 void Plane::setType(const PlaneType type) {
         if (this->type == type) {

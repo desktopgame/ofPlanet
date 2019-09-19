@@ -5,6 +5,7 @@
 #include "NameRule.hpp"
 #include "Shader.hpp"
 #include "VertexArray.hpp"
+#include "Renderer.hpp"
 namespace gel {
 enum class PlaneType { Forward, Backward, Left, Right, Top, Bottom };
 class Plane {
@@ -27,8 +28,7 @@ class Plane {
         static void addNormals(Buffer<GLfloat>& buf, int count, float x,
                                float y, float z, float w);
         Buffer<GLushort>& getIndexBufferFromType(const PlaneType type);
-        std::shared_ptr<Shader> shader;
-        VertexArray vao;
+		Renderer renderer;
         PlaneType type;
         NameRule nameRule;
         Flag initFlag;

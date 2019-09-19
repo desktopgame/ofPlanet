@@ -22,7 +22,9 @@ void RendererParameter::setValue(const RendererParameterValue value) {
 RendererParameterValue RendererParameter::getValue() const { return value; }
 // Renderer
 Renderer::Renderer(const std::shared_ptr<Shader>& shader)
-    : shader(shader), params(), vao() {}
+    : shader(shader), 
+	  params(),
+	  vao() {}
 void Renderer::init() { vao.init(); }
 void Renderer::destroy() { vao.destroy(); }
 void Renderer::put(const std::string& name, const RendererParameter parameter) {
@@ -181,6 +183,28 @@ void Renderer::drawArrays(GLenum mode, GLint first, GLsizei count) {
 		shader->unuse();
 }
 
+void Renderer::drawElements(Buffer<GLushort> index, GLenum mode, GLsizei count, GLenum type, const GLvoid * indices)
+{
+	shader->use();
+	vao.bind();
+	index.bind();
+	glDrawElements(mode, count, type, indices);
+	index.unbind();
+	vao.unbind();
+	shader->unuse();
+}
+
+void Renderer::drawElementsInstanced(Buffer<GLushort> index, GLenum mode, GLsizei count, GLenum type, const void * indices, GLsizei instancecount)
+{
+	shader->use();
+	vao.bind();
+	index.bind();
+	glDrawElementsInstanced(mode, count, type, indices, instancecount);
+	index.unbind();
+	vao.unbind();
+	shader->unuse();
+}
+
 void Renderer::setShader(const std::string& shaderName) {
         setShader(ShaderRegistry::getInstance().get(shaderName));
 }
@@ -188,4 +212,8 @@ void Renderer::setShader(const std::shared_ptr<Shader>& shader) {
         this->shader = shader;
 }
 std::shared_ptr<Shader> Renderer::getShader() const { return shader; }
+VertexArray Renderer::getVertexArray() const
+{
+	return vao;
+}
 }  // namespace gel

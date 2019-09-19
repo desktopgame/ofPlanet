@@ -30,7 +30,7 @@ TestScene::TestScene()
         glEnableClientState(GL_TEXTURE_COORD_ARRAY);
         screenBuffer.init(gel::Game::getInstance()->getWindowWidth(),
                           gel::Game::getInstance()->getWindowHeight());
-        box.init(glm::vec4(1, 0, 0, 1), glm::vec3(1, 1, 1));
+        //box.init(glm::vec4(1, 0, 0, 1), glm::vec3(1, 1, 1));
         sprite.init(gel::AssetDatabase::getAsset<gel::ITexture>(
                         "./assets/image/sample.jpg")
                         ->getID(),
