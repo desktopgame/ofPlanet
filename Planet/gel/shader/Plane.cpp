@@ -59,9 +59,9 @@ void Plane::render(Buffer<float> posBuf, int count) {
         bind();
 
 		renderer.put(nameRule.attribPosition, RendererParameter(RendererParameterType::Attribute | RendererParameterType::FloatVec4, posBuf));
-		renderer.apply();
+		renderer.apply(nameRule.attribPosition);
 		auto sh = renderer.getShader();
-		auto vao = renderer.getVertexArray();
+		auto& vao = renderer.getVertexArray();
 
 		vao.bind();
 		sh->use();

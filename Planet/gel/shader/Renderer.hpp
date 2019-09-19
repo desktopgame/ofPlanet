@@ -56,18 +56,20 @@ class Renderer {
         void remove(const std::string& name);
         RendererParameter get(const std::string& name) const;
         void apply();
+		void apply(const std::string& name);
 
         void drawArrays(GLenum mode, GLint first, GLsizei count);
-		void drawElements(Buffer<GLushort> index, GLenum mode, GLsizei count, GLenum type, const GLvoid * indices);
-		void drawElementsInstanced(Buffer<GLushort> index, GLenum mode, GLsizei count, GLenum type, const void * indices, GLsizei instancecount);
+		void drawElements(Buffer<GLushort>& index, GLenum mode, GLsizei count, GLenum type, const GLvoid * indices);
+		void drawElementsInstanced(Buffer<GLushort>& index, GLenum mode, GLsizei count, GLenum type, const void * indices, GLsizei instancecount);
 
         void setShader(const std::string& shaderName);
         void setShader(const std::shared_ptr<Shader>& shader);
         std::shared_ptr<Shader> getShader() const;
 
-		VertexArray getVertexArray() const;
+		VertexArray& getVertexArray();
 
        private:
+		void applyImpl(const std::string& name);
         std::shared_ptr<Shader> shader;
         std::unordered_map<std::string, RendererParameter> params;
         VertexArray vao;

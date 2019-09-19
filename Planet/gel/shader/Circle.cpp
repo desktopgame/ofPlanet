@@ -40,7 +40,8 @@ void Circle::draw() {
         glLineWidth(lineWidth);
 		renderer.put(nameRule.uniformColor, RendererParameter(RendererParameterType::Uniform | RendererParameterType::FloatVec4, color));
 		renderer.put(nameRule.uniformPosition, RendererParameter(RendererParameterType::Uniform | RendererParameterType::FloatVec4, basePoint));
-		renderer.apply();
+		renderer.apply(nameRule.uniformColor);
+		renderer.apply(nameRule.uniformPosition);
 		renderer.drawArrays(GL_LINE_LOOP, 0, 180);
 }
 }  // namespace gel
