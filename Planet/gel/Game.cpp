@@ -16,10 +16,7 @@ namespace gel {
 Game* Game::instance = nullptr;
 
 Game::Game()
-    : model(1.0f),
-      view(1.0f),
-      projection(1.0f),
-      outputDebugMessage(true),
+    : outputDebugMessage(true),
       deltaTime(0),
       finishedThread(false),
       finishedMutex(),

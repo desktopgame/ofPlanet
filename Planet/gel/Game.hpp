@@ -103,10 +103,6 @@ class Game {
          */
         static Game* getInstance();
 
-        glm::mat4 model;
-        glm::mat4 view;
-        glm::mat4 projection;
-
        protected:
         static Game* instance;
         GLFWwindow* window;
