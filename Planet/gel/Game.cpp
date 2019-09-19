@@ -181,7 +181,9 @@ void Game::onDebugMessage(GLenum source, GLenum type, GLuint eid,
         const char* _source;
         const char* _type;
         const char* _severity;
-
+		if (eid == 131218) {
+			return;
+		}
         switch (source) {
                 case GL_DEBUG_SOURCE_API:
                         _source = "API";
