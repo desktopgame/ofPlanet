@@ -80,105 +80,154 @@ void Shader::unuse() {
 }
 
 void Shader::setUniform1f(const std::string& uniform, float a) const {
+		linkFlag.check(true, "should be call link()");
+		useFlag.check(true, "should be call use()");
         glUniform1f(getUniformLocation(uniform), a);
 }
 
 void Shader::setUniform1fv(const std::string& uniform, int count,
                            float* v) const {
+		linkFlag.check(true, "should be call link()");
+		useFlag.check(true, "should be call use()");
         glUniform1fv(getUniformLocation(uniform), count, v);
 }
 
 void Shader::setUniform1i(const std::string& uniform, int a) const {
+		linkFlag.check(true, "should be call link()");
+		useFlag.check(true, "should be call use()");
         glUniform1i(getUniformLocation(uniform), a);
 }
 
 void Shader::setUniform1iv(const std::string& uniform, int count,
                            int* v) const {
+		linkFlag.check(true, "should be call link()");
+		useFlag.check(true, "should be call use()");
         glUniform1iv(getUniformLocation(uniform), count, v);
 }
 
 void Shader::setUniform2f(const std::string& uniform, float a, float b) const {
+		linkFlag.check(true, "should be call link()");
+		useFlag.check(true, "should be call use()");
         glUniform2f(getUniformLocation(uniform), a, b);
 }
 
 void Shader::setUniform2fv(const std::string& uniform, int count,
                            float* v) const {
+		linkFlag.check(true, "should be call link()");
+		useFlag.check(true, "should be call use()");
         glUniform2fv(getUniformLocation(uniform), count, v);
 }
 
 void Shader::setUniform2i(const std::string& uniform, int a, int b) const {
+		linkFlag.check(true, "should be call link()");
+		useFlag.check(true, "should be call use()");
         glUniform2i(getUniformLocation(uniform), a, b);
 }
 
 void Shader::setUniform2iv(const std::string& uniform, int count,
                            int* v) const {
+		linkFlag.check(true, "should be call link()");
+		useFlag.check(true, "should be call use()");
         glUniform2iv(getUniformLocation(uniform), count, v);
 }
 
 void Shader::setUniform3f(const std::string& uniform, float a, float b,
                           float c) const {
+		linkFlag.check(true, "should be call link()");
+		useFlag.check(true, "should be call use()");
         glUniform3f(getUniformLocation(uniform), a, b, c);
 }
 
 void Shader::setUniform3fv(const std::string& uniform, int count,
                            float* v) const {
+		linkFlag.check(true, "should be call link()");
+		useFlag.check(true, "should be call use()");
         glUniform3fv(getUniformLocation(uniform), count, v);
 }
 
 void Shader::setUniform3i(const std::string& uniform, int a, int b,
                           int c) const {
+		linkFlag.check(true, "should be call link()");
+		useFlag.check(true, "should be call use()");
         glUniform3i(getUniformLocation(uniform), a, b, c);
 }
 
 void Shader::setUniform3iv(const std::string& uniform, int count,
                            int* v) const {
+		linkFlag.check(true, "should be call link()");
+		useFlag.check(true, "should be call use()");
         glUniform3iv(getUniformLocation(uniform), count, v);
 }
 
 void Shader::setUniform4f(const std::string& uniform, float a, float b, float c,
                           float d) const {
+		linkFlag.check(true, "should be call link()");
+		useFlag.check(true, "should be call use()");
         glUniform4f(getUniformLocation(uniform), a, b, c, d);
 }
 
 void Shader::setUniform4fv(const std::string& uniform, int count,
                            float* v) const {
+		linkFlag.check(true, "should be call link()");
+		useFlag.check(true, "should be call use()");
         glUniform4fv(getUniformLocation(uniform), count, v);
 }
 
 void Shader::setUniform4i(const std::string& uniform, int a, int b, int c,
                           int d) const {
+		linkFlag.check(true, "should be call link()");
+		useFlag.check(true, "should be call use()");
         glUniform4i(getUniformLocation(uniform), a, b, c, d);
 }
 
 void Shader::setUniform4iv(const std::string& uniform, int count,
                            int* v) const {
+		linkFlag.check(true, "should be call link()");
+		useFlag.check(true, "should be call use()");
         glUniform4iv(getUniformLocation(uniform), count, v);
 }
 
 void Shader::setUniformMatrix2fv(const std::string& uniform, int count,
                                  GLboolean transpose, const float* v) const {
+		linkFlag.check(true, "should be call link()");
+		useFlag.check(true, "should be call use()");
         glUniformMatrix2fv(getUniformLocation(uniform), count, transpose, v);
 }
 
 void Shader::setUniformMatrix3fv(const std::string& uniform, int count,
                                  GLboolean transpose, const float* v) const {
+		linkFlag.check(true, "should be call link()");
+		useFlag.check(true, "should be call use()");
         glUniformMatrix3fv(getUniformLocation(uniform), count, transpose, v);
 }
 
 void Shader::setUniformMatrix4fv(const std::string& uniform, int count,
                                  GLboolean transpose, const float* v) const {
+		linkFlag.check(true, "should be call link()");
+		useFlag.check(true, "should be call use()");
         glUniformMatrix4fv(getUniformLocation(uniform), count, transpose, v);
 }
 
 void Shader::setVertexAttribPointer(const std::string& attrib, int size,
                                     GLenum type, GLboolean normalized,
                                     int stride, const GLvoid* pointer) const {
+		linkFlag.check(true, "should be call link()");
+		useFlag.check(true, "should be call use()");
         glVertexAttribPointer(getAttribLocation(attrib), size, type, normalized,
                               stride, pointer);
 }
 
 void Shader::enableVertexAttribArray(const std::string& attrib) const {
+		linkFlag.check(true, "should be call link()");
+		useFlag.check(true, "should be call use()");
         glEnableVertexAttribArray(getAttribLocation(attrib));
+}
+
+void Shader::setVertexAttribDivisor(const std::string & attrib, GLuint divisor)
+{
+	linkFlag.check(true, "should be call link()");
+	useFlag.check(true, "should be call use()");
+	glVertexAttribDivisor(getAttribLocation(attrib), divisor);
 }
 
 GLint Shader::getAttribLocation(const std::string& attrib) const {

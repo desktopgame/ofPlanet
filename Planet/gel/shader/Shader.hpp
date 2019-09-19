@@ -62,6 +62,8 @@ class Shader {
                                     int stride, const GLvoid* pointer) const;
         void enableVertexAttribArray(const std::string& attrib) const;
 
+		void setVertexAttribDivisor(const std::string& attrib, GLuint divisor);
+
         GLint getAttribLocation(const std::string& attrib) const;
         GLint getUniformLocation(const std::string& uniform) const;
         GLuint getProgram() const;
