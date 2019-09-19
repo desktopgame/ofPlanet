@@ -232,12 +232,24 @@ void Shader::setVertexAttribDivisor(const std::string & attrib, GLuint divisor)
 
 GLint Shader::getAttribLocation(const std::string& attrib) const {
         linkFlag.check(true, "should be call link()");
-        return glGetAttribLocation(program, attrib.c_str());
+        GLuint a = glGetAttribLocation(program, attrib.c_str());
+#if DEBUG
+		if (a >= 128) {
+			throw std::logic_error("invalid attribute:" + attrib);
+		}
+#endif
+		return a;
 }
 
 GLint Shader::getUniformLocation(const std::string& uniform) const {
         linkFlag.check(true, "should be call link()");
-        return glGetUniformLocation(program, uniform.c_str());
+        GLuint u = glGetUniformLocation(program, uniform.c_str());
+#if DEBUG
+		if (u >= 128) {
+			throw std::logic_error("invalid unifrom:" + uniform);
+		}
+#endif
+		return u;
 }
 
 GLuint Shader::getProgram() const { return program; }
