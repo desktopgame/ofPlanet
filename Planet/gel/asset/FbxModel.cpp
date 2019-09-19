@@ -12,6 +12,7 @@
 #include "../shader/ShaderRegistry.hpp"
 #include "../util/io.hpp"
 #include "PngTexture.hpp"
+#include "AssetLoadException.hpp"
 namespace gel {
 FbxModel::FbxModel(FbxManager* fbxManager, const std::string& textureShaderName,
                    const std::string& colorShaderName, const NameRule& nameRule)
@@ -28,11 +29,11 @@ void FbxModel::load(const std::string& path, Thread thread) {
                 this->fbxImporter =
                     FbxImporter::Create(this->fbxManager, "Importer");
                 if (!fbxImporter->Initialize(path.c_str())) {
-                        throw std::logic_error(
+                        throw AssetLoadException(
                             "fatal error: FbxImporter#Initialize");
                 }
                 if (!fbxImporter->Import(fbxScene)) {
-                        throw std::logic_error(
+                        throw AssetLoadException(
                             "fatal error: FbxImporter#Initialize");
                 }
                 FbxGeometryConverter geometryConverter(fbxManager);
@@ -124,7 +125,7 @@ void FbxModel::procIRNormal(FbxNode* node, std::shared_ptr<IRMesh> mesh) {
                                     glm::vec4(x, y, z, 0));
                         }
                 } else {
-                        throw std::logic_error("unsupported file structure");
+                        throw AssetLoadException("unsupported file structure");
                 }
         } else if (map == FbxLayerElement::eByControlPoint) {
                 if (ref == FbxLayerElement::eDirect) {
@@ -137,10 +138,10 @@ void FbxModel::procIRNormal(FbxNode* node, std::shared_ptr<IRMesh> mesh) {
                                     glm::vec4(x, y, z, 0));
                         }
                 } else {
-                        throw std::logic_error("unsupported file structure");
+                        throw AssetLoadException("unsupported file structure");
                 }
         } else {
-                throw std::logic_error("unsupported file structure");
+                throw AssetLoadException("unsupported file structure");
         }
 }
 
@@ -169,10 +170,10 @@ void FbxModel::procIRUV(FbxNode* node, std::shared_ptr<IRMesh> mesh) {
                                     (float)v2[0], 1.0f - (float)v2[1]));
                         }
                 } else {
-                        throw std::logic_error("unsupported file structure");
+                        throw AssetLoadException("unsupported file structure");
                 }
         } else {
-                throw std::logic_error("unsupported file structure");
+                throw AssetLoadException("unsupported file structure");
         }
 }
 
@@ -269,7 +270,7 @@ void FbxModel::procIRSide(FbxNode* node, std::shared_ptr<IRMesh> mesh) {
                         }
                         count += 4;
                 } else {
-                        throw std::logic_error("unsupported file structure");
+                        throw AssetLoadException("unsupported file structure");
                 }
         }
         for (int i = 0; i < mesh->getMaterialCount(); i++) {
@@ -286,7 +287,7 @@ void FbxModel::procIRTexture(FbxNode* node, std::shared_ptr<IRMesh> mesh,
         if (tex) {
                 auto path = tex->GetFileName();
                 if (!exists(path)) {
-                        throw std::logic_error("file is not found");
+                        throw AssetLoadException("file is not found");
                 }
                 auto ptex = TextureIO::load(path);
                 mesh->addTexture(ptex);

@@ -1,4 +1,6 @@
 #include "BmpTexture.hpp"
+#include "AssetLoadException.hpp"
+
 #if _WIN32
 #pragma warning(disable : 4996)
 #endif
@@ -40,6 +42,9 @@ glm::vec2 BmpTexture::getSize() const { return glm::vec2(width, height); }
 void BmpTexture::readBMP(const char* filename) {
         int i;
         FILE* f = fopen(filename, "rb");
+		if (f == NULL) {
+			throw AssetLoadException::createFromErrno();
+		}
         unsigned char info[54];
         fread(info, sizeof(unsigned char), 54, f);  // read the 54-byte header
 

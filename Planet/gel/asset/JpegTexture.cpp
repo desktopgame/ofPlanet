@@ -1,5 +1,7 @@
 #include "JpegTexture.hpp"
 #include <jpeglib.h>
+#include "AssetLoadException.hpp"
+
 // https://daeudaeu.com/programming/c-language/libjpeg/
 namespace gel {
 JpegTexture::JpegTexture() : textureId(0), width(0), height(0), data(NULL) {}
@@ -39,8 +41,7 @@ void JpegTexture::loadBackground(const std::string& path, Thread thread) {
         jpeg.err = jpeg_std_error(&err);
         FILE* fi = fopen(path.c_str(), "rb");
         if (fi == NULL) {
-                perror("JpegTexture#load");
-                return;
+			throw AssetLoadException::createFromErrno();
         }
 
         jpeg_create_decompress(&jpeg);
@@ -52,10 +53,9 @@ void JpegTexture::loadBackground(const std::string& path, Thread thread) {
             sizeof(unsigned char) * jpeg.output_width * jpeg.output_height *
             jpeg.out_color_components);
         if (this->data == NULL) {
-                perror("JpegTexture#load");
                 fclose(fi);
                 jpeg_destroy_decompress(&jpeg);
-                return;
+				throw AssetLoadException::createFromErrno();
         }
 
         for (int j = 0; j < jpeg.output_height; j++) {

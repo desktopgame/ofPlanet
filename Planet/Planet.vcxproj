@@ -160,6 +160,7 @@
     <ClCompile Include="game\world\TexturePack.cpp" />
     <ClCompile Include="game\world\WarpPoint.cpp" />
     <ClCompile Include="game\world\World.cpp" />
+    <ClCompile Include="gel\asset\AssetLoadException.cpp" />
     <ClCompile Include="gel\input\Drag.cpp" />
     <ClCompile Include="gel\input\Input.cpp" />
     <ClCompile Include="gel\pipeline\BmpPipeline.cpp" />
@@ -270,6 +271,7 @@
     <ClInclude Include="game\world\TexturePack.hpp" />
     <ClInclude Include="game\world\WarpPoint.hpp" />
     <ClInclude Include="game\world\World.hpp" />
+    <ClInclude Include="gel\asset\AssetLoadException.hpp" />
     <ClInclude Include="gel\input\Drag.hpp" />
     <ClInclude Include="gel\input\Input.hpp" />
     <ClInclude Include="gel\pipeline\BmpPipeline.hpp" />

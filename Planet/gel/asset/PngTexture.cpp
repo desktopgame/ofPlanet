@@ -1,4 +1,6 @@
 #include "PngTexture.hpp"
+#include "AssetLoadException.hpp"
+
 #if __APPLE__
 #include <libpng16/png.h>
 #else
@@ -64,8 +66,7 @@ void PngTexture::loadBackground(const std::string& path, Thread thread) {
         FILE* fp = fopen(path.c_str(), "rb");
         // check file exists
         if (!fp) {
-                perror("LoadPng");
-                return;
+			throw AssetLoadException::createFromErrno();
         }
         png_structp pPng =
             png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
@@ -79,20 +80,16 @@ void PngTexture::loadBackground(const std::string& path, Thread thread) {
                      NULL, NULL);
         // check bounds
         if (this->width == 0 || this->height == 0) {
-                fprintf(stderr, "LoadPng: Invalid Bounds ");
-                return;
+			throw AssetLoadException("LoadPng: Invalid Bounds ");
         }
         // check color type
         if (this->colorType != PNG_COLOR_TYPE_RGB &&
             this->colorType != PNG_COLOR_TYPE_RGBA) {
-                fprintf(stderr,
-                        "LoadPng: Supported color type are RGB and RGBA.");
-                return;
+			throw AssetLoadException("LoadPng: Supported color type are RGB and RGBA.");
         }
         // check interlace type
         if (this->interlaceType != PNG_INTERLACE_NONE) {
-                fprintf(stderr, "LoadPng: Interlace image is not supported.");
-                return;
+			throw AssetLoadException("LoadPng: Interlace image is not supported.");
         }
         int rowSize = png_get_rowbytes(pPng, pInfo);
         // int imgSize = rowSize * this->height;
