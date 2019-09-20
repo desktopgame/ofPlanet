@@ -24,7 +24,7 @@ PlayScene::PlayScene()
       statusUI(),
       beamLine(gel::ShaderRegistry::getInstance().get("Color"),
                gel::NameRule()),
-	 backButtonSprite(gel::ShaderRegistry::getInstance().get("Texture2D"), gel::NameRule()) {
+	backButton(gel::ShaderRegistry::getInstance().get("Texture2D")) {
 	noiseScreenBuffer.init(gel::Game::getInstance()->getWindowWidth(),
                           gel::Game::getInstance()->getWindowHeight());
 	crtScreenBuffer.init(gel::Game::getInstance()->getWindowWidth(),
@@ -38,10 +38,11 @@ PlayScene::PlayScene()
         desc.bottom = "./assets/image/skybox/SkyBoxBottom.png";
         skybox.init(desc, glm::vec3(128, 64, 128), 64, 64);
         statusUI.init();
-		backButtonSprite.init(
+		backButton.init(
+			gel::AssetDatabase::getAsset<gel::ITexture>("./assets/image/BackButton.png")->getID(),
 			gel::AssetDatabase::getAsset<gel::ITexture>("./assets/image/BackButton.png")->getID(),
 			(gel::getGame()->getWindowSize() - glm::vec2(600, 200)) / 2.0f,
-			glm::vec2(600,200),1.0f);
+			glm::vec2(600,200));
         rhUI.onStartAnimation().connect([this]() {
                 auto model = statusUI.getModel();
                 auto ammo = model->getAmmo();
@@ -116,6 +117,9 @@ void PlayScene::update() {
         rhUI.update();
         planet.update();
         beamLine.mvp = planet.getCamera()->getMVP();
+		if (planet.isPause()) {
+			backButton.update();
+		}
 }
 void PlayScene::draw() {
         float delta = gel::Game::getInstance()->getDeltaTime();
@@ -128,7 +132,10 @@ void PlayScene::draw() {
 			warp.draw();
 			crtScreenBuffer.unbind();
 			crtScreenBuffer.render();
-			backButtonSprite.draw();
+			backButton.draw();
+			if (backButton.isActive()) {
+				planet.pause(false);
+			}
 		} else {
 			noiseScreenBuffer.bind();
 			// draw game layer

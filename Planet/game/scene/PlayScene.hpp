@@ -7,6 +7,7 @@
 #include "../ui/CrossHairUI.hpp"
 #include "../ui/RightHandUI.hpp"
 #include "../ui/StatusUI.hpp"
+#include "../ui/ButtonUI.hpp"
 #include "../world/Planet.hpp"
 #include "../world/WarpPoint.hpp"
 
@@ -36,12 +37,12 @@ class PlayScene : public gel::IScene {
         WarpPoint warp;
         RightHandUI rhUI;
         StatusUI statusUI;
+		ButtonUI backButton;
         gel::Line beamLine;
         gel::Random random;
         gel::CubeMap skybox;
         gel::KeyTrigger eKeyTrigger;
         gel::ScreenBuffer noiseScreenBuffer;
 		gel::ScreenBuffer crtScreenBuffer;
-		gel::Sprite backButtonSprite;
 };
 #endif
