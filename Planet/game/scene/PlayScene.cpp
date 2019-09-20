@@ -129,12 +129,11 @@ void PlayScene::draw() {
         planet.draw();
         warp.draw();
         beamLine.draw();
+		crossHair.draw();
+		rhUI.draw(planet.getCamera());
+		statusUI.draw();
         screenBuffer.unbind();
         screenBuffer.render();
-        // draw gun layer
-        crossHair.draw();
-        rhUI.draw(planet.getCamera());
-        statusUI.draw();
         if (noiseTime > 3.0f) {
                 warp.destroy();
                 goNextPlanet();
