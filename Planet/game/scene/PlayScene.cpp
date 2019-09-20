@@ -13,17 +13,22 @@ PlayScene::PlayScene()
     : planet(gel::ShaderRegistry::getInstance().get("Texture3D")),
       eKeyTrigger('E'),
       crossHair(),
-      screenBuffer(gel::ShaderRegistry::getInstance().get("Noise"),
+      noiseScreenBuffer(gel::ShaderRegistry::getInstance().get("Noise"),
                    gel::NameRule()),
+	  crtScreenBuffer(gel::ShaderRegistry::getInstance().get("CRT"),
+		gel::NameRule()),
       skybox(gel::ShaderRegistry::getInstance().get("SkyBox"), gel::NameRule()),
       warp(gel::ShaderRegistry::getInstance().get("Color"), gel::NameRule()),
       random(),
       rhUI(),
       statusUI(),
       beamLine(gel::ShaderRegistry::getInstance().get("Color"),
-               gel::NameRule()) {
-        screenBuffer.init(gel::Game::getInstance()->getWindowWidth(),
+               gel::NameRule()),
+	 backButtonSprite(gel::ShaderRegistry::getInstance().get("Texture2D"), gel::NameRule()) {
+	noiseScreenBuffer.init(gel::Game::getInstance()->getWindowWidth(),
                           gel::Game::getInstance()->getWindowHeight());
+	crtScreenBuffer.init(gel::Game::getInstance()->getWindowWidth(),
+		gel::Game::getInstance()->getWindowHeight());
         gel::CubeMapDesc desc;
         desc.front = "./assets/image/skybox/SkyBoxSide.png";
         desc.back = "./assets/image/skybox/SkyBoxSide.png";
@@ -33,6 +38,10 @@ PlayScene::PlayScene()
         desc.bottom = "./assets/image/skybox/SkyBoxBottom.png";
         skybox.init(desc, glm::vec3(128, 64, 128), 64, 64);
         statusUI.init();
+		backButtonSprite.init(
+			gel::AssetDatabase::getAsset<gel::ITexture>("./assets/image/BackButton.png")->getID(),
+			(gel::getGame()->getWindowSize() - glm::vec2(600, 200)) / 2.0f,
+			glm::vec2(600,200),1.0f);
         rhUI.onStartAnimation().connect([this]() {
                 auto model = statusUI.getModel();
                 auto ammo = model->getAmmo();
@@ -73,7 +82,8 @@ PlayScene::PlayScene()
 }
 
 PlayScene::~PlayScene() {
-        screenBuffer.destroy();
+        noiseScreenBuffer.destroy();
+		crtScreenBuffer.destroy();
         skybox.destroy();
 }
 
@@ -98,18 +108,6 @@ void PlayScene::show() {
         goNextPlanet();
 }
 void PlayScene::update() {
-        /*
-        if (rhUI.isAnimationNow()) {
-                auto scl = bFwd;
-                scl.x *= 10;
-                scl.y *= 10;
-                scl.z *= 10;
-                this->bStart += scl;
-                this->bEnd += scl;
-                beamLine.update(glm::vec4(bStart.x, bStart.y, bStart.z, 1),
-        glm::vec4(bEnd.x, bEnd.y, bEnd.z, 1));
-        }
-        */
         // open/close inventory
         eKeyTrigger.update();
         if (eKeyTrigger.isEnabled()) {
@@ -123,21 +121,31 @@ void PlayScene::draw() {
         float delta = gel::Game::getInstance()->getDeltaTime();
         this->gameTime += delta;
         configureShader(delta);
-        screenBuffer.bind();
-        // draw game layer
-        skybox.draw();
-        planet.draw();
-        warp.draw();
-        beamLine.draw();
-		crossHair.draw();
-		rhUI.draw(planet.getCamera());
-		statusUI.draw();
-        screenBuffer.unbind();
-        screenBuffer.render();
-        if (noiseTime > 3.0f) {
-                warp.destroy();
-                goNextPlanet();
-        }
+		if (planet.isPause()) {
+			crtScreenBuffer.bind();
+			skybox.draw();
+			planet.draw();
+			warp.draw();
+			crtScreenBuffer.unbind();
+			crtScreenBuffer.render();
+			backButtonSprite.draw();
+		} else {
+			noiseScreenBuffer.bind();
+			// draw game layer
+			skybox.draw();
+			planet.draw();
+			warp.draw();
+			beamLine.draw();
+			crossHair.draw();
+			rhUI.draw(planet.getCamera());
+			statusUI.draw();
+			noiseScreenBuffer.unbind();
+			noiseScreenBuffer.render();
+			if (noiseTime > 3.0f) {
+				warp.destroy();
+				goNextPlanet();
+			}
+		}
 }
 
 void PlayScene::hide() {}
@@ -191,6 +199,10 @@ void PlayScene::configureShader(float delta) {
                                        glm::value_ptr(camera->getNormal()));
         texShader->setUniform4f("uLightPos", 64, 48, 64, 1.0f);
         texShader->unuse();
+		auto crtShader = gel::ShaderRegistry::getInstance().get("CRT");
+		crtShader->use();
+		crtShader->setUniform1f("Time", gameTime);
+		crtShader->unuse();
 }
 
 void PlayScene::goNextPlanet() {

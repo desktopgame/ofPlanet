@@ -40,6 +40,8 @@ class PlayScene : public gel::IScene {
         gel::Random random;
         gel::CubeMap skybox;
         gel::KeyTrigger eKeyTrigger;
-        gel::ScreenBuffer screenBuffer;
+        gel::ScreenBuffer noiseScreenBuffer;
+		gel::ScreenBuffer crtScreenBuffer;
+		gel::Sprite backButtonSprite;
 };
 #endif
