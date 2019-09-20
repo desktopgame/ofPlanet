@@ -26,7 +26,13 @@ LoadScene::LoadScene()
             });
 }
 
-LoadScene::~LoadScene() {}
+LoadScene::~LoadScene() {
+	for (auto sprite : sprites) {
+		sprite.destroy();
+	}
+	sprites.clear();
+	fontTable.destroy();
+}
 
 void LoadScene::show() { this->index = 0; }
 

@@ -23,7 +23,12 @@ TutorialScene::TutorialScene()
         }
 }
 
-TutorialScene::~TutorialScene() {}
+TutorialScene::~TutorialScene() {
+	for (auto sprite : sprites) {
+		sprite.destroy();
+	}
+	sprites.clear();
+}
 
 void TutorialScene::show() {
         this->elapsed = 0;
