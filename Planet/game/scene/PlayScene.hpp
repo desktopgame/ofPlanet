@@ -25,13 +25,13 @@ class PlayScene : public gel::IScene {
        private:
         void configureShader(float delta);
         void goNextPlanet();
+		void updateBullet();
 		void drawBullet();
         float gameTime;
         float noiseTime;
         int score;
         std::shared_ptr<gel::ContentManager> contentManager;
         glm::vec3 bStart;
-        glm::vec3 bEnd;
         glm::vec3 bFwd;
         CrossHairUI crossHair;
         Planet planet;
@@ -40,7 +40,6 @@ class PlayScene : public gel::IScene {
         StatusUI statusUI;
 		ButtonUI backButton;
 		std::shared_ptr<gel::IModel> bulletModel;
-        gel::Line beamLine;
         gel::Random random;
         gel::CubeMap skybox;
         gel::KeyTrigger eKeyTrigger;

@@ -22,8 +22,6 @@ PlayScene::PlayScene()
       random(),
       rhUI(),
       statusUI(),
-      beamLine(gel::ShaderRegistry::getInstance().get("Color"),
-               gel::NameRule()),
 	backButton(gel::ShaderRegistry::getInstance().get("Texture2D")),
     bulletModel(gel::AssetDatabase::getAsset<gel::IModel>("./assets/model/Sphere.fbx")){
 	noiseScreenBuffer.init(gel::Game::getInstance()->getWindowWidth(),
@@ -50,37 +48,15 @@ PlayScene::PlayScene()
                 if (ammo > 0) {
                         model->setAmmo(ammo - 1);
                         auto camera = planet.getCamera();
-                        auto right = camera->transform.right();
-                        auto back = camera->transform.backward();
-                        auto down = glm::vec3(0, -1, 0);
-                        back.x *= 5;
-                        back.y *= 5;
-                        back.z *= 5;
-                        right.x *= 2;
-                        right.y *= 2;
-                        right.z *= 2;
-                        down.y *= 2;
                         this->bStart = camera->transform
                                            .position ;
                         this->bFwd = camera->transform.forward();
-                        this->bEnd = camera->transform.position;
-                        auto tmp = bFwd;
-                        tmp.x *= 128;
-                        tmp.y *= 128;
-                        tmp.z *= 128;
-                        bEnd += tmp;
-                        beamLine.update(
-                            glm::vec4(bStart.x, bStart.y, bStart.z, 1),
-                            glm::vec4(bEnd.x, bEnd.y, bEnd.z, 1));
                 }
         });
         rhUI.onEndAnimation().connect([this]() {
                 // beamLine.update(glm::vec4(0, 0, 0, 1), glm::vec4(0, 0, 0,
                 // 1));
         });
-        beamLine.lineWidth = 20;
-        beamLine.init(glm::vec4(0, 0, 0, 1), glm::vec4(0, 0, 0, 1),
-                      glm::vec4(1, 0, 0, 1));
 }
 
 PlayScene::~PlayScene() {
@@ -116,10 +92,11 @@ void PlayScene::update() {
                 planet.pause(!planet.isPause());
         }
         rhUI.update();
-        planet.update();
-        beamLine.mvp = planet.getCamera()->getMVP();
 		if (planet.isPause()) {
 			backButton.update();
+		} else {
+			planet.update();
+			updateBullet();
 		}
 }
 void PlayScene::draw() {
@@ -131,6 +108,7 @@ void PlayScene::draw() {
 			skybox.draw();
 			planet.draw();
 			warp.draw();
+			drawBullet();
 			crtScreenBuffer.unbind();
 			crtScreenBuffer.render();
 			backButton.draw();
@@ -143,7 +121,6 @@ void PlayScene::draw() {
 			skybox.draw();
 			planet.draw();
 			warp.draw();
-			beamLine.draw();
 			drawBullet();
 			noiseScreenBuffer.unbind();
 			noiseScreenBuffer.render();
@@ -224,13 +201,26 @@ void PlayScene::goNextPlanet() {
         warp.init(glm::vec4((float)x * 0.5f, y, (float)z * 0.5f, 1.0f));
 }
 
-void PlayScene::drawBullet()
+void PlayScene::updateBullet()
 {
 	auto step = bFwd;
 	step.x *= 2;
 	step.y *= 2;
 	step.z *= 2;
 	this->bStart += step;
+}
+
+void PlayScene::drawBullet()
+{
+	if (bStart.x < 0 || bStart.x > 128) {
+		return;
+	}
+	if (bStart.y < 0 || bStart.z > 64) {
+		return;
+	}
+	if (bStart.z < 0 || bStart.z > 128) {
+		return;
+	}
 	auto irModel = bulletModel->getIRModel();
 	auto camera = planet.getCamera();
 	auto mat = glm::mat4(1.0f);
