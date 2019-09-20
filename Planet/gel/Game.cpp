@@ -70,6 +70,7 @@ int Game::mainLoop(int argc, char* argv[], const char* title, int width,
 #if DEBUG
         gui::internal::destroy();
 #endif
+		loadThread.detach();
         onFinish();
         //fbxManager->Destroy();
         alutExit();
@@ -139,8 +140,6 @@ void Game::bridgeDebugMessage(GLenum source, GLenum type, GLuint eid,
         instance->onDebugMessage(source, type, eid, severity, length, message,
                                  user_param);
 }
-
-void Game::bridgeExit() { instance->onExit(); }
 
 void Game::onMouseButton(GLFWwindow* window, int button, int action, int mods) {
 }
@@ -273,8 +272,6 @@ void Game::onDebugMessage(GLenum source, GLenum type, GLuint eid,
 #endif
 }
 
-void Game::onExit() {}
-
 void Game::onInit() {}
 
 void Game::onLoad() {}
@@ -287,7 +284,6 @@ void Game::onFinish() {}
 
 int Game::onGLInit(int argc, char* argv[], const char* title, int width,
                    int height, bool fullScreen) {
-        std::atexit(bridgeExit);
         this->width = width;
         this->height = height;
         // glutInit(&argc, argv);
