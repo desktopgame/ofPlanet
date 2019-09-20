@@ -10,19 +10,19 @@
 #include "../world/BlockRegistry.hpp"
 #include "../world/Space.hpp"
 TestScene::TestScene()
-    : shader(gel::ShaderRegistry::getInstance().get("TextureFixed")),
+    : shader(gel::ShaderRegistry::get("TextureFixed")),
       plane(shader),
       model(1.0f),
       filename("./assets/model/Gun1028.fbx"),
-      screenBuffer(gel::ShaderRegistry::getInstance().get("CRT"),
+      screenBuffer(gel::ShaderRegistry::get("CRT"),
                    gel::NameRule()),
-      sprite(gel::ShaderRegistry::getInstance().get("Texture2D")),
+      sprite(gel::ShaderRegistry::get("Texture2D")),
       camera(std::make_shared<gel::Camera>()),
       position(0),
       scale(1),
       rotation(0),
       leftDrag(gel::MouseButton::Left),
-      box(gel::ShaderRegistry::getInstance().get("ColorFixed"),
+      box(gel::ShaderRegistry::get("ColorFixed"),
           gel::NameRule()) {
         plane.init(0.5f);
         glEnableClientState(GL_NORMAL_ARRAY);
@@ -84,8 +84,8 @@ void TestScene::draw() {
         normalMatrix = glm::inverse(normalMatrix);
         normalMatrix = glm::transpose(normalMatrix);
         // set shader option
-        auto colorShader = gel::ShaderRegistry::getInstance().get("ColorFixed");
-        auto noiseShader = gel::ShaderRegistry::getInstance().get("CRT");
+        auto colorShader = gel::ShaderRegistry::get("ColorFixed");
+        auto noiseShader = gel::ShaderRegistry::get("CRT");
         colorShader->use();
         gel::NameRule nameRule;
         colorShader->setUniformMatrix4fv("uMVPMatrix", 1, GL_FALSE,

@@ -8,7 +8,7 @@
 #include "../../gel/shader/Shader.hpp"
 #include "../../gel/shader/Sprite.hpp"
 RightHandUI::RightHandUI()
-    : gunScrBuffer(gel::ShaderRegistry::getInstance().get("Noise"),
+    : gunScrBuffer(gel::ShaderRegistry::get("Noise"),
                    gel::NameRule()),
       gPos(0, -10, 4),
       gRot(0.0f, 0.0f, 9.2f),
@@ -63,7 +63,7 @@ float RightHandUI::getAnimationProgress01() const {
 }
 // private
 void RightHandUI::batch(std::weak_ptr<gel::Camera> cameraRef) {
-        auto texShader = gel::ShaderRegistry::getInstance().get("TextureFixed");
+        auto texShader = gel::ShaderRegistry::get("TextureFixed");
         auto camera = cameraRef.lock();
         if (gunCache) {
                 return;

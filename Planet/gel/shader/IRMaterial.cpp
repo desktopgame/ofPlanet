@@ -108,7 +108,7 @@ Color4 IRMaterial::getMainColor() const { return mainColor; }
 void IRMaterial::draw(std::shared_ptr<IRMesh>& mesh, const NameRule& nameRule) {
         glEnableClientState(GL_VERTEX_ARRAY);
         glEnableClientState(GL_NORMAL_ARRAY);
-        auto shader = ShaderRegistry::getInstance().get(getShader());
+        auto shader = ShaderRegistry::get(getShader());
         auto model = mesh->getModel().lock();
         auto modelMatrix = model->getModelMatrix() * mesh->getTreeMatrix();
         auto viewMatrix = model->getViewMatrix();
@@ -183,7 +183,7 @@ void IRMaterial::applyTriangleVertex(const NameRule& nameRule) {
         if (triangles.empty()) {
                 return;
         }
-        auto shader = ShaderRegistry::getInstance().get(getShader());
+        auto shader = ShaderRegistry::get(getShader());
         GLuint vertexAttrib = shader->getAttribLocation(nameRule.attribVertex);
         GLuint normalAttrib = shader->getAttribLocation(nameRule.attribNormal);
         triVAO.bind();
@@ -220,7 +220,7 @@ void IRMaterial::applyQuadVertex(const NameRule& nameRule) {
         if (quads.empty()) {
                 return;
         }
-        auto shader = ShaderRegistry::getInstance().get(getShader());
+        auto shader = ShaderRegistry::get(getShader());
         GLuint vertexAttrib = shader->getAttribLocation(nameRule.attribVertex);
         GLuint uvAttrib = shader->getAttribLocation(nameRule.attribUV);
         GLuint normalAttrib = shader->getAttribLocation(nameRule.attribNormal);

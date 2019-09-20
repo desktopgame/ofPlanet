@@ -26,7 +26,7 @@ Planet::Planet(const std::shared_ptr<gel::Shader>& shader)
       _isPause(false),
       random(),
       biomeVec(),
-      beamLine(gel::ShaderRegistry::getInstance().get("Color"),
+      beamLine(gel::ShaderRegistry::get("Color"),
                gel::NameRule()),
       beamDraw(false),
       beamTime(),
@@ -136,7 +136,7 @@ void Planet::draw() {
         shader->unuse();
         /*
                 auto& beamShader =
-           gel::ShaderRegistry::getInstance().get("Color"); beamshader->use();
+           gel::ShaderRegistry::get("Color"); beamshader->use();
                 beamshader->setUniformMatrix4fv("uMVPMatrix", 1, GL_FALSE,
                                                glm::value_ptr(playerCamera->getMVP()));
                 beamshader->unuse();

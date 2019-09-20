@@ -4,9 +4,9 @@
 #include "StatusModel.hpp"
 
 StatusUI::StatusUI()
-    : bulletSprite(gel::ShaderRegistry::getInstance().get("Texture2D"),
+    : bulletSprite(gel::ShaderRegistry::get("Texture2D"),
                    gel::NameRule()),
-      hartSprite(gel::ShaderRegistry::getInstance().get("Texture2D"),
+      hartSprite(gel::ShaderRegistry::get("Texture2D"),
                  gel::NameRule()),
       fontTable(),
       model(std::make_shared<StatusModel>(100, 128)) {}

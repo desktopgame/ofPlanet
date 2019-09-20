@@ -9,17 +9,16 @@ MyGame::MyGame() : sceneManager(), isExitNow(false) {}
 void MyGame::onInit() {
         this->outputDebugMessage = false;
         // init shader
-        gel::ShaderRegistry& sreg = gel::ShaderRegistry::getInstance();
-        sreg.put("Texture2D", "./texture2D.vert", "./texture2D.frag");
-        sreg.put("Texture3D", "./texture.vert", "./texture.frag");
-        sreg.put("TextureFixed", "./textureFixed.vert", "./textureFixed.frag");
-        sreg.put("ColorFixed", "./colorFixed.vert", "./colorFixed.frag");
-        sreg.put("Screen", "./screen.vert", "./screen.frag");
-        sreg.put("SkyBox", "./skybox.vert", "./skybox.frag");
-        sreg.put("Color", "./color.vert", "./color.frag");
-        sreg.put("Noise", "./noise.vert", "./noise.frag");
-        sreg.put("Gun", "./noise.vert", "./noise.frag");
-        sreg.put("CRT", "./crt.vert", "./crt.frag");
+        gel::ShaderRegistry::put("Texture2D", "./texture2D.vert", "./texture2D.frag");
+        gel::ShaderRegistry::put("Texture3D", "./texture.vert", "./texture.frag");
+        gel::ShaderRegistry::put("TextureFixed", "./textureFixed.vert", "./textureFixed.frag");
+        gel::ShaderRegistry::put("ColorFixed", "./colorFixed.vert", "./colorFixed.frag");
+        gel::ShaderRegistry::put("Screen", "./screen.vert", "./screen.frag");
+        gel::ShaderRegistry::put("SkyBox", "./skybox.vert", "./skybox.frag");
+        gel::ShaderRegistry::put("Color", "./color.vert", "./color.frag");
+        gel::ShaderRegistry::put("Noise", "./noise.vert", "./noise.frag");
+        gel::ShaderRegistry::put("Gun", "./noise.vert", "./noise.frag");
+        gel::ShaderRegistry::put("CRT", "./crt.vert", "./crt.frag");
         GLfloat lineWidthRange[2] = {0.0f, 0.0f};
         glGetFloatv(GL_ALIASED_LINE_WIDTH_RANGE, lineWidthRange);
         // Anisotropic filtering

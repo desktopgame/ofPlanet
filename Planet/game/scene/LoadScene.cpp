@@ -62,7 +62,7 @@ void LoadScene::addSprite(std::shared_ptr<gel::ITexture> texture) {
         auto wnd = gel::Game::getInstance()->getWindowSize();
         auto img = glm::vec2(64, 64);
         gel::Sprite sprite =
-            gel::Sprite(gel::ShaderRegistry::getInstance().get("Texture2D"),
+            gel::Sprite(gel::ShaderRegistry::get("Texture2D"),
                         gel::NameRule());
         sprite.init(texture->getID(), (wnd - img) / 2.0f, img, 1.0f);
         sprites.push_back(sprite);

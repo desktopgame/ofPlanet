@@ -13,7 +13,7 @@ void FontTable::init(const std::vector<std::string> lines, Rule rule) {
                         auto tex = gel::AssetDatabase::getAsset<ITexture>(
                             rule(c, row, col));
                         gel::Sprite sprite(
-                            gel::ShaderRegistry::getInstance().get("Texture2D"),
+                            gel::ShaderRegistry::get("Texture2D"),
                             gel::NameRule());
                         sprite.init(tex->getID(), glm::vec2(0, 0),
                                     tex->getSize(), 1.0f);

@@ -4,12 +4,12 @@
 
 TitleScene::TitleScene()
     : finished(false),
-      screenBuffer(gel::ShaderRegistry::getInstance().get("Screen"),
+      screenBuffer(gel::ShaderRegistry::get("Screen"),
                    gel::NameRule()),
-      titleSprite(gel::ShaderRegistry::getInstance().get("Texture2D")),
-      playSprite(gel::ShaderRegistry::getInstance().get("Texture2D")),
-      optionSprite(gel::ShaderRegistry::getInstance().get("Texture2D")),
-      exitSprite(gel::ShaderRegistry::getInstance().get("Texture2D")) {
+      titleSprite(gel::ShaderRegistry::get("Texture2D")),
+      playSprite(gel::ShaderRegistry::get("Texture2D")),
+      optionSprite(gel::ShaderRegistry::get("Texture2D")),
+      exitSprite(gel::ShaderRegistry::get("Texture2D")) {
         screenBuffer.init(gel::Game::getInstance()->getWindowWidth(),
                           gel::Game::getInstance()->getWindowHeight());
         titleSprite.init(

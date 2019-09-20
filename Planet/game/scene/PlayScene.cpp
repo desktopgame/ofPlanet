@@ -10,19 +10,19 @@
 #include "../world/BlockRegistry.hpp"
 #include "../world/gen/Generator.hpp"
 PlayScene::PlayScene()
-    : planet(gel::ShaderRegistry::getInstance().get("Texture3D")),
+    : planet(gel::ShaderRegistry::get("Texture3D")),
       eKeyTrigger('E'),
       crossHair(),
-      noiseScreenBuffer(gel::ShaderRegistry::getInstance().get("Noise"),
+      noiseScreenBuffer(gel::ShaderRegistry::get("Noise"),
                    gel::NameRule()),
-	  crtScreenBuffer(gel::ShaderRegistry::getInstance().get("CRT"),
+	  crtScreenBuffer(gel::ShaderRegistry::get("CRT"),
 		gel::NameRule()),
-      skybox(gel::ShaderRegistry::getInstance().get("SkyBox"), gel::NameRule()),
-      warp(gel::ShaderRegistry::getInstance().get("Color"), gel::NameRule()),
+      skybox(gel::ShaderRegistry::get("SkyBox"), gel::NameRule()),
+      warp(gel::ShaderRegistry::get("Color"), gel::NameRule()),
       random(),
       rhUI(),
       statusUI(),
-	backButton(gel::ShaderRegistry::getInstance().get("Texture2D")),
+	backButton(gel::ShaderRegistry::get("Texture2D")),
     bulletModel(gel::AssetDatabase::getAsset<gel::IModel>("./assets/model/Sphere.fbx")){
 	noiseScreenBuffer.init(gel::Game::getInstance()->getWindowWidth(),
                           gel::Game::getInstance()->getWindowHeight());
@@ -142,7 +142,7 @@ bool PlayScene::isFinished() const { return false; }
 void PlayScene::configureShader(float delta) {
         auto camera = planet.getCamera();
         // apply matrix
-        auto skyboxShader = gel::ShaderRegistry::getInstance().get("SkyBox");
+        auto skyboxShader = gel::ShaderRegistry::get("SkyBox");
 
         skyboxShader->use();
         skyboxShader->setUniformMatrix4fv(
@@ -151,12 +151,12 @@ void PlayScene::configureShader(float delta) {
         skyboxShader->setUniformMatrix4fv("uViewMatrix", 1, GL_FALSE,
                                           glm::value_ptr(camera->getView()));
         skyboxShader->unuse();
-        auto circleShader = gel::ShaderRegistry::getInstance().get("Color");
+        auto circleShader = gel::ShaderRegistry::get("Color");
         circleShader->use();
         circleShader->setUniformMatrix4fv("uMVPMatrix", 1, GL_FALSE,
                                           glm::value_ptr(camera->getMVP()));
         circleShader->unuse();
-        auto noiseShader = gel::ShaderRegistry::getInstance().get("Noise");
+        auto noiseShader = gel::ShaderRegistry::get("Noise");
         noiseShader->use();
         // check warp
         auto player = planet.getPlayer();
@@ -169,7 +169,7 @@ void PlayScene::configureShader(float delta) {
                 this->noiseTime = 0.0f;
         }
         noiseShader->unuse();
-		auto colorShader = gel::ShaderRegistry::getInstance().get("ColorFixed");
+		auto colorShader = gel::ShaderRegistry::get("ColorFixed");
         colorShader->use();
         colorShader->setUniformMatrix4fv("uMVPMatrix", 1, GL_FALSE,
                                          glm::value_ptr(camera->getMVP()));
@@ -177,7 +177,7 @@ void PlayScene::configureShader(float delta) {
                                          glm::value_ptr(camera->getNormal()));
         colorShader->setUniform4f("uLightPos", 64, 48, 64, 1.0f);
         colorShader->unuse();
-        auto texShader = gel::ShaderRegistry::getInstance().get("TextureFixed");
+        auto texShader = gel::ShaderRegistry::get("TextureFixed");
         texShader->use();
         texShader->setUniformMatrix4fv("uMVPMatrix", 1, GL_FALSE,
                                        glm::value_ptr(camera->getMVP()));
@@ -185,7 +185,7 @@ void PlayScene::configureShader(float delta) {
                                        glm::value_ptr(camera->getNormal()));
         texShader->setUniform4f("uLightPos", 64, 48, 64, 1.0f);
         texShader->unuse();
-		auto crtShader = gel::ShaderRegistry::getInstance().get("CRT");
+		auto crtShader = gel::ShaderRegistry::get("CRT");
 		crtShader->use();
 		crtShader->setUniform1f("Time", gameTime);
 		crtShader->unuse();

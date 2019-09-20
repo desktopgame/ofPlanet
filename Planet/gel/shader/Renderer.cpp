@@ -89,7 +89,7 @@ void Renderer::drawElementsInstanced(Buffer<GLushort>& index, GLenum mode, GLsiz
 }
 
 void Renderer::setShader(const std::string& shaderName) {
-        setShader(ShaderRegistry::getInstance().get(shaderName));
+        setShader(ShaderRegistry::get(shaderName));
 }
 void Renderer::setShader(const std::shared_ptr<Shader>& shader) {
         this->shader = shader;

@@ -6,27 +6,31 @@
 #include "../shader/Shader.hpp"
 
 namespace gel {
+class ShaderRef {
+public:
+	ShaderRef(const std::shared_ptr<Shader> shader);
+	~ShaderRef();
+	std::shared_ptr<Shader> shader;
+};
 class ShaderRegistry {
        public:
-        void put(const std::string& name, const std::string& vertFile,
+        static void put(const std::string& name, const std::string& vertFile,
                  const std::string& fragFile);
-        void put(const std::string& name,
+        static void put(const std::string& name,
                  const std::shared_ptr<Shader>& shader);
-        void remove(const std::string& name);
-        std::shared_ptr<Shader> get(const std::string& name);
+        static void remove(const std::string& name);
+        static std::shared_ptr<Shader> get(const std::string& name);
 
        private:
-        ShaderRegistry();
-        ~ShaderRegistry();
-        std::unordered_map<std::string, std::shared_ptr<Shader> > map;
+        ShaderRegistry() = delete;
+        ~ShaderRegistry() = delete;
+        static std::unordered_map<std::string, ShaderRef > map;
 
        public:
         ShaderRegistry(const ShaderRegistry&) = delete;
         ShaderRegistry& operator=(const ShaderRegistry&) = delete;
         ShaderRegistry(ShaderRegistry&&) = delete;
         ShaderRegistry& operator=(ShaderRegistry&&) = delete;
-
-        static ShaderRegistry& getInstance();
 };
 }  // namespace gel
 #endif

@@ -15,7 +15,7 @@ TutorialScene::TutorialScene()
         };
         for (auto path : spritePaths) {
                 gel::Sprite sprite(
-                    gel::ShaderRegistry::getInstance().get("Texture2D"));
+                    gel::ShaderRegistry::get("Texture2D"));
                 sprite.init(
                     gel::AssetDatabase::getAsset<gel::ITexture>(path)->getID(),
                     glm::vec2(), glm::vec2(1280, 720), 1);

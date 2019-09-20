@@ -1,17 +1,14 @@
 #include "ShaderRegistry.hpp"
 #include "../util/io.hpp"
 namespace gel {
-ShaderRegistry::ShaderRegistry() : map() {}
-
-ShaderRegistry::~ShaderRegistry() {
-        auto iter = map.begin();
-        while (iter != map.end()) {
-                auto& p = *iter;
-                p.second->unlink();
-                ++iter;
-        }
+// ShaderRef
+ShaderRef::ShaderRef(const std::shared_ptr<Shader> shader) : shader(shader){
 }
-
+ShaderRef::~ShaderRef() {
+	shader->unlink();
+}
+// ShaderRegistry
+std::unordered_map<std::string, ShaderRef> ShaderRegistry::map = std::unordered_map<std::string, ShaderRef>();
 void ShaderRegistry::put(const std::string& name, const std::string& vertFile,
                          const std::string& fragFile) {
         auto s = std::make_shared<Shader>();
@@ -26,11 +23,6 @@ void ShaderRegistry::put(const std::string& name,
 
 void ShaderRegistry::remove(const std::string& name) { map.erase(name); }
 std::shared_ptr<Shader> ShaderRegistry::get(const std::string& name) {
-        return map.at(name);
-}
-
-ShaderRegistry& ShaderRegistry::getInstance() {
-        static ShaderRegistry instance;
-        return instance;
+	return map.at(name).shader;
 }
 }  // namespace gel
