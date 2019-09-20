@@ -2,6 +2,7 @@
 #define GEL_UTIL_IO_HPP
 #include <string>
 namespace gel {
+std::string getDirectoryFromPath(const std::string& path, const char separator);
 
 bool exists(const std::string& path);
 
