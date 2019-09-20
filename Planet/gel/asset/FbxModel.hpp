@@ -49,6 +49,7 @@ class FbxModel : public IModel {
         FbxImporter* fbxImporter;
         std::string textureShaderName;
         std::string colorShaderName;
+		std::string directory;
         NameRule nameRule;
         std::shared_ptr<IRModel> model;
 };

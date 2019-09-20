@@ -24,6 +24,7 @@ FbxModel::FbxModel(FbxManager* fbxManager, const std::string& textureShaderName,
       nameRule(nameRule) {}
 
 void FbxModel::load(const std::string& path, Thread thread) {
+		this->directory = gel::getDirectoryFromPath(path, '/');
         if (thread == Thread::OnBackground) {
                 this->fbxScene = FbxScene::Create(this->fbxManager, "Scene");
                 this->fbxImporter =
@@ -285,7 +286,7 @@ void FbxModel::procIRTexture(FbxNode* node, std::shared_ptr<IRMesh> mesh,
             fbxMat->FindProperty(FbxSurfaceMaterial::sDiffuse);
         FbxFileTexture* tex = IProperty.GetSrcObject<FbxFileTexture>();
         if (tex) {
-                auto path = tex->GetFileName();
+				auto path = directory + tex->GetRelativeFileName();
                 if (!exists(path)) {
                         throw AssetLoadException("file is not found");
                 }
