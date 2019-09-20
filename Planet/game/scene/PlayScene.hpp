@@ -25,6 +25,7 @@ class PlayScene : public gel::IScene {
        private:
         void configureShader(float delta);
         void goNextPlanet();
+		void drawBullet();
         float gameTime;
         float noiseTime;
         int score;
@@ -38,6 +39,7 @@ class PlayScene : public gel::IScene {
         RightHandUI rhUI;
         StatusUI statusUI;
 		ButtonUI backButton;
+		std::shared_ptr<gel::IModel> bulletModel;
         gel::Line beamLine;
         gel::Random random;
         gel::CubeMap skybox;

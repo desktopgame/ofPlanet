@@ -24,7 +24,8 @@ PlayScene::PlayScene()
       statusUI(),
       beamLine(gel::ShaderRegistry::getInstance().get("Color"),
                gel::NameRule()),
-	backButton(gel::ShaderRegistry::getInstance().get("Texture2D")) {
+	backButton(gel::ShaderRegistry::getInstance().get("Texture2D")),
+    bulletModel(gel::AssetDatabase::getAsset<gel::IModel>("./assets/model/Sphere.fbx")){
 	noiseScreenBuffer.init(gel::Game::getInstance()->getWindowWidth(),
                           gel::Game::getInstance()->getWindowHeight());
 	crtScreenBuffer.init(gel::Game::getInstance()->getWindowWidth(),
@@ -60,7 +61,7 @@ PlayScene::PlayScene()
                         right.z *= 2;
                         down.y *= 2;
                         this->bStart = camera->transform
-                                           .position /* + back + right + down*/;
+                                           .position ;
                         this->bFwd = camera->transform.forward();
                         this->bEnd = camera->transform.position;
                         auto tmp = bFwd;
@@ -143,11 +144,12 @@ void PlayScene::draw() {
 			planet.draw();
 			warp.draw();
 			beamLine.draw();
+			drawBullet();
+			noiseScreenBuffer.unbind();
+			noiseScreenBuffer.render();
 			crossHair.draw();
 			rhUI.draw(planet.getCamera());
 			statusUI.draw();
-			noiseScreenBuffer.unbind();
-			noiseScreenBuffer.render();
 			if (noiseTime > 3.0f) {
 				warp.destroy();
 				goNextPlanet();
@@ -220,4 +222,23 @@ void PlayScene::goNextPlanet() {
         int z = random.generate(32, 96);
         int y = planet.getWorld().getGroundY(x, z);
         warp.init(glm::vec4((float)x * 0.5f, y, (float)z * 0.5f, 1.0f));
+}
+
+void PlayScene::drawBullet()
+{
+	auto step = bFwd;
+	step.x *= 2;
+	step.y *= 2;
+	step.z *= 2;
+	this->bStart += step;
+	auto irModel = bulletModel->getIRModel();
+	auto camera = planet.getCamera();
+	auto mat = glm::mat4(1.0f);
+	const float scale = 0.005f;
+	mat = glm::translate(mat, bStart);
+	mat = glm::scale(mat, glm::vec3(scale, scale, scale));
+	irModel->setModelMatrix(mat);
+	irModel->setViewMatrix(camera->getView());
+	irModel->setProjectionMatrix(camera->getProjection());
+	irModel->draw();
 }
