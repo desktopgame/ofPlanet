@@ -185,7 +185,6 @@ void IRMaterial::applyTriangleVertex(const NameRule& nameRule) {
         }
         auto shader = ShaderRegistry::getInstance().get(getShader());
         GLuint vertexAttrib = shader->getAttribLocation(nameRule.attribVertex);
-        GLuint uvAttrib = shader->getAttribLocation(nameRule.attribUV);
         GLuint normalAttrib = shader->getAttribLocation(nameRule.attribNormal);
         triVAO.bind();
         triVertex.bind();
@@ -195,6 +194,7 @@ void IRMaterial::applyTriangleVertex(const NameRule& nameRule) {
         glVertexAttribPointer(normalAttrib, 4, GL_FLOAT, GL_FALSE, 0, NULL);
         glEnableVertexAttribArray(normalAttrib);
         if (getType() == IRMaterialType::Texture) {
+				GLuint uvAttrib = shader->getAttribLocation(nameRule.attribUV);
                 triUV.bind();
                 glVertexAttribPointer(uvAttrib, 2, GL_FLOAT, GL_FALSE, 0, NULL);
                 glEnableVertexAttribArray(uvAttrib);
