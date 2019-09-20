@@ -33,7 +33,7 @@ class ContentManager;
 class Game {
        public:
         explicit Game();
-        virtual ~Game();
+		virtual ~Game() = default;
         /**
          * start a mainloop.
          * [CAUTION]

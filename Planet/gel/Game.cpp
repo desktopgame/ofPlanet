@@ -43,8 +43,6 @@ Game::Game()
             std::make_shared<gel::ProxyPipeline<gel::JpegPipeline> >(".jpg"));
 }
 
-Game::~Game() {}
-
 int Game::mainLoop(int argc, char* argv[], const char* title, int width,
                    int height, bool fullScreen) {
         int status = onGLInit(argc, argv, title, width, height, fullScreen);
@@ -73,10 +71,10 @@ int Game::mainLoop(int argc, char* argv[], const char* title, int width,
         gui::internal::destroy();
 #endif
         onFinish();
-        fbxManager->Destroy();
+        //fbxManager->Destroy();
         alutExit();
-        glfwTerminate();
         glfwDestroyWindow(window);
+        glfwTerminate();
         return 0;
 }
 
