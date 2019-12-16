@@ -9,13 +9,9 @@ std::unordered_map<std::string, std::shared_ptr<Shader> > ShaderRegistry::map =
 void ShaderRegistry::loadFile(const std::string& name,
                               const std::string& vertFile,
                               const std::string& fragFile) {
-        Stopwatch sw("LoadShader");
-        sw.start();
         auto s = std::make_shared<Shader>();
         s->load(vertFile, fragFile);
         add(name, s);
-        sw.stop();
-        sw.log<std::chrono::milliseconds>();
 }
 
 void ShaderRegistry::loadString(const std::string& name,

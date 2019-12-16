@@ -151,8 +151,6 @@ void World::rehash() {
         if (!fbo.isAllocated()) {
                 fbo.allocate(ofGetWidth(), ofGetHeight());
         }
-        Stopwatch sw("GraphicsBatch");
-        sw.start();
         this->isInvalid = false;
         renderer.clear();
         auto w = std::const_pointer_cast<World>(shared_from_this());
@@ -168,8 +166,6 @@ void World::rehash() {
                 }
         }
         renderer.rehash();
-        sw.stop();
-        sw.log<std::chrono::milliseconds>();
 }
 
 std::shared_ptr<Entity> World::spawn(std::shared_ptr<Entity> entity) {
