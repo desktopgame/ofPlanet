@@ -42,11 +42,13 @@ void WorldIO::toJson(const std::string & outputPath, const std::shared_ptr<World
 				}
 				auto block = std::static_pointer_cast<Block>(blockB);
 				if (blockXP && blockXN && blockYP && blockYN && blockZP && blockZN) {
+				}
+				else {
 					picojson::object blockO;
 					blockO["x"] = picojson::value(static_cast<double>(x));
 					blockO["y"] = picojson::value(static_cast<double>(y));
 					blockO["z"] = picojson::value(static_cast<double>(z));
-					blockO["texture"] = picojson::value(block->getTextureSet().getName());
+					blockO["block"] = picojson::value(block->getName());
 					blocksA.emplace_back(blockO);
 				}
 			}
@@ -55,7 +57,7 @@ void WorldIO::toJson(const std::string & outputPath, const std::shared_ptr<World
 	worldSizeO["x"] = picojson::value(static_cast<double>(world->getXSize()));
 	worldSizeO["y"] = picojson::value(static_cast<double>(world->getYSize()));
 	worldSizeO["z"] = picojson::value(static_cast<double>(world->getZSize()));
-	rootO["blocks"] = picojson::value(blocksA);
+	rootO["cell"] = picojson::value(blocksA);
 	rootO["worldSize"] = picojson::value(worldSizeO);
 	ss << picojson::value(rootO) << std::endl;
 	File::writeAllText(outputPath, ss.str());
