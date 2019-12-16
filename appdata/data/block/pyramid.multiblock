@@ -1,0 +1,67 @@
+begin
+set wwwwwwwww
+set wwwwwwwww
+set wwwwwwwww
+set wwwwwwwww
+set wwwwwwwww
+set wwwwwwwww
+set wwwwwwwww
+set wwwwwwwww
+set wwwwwwwww
+end
+
+begin
+set _________
+set _wwwwwww_
+set _wwwwwww_
+set _wwwwwww_
+set _wwwwwww_
+set _wwwwwww_
+set _wwwwwww_
+set _wwwwwww_
+set _________
+end
+
+
+begin
+set _________
+set _________
+set __wwwww__
+set __wwwww__
+set __wwwww__
+set __wwwww__
+set __wwwww__
+set _________
+set _________
+end
+
+
+begin
+set _________
+set _________
+set _________
+set ___www___
+set ___www___
+set ___www___
+set _________
+set _________
+set _________
+end
+
+
+begin
+set _________
+set _________
+set _________
+set _________
+set ____w____
+set _________
+set _________
+set _________
+set _________
+end
+
+
+putID _ -1
+putBlock w Wood
+putBlock l Leaf

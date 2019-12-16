@@ -1,0 +1,37 @@
+begin
+set ___________
+set _wwwwwwwww_
+set _wwwwwwwww_
+set _wwwwwwwww_
+set _wwwwwwwww_
+set _wwwwwwwww_
+set _wwwwwwwww_
+set _wwwwwwwww_
+end
+
+begin
+set ___________
+set _wwwwwwwww_
+set _________w_
+set _________w_
+set _w_______w_
+set _w_______w_
+set _w_______w_
+set _wwwwwwwww_
+end
+dup 3
+
+begin
+set ___________
+set _wwwwwwwww_
+set _wwwwwwwww_
+set _wwwwwwwww_
+set _wwwwwwwww_
+set _wwwwwwwww_
+set _wwwwwwwww_
+set _wwwwwwwww_
+end
+
+putID _ -1
+putID w 3
+putID l 3

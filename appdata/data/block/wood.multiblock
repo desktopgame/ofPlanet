@@ -1,0 +1,28 @@
+begin
+set ___
+set _w_
+set ___
+end
+dup 3
+
+begin
+set lll
+set lwl
+set lll
+end
+
+begin
+set lll
+set lwl
+set lll
+end
+
+begin
+set lll
+set lll
+set lll
+end
+
+putID _ -1
+putBlock w Wood
+putBlock l Leaf
