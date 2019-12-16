@@ -175,9 +175,6 @@
     <ClCompile Include="src\world\EntityRigidbody.cpp">
       <Filter>src\world</Filter>
     </ClCompile>
-    <ClCompile Include="src\world\EntitySpawner.cpp">
-      <Filter>src\world</Filter>
-    </ClCompile>
     <ClCompile Include="src\world\MultiBlock.cpp">
       <Filter>src\world</Filter>
     </ClCompile>
@@ -194,9 +191,6 @@
       <Filter>src\world</Filter>
     </ClCompile>
     <ClCompile Include="src\world\World.cpp">
-      <Filter>src\world</Filter>
-    </ClCompile>
-    <ClCompile Include="src\world\WorldGenerateService.cpp">
       <Filter>src\world</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\addons\ofxAssimpModelLoader\src\ofxAssimpAnimation.cpp">
@@ -622,9 +616,6 @@
     <ClInclude Include="src\world\EntityRigidbody.hpp">
       <Filter>src\world</Filter>
     </ClInclude>
-    <ClInclude Include="src\world\EntitySpawner.hpp">
-      <Filter>src\world</Filter>
-    </ClInclude>
     <ClInclude Include="src\world\MultiBlock.hpp">
       <Filter>src\world</Filter>
     </ClInclude>
@@ -641,9 +632,6 @@
       <Filter>src\world</Filter>
     </ClInclude>
     <ClInclude Include="src\world\World.hpp">
-      <Filter>src\world</Filter>
-    </ClInclude>
-    <ClInclude Include="src\world\WorldGenerateService.hpp">
       <Filter>src\world</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\addons\ofxAssimpModelLoader\src\ofxAssimpAnimation.h">

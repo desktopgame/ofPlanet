@@ -18,7 +18,6 @@
 #include "../shader/Transform.hpp"
 #include "../world/Planet.hpp"
 #include "../world/World.hpp"
-#include "../world/WorldGenerateService.hpp"
 #include "../world/biome/Biome.hpp"
 namespace planet {
 class PlayScene : public Scene {

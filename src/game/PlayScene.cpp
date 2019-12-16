@@ -16,7 +16,6 @@
 #include "../shader/ShaderRegistry.hpp"
 #include "../shader/Texture.hpp"
 #include "../world/Block.hpp"
-#include "../world/EntitySpawner.hpp"
 #include "../world/biome/PlainBiome.hpp"
 #include "../world/biome/HillBiome.hpp"
 #include "../world/biome/PlainBiome.hpp"

@@ -6,7 +6,6 @@
 #include "../input/KeyboardState.hpp"
 #include "../input/MouseState.hpp"
 #include "../scene/SceneManager.hpp"
-#include "../world/WorldGenerateService.hpp"
 namespace planet {
 
 class ofApp : public ofBaseApp {

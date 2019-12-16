@@ -3,7 +3,6 @@
 #include "../common/Stopwatch.hpp"
 #include "BlockTable.hpp"
 #include "World.hpp"
-#include "WorldGenerateService.hpp"
 #include "biome/Biome.hpp"
 namespace planet {
 

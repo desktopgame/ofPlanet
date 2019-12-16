@@ -248,7 +248,6 @@
     <ClCompile Include="src\world\engine\Xorshift.cpp" />
     <ClCompile Include="src\world\Entity.cpp" />
     <ClCompile Include="src\world\EntityRigidbody.cpp" />
-    <ClCompile Include="src\world\EntitySpawner.cpp" />
     <ClCompile Include="src\world\MultiBlock.cpp" />
     <ClCompile Include="src\world\Planet.cpp" />
     <ClCompile Include="src\world\SideRenderer.cpp" />
@@ -256,7 +255,6 @@
     <ClCompile Include="src\world\TexturePack.cpp" />
     <ClCompile Include="src\world\TextureSet.cpp" />
     <ClCompile Include="src\world\World.cpp" />
-    <ClCompile Include="src\world\WorldGenerateService.cpp" />
     <ClCompile Include="..\..\..\..\addons\ofxAssimpModelLoader\src\ofxAssimpAnimation.cpp" />
     <ClCompile Include="..\..\..\..\addons\ofxAssimpModelLoader\src\ofxAssimpMeshHelper.cpp" />
     <ClCompile Include="..\..\..\..\addons\ofxAssimpModelLoader\src\ofxAssimpModelLoader.cpp" />
@@ -373,7 +371,6 @@
     <ClInclude Include="src\world\engine\Xorshift.hpp" />
     <ClInclude Include="src\world\Entity.hpp" />
     <ClInclude Include="src\world\EntityRigidbody.hpp" />
-    <ClInclude Include="src\world\EntitySpawner.hpp" />
     <ClInclude Include="src\world\MultiBlock.hpp" />
     <ClInclude Include="src\world\Planet.hpp" />
     <ClInclude Include="src\world\SideRenderer.hpp" />
@@ -381,7 +378,6 @@
     <ClInclude Include="src\world\TexturePack.hpp" />
     <ClInclude Include="src\world\TextureSet.hpp" />
     <ClInclude Include="src\world\World.hpp" />
-    <ClInclude Include="src\world\WorldGenerateService.hpp" />
     <ClInclude Include="..\..\..\..\addons\ofxAssimpModelLoader\src\ofxAssimpAnimation.h" />
     <ClInclude Include="..\..\..\..\addons\ofxAssimpModelLoader\src\ofxAssimpMeshHelper.h" />
     <ClInclude Include="..\..\..\..\addons\ofxAssimpModelLoader\src\ofxAssimpModelLoader.h" />
