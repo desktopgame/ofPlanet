@@ -33,6 +33,7 @@ int main() {
         settings.glVersionMinor = 4;
         settings.setSize(planet::Screen::widthi(), planet::Screen::heighti());
         settings.windowMode = ofWindowMode::OF_WINDOW;
+		settings.title = "ofPlanet";
         planet::Screen::fullScreenMode = false;
 #ifdef _DEBUG
 		ofSetLogLevel(ofLogLevel::OF_LOG_FATAL_ERROR);
