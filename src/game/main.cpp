@@ -1,3 +1,7 @@
+#ifndef _DEBUG
+#pragma comment(linker, "/subsystem:\"windows\" /entry:\"mainCRTStartup\"")
+#endif
+
 #include <ofMain.h>
 #include <iostream>
 
@@ -30,7 +34,7 @@ int main() {
         settings.setSize(planet::Screen::widthi(), planet::Screen::heighti());
         settings.windowMode = ofWindowMode::OF_WINDOW;
         planet::Screen::fullScreenMode = false;
-#ifndef _DEBUG
+#ifdef _DEBUG
 		ofSetLogLevel(ofLogLevel::OF_LOG_FATAL_ERROR);
 #endif
         ofCreateWindow(settings);
