@@ -17,8 +17,8 @@ ScriptBiome::ScriptBiome(const std::string& filename) :lua(), ctx(nullptr), tabl
 
 void ScriptBiome::onGUI() {
 	//GUIを表示する
-	auto copy = globals;
 	auto iter = globals.begin();
+	std::unordered_map<std::string, luaex::Object> copy;
 	while (iter != globals.end()) {
 		auto kv = *iter;
 		auto key = kv.first;
@@ -27,25 +27,35 @@ void ScriptBiome::onGUI() {
 			//luaには実数型と整数型の区別がないので頭文字で判別する
 			if (key[0] == 'i') {
 				int v = static_cast<int>(obj.value.number);
-				ImGui::SliderInt(key.c_str(), &v, -1000, 1000);
+				if (ImGui::SliderInt(key.c_str(), &v, -1000, 1000)) {
+					lua.setGlobalInt(key, v);
+				}
 				obj.value.number = static_cast<double>(v);
 			} else {
 				float v = static_cast<float>(obj.value.number);
-				ImGui::SliderFloat(key.c_str(), &v, -1000, 1000);
+				if (ImGui::SliderFloat(key.c_str(), &v, -1000, 1000)) {
+					lua.setGlobalNumber(key, static_cast<double>(v));
+				}
 				obj.value.number = static_cast<double>(v);
 			}
 		} else if (obj.type == T_BOOL) {
-			ImGui::Checkbox(key.c_str(), &obj.value.boolean);
+			if (ImGui::Checkbox(key.c_str(), &obj.value.boolean)) {
+				lua.setGlobalBool(key, obj.value.boolean);
+			}
 		} else if (obj.type == T_STRING) {
 			char buf[256];
 			memset(buf, '\0', 256);
 			memcpy(buf, obj.value.string.c_str(), 256);
 			//FIXME:256文字以上のテキストが入った場合
-			ImGui::InputText(key.c_str(), buf, 256);
+			if (ImGui::InputText(key.c_str(), buf, 256)) {
+				lua.setGlobalString(key, buf);
+			}
 			obj.value.string = buf;
 		}
+		copy.insert_or_assign(key, obj);
 		++iter;
 	}
+	this->globals = copy;
 }
 
 bool ScriptBiome::isUseCallbacks() {
