@@ -23,6 +23,7 @@
 #include "../imguiex/CheckBox.hpp"
 #include "../imguiex/RadioButtonGroup.hpp"
 #include "../imguiex/InputField.hpp"
+#include "../imguiex/Float.hpp"
 namespace planet {
 class PlayScene : public Scene {
        public:
@@ -47,13 +48,13 @@ class PlayScene : public Scene {
 
 		ofxImGui::Gui gui;
 		glm::vec3 worldSize;
-		float cameraSpeed;
 		StateValue<bool> playMode;
 		FirstPersonController fpsCon;
 		std::vector<std::shared_ptr<Biome> > biomes;
 		imguiex::ListBox biomeNames;
 		imguiex::RadioButtonGroup exportTypes;
 		imguiex::InputField<> exportFile;
+		imguiex::Float cameraSpeed;
 
         static NameSet createPlaneNameSet();
         static NameSet createGunNameSet();

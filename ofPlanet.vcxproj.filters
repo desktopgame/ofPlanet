@@ -306,6 +306,7 @@
     <ClCompile Include="src\imguiex\ListBox.cpp" />
     <ClCompile Include="src\imguiex\CheckBox.cpp" />
     <ClCompile Include="src\imguiex\RadioButtonGroup.cpp" />
+    <ClCompile Include="src\imguiex\Float.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -897,6 +898,7 @@
     <ClInclude Include="src\imguiex\CheckBox.hpp" />
     <ClInclude Include="src\imguiex\RadioButtonGroup.hpp" />
     <ClInclude Include="src\imguiex\InputField.hpp" />
+    <ClInclude Include="src\imguiex\Float.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="icon.rc" />

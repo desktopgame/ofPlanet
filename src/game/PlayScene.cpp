@@ -35,12 +35,13 @@ PlayScene::PlayScene()
       cameraAngle(0),
       gui(),
       worldSize(128,64,128),
-      cameraSpeed(0.01f),
       playMode(false),
       fpsCon(),
       biomeNames("Biome"),
       exportTypes(),
-	exportFile("File") {
+	exportFile("File"),
+	cameraSpeed("CameraSpeed", 0.01f) {
+	cameraSpeed.value = 0.01f;
 	fpsCon.enable();
 	fpsCon.setRotateSpeed(1.0f);
 	fpsCon.setMoveSpeed(1.0f);
@@ -119,7 +120,7 @@ void PlayScene::playUpdate() {
 		myCam->setPosition(glm::vec3(64.0f + (64.0f * cx), 64, 64.0f + (64.0f * cz)));
 		myCam->setLookAt(glm::vec3(64, 0, 64));
 		myCam->rehash();
-		this->cameraAngle += cameraSpeed;
+		this->cameraAngle += cameraSpeed.value;
 	}
 }
 
@@ -139,7 +140,7 @@ void PlayScene::playDraw() {
 	ImGui::DragFloat3("Size", &worldSize.x, 2);
 	biomeNames.draw();
 	//ImGui::ListBox("Biome", &biomeIndex, biomeList, IM_ARRAYSIZE(biomeList), 4);
-	ImGui::DragFloat("CameraSpeed", &cameraSpeed, 0.001f);
+	cameraSpeed.draw();
 	if (ImGui::Button("Generate") && biomeNames.selectedIndex >= 0 && !biomes.empty()) {
 		planet->generate(worldSize, biomes.at(biomeNames.selectedIndex));
 	}
