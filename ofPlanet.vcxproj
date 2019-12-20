@@ -195,6 +195,7 @@
     <ClCompile Include="src\game\ofApp.cpp" />
     <ClCompile Include="src\game\PlayScene.cpp" />
     <ClCompile Include="src\game\Screen.cpp" />
+    <ClCompile Include="src\imguiex\ListBox.cpp" />
     <ClCompile Include="src\input\Input.cpp" />
     <ClCompile Include="src\input\InputState.cpp" />
     <ClCompile Include="src\input\InputSystem.cpp" />
@@ -305,6 +306,7 @@
     <ClInclude Include="src\game\ofApp.h" />
     <ClInclude Include="src\game\PlayScene.hpp" />
     <ClInclude Include="src\game\Screen.hpp" />
+    <ClInclude Include="src\imguiex\ListBox.hpp" />
     <ClInclude Include="src\input\ButtonState.hpp" />
     <ClInclude Include="src\input\Input.hpp" />
     <ClInclude Include="src\input\InputState.hpp" />

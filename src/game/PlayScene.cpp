@@ -35,27 +35,24 @@ PlayScene::PlayScene()
       cameraAngle(0),
       gui(),
       worldSize(128,64,128),
-      biomeList(),
-      biomeIndex(0),
       exportMode(EXPORT_JSON),
       exportPath("./data"),
       cameraSpeed(0.01f),
       playMode(false),
-      fpsCon() {
+      fpsCon(),
+      biomeNames("Biome") {
 	fpsCon.enable();
 	fpsCon.setRotateSpeed(1.0f);
 	fpsCon.setMoveSpeed(1.0f);
 	fpsCon.setMode(FirstPersonController::Mode::Key);
-	//biomeList[0] = "Plain";
-	//biomeList[1] = "Hill";
 	gui.setup();
 	auto files = Directory::files("./data/script", false);
-	this->biomeList = static_cast<char**>(std::malloc(sizeof(char*) * files.size()));
 	for (int i = 0; i < static_cast<int>(files.size()); i++) {
 		auto file = files.at(i);
 		biomes.emplace_back(std::make_shared<planet::ScriptBiome>(file));
-		biomeList[i] = _strdup(file.c_str());
+		biomeNames.items.emplace_back(file);
 	}
+	biomeNames.rehash();
 }
 
 PlayScene::~PlayScene() {}
@@ -139,17 +136,18 @@ void PlayScene::playDraw() {
 	// Setting Window
 	ImGui::Begin("Setting");
 	ImGui::DragFloat3("Size", &worldSize.x, 2);
-	ImGui::ListBox("Biome", &biomeIndex, biomeList, IM_ARRAYSIZE(biomeList), 4);
+	biomeNames.draw();
+	//ImGui::ListBox("Biome", &biomeIndex, biomeList, IM_ARRAYSIZE(biomeList), 4);
 	ImGui::DragFloat("CameraSpeed", &cameraSpeed, 0.001f);
-	if (ImGui::Button("Generate") && biomeIndex >= 0 && !biomes.empty()) {
-		planet->generate(worldSize, biomes.at(biomeIndex));
+	if (ImGui::Button("Generate") && biomeNames.selectedIndex >= 0 && !biomes.empty()) {
+		planet->generate(worldSize, biomes.at(biomeNames.selectedIndex));
 	}
 	ImGui::Checkbox("PlayMode", &playMode.getNewValue());
 	playMode.detect();
 	ImGui::End();
 	// Parameter Window
 	ImGui::Begin("Parameter");
-	biomes.at(biomeIndex)->onGUI();
+	biomes.at(biomeNames.selectedIndex)->onGUI();
 	ImGui::End();
 	// Exporter Window
 	ImGui::Begin("Exporter");

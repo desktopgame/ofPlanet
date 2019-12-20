@@ -19,6 +19,7 @@
 #include "../world/Planet.hpp"
 #include "../world/World.hpp"
 #include "../world/biome/Biome.hpp"
+#include "../imguiex/ListBox.hpp"
 namespace planet {
 class PlayScene : public Scene {
        public:
@@ -43,14 +44,13 @@ class PlayScene : public Scene {
 
 		ofxImGui::Gui gui;
 		glm::vec3 worldSize;
-		char** biomeList;
-		int biomeIndex;
 		int exportMode;
 		char exportPath[255];
 		float cameraSpeed;
 		StateValue<bool> playMode;
 		FirstPersonController fpsCon;
 		std::vector<std::shared_ptr<Biome> > biomes;
+		imguiex::ListBox biomeNames;
 
         static NameSet createPlaneNameSet();
         static NameSet createGunNameSet();
