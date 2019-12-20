@@ -35,12 +35,12 @@ PlayScene::PlayScene()
       cameraAngle(0),
       gui(),
       worldSize(128,64,128),
-      exportMode(EXPORT_JSON),
       exportPath("./data"),
       cameraSpeed(0.01f),
       playMode(false),
       fpsCon(),
-      biomeNames("Biome") {
+      biomeNames("Biome"),
+      exportTypes() {
 	fpsCon.enable();
 	fpsCon.setRotateSpeed(1.0f);
 	fpsCon.setMoveSpeed(1.0f);
@@ -53,6 +53,7 @@ PlayScene::PlayScene()
 		biomeNames.items.emplace_back(file);
 	}
 	biomeNames.rehash();
+	exportTypes.labels = std::vector<std::string>{ "JSON", "OBJ" };
 }
 
 PlayScene::~PlayScene() {}
@@ -152,9 +153,8 @@ void PlayScene::playDraw() {
 	// Exporter Window
 	ImGui::Begin("Exporter");
 	//[JSON] [OBJ]
-	ImGui::RadioButton("JSON", &exportMode, EXPORT_JSON);
-	ImGui::SameLine();
-	ImGui::RadioButton("OBJ", &exportMode, EXPORT_OBJ);
+	exportTypes.draw();
+	int exportMode = exportTypes.mode;
 	ImGui::InputText("File", exportPath, 255);
 	if (ImGui::Button("Export")) {
 		if (exportMode == EXPORT_JSON) {

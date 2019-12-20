@@ -304,6 +304,8 @@
     <ClCompile Include="src\world\biome\ScriptBiome.cpp" />
     <ClCompile Include="src\world\WorldIO.cpp" />
     <ClCompile Include="src\imguiex\ListBox.cpp" />
+    <ClCompile Include="src\imguiex\CheckBox.cpp" />
+    <ClCompile Include="src\imguiex\RadioButtonGroup.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -892,6 +894,8 @@
     <ClInclude Include="src\any\any.hpp" />
     <ClInclude Include="src\world\WorldIO.hpp" />
     <ClInclude Include="src\imguiex\ListBox.hpp" />
+    <ClInclude Include="src\imguiex\CheckBox.hpp" />
+    <ClInclude Include="src\imguiex\RadioButtonGroup.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="icon.rc" />
