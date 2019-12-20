@@ -309,6 +309,7 @@
     <ClCompile Include="src\imguiex\Float.cpp" />
     <ClCompile Include="src\imguiex\Float2.cpp" />
     <ClCompile Include="src\imguiex\Float3.cpp" />
+    <ClCompile Include="src\common\ObjBuilder.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -903,6 +904,7 @@
     <ClInclude Include="src\imguiex\Float.hpp" />
     <ClInclude Include="src\imguiex\Float2.hpp" />
     <ClInclude Include="src\imguiex\Float3.hpp" />
+    <ClInclude Include="src\common\ObjBuilder.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="icon.rc" />

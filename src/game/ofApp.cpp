@@ -13,6 +13,7 @@
 #include "../world/BlockPack.hpp"
 #include "../world/TextureInfoCollection.hpp"
 #include "../world/BlockInfoCollection.hpp"
+#include "../common/ObjBuilder.hpp"
 #include "PlayScene.hpp"
 namespace planet {
 
@@ -27,6 +28,16 @@ ofApp::ofApp()
 
 //--------------------------------------------------------------
 void ofApp::setup() {
+		ObjBuilder objBuilder;
+		objBuilder.vertex(glm::vec3(0, 0, 0));
+		objBuilder.vertex(glm::vec3(1, 0, 0));
+		objBuilder.vertex(glm::vec3(0.5f, 0.5f, 0));
+		objBuilder.face(ObjFace{
+			ObjPolygon(ObjIndex(1), ObjIndex(), ObjIndex()),
+			ObjPolygon(ObjIndex(2), ObjIndex(), ObjIndex()),
+			ObjPolygon(ObjIndex(3), ObjIndex(), ObjIndex())
+		});
+		std::cout << objBuilder.toString() << std::endl;
         ofSeedRandom(time(NULL));
 		ofBackground(ofColor::black);
 #if _DEBUG

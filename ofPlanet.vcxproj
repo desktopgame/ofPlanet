@@ -187,6 +187,7 @@
     <ClCompile Include="src\common\FirstPersonController.cpp" />
     <ClCompile Include="src\common\glfw.cpp" />
     <ClCompile Include="src\common\MouseScroll.cpp" />
+    <ClCompile Include="src\common\ObjBuilder.cpp" />
     <ClCompile Include="src\common\Random.cpp" />
     <ClCompile Include="src\common\Stopwatch.cpp" />
     <ClCompile Include="src\common\Timer.cpp" />
@@ -303,6 +304,7 @@
     <ClInclude Include="src\common\glfw.hpp" />
     <ClInclude Include="src\common\GLM.hpp" />
     <ClInclude Include="src\common\MouseScroll.hpp" />
+    <ClInclude Include="src\common\ObjBuilder.hpp" />
     <ClInclude Include="src\common\Random.hpp" />
     <ClInclude Include="src\common\StateValue.hpp" />
     <ClInclude Include="src\common\Stopwatch.hpp" />
