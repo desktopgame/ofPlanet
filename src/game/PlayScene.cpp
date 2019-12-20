@@ -70,8 +70,8 @@ void PlayScene::show() {
 		auto w = planet->getWorld();
 		if (w) {
 			auto cam = CameraRegistry::get("Block");
-			cam->setPosition(glm::vec3(128, 64, 128));
-			cam->setLookAt(glm::vec3(64, 0, 64));
+			cam->setPosition(glm::vec3(w->getXSize(), w->getYSize(), w->getZSize()));
+			cam->setLookAt(glm::vec3(w->getXSize() / 2, 0, w->getZSize() / 2));
 			cam->rehash();
 			w->setPlayMode(false);
 			w->setDrawSkyBox(false);
@@ -98,12 +98,20 @@ void PlayScene::playUpdate() {
 		return;
 	}
 	w->update();
-	// update camera
+	const int wsx = w->getXSize();
+	const int wsy = w->getYSize();
+	const int wsz = w->getZSize();
+	const float fwsx = static_cast<float>(w->getXSize());
+	const float fwsy = static_cast<float>(w->getYSize());
+	const float fwsz = static_cast<float>(w->getZSize());
+	const float hfwsx = fwsx / 2;
+	const float hfwsz = fwsz / 2;
+	// updfate camera
 	auto myCam = CameraRegistry::get("Block");
 	if (this->playMode.get()) {
 		fpsCon.update();
 		if (playMode.testIsChanged()) {
-			myCam->setPosition(glm::vec3(64,32,64));
+			myCam->setPosition(glm::vec3(wsx / 2, wsy / 2, wsz / 2));
 		} else {
 			myCam->setPosition(myCam->getPosition() + fpsCon.getVelocity());
 		}
@@ -118,8 +126,8 @@ void PlayScene::playUpdate() {
 	} else {
 		auto cx = std::cos(cameraAngle);
 		auto cz = std::sin(cameraAngle);
-		myCam->setPosition(glm::vec3(64.0f + (64.0f * cx), 64, 64.0f + (64.0f * cz)));
-		myCam->setLookAt(glm::vec3(64, 0, 64));
+		myCam->setPosition(glm::vec3(hfwsx + (hfwsx * cx), wsy, hfwsz + (hfwsz * cz)));
+		myCam->setLookAt(glm::vec3(wsx / 2, 0, wsz / 2));
 		myCam->rehash();
 		this->cameraAngle += cameraSpeed.value;
 	}
