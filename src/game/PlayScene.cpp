@@ -35,12 +35,12 @@ PlayScene::PlayScene()
       cameraAngle(0),
       gui(),
       worldSize(128,64,128),
-      exportPath("./data"),
       cameraSpeed(0.01f),
       playMode(false),
       fpsCon(),
       biomeNames("Biome"),
-      exportTypes() {
+      exportTypes(),
+	exportFile("File") {
 	fpsCon.enable();
 	fpsCon.setRotateSpeed(1.0f);
 	fpsCon.setMoveSpeed(1.0f);
@@ -155,10 +155,10 @@ void PlayScene::playDraw() {
 	//[JSON] [OBJ]
 	exportTypes.draw();
 	int exportMode = exportTypes.mode;
-	ImGui::InputText("File", exportPath, 255);
+	exportFile.draw();
 	if (ImGui::Button("Export")) {
 		if (exportMode == EXPORT_JSON) {
-			WorldIO::toJson(exportPath, planet->getWorld());
+			WorldIO::toJson(exportFile.getString(), planet->getWorld());
 		} else if (exportMode == EXPORT_OBJ) {
 
 		}

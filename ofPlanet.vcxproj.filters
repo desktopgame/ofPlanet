@@ -896,6 +896,7 @@
     <ClInclude Include="src\imguiex\ListBox.hpp" />
     <ClInclude Include="src\imguiex\CheckBox.hpp" />
     <ClInclude Include="src\imguiex\RadioButtonGroup.hpp" />
+    <ClInclude Include="src\imguiex\InputField.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="icon.rc" />
