@@ -3,7 +3,7 @@
 namespace planet {
 
 Generator::Generator(const glm::ivec3& size)
-    : size(size), freq(32), persistence(0.5f), octaves(5) {}
+    : size(size), freq((size.x + size.z) / 8), persistence(0.5f), octaves(5) {}
 
 Generator::Generator(int xSize, int ySize, int zSize) : Generator(glm::ivec3(xSize, ySize, zSize)) {
 }
