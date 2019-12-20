@@ -34,13 +34,14 @@ PlayScene::PlayScene()
       rand(),
       cameraAngle(0),
       gui(),
-      worldSize(128,64,128),
       playMode(false),
       fpsCon(),
       biomeNames("Biome"),
       exportTypes(),
 	exportFile("File"),
-	cameraSpeed("CameraSpeed", 0.01f) {
+	cameraSpeed("CameraSpeed", 0.01f),
+	worldSize("Size", 2) {
+	worldSize.value = glm::vec3(128, 64, 128);
 	cameraSpeed.value = 0.01f;
 	fpsCon.enable();
 	fpsCon.setRotateSpeed(1.0f);
@@ -137,12 +138,12 @@ void PlayScene::playDraw() {
 	gui.begin();
 	// Setting Window
 	ImGui::Begin("Setting");
-	ImGui::DragFloat3("Size", &worldSize.x, 2);
+	worldSize.draw();
 	biomeNames.draw();
 	//ImGui::ListBox("Biome", &biomeIndex, biomeList, IM_ARRAYSIZE(biomeList), 4);
 	cameraSpeed.draw();
 	if (ImGui::Button("Generate") && biomeNames.selectedIndex >= 0 && !biomes.empty()) {
-		planet->generate(worldSize, biomes.at(biomeNames.selectedIndex));
+		planet->generate(worldSize.value, biomes.at(biomeNames.selectedIndex));
 	}
 	ImGui::Checkbox("PlayMode", &playMode.getNewValue());
 	playMode.detect();

@@ -198,6 +198,7 @@
     <ClCompile Include="src\imguiex\CheckBox.cpp" />
     <ClCompile Include="src\imguiex\Float.cpp" />
     <ClCompile Include="src\imguiex\Float2.cpp" />
+    <ClCompile Include="src\imguiex\Float3.cpp" />
     <ClCompile Include="src\imguiex\ListBox.cpp" />
     <ClCompile Include="src\imguiex\RadioButtonGroup.cpp" />
     <ClCompile Include="src\input\Input.cpp" />
@@ -313,6 +314,7 @@
     <ClInclude Include="src\imguiex\CheckBox.hpp" />
     <ClInclude Include="src\imguiex\Float.hpp" />
     <ClInclude Include="src\imguiex\Float2.hpp" />
+    <ClInclude Include="src\imguiex\Float3.hpp" />
     <ClInclude Include="src\imguiex\InputField.hpp" />
     <ClInclude Include="src\imguiex\ListBox.hpp" />
     <ClInclude Include="src\imguiex\RadioButtonGroup.hpp" />
