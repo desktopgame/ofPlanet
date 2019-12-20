@@ -28,6 +28,7 @@ ofApp::ofApp()
 //--------------------------------------------------------------
 void ofApp::setup() {
         ofSeedRandom(time(NULL));
+		ofBackground(ofColor::black);
 #if _DEBUG
         glDebugMessageCallback(
             reinterpret_cast<GLDEBUGPROC>(ofApp::bridgeDebugMessage), NULL);

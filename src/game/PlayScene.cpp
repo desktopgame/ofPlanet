@@ -144,6 +144,7 @@ void PlayScene::playDraw() {
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_CULL_FACE);
 	gui.begin();
+	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0, 1, 0, 1));
 	// Setting Window
 	ImGui::Begin("Setting");
 	worldSize.draw();
@@ -174,6 +175,7 @@ void PlayScene::playDraw() {
 		}
 	}
 	ImGui::End();
+	ImGui::PopStyleColor();
 	gui.end();
 }
 
