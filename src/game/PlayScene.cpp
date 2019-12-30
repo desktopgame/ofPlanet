@@ -42,6 +42,7 @@ PlayScene::PlayScene()
 	exportFile("File"),
 	cameraSpeed("CameraSpeed", 0.01f),
 	worldSize("Size", 2) {
+	exportFile.setString("./data");
 	worldSize.value = glm::vec3(128, 64, 128);
 	cameraSpeed.value = 0.01f;
 	fpsCon.enable();

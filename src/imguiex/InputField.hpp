@@ -11,6 +11,7 @@ public:
 	explicit InputField(const std::string& label);
 
 	void draw();
+	void setString(const std::string& str);
 	std::string getString() const;
 
 	std::string label;
@@ -25,6 +26,18 @@ inline InputField<N>::InputField(const std::string & label) : label(label), buff
 template<int N>
 inline void InputField<N>::draw() {
 	ImGui::InputText(label.c_str(), buffer, N);
+}
+template<int N>
+inline void InputField<N>::setString(const std::string & str) {
+	if (str.size() >= N) {
+		throw std::logic_error("string is too longer");
+	}
+	int len = static_cast<int>(str.size());
+	std::memset(buffer, '\0', N);
+	for (int i = 0; i < len; i++) {
+		buffer[i] = str[i];
+	}
+	buffer[len] = '\0';
 }
 template<int N>
 inline std::string InputField<N>::getString() const {
