@@ -2,9 +2,9 @@
 #define GAME_WORLD_GEN_CELL_HPP
 namespace planet {
 struct Cell {
-        const int x;
-        const int z;
-        const float noise;
+        int x;
+        int z;
+        float noise;
         Cell(int x, int z, float noise);
 };
 }  // namespace planet
