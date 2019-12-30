@@ -27,6 +27,7 @@ namespace planet {
 using ExportMode = enum {
 	EXPORT_JSON = 0,
 	EXPORT_OBJ,
+	EXPORT_BMP,
 };
 PlayScene::PlayScene()
     : Scene(),
@@ -55,7 +56,7 @@ PlayScene::PlayScene()
 		biomeNames.items.emplace_back(file);
 	}
 	biomeNames.rehash();
-	exportTypes.labels = std::vector<std::string>{ "JSON", "OBJ" };
+	exportTypes.labels = std::vector<std::string>{ "JSON", "OBJ", "BMP" };
 }
 
 PlayScene::~PlayScene() {}
@@ -171,6 +172,8 @@ void PlayScene::playDraw() {
 		if (exportMode == EXPORT_JSON) {
 			WorldIO::toJson(exportFile.getString(), planet->getWorld());
 		} else if (exportMode == EXPORT_OBJ) {
+
+		} else if (exportMode == EXPORT_BMP) {
 
 		}
 	}

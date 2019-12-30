@@ -12,7 +12,7 @@ BlockPrefab::BlockPrefab() : id(-1), instanced(false) {}
 // BlockTable
 
 BlockTable::BlockTable(int xSize, int ySize, int zSize)
-    : xSize(xSize), ySize(ySize), zSize(zSize) {
+    : xSize(xSize), ySize(ySize), zSize(zSize), terrain() {
         for (int x = 0; x < xSize; x++) {
                 std::vector<std::vector<BlockPrefab> > xline;
                 for (int y = 0; y < ySize; y++) {
@@ -26,7 +26,7 @@ BlockTable::BlockTable(int xSize, int ySize, int zSize)
         }
 }
 
-BlockTable::BlockTable() : xSize(-1), ySize(-1), zSize(-1) {}
+BlockTable::BlockTable() : xSize(-1), ySize(-1), zSize(-1), terrain() {}
 
 void BlockTable::set(int x, int y, int z, const BlockPrefab& block) {
         vec[x][y][z] = block;
@@ -61,4 +61,10 @@ int BlockTable::getXSize() const { return xSize; }
 int BlockTable::getYSize() const { return ySize; }
 
 int BlockTable::getZSize() const { return zSize; }
+void BlockTable::setTerrain(const Terrain terrain) {
+	this->terrain = terrain;
+}
+Terrain BlockTable::getTerrain() const {
+	return terrain;
+}
 }  // namespace planet

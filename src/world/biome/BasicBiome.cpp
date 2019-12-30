@@ -44,6 +44,7 @@ void BasicBiome::generate(BlockTable& blockTable) {
         // generate terrain
         auto terrain =
             gen.generate(static_cast<int>(random.generate(0, 10000 - 1)));
+		blockTable.setTerrain(terrain);
 		for (int i = 0; i < terrain.getCellCount(); i++) {
 			Cell cellSrc = terrain.getCellAt(i);
 			Cell cell = Cell(cellSrc.x, cellSrc.z, onFixHeight(cellSrc.noise));

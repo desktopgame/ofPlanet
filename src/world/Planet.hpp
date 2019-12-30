@@ -4,6 +4,7 @@
 #include <memory>
 #include "../common/GLM.hpp"
 #include "../shader/NameSet.hpp"
+#include "BlockTable.hpp"
 namespace planet {
 
 class WorldGenerateService;
@@ -21,9 +22,11 @@ class Planet {
         void render();
 
         std::shared_ptr<World> getWorld() const;
+		BlockTable getBlockTable() const;
 
        private:
 		NameSet nameSet;
+		BlockTable blockTable;
         std::shared_ptr<World> world;
 };
 }  // namespace planet

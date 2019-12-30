@@ -1,22 +1,21 @@
 #include "Planet.hpp"
 
 #include "../common/Stopwatch.hpp"
-#include "BlockTable.hpp"
 #include "World.hpp"
 #include "biome/Biome.hpp"
 namespace planet {
 
 Planet::Planet(const NameSet& nameSet)
-    : nameSet(nameSet), world(nullptr) {
+    : nameSet(nameSet), world(nullptr), blockTable(0, 0, 0) {
 
 }
 
 void Planet::generate(glm::vec3 size, std::shared_ptr<Biome> biome) {
 	this->world = World::create(nameSet, size);
 	glm::ivec3 is = size;
-	BlockTable bt = BlockTable(is.x, is.y, is.z);
-	biome->generate(bt);
-	world->load(bt);
+	this->blockTable = BlockTable(is.x, is.y, is.z);
+	biome->generate(blockTable);
+	world->load(blockTable);
 }
 
 void Planet::update() {
@@ -38,4 +37,7 @@ void Planet::render() {
 }
 
 std::shared_ptr<World> Planet::getWorld() const { return world; }
+BlockTable Planet::getBlockTable() const {
+	return blockTable;
+}
 }  // namespace planet
