@@ -24,7 +24,7 @@
 #include "../imguiex/RadioButtonGroup.hpp"
 #include "../imguiex/InputField.hpp"
 #include "../imguiex/Float.hpp"
-#include "../imguiex/Float3.hpp"
+#include "../imguiex/FloatXZ.hpp"
 namespace planet {
 class PlayScene : public Scene {
        public:
@@ -55,7 +55,7 @@ class PlayScene : public Scene {
 		imguiex::RadioButtonGroup exportTypes;
 		imguiex::InputField<> exportFile;
 		imguiex::Float cameraSpeed;
-		imguiex::Float3 worldSize;
+		imguiex::FloatXZ worldSize;
 
         static NameSet createPlaneNameSet();
         static NameSet createGunNameSet();
