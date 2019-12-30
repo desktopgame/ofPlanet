@@ -11,7 +11,7 @@ Generator::Generator(int xSize, int ySize, int zSize) : Generator(glm::ivec3(xSi
 Terrain Generator::generate(unsigned int seed) {
 		Terrain ter;
 		int xzSize = (size.x + size.z) / 2;
-        PerlinNoise noise(xzSize / 2, seed, freq);
+        PerlinNoise noise((size.x + size.z), seed, freq);
         std::vector<Cell> cells;
         float fx = 1.0f / (float)xzSize;
         float fy = 1.0f / (float)xzSize;
