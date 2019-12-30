@@ -9,7 +9,7 @@ void Float3::draw() {
 	float ptr[3] = {
 		value.x,
 		value.y,
-		value.x
+		value.z
 	};
 	ImGui::DragFloat3(label.c_str(), ptr, step, min, max);
 	value.x = ptr[0];
