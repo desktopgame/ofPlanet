@@ -1,0 +1,72 @@
+{
+  "baseDirectory": "./data/assets/image/block",
+  "textures": [
+    {
+      "baseFileName": "DirtBlock",
+      "mappingRule": {
+        "all": "Side"
+      },
+      "reference": "DirtBlock"
+    },
+    {
+      "baseFileName": "WaterBlock",
+      "mappingRule": {
+        "all": "Side",
+        "top": "Top"
+      },
+      "reference": "WaterBlock"
+    },
+    {
+      "baseFileName": "WoodBlock",
+      "mappingRule": {
+        "all": "Side"
+      },
+      "reference": "WoodBlock"
+    },
+    {
+      "baseFileName": "LeafBlock",
+      "mappingRule": {
+        "all": "Side"
+      },
+      "reference": "LeafBlock"
+    },
+    {
+      "baseFileName": "MoonStoneBlock",
+      "mappingRule": {
+        "all": "Side",
+        "top": "Top"
+      },
+      "reference": "MoonStoneBlock"
+    },
+    {
+      "baseFileName": "GrassDirtBlock",
+      "mappingRule": {
+        "all": "Side",
+        "top": "Top",
+        "bottom": "Bottom"
+      },
+      "reference": "GrassDirtBlock"
+    },
+    {
+      "baseFileName": "SandBlock",
+      "mappingRule": {
+        "all": "Side"
+      },
+      "reference": "SandBlock"
+    },
+    {
+      "baseFileName": "StoneBlock",
+      "mappingRule": {
+        "all": "Side"
+      },
+      "reference": "StoneBlock"
+    },
+    {
+      "baseFileName": "HardStoneBlock",
+      "mappingRule": {
+        "all": "Side"
+      },
+      "reference": "HardStoneBlock"
+    }
+  ]
+}

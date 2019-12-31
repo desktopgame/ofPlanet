@@ -1,0 +1,40 @@
+{
+  "blocks": [
+    {
+      "reference": "Dirt",
+      "texture": "DirtBlock"
+    },
+    {
+      "reference": "Water",
+      "texture": "WaterBlock"
+    },
+    {
+      "reference": "Wood",
+      "texture": "WoodBlock"
+    },
+    {
+      "reference": "Leaf",
+      "texture": "LeafBlock"
+    },
+    {
+      "reference": "MoonStone",
+      "texture": "MoonStoneBlock"
+    },
+    {
+      "reference": "GrassDirt",
+      "texture": "GrassDirtBlock"
+    },
+    {
+      "reference": "Sand",
+      "texture": "SandBlock"
+    },
+    {
+      "reference": "Stone",
+      "texture": "StoneBlock"
+    },
+    {
+      "reference": "HardStone",
+      "texture": "HardStoneBlock"
+    }
+  ]
+}
