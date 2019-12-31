@@ -18,7 +18,6 @@
 namespace planet {
 
 ofApp* ofApp::instance = nullptr;
-const glm::ivec3 ofApp::worldSize = glm::ivec3(128, 64, 128);
 
 ofApp::ofApp()
     : sceneManager(),

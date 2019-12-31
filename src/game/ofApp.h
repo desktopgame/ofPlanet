@@ -30,7 +30,6 @@ class ofApp : public ofBaseApp {
         static std::shared_ptr<KeyboardState> getKeyboardState();
         static std::shared_ptr<MouseState> getMouseState();
 
-        static const glm::ivec3 worldSize;
 
        protected:
         static ofApp* instance;
