@@ -2,6 +2,7 @@
 #ifndef WORLD_ENGINE_TERRAIN_HPP
 #define WORLD_ENGINE_TERRAIN_HPP
 #include <vector>
+#include <glm/glm.hpp>
 #include "Cell.hpp"
 #include "Pocket.hpp"
 
@@ -18,7 +19,13 @@ class Terrain {
 		Pocket getPocketAt(int index) const;
 		int getPocketCount() const;
 
+		glm::ivec3 getMin() const;
+		glm::ivec3 getMax() const;
+
+		std::vector<unsigned char> toPixelVec() const;
 	private:
+		Cell findCell(int x, int z) const;
+		glm::ivec3 vmin, vmax;
 		std::vector<Cell> cells;
 		std::vector<Pocket> pockets;
 };

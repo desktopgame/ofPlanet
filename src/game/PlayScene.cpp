@@ -7,9 +7,13 @@
 #include <cstring>
 #include <string>
 #include <sstream>
+#include <soil.h>
 
 #include "../common/glfw.hpp"
 #include "../common/GLM.hpp"
+#include "../text/Strings.hpp"
+#include "../io/Path.hpp"
+#include "../io/File.hpp"
 #include "../input/Input.hpp"
 #include "../shader/Camera.hpp"
 #include "../shader/CameraRegistry.hpp"
@@ -170,12 +174,25 @@ void PlayScene::playDraw() {
 	int exportMode = exportTypes.mode;
 	exportFile.draw();
 	if (ImGui::Button("Export")) {
+		std::string outputFile = exportFile.getString();
 		if (exportMode == EXPORT_JSON) {
-			WorldIO::toJson(exportFile.getString(), planet->getWorld());
+			outputFile = Strings::fixsuffix(outputFile, ".json");
+			File::remove(outputFile);
+			WorldIO::toJson(outputFile, planet->getWorld());
 		} else if (exportMode == EXPORT_OBJ) {
-
+			outputFile = Strings::fixsuffix(outputFile, ".obj");
+			File::remove(outputFile);
 		} else if (exportMode == EXPORT_BMP) {
-
+			outputFile = Strings::fixsuffix(outputFile, ".bmp");
+			File::remove(outputFile);
+			auto w = planet->getWorld();
+			BlockTable blockTable = planet->getBlockTable();
+			Terrain terrain = blockTable.getTerrain();
+			std::vector<unsigned char> pixelVec = terrain.toPixelVec();
+			int err = SOIL_save_image(outputFile.c_str(), SOIL_SAVE_TYPE_BMP, w->getXSize(), w->getZSize(), 4, pixelVec.data());
+			if (err == 0) {
+				std::cout << "export failed." << std::endl;
+			}
 		}
 	}
 	ImGui::End();

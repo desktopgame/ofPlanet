@@ -7,5 +7,7 @@ struct Cell {
         float noise;
         Cell(int x, int z, float noise);
 };
+
+bool operator==(const Cell& a, const Cell& b);
 }  // namespace planet
 #endif

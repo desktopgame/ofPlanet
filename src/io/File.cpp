@@ -2,6 +2,8 @@
 
 #include <fstream>
 #include <sstream>
+#include <cstdio>
+#include "Path.hpp"
 namespace planet {
 
 std::string File::readAllText(const std::string& path) {
@@ -22,5 +24,10 @@ void File::writeAllText(const std::string& path, const std::string& str) {
         std::ofstream ofs(path);
         ofs << str;
         ofs.close();
+}
+void File::remove(const std::string & path) {
+	if (Path::isExists(path)) {
+		::remove(path.c_str());
+	}
 }
 }  // namespace planet

@@ -74,4 +74,40 @@ std::string Strings::replace(const std::string target, const std::string from,
         }
         return result;
 }
+bool Strings::hasPrefix(const std::string & input, const std::string & prefix) {
+	if (prefix.size() > input.size()) {
+		return false;
+	}
+	for (int i = 0; i < prefix.size(); i++) {
+		if (prefix[i] != input[i]) {
+			return false;
+		}
+	}
+	return true;
+}
+bool Strings::hasSuffix(const std::string & input, const std::string & suffix) {
+	if (suffix.size() > input.size()) {
+		return false;
+	}
+	for (int i = 0; i < suffix.size(); i++) {
+		char sc = suffix[i];
+		char ic = input[suffix.size() - i];
+		if (sc != ic) {
+			return false;
+		}
+	}
+	return true;
+}
+std::string Strings::fixprefix(const std::string & input, const std::string & prefix) {
+	if (hasPrefix(input, prefix)) {
+		return input;
+	}
+	return prefix + input;
+}
+std::string Strings::fixsuffix(const std::string & input, const std::string & suffix) {
+	if (hasSuffix(input, suffix)) {
+		return input;
+	}
+	return input + suffix;
+}
 }  // namespace planet

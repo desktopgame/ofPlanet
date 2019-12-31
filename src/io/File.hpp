@@ -7,6 +7,7 @@ namespace planet {
 namespace File {
 std::string readAllText(const std::string& path);
 void writeAllText(const std::string& path, const std::string& str);
+void remove(const std::string& path);
 }  // namespace File
 }  // namespace planet
 #endif
