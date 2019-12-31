@@ -1,6 +1,10 @@
 # ofPlanetユーザーマニュアル
 ofPlanetは地形生成エディターです。
 
+# 動作環境
+このアプリケーションはVisualStudio2017を用いて実装されました。  
+[VisualStudio2017再頒布パッケージ](https://support.microsoft.com/ja-jp/help/2977003/the-latest-supported-visual-c-downloads)が必要です。
+
 ## 起動
 `Runtime/ofPlanet.exe`をダブルクリックして起動します。  
 Runtimeフォルダには `block.json` `textures.json` が必要です。  
