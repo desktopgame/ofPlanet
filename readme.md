@@ -270,3 +270,9 @@ Luaには実数型と整数型の区別がありません。
 現在のところ、`ofPlanet`に対応したバックエンドの一つとして、`uniPlanet`を提供しています。
 
 [uniPlanet](https://github.com/desktopgame/uniPlanet)
+
+# ライセンス
+このアプリケーションは以下のライブラリを使用して実装されました。
+* [openframeworks](https://openframeworks.cc/ja/)
+* [soil](https://www.lonesock.net/soil.html)
+* [lua](https://www.lua.org/) 
