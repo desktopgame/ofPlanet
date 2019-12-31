@@ -1,8 +1,10 @@
 require 'fileutils'
-im_path = './appdata/data'
-ex_path = './bin/data'
 
-if Dir.exists?(ex_path)
-    FileUtils.rm_r(ex_path)
+def publish_dir(src, dst)
+    if Dir.exists?(dst)
+        FileUtils.rm_r(dst)
+    end
+    FileUtils.cp_r(src, dst)
 end
-FileUtils.cp_r(im_path, ex_path)
+
+publish_dir('./appdata/data', './bin/data')
