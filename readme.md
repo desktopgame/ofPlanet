@@ -176,7 +176,7 @@ blocks.jsonは例えば以下のようなファイルです。
 # 開発者マニュアル
 ## Luaスクリプト
 原則として、luaスクリプトは全て `Runtime/data/script` に配置します。  
-※ `ofPlanet.exe` が `Runtime/data` にあるとする
+※ `ofPlanet.exe` が `Runtime` にあるとする
 
 [LUA Manual](https://www.lua.org/manual/5.3/)
 
