@@ -9,6 +9,7 @@ Generator::Generator(int xSize, int ySize, int zSize) : Generator(glm::ivec3(xSi
 }
 
 Terrain Generator::generate(unsigned int seed) {
+		sivPerlin.reseed(seed);
 		Terrain ter;
 		int xzSize = (size.x + size.z) / 2;
         //PerlinNoise noise((size.x + size.z), seed, freq);

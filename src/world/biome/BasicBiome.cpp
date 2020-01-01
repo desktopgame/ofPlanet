@@ -1,6 +1,7 @@
 #include "BasicBiome.hpp"
 
 #include <ofMath.h>
+#include <random>
 
 #include "../Block.hpp"
 #include "../BlockPack.hpp"
@@ -27,6 +28,7 @@ void BasicBiome::onGUI() {
 }
 
 void BasicBiome::generate(BlockTable& blockTable) {
+		std::random_device seed_gen;
         const int XSIZE = blockTable.getXSize();
         const int YSIZE = blockTable.getYSize();
         const int ZSIZE = blockTable.getZSize();
@@ -42,12 +44,13 @@ void BasicBiome::generate(BlockTable& blockTable) {
         heightMap.clear();
         // generate terrain
         auto terrain =
-            gen.generate(static_cast<int>(random.generate(0, 10000 - 1)));
+            gen.generate(seed_gen());
 		blockTable.setTerrain(terrain);
 		for (int i = 0; i < terrain.getCellCount(); i++) {
 			Cell cellSrc = terrain.getCellAt(i);
 			Cell cell = Cell(cellSrc.x, cellSrc.z, onFixHeight(cellSrc.noise));
 			int y = YSIZE_H + World::floatToInt(cell.noise * (YSIZE_H - 1));
+			y = std::min(YSIZE-1, y);
 			heightMap[glm::ivec2(cell.x, cell.z)] = y;
 			onGenerateTerrain(blockTable, cell.x, y, cell.z);
 		}
