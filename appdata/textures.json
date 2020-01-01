@@ -1,5 +1,5 @@
 {
-  "baseDirectory": "./data/assets/image/block",
+  "baseDirectory": "./data/image/block",
   "textures": [
     {
       "baseFileName": "DirtBlock",
