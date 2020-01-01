@@ -2,6 +2,7 @@
 #pragma comment(linker, "/subsystem:\"windows\" /entry:\"mainCRTStartup\"")
 #endif
 
+#include <glm/glm.hpp>
 #include <ofMain.h>
 #include <iostream>
 

@@ -3,7 +3,7 @@
 #define WORLD_TEXTURESET_HPP
 #include <memory>
 
-#include "Texture.h"
+#include "Texture.hpp"
 namespace planet {
 
 class TexturePack;

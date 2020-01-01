@@ -1,5 +1,6 @@
 #pragma once
 
+#include <glm/glm.hpp>
 #include <ofMain.h>
 
 #include "../input/InputSystem.hpp"

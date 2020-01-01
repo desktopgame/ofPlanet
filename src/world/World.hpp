@@ -4,7 +4,6 @@
 #include <ofCamera.h>
 #include <ofFbo.h>
 #include <ofVec3f.h>
-#include <ofxAssimpModelLoader.h>
 
 #include <array>
 #include <memory>

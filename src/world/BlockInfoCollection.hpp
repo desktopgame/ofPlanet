@@ -3,7 +3,7 @@
 #define WORLD_BLOCKINFOCOLLECTION_HPP
 #include <string>
 #include <vector>
-#include "mapbox/optional.hpp"
+#include "../mapbox/optional.hpp"
 
 namespace planet {
 struct BlockInfo {

@@ -5,7 +5,6 @@
 #include <ofFbo.h>
 #include <ofLight.h>
 #include <ofVec3f.h>
-#include <ofxAssimpModelLoader.h>
 
 #include <string>
 

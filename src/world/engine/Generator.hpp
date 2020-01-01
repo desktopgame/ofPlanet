@@ -2,6 +2,8 @@
 #define GAME_WORLD_GEN_GENERATOR_HPP
 #include <algorithm>
 #include <vector>
+#include <glm/glm.hpp>
+#include <glm/gtc/quaternion.hpp>
 
 #include "../World.hpp"
 #include "Terrain.hpp"

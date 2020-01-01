@@ -10,6 +10,9 @@
     <ClCompile Include="src\common\MouseScroll.cpp">
       <Filter>src\common</Filter>
     </ClCompile>
+    <ClCompile Include="src\common\ObjBuilder.cpp">
+      <Filter>src\common</Filter>
+    </ClCompile>
     <ClCompile Include="src\common\Random.cpp">
       <Filter>src\common</Filter>
     </ClCompile>
@@ -33,6 +36,27 @@
     </ClCompile>
     <ClCompile Include="src\game\Screen.cpp">
       <Filter>src\game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\imguiex\CheckBox.cpp">
+      <Filter>src\imguiex</Filter>
+    </ClCompile>
+    <ClCompile Include="src\imguiex\Float.cpp">
+      <Filter>src\imguiex</Filter>
+    </ClCompile>
+    <ClCompile Include="src\imguiex\Float2.cpp">
+      <Filter>src\imguiex</Filter>
+    </ClCompile>
+    <ClCompile Include="src\imguiex\Float3.cpp">
+      <Filter>src\imguiex</Filter>
+    </ClCompile>
+    <ClCompile Include="src\imguiex\FloatXZ.cpp">
+      <Filter>src\imguiex</Filter>
+    </ClCompile>
+    <ClCompile Include="src\imguiex\ListBox.cpp">
+      <Filter>src\imguiex</Filter>
+    </ClCompile>
+    <ClCompile Include="src\imguiex\RadioButtonGroup.cpp">
+      <Filter>src\imguiex</Filter>
     </ClCompile>
     <ClCompile Include="src\input\Input.cpp">
       <Filter>src\input</Filter>
@@ -67,6 +91,9 @@
     <ClCompile Include="src\io\Path.cpp">
       <Filter>src\io</Filter>
     </ClCompile>
+    <ClCompile Include="src\luaex\luaex.cpp">
+      <Filter>src\luaex</Filter>
+    </ClCompile>
     <ClCompile Include="src\scene\Scene.cpp">
       <Filter>src\scene</Filter>
     </ClCompile>
@@ -94,6 +121,24 @@
     <ClCompile Include="src\shader\NameSet.cpp">
       <Filter>src\shader</Filter>
     </ClCompile>
+    <ClCompile Include="src\shader\Plane.cpp">
+      <Filter>src\shader</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shader\Shader.cpp">
+      <Filter>src\shader</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shader\ShaderProperty.cpp">
+      <Filter>src\shader</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shader\ShaderRegistry.cpp">
+      <Filter>src\shader</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shader\Texture.cpp">
+      <Filter>src\shader</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shader\Transform.cpp">
+      <Filter>src\shader</Filter>
+    </ClCompile>
     <ClCompile Include="src\text\Encoding.cpp">
       <Filter>src\text</Filter>
     </ClCompile>
@@ -109,7 +154,16 @@
     <ClCompile Include="src\world\biome\PlainBiome.cpp">
       <Filter>src\world\biome</Filter>
     </ClCompile>
+    <ClCompile Include="src\world\biome\ScriptBiome.cpp">
+      <Filter>src\world\biome</Filter>
+    </ClCompile>
     <ClCompile Include="src\world\Block.cpp">
+      <Filter>src\world</Filter>
+    </ClCompile>
+    <ClCompile Include="src\world\BlockInfoCollection.cpp">
+      <Filter>src\world</Filter>
+    </ClCompile>
+    <ClCompile Include="src\world\BlockPack.cpp">
       <Filter>src\world</Filter>
     </ClCompile>
     <ClCompile Include="src\world\BlockRenderer.cpp">
@@ -124,6 +178,12 @@
     <ClCompile Include="src\world\engine\Generator.cpp">
       <Filter>src\world\engine</Filter>
     </ClCompile>
+    <ClCompile Include="src\world\engine\Pocket.cpp">
+      <Filter>src\world\engine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\world\engine\Terrain.cpp">
+      <Filter>src\world\engine</Filter>
+    </ClCompile>
     <ClCompile Include="src\world\MultiBlock.cpp">
       <Filter>src\world</Filter>
     </ClCompile>
@@ -131,6 +191,9 @@
       <Filter>src\world</Filter>
     </ClCompile>
     <ClCompile Include="src\world\SideRenderer.cpp">
+      <Filter>src\world</Filter>
+    </ClCompile>
+    <ClCompile Include="src\world\TextureInfoCollection.cpp">
       <Filter>src\world</Filter>
     </ClCompile>
     <ClCompile Include="src\world\TexturePack.cpp">
@@ -142,17 +205,8 @@
     <ClCompile Include="src\world\World.cpp">
       <Filter>src\world</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\addons\ofxAssimpModelLoader\src\ofxAssimpAnimation.cpp">
-      <Filter>addons\ofxAssimpModelLoader\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\addons\ofxAssimpModelLoader\src\ofxAssimpMeshHelper.cpp">
-      <Filter>addons\ofxAssimpModelLoader\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\addons\ofxAssimpModelLoader\src\ofxAssimpModelLoader.cpp">
-      <Filter>addons\ofxAssimpModelLoader\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\addons\ofxAssimpModelLoader\src\ofxAssimpTexture.cpp">
-      <Filter>addons\ofxAssimpModelLoader\src</Filter>
+    <ClCompile Include="src\world\WorldIO.cpp">
+      <Filter>src\world</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\addons\ofxImGui\src\BaseEngine.cpp">
       <Filter>addons\ofxImGui\src</Filter>
@@ -190,89 +244,13 @@
     <ClCompile Include="..\..\..\..\addons\ofxImGui\libs\imgui\src\imgui_widgets.cpp">
       <Filter>addons\ofxImGui\libs\imgui\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\addons\ofxPoco\src\ofxXmlPoco.cpp">
-      <Filter>addons\ofxPoco\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\addons\ofxTween\src\Easings\ofxEasing.cpp">
-      <Filter>addons\ofxTween\src\Easings</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\addons\ofxTween\src\Easings\ofxEasingBack.cpp">
-      <Filter>addons\ofxTween\src\Easings</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\addons\ofxTween\src\Easings\ofxEasingBounce.cpp">
-      <Filter>addons\ofxTween\src\Easings</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\addons\ofxTween\src\Easings\ofxEasingCirc.cpp">
-      <Filter>addons\ofxTween\src\Easings</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\addons\ofxTween\src\Easings\ofxEasingCubic.cpp">
-      <Filter>addons\ofxTween\src\Easings</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\addons\ofxTween\src\Easings\ofxEasingElastic.cpp">
-      <Filter>addons\ofxTween\src\Easings</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\addons\ofxTween\src\Easings\ofxEasingExpo.cpp">
-      <Filter>addons\ofxTween\src\Easings</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\addons\ofxTween\src\Easings\ofxEasingLinear.cpp">
-      <Filter>addons\ofxTween\src\Easings</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\addons\ofxTween\src\Easings\ofxEasingQuad.cpp">
-      <Filter>addons\ofxTween\src\Easings</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\addons\ofxTween\src\Easings\ofxEasingQuart.cpp">
-      <Filter>addons\ofxTween\src\Easings</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\addons\ofxTween\src\Easings\ofxEasingQuint.cpp">
-      <Filter>addons\ofxTween\src\Easings</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\addons\ofxTween\src\Easings\ofxEasingSine.cpp">
-      <Filter>addons\ofxTween\src\Easings</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\addons\ofxTween\src\ofxTween.cpp">
-      <Filter>addons\ofxTween\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\addons\ofxXmlSettings\src\ofxXmlSettings.cpp">
-      <Filter>addons\ofxXmlSettings\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\addons\ofxXmlSettings\libs\tinyxml.cpp">
-      <Filter>addons\ofxXmlSettings\libs</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\addons\ofxXmlSettings\libs\tinyxmlerror.cpp">
-      <Filter>addons\ofxXmlSettings\libs</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\addons\ofxXmlSettings\libs\tinyxmlparser.cpp">
-      <Filter>addons\ofxXmlSettings\libs</Filter>
-    </ClCompile>
-    <ClCompile Include="src\world\TextureInfoCollection.cpp" />
-    <ClCompile Include="src\world\BlockInfoCollection.cpp" />
-    <ClCompile Include="src\world\BlockPack.cpp" />
-    <ClCompile Include="src\world\engine\Pocket.cpp" />
-    <ClCompile Include="src\world\engine\Terrain.cpp" />
-    <ClCompile Include="src\luaex\luaex.cpp" />
-    <ClCompile Include="src\world\biome\ScriptBiome.cpp" />
-    <ClCompile Include="src\world\WorldIO.cpp" />
-    <ClCompile Include="src\imguiex\ListBox.cpp" />
-    <ClCompile Include="src\imguiex\CheckBox.cpp" />
-    <ClCompile Include="src\imguiex\RadioButtonGroup.cpp" />
-    <ClCompile Include="src\imguiex\Float.cpp" />
-    <ClCompile Include="src\imguiex\Float2.cpp" />
-    <ClCompile Include="src\imguiex\Float3.cpp" />
-    <ClCompile Include="src\common\ObjBuilder.cpp" />
-    <ClCompile Include="src\imguiex\FloatXZ.cpp" />
-    <ClCompile Include="src\shader\ShaderProperty.cpp" />
-    <ClCompile Include="src\shader\Plane.cpp" />
-    <ClCompile Include="src\shader\Shader.cpp" />
-    <ClCompile Include="src\shader\ShaderRegistry.cpp" />
-    <ClCompile Include="src\shader\Texture.cpp" />
-    <ClCompile Include="src\shader\Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
       <UniqueIdentifier>{d8376475-7454-4a24-b08a-aac121d3ad6f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\.vscode">
-      <UniqueIdentifier>{661413F3-EE16-75E8-38D7-7328}</UniqueIdentifier>
+    <Filter Include="src\any">
+      <UniqueIdentifier>{3309F675-54CB-2152-F0F4-4AA9}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\common">
       <UniqueIdentifier>{FE56CF09-06BA-2CDB-AEB6-C358}</UniqueIdentifier>
@@ -280,20 +258,32 @@
     <Filter Include="src\game">
       <UniqueIdentifier>{097A2B9D-257B-165E-E663-6489}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\imguiex">
+      <UniqueIdentifier>{BB8751B0-70F9-96C7-2B9D-9C42}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\input">
       <UniqueIdentifier>{96AB040E-0CB8-94F0-7D6B-7794}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\io">
       <UniqueIdentifier>{4C7AF5D1-9B29-A7D0-0641-10F4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\luaex">
+      <UniqueIdentifier>{B3527819-F2F4-BBC0-79F2-8187}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mapbox">
+      <UniqueIdentifier>{E0BC88FB-0F50-8E1E-B9A3-08B8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\PerlinNoise">
+      <UniqueIdentifier>{904FA680-22A7-2B10-0FAA-AFD9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\picojson">
+      <UniqueIdentifier>{49050414-8571-990F-25AC-4BEE}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\scene">
       <UniqueIdentifier>{73142FC3-17CC-1CF8-54A8-DD1E}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\shader">
       <UniqueIdentifier>{AB588F32-2194-449A-B4D5-FB46}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\shader\fbx">
-      <UniqueIdentifier>{96CFA3BF-DD22-64FD-3DDB-6868}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\text">
       <UniqueIdentifier>{D126F1F7-06A4-E233-FC5D-540A}</UniqueIdentifier>
@@ -310,33 +300,6 @@
     <Filter Include="addons">
       <UniqueIdentifier>{71834F65-F3A9-211E-73B8-DC85}</UniqueIdentifier>
     </Filter>
-    <Filter Include="addons\ofxAssimpModelLoader">
-      <UniqueIdentifier>{DE65D9F7-840A-CD0A-A555-EA3B}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxAssimpModelLoader\src">
-      <UniqueIdentifier>{B84008DC-4B5E-271B-05DA-D8C8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxAssimpModelLoader\libs">
-      <UniqueIdentifier>{3D854F79-FA4A-75FA-FC0A-2B25}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxAssimpModelLoader\libs\assimp">
-      <UniqueIdentifier>{FE8B5295-D3A7-B9CD-89C9-2613}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxAssimpModelLoader\libs\assimp\include">
-      <UniqueIdentifier>{EDC34C4F-5D44-FB76-337E-EE48}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxAssimpModelLoader\libs\assimp\include\assimp">
-      <UniqueIdentifier>{E66BABFA-76A1-EB8D-40FF-B940}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxAssimpModelLoader\libs\assimp\include\assimp\Compiler">
-      <UniqueIdentifier>{A0C31C2E-6C01-8850-3B72-C818}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxAssimpModelLoader\libs\assimp\include\assimp\port">
-      <UniqueIdentifier>{BEEFB1FC-DD96-F59B-869C-D91A}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxAssimpModelLoader\libs\assimp\include\assimp\port\AndroidJNI">
-      <UniqueIdentifier>{CA012BC2-060F-2F55-47FD-5ACF}</UniqueIdentifier>
-    </Filter>
     <Filter Include="addons\ofxImGui">
       <UniqueIdentifier>{0CD6A942-69FF-3BAA-3AF1-ADD1}</UniqueIdentifier>
     </Filter>
@@ -352,38 +315,11 @@
     <Filter Include="addons\ofxImGui\libs\imgui\src">
       <UniqueIdentifier>{5962BF19-1468-EB82-01C0-2E72}</UniqueIdentifier>
     </Filter>
-    <Filter Include="addons\ofxPoco">
-      <UniqueIdentifier>{3256AE3E-9B29-EA27-C842-CE6B}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxPoco\src">
-      <UniqueIdentifier>{C7D4269D-D8A9-A7BB-531B-98DA}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxTween">
-      <UniqueIdentifier>{8A8810E8-A79D-7A1D-2F0A-7203}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxTween\src">
-      <UniqueIdentifier>{40AC4B42-6A5A-9537-EB82-D1B8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxTween\src\Easings">
-      <UniqueIdentifier>{EF0F6A8B-B04F-E782-21EF-D4BA}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxUnitTests">
-      <UniqueIdentifier>{99AF7102-9423-91D4-8CD7-6602}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxUnitTests\src">
-      <UniqueIdentifier>{6DB6A1EA-29BB-7859-928B-898A}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxXmlSettings">
-      <UniqueIdentifier>{877F005D-13E6-0592-1D97-F2E3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxXmlSettings\src">
-      <UniqueIdentifier>{CCB2AC63-49D2-977C-CFE8-AEAD}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxXmlSettings\libs">
-      <UniqueIdentifier>{687714A8-1662-FA1C-261F-50F0}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\any\any.hpp">
+      <Filter>src\any</Filter>
+    </ClInclude>
     <ClInclude Include="src\common\FirstPersonController.hpp">
       <Filter>src\common</Filter>
     </ClInclude>
@@ -396,7 +332,13 @@
     <ClInclude Include="src\common\MouseScroll.hpp">
       <Filter>src\common</Filter>
     </ClInclude>
+    <ClInclude Include="src\common\ObjBuilder.hpp">
+      <Filter>src\common</Filter>
+    </ClInclude>
     <ClInclude Include="src\common\Random.hpp">
+      <Filter>src\common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\common\StateValue.hpp">
       <Filter>src\common</Filter>
     </ClInclude>
     <ClInclude Include="src\common\Stopwatch.hpp">
@@ -416,6 +358,30 @@
     </ClInclude>
     <ClInclude Include="src\game\Screen.hpp">
       <Filter>src\game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\imguiex\CheckBox.hpp">
+      <Filter>src\imguiex</Filter>
+    </ClInclude>
+    <ClInclude Include="src\imguiex\Float.hpp">
+      <Filter>src\imguiex</Filter>
+    </ClInclude>
+    <ClInclude Include="src\imguiex\Float2.hpp">
+      <Filter>src\imguiex</Filter>
+    </ClInclude>
+    <ClInclude Include="src\imguiex\Float3.hpp">
+      <Filter>src\imguiex</Filter>
+    </ClInclude>
+    <ClInclude Include="src\imguiex\FloatXZ.hpp">
+      <Filter>src\imguiex</Filter>
+    </ClInclude>
+    <ClInclude Include="src\imguiex\InputField.hpp">
+      <Filter>src\imguiex</Filter>
+    </ClInclude>
+    <ClInclude Include="src\imguiex\ListBox.hpp">
+      <Filter>src\imguiex</Filter>
+    </ClInclude>
+    <ClInclude Include="src\imguiex\RadioButtonGroup.hpp">
+      <Filter>src\imguiex</Filter>
     </ClInclude>
     <ClInclude Include="src\input\ButtonState.hpp">
       <Filter>src\input</Filter>
@@ -456,6 +422,30 @@
     <ClInclude Include="src\io\Path.hpp">
       <Filter>src\io</Filter>
     </ClInclude>
+    <ClInclude Include="src\luaex\luaex.hpp">
+      <Filter>src\luaex</Filter>
+    </ClInclude>
+    <ClInclude Include="src\luaex\luaimpl.hpp">
+      <Filter>src\luaex</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mapbox\optional.hpp">
+      <Filter>src\mapbox</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mapbox\recursive_wrapper.hpp">
+      <Filter>src\mapbox</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mapbox\variant.hpp">
+      <Filter>src\mapbox</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mapbox\variant_io.hpp">
+      <Filter>src\mapbox</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PerlinNoise\PerlinNoise.hpp">
+      <Filter>src\PerlinNoise</Filter>
+    </ClInclude>
+    <ClInclude Include="src\picojson\picojson.h">
+      <Filter>src\picojson</Filter>
+    </ClInclude>
     <ClInclude Include="src\scene\Scene.hpp">
       <Filter>src\scene</Filter>
     </ClInclude>
@@ -486,6 +476,24 @@
     <ClInclude Include="src\shader\NameSet.hpp">
       <Filter>src\shader</Filter>
     </ClInclude>
+    <ClInclude Include="src\shader\Plane.hpp">
+      <Filter>src\shader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shader\Shader.hpp">
+      <Filter>src\shader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shader\ShaderProperty.hpp">
+      <Filter>src\shader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shader\ShaderRegistry.hpp">
+      <Filter>src\shader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shader\Texture.hpp">
+      <Filter>src\shader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shader\Transform.hpp">
+      <Filter>src\shader</Filter>
+    </ClInclude>
     <ClInclude Include="src\text\Encoding.hpp">
       <Filter>src\text</Filter>
     </ClInclude>
@@ -504,6 +512,9 @@
     <ClInclude Include="src\world\biome\PlainBiome.hpp">
       <Filter>src\world\biome</Filter>
     </ClInclude>
+    <ClInclude Include="src\world\biome\ScriptBiome.hpp">
+      <Filter>src\world\biome</Filter>
+    </ClInclude>
     <ClInclude Include="src\world\Block.hpp">
       <Filter>src\world</Filter>
     </ClInclude>
@@ -511,6 +522,12 @@
       <Filter>src\world</Filter>
     </ClInclude>
     <ClInclude Include="src\world\BlockColliderType.hpp">
+      <Filter>src\world</Filter>
+    </ClInclude>
+    <ClInclude Include="src\world\BlockInfoCollection.hpp">
+      <Filter>src\world</Filter>
+    </ClInclude>
+    <ClInclude Include="src\world\BlockPack.hpp">
       <Filter>src\world</Filter>
     </ClInclude>
     <ClInclude Include="src\world\BlockRenderer.hpp">
@@ -525,6 +542,12 @@
     <ClInclude Include="src\world\engine\Generator.hpp">
       <Filter>src\world\engine</Filter>
     </ClInclude>
+    <ClInclude Include="src\world\engine\Pocket.hpp">
+      <Filter>src\world\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\world\engine\Terrain.hpp">
+      <Filter>src\world\engine</Filter>
+    </ClInclude>
     <ClInclude Include="src\world\MultiBlock.hpp">
       <Filter>src\world</Filter>
     </ClInclude>
@@ -532,6 +555,9 @@
       <Filter>src\world</Filter>
     </ClInclude>
     <ClInclude Include="src\world\SideRenderer.hpp">
+      <Filter>src\world</Filter>
+    </ClInclude>
+    <ClInclude Include="src\world\TextureInfoCollection.hpp">
       <Filter>src\world</Filter>
     </ClInclude>
     <ClInclude Include="src\world\TexturePack.hpp">
@@ -543,143 +569,8 @@
     <ClInclude Include="src\world\World.hpp">
       <Filter>src\world</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxAssimpModelLoader\src\ofxAssimpAnimation.h">
-      <Filter>addons\ofxAssimpModelLoader\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxAssimpModelLoader\src\ofxAssimpMeshHelper.h">
-      <Filter>addons\ofxAssimpModelLoader\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxAssimpModelLoader\src\ofxAssimpModelLoader.h">
-      <Filter>addons\ofxAssimpModelLoader\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxAssimpModelLoader\src\ofxAssimpTexture.h">
-      <Filter>addons\ofxAssimpModelLoader\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxAssimpModelLoader\src\ofxAssimpUtils.h">
-      <Filter>addons\ofxAssimpModelLoader\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\assimp\ai_assert.h">
-      <Filter>addons\ofxAssimpModelLoader\libs\assimp\include\assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\assimp\anim.h">
-      <Filter>addons\ofxAssimpModelLoader\libs\assimp\include\assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\assimp\camera.h">
-      <Filter>addons\ofxAssimpModelLoader\libs\assimp\include\assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\assimp\cexport.h">
-      <Filter>addons\ofxAssimpModelLoader\libs\assimp\include\assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\assimp\cfileio.h">
-      <Filter>addons\ofxAssimpModelLoader\libs\assimp\include\assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\assimp\cimport.h">
-      <Filter>addons\ofxAssimpModelLoader\libs\assimp\include\assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\assimp\color4.h">
-      <Filter>addons\ofxAssimpModelLoader\libs\assimp\include\assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\assimp\Compiler\poppack1.h">
-      <Filter>addons\ofxAssimpModelLoader\libs\assimp\include\assimp\Compiler</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\assimp\Compiler\pstdint.h">
-      <Filter>addons\ofxAssimpModelLoader\libs\assimp\include\assimp\Compiler</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\assimp\Compiler\pushpack1.h">
-      <Filter>addons\ofxAssimpModelLoader\libs\assimp\include\assimp\Compiler</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\assimp\config.h">
-      <Filter>addons\ofxAssimpModelLoader\libs\assimp\include\assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\assimp\DefaultIOStream.h">
-      <Filter>addons\ofxAssimpModelLoader\libs\assimp\include\assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\assimp\DefaultIOSystem.h">
-      <Filter>addons\ofxAssimpModelLoader\libs\assimp\include\assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\assimp\DefaultLogger.hpp">
-      <Filter>addons\ofxAssimpModelLoader\libs\assimp\include\assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\assimp\Defines.h">
-      <Filter>addons\ofxAssimpModelLoader\libs\assimp\include\assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\assimp\defs.h">
-      <Filter>addons\ofxAssimpModelLoader\libs\assimp\include\assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\assimp\Exporter.hpp">
-      <Filter>addons\ofxAssimpModelLoader\libs\assimp\include\assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\assimp\Importer.hpp">
-      <Filter>addons\ofxAssimpModelLoader\libs\assimp\include\assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\assimp\importerdesc.h">
-      <Filter>addons\ofxAssimpModelLoader\libs\assimp\include\assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\assimp\IOStream.hpp">
-      <Filter>addons\ofxAssimpModelLoader\libs\assimp\include\assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\assimp\IOSystem.hpp">
-      <Filter>addons\ofxAssimpModelLoader\libs\assimp\include\assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\assimp\light.h">
-      <Filter>addons\ofxAssimpModelLoader\libs\assimp\include\assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\assimp\Logger.hpp">
-      <Filter>addons\ofxAssimpModelLoader\libs\assimp\include\assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\assimp\LogStream.hpp">
-      <Filter>addons\ofxAssimpModelLoader\libs\assimp\include\assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\assimp\material.h">
-      <Filter>addons\ofxAssimpModelLoader\libs\assimp\include\assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\assimp\matrix3x3.h">
-      <Filter>addons\ofxAssimpModelLoader\libs\assimp\include\assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\assimp\matrix4x4.h">
-      <Filter>addons\ofxAssimpModelLoader\libs\assimp\include\assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\assimp\mesh.h">
-      <Filter>addons\ofxAssimpModelLoader\libs\assimp\include\assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\assimp\metadata.h">
-      <Filter>addons\ofxAssimpModelLoader\libs\assimp\include\assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\assimp\NullLogger.hpp">
-      <Filter>addons\ofxAssimpModelLoader\libs\assimp\include\assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\assimp\port\AndroidJNI\AndroidJNIIOSystem.h">
-      <Filter>addons\ofxAssimpModelLoader\libs\assimp\include\assimp\port\AndroidJNI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\assimp\postprocess.h">
-      <Filter>addons\ofxAssimpModelLoader\libs\assimp\include\assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\assimp\ProgressHandler.hpp">
-      <Filter>addons\ofxAssimpModelLoader\libs\assimp\include\assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\assimp\quaternion.h">
-      <Filter>addons\ofxAssimpModelLoader\libs\assimp\include\assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\assimp\scene.h">
-      <Filter>addons\ofxAssimpModelLoader\libs\assimp\include\assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\assimp\SceneCombiner.h">
-      <Filter>addons\ofxAssimpModelLoader\libs\assimp\include\assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\assimp\texture.h">
-      <Filter>addons\ofxAssimpModelLoader\libs\assimp\include\assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\assimp\types.h">
-      <Filter>addons\ofxAssimpModelLoader\libs\assimp\include\assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\assimp\vector2.h">
-      <Filter>addons\ofxAssimpModelLoader\libs\assimp\include\assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\assimp\vector3.h">
-      <Filter>addons\ofxAssimpModelLoader\libs\assimp\include\assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\assimp\version.h">
-      <Filter>addons\ofxAssimpModelLoader\libs\assimp\include\assimp</Filter>
+    <ClInclude Include="src\world\WorldIO.hpp">
+      <Filter>src\world</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\addons\ofxImGui\src\BaseEngine.h">
       <Filter>addons\ofxImGui\src</Filter>
@@ -729,102 +620,8 @@
     <ClInclude Include="..\..\..\..\addons\ofxImGui\libs\imgui\src\imstb_truetype.h">
       <Filter>addons\ofxImGui\libs\imgui\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxPoco\src\ofxXmlPoco.h">
-      <Filter>addons\ofxPoco\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxTween\src\Easings\easing_terms_of_use.html">
-      <Filter>addons\ofxTween\src\Easings</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxTween\src\Easings\ofxEasing.h">
-      <Filter>addons\ofxTween\src\Easings</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxTween\src\Easings\ofxEasingBack.h">
-      <Filter>addons\ofxTween\src\Easings</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxTween\src\Easings\ofxEasingBounce.h">
-      <Filter>addons\ofxTween\src\Easings</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxTween\src\Easings\ofxEasingCirc.h">
-      <Filter>addons\ofxTween\src\Easings</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxTween\src\Easings\ofxEasingCubic.h">
-      <Filter>addons\ofxTween\src\Easings</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxTween\src\Easings\ofxEasingElastic.h">
-      <Filter>addons\ofxTween\src\Easings</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxTween\src\Easings\ofxEasingExpo.h">
-      <Filter>addons\ofxTween\src\Easings</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxTween\src\Easings\ofxEasingLinear.h">
-      <Filter>addons\ofxTween\src\Easings</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxTween\src\Easings\ofxEasingQuad.h">
-      <Filter>addons\ofxTween\src\Easings</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxTween\src\Easings\ofxEasingQuart.h">
-      <Filter>addons\ofxTween\src\Easings</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxTween\src\Easings\ofxEasingQuint.h">
-      <Filter>addons\ofxTween\src\Easings</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxTween\src\Easings\ofxEasingSine.h">
-      <Filter>addons\ofxTween\src\Easings</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxTween\src\ofxTween.h">
-      <Filter>addons\ofxTween\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxUnitTests\src\ofxUnitTests.h">
-      <Filter>addons\ofxUnitTests\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxXmlSettings\src\ofxXmlSettings.h">
-      <Filter>addons\ofxXmlSettings\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\addons\ofxXmlSettings\libs\tinyxml.h">
-      <Filter>addons\ofxXmlSettings\libs</Filter>
-    </ClInclude>
-    <ClInclude Include="src\picojson\picojson.h" />
-    <ClInclude Include="src\mapbox\optional.hpp" />
-    <ClInclude Include="src\mapbox\recursive_wrapper.hpp" />
-    <ClInclude Include="src\mapbox\variant.hpp" />
-    <ClInclude Include="src\mapbox\variant_io.hpp" />
-    <ClInclude Include="src\world\TextureInfoCollection.hpp" />
-    <ClInclude Include="src\world\BlockInfoCollection.hpp" />
-    <ClInclude Include="src\world\BlockPack.hpp" />
-    <ClInclude Include="src\world\engine\Terrain.hpp" />
-    <ClInclude Include="src\world\engine\Pocket.hpp" />
-    <ClInclude Include="src\common\StateValue.hpp" />
-    <ClInclude Include="src\luaex\luaex.hpp" />
-    <ClInclude Include="src\luaex\luaimpl.hpp" />
-    <ClInclude Include="src\world\biome\ScriptBiome.hpp" />
-    <ClInclude Include="src\any\any.hpp" />
-    <ClInclude Include="src\world\WorldIO.hpp" />
-    <ClInclude Include="src\imguiex\ListBox.hpp" />
-    <ClInclude Include="src\imguiex\CheckBox.hpp" />
-    <ClInclude Include="src\imguiex\RadioButtonGroup.hpp" />
-    <ClInclude Include="src\imguiex\InputField.hpp" />
-    <ClInclude Include="src\imguiex\Float.hpp" />
-    <ClInclude Include="src\imguiex\Float2.hpp" />
-    <ClInclude Include="src\imguiex\Float3.hpp" />
-    <ClInclude Include="src\common\ObjBuilder.hpp" />
-    <ClInclude Include="src\imguiex\FloatXZ.hpp" />
-    <ClInclude Include="src\PerlinNoise\PerlinNoise.hpp" />
-    <ClInclude Include="src\shader\ShaderProperty.hpp" />
-    <ClInclude Include="src\shader\Plane.hpp" />
-    <ClInclude Include="src\shader\Shader.hpp" />
-    <ClInclude Include="src\shader\ShaderRegistry.hpp" />
-    <ClInclude Include="src\shader\Texture.hpp" />
-    <ClInclude Include="src\shader\Transform.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="icon.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="src\picojson\LICENSE" />
-    <None Include="src\mapbox\LICENSE" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="src\mapbox\LICENSE_1_0.txt" />
   </ItemGroup>
 </Project>

@@ -3,6 +3,8 @@
 #define WORLD_WORLDIO_HPP
 #include <string>
 #include <memory>
+#include <glm/glm.hpp>
+#include <glm/gtc/quaternion.hpp>
 
 namespace planet {
 class World;
