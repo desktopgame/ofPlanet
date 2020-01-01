@@ -243,10 +243,8 @@
     <ClCompile Include="src\world\BlockTable.cpp" />
     <ClCompile Include="src\world\engine\Cell.cpp" />
     <ClCompile Include="src\world\engine\Generator.cpp" />
-    <ClCompile Include="src\world\engine\PerlinNoise.cpp" />
     <ClCompile Include="src\world\engine\Pocket.cpp" />
     <ClCompile Include="src\world\engine\Terrain.cpp" />
-    <ClCompile Include="src\world\engine\Xorshift.cpp" />
     <ClCompile Include="src\world\MultiBlock.cpp" />
     <ClCompile Include="src\world\Planet.cpp" />
     <ClCompile Include="src\world\SideRenderer.cpp" />
@@ -366,10 +364,8 @@
     <ClInclude Include="src\world\BlockTable.hpp" />
     <ClInclude Include="src\world\engine\Cell.hpp" />
     <ClInclude Include="src\world\engine\Generator.hpp" />
-    <ClInclude Include="src\world\engine\PerlinNoise.hpp" />
     <ClInclude Include="src\world\engine\Pocket.hpp" />
     <ClInclude Include="src\world\engine\Terrain.hpp" />
-    <ClInclude Include="src\world\engine\Xorshift.hpp" />
     <ClInclude Include="src\world\MultiBlock.hpp" />
     <ClInclude Include="src\world\Planet.hpp" />
     <ClInclude Include="src\world\SideRenderer.hpp" />

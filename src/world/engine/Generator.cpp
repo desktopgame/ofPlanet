@@ -3,7 +3,7 @@
 namespace planet {
 
 Generator::Generator(const glm::ivec3& size)
-    : size(size), freq((size.x + size.z) / 8), persistence(0.5f), octaves(5), sivPerlin(){}
+    : size(size), sivPerlin(){}
 
 Generator::Generator(int xSize, int ySize, int zSize) : Generator(glm::ivec3(xSize, ySize, zSize)) {
 }
@@ -32,16 +32,4 @@ Terrain Generator::generate(unsigned int seed) {
 		}
 		return ter;
 }
-
-float Generator::noise3D(PerlinNoise& noise, int x, int y, int z) {
-	int xzSize = (size.x + size.z) / 2;
-	float fxm = 1.0f / (float)xzSize;
-	float fym = 1.0f / (float)xzSize;
-	float fzm = 1.0f / (float)size.y;
-	float fx = static_cast<float>(x) * fxm;
-	float fy = static_cast<float>(y) * fzm;
-	float fz = static_cast<float>(z) * fym;
-	return noise.octaveNoise(fx, fy, fz, octaves, persistence);
-}
-
 }  // namespace planet

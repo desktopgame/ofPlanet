@@ -5,7 +5,6 @@
 
 #include "../World.hpp"
 #include "Terrain.hpp"
-#include "PerlinNoise.hpp"
 #include "../PerlinNoise/PerlinNoise.hpp"
 namespace planet {
 class Generator {
@@ -14,13 +13,9 @@ class Generator {
 		explicit Generator(int xSize, int ySize, int zSize);
         Terrain generate(unsigned int seed);
 
-        float freq;
-        int octaves;
-        float persistence;
 		glm::ivec3 size;
 private:
 	siv::PerlinNoise sivPerlin;
-	float noise3D(PerlinNoise& noise, int x, int y, int z);
 };
 }  // namespace planet
 #endif

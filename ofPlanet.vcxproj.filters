@@ -124,12 +124,6 @@
     <ClCompile Include="src\world\engine\Generator.cpp">
       <Filter>src\world\engine</Filter>
     </ClCompile>
-    <ClCompile Include="src\world\engine\PerlinNoise.cpp">
-      <Filter>src\world\engine</Filter>
-    </ClCompile>
-    <ClCompile Include="src\world\engine\Xorshift.cpp">
-      <Filter>src\world\engine</Filter>
-    </ClCompile>
     <ClCompile Include="src\world\MultiBlock.cpp">
       <Filter>src\world</Filter>
     </ClCompile>
@@ -529,12 +523,6 @@
       <Filter>src\world\engine</Filter>
     </ClInclude>
     <ClInclude Include="src\world\engine\Generator.hpp">
-      <Filter>src\world\engine</Filter>
-    </ClInclude>
-    <ClInclude Include="src\world\engine\PerlinNoise.hpp">
-      <Filter>src\world\engine</Filter>
-    </ClInclude>
-    <ClInclude Include="src\world\engine\Xorshift.hpp">
       <Filter>src\world\engine</Filter>
     </ClInclude>
     <ClInclude Include="src\world\MultiBlock.hpp">

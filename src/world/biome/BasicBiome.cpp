@@ -38,7 +38,6 @@ void BasicBiome::generate(BlockTable& blockTable) {
 			return;
 		}
         Generator gen(XSIZE, YSIZE, ZSIZE);
-        gen.freq = XZ / 16;
         // world.clear();
         heightMap.clear();
         // generate terrain
