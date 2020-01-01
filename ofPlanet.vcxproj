@@ -341,6 +341,7 @@
     <ClInclude Include="src\mapbox\recursive_wrapper.hpp" />
     <ClInclude Include="src\mapbox\variant.hpp" />
     <ClInclude Include="src\mapbox\variant_io.hpp" />
+    <ClInclude Include="src\PerlinNoise\PerlinNoise.hpp" />
     <ClInclude Include="src\picojson\picojson.h" />
     <ClInclude Include="src\scene\Scene.hpp" />
     <ClInclude Include="src\scene\SceneManager.hpp" />

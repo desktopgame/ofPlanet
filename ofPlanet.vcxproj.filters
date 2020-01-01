@@ -907,6 +907,7 @@
     <ClInclude Include="src\imguiex\Float3.hpp" />
     <ClInclude Include="src\common\ObjBuilder.hpp" />
     <ClInclude Include="src\imguiex\FloatXZ.hpp" />
+    <ClInclude Include="src\PerlinNoise\PerlinNoise.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="icon.rc" />
