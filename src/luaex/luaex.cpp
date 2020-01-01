@@ -166,7 +166,7 @@ Error Interpreter::getGlobalInt(const std::string & name, int & outInt) {
 	if (type != LUA_TNUMBER) {
 		return panic(E_TYPE_MISSING, "value is not number");
 	}
-	outInt = luaL_checkinteger(state, -1);
+	outInt = static_cast<int>(luaL_checkinteger(state, -1));
 	lua_pop(state, 1);
 	return E_NIL;
 }

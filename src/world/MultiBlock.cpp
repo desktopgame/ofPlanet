@@ -86,13 +86,13 @@ void MultiBlock::stack(const std::vector<std::string> lines) {
 
 std::vector<MultiBlock::Entry> MultiBlock::to3DData() const {
         std::vector<MultiBlock::Entry> ret;
-        for (int i = 0; i < stacks.size(); i++) {
+        for (int i = 0; i < static_cast<int>(stacks.size()); i++) {
                 int y = i;
                 auto layer = stacks[i];
                 auto lines = split(layer, '\n');
-                for (int j = 0; j < lines.size(); j++) {
+                for (int j = 0; j < static_cast<int>(lines.size()); j++) {
                         auto line = lines[j];
-                        for (int k = 0; k < line.size(); k++) {
+                        for (int k = 0; k < static_cast<int>(line.size()); k++) {
                                 glm::vec3 v3(k, y, j);
                                 ret.push_back(MultiBlock::Entry(v3, line[k]));
                         }

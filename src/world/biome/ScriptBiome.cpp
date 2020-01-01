@@ -16,7 +16,7 @@ ScriptBiome::ScriptBiome(const std::string& filename) :lua(), ctx(nullptr), tabl
 }
 
 void ScriptBiome::onGUI() {
-	//GUI‚ğ•\¦‚·‚é
+	//GUIã‚’è¡¨ç¤ºã™ã‚‹
 	auto iter = globals.begin();
 	std::unordered_map<std::string, luaex::Object> copy;
 	while (iter != globals.end()) {
@@ -24,7 +24,7 @@ void ScriptBiome::onGUI() {
 		auto key = kv.first;
 		auto obj = kv.second;
 		if (obj.type == T_NUMBER) {
-			//lua‚É‚ÍÀ”Œ^‚Æ®”Œ^‚Ì‹æ•Ê‚ª‚È‚¢‚Ì‚Å“ª•¶š‚Å”»•Ê‚·‚é
+			//luaã«ã¯å®Ÿæ•°å‹ã¨æ•´æ•°å‹ã®åŒºåˆ¥ãŒãªã„ã®ã§é ­æ–‡å­—ã§åˆ¤åˆ¥ã™ã‚‹
 			if (key[0] == 'i') {
 				int v = static_cast<int>(obj.value.number);
 				if (ImGui::SliderInt(key.c_str(), &v, -1000, 1000)) {
@@ -46,7 +46,7 @@ void ScriptBiome::onGUI() {
 			char buf[256];
 			memset(buf, '\0', 256);
 			memcpy(buf, obj.value.string.c_str(), 256);
-			//FIXME:256•¶šˆÈã‚ÌƒeƒLƒXƒg‚ª“ü‚Á‚½ê‡
+			//FIXME:256æ–‡å­—ä»¥ä¸Šã®ãƒ†ã‚­ã‚¹ãƒˆãŒå…¥ã£ãŸå ´åˆ
 			if (ImGui::InputText(key.c_str(), buf, 256)) {
 				lua.setGlobalString(key, buf);
 			}
@@ -67,7 +67,7 @@ void ScriptBiome::onBeginGenerate(BlockTable & blockTable) {
 	this->table = std::make_shared<BlockTable>(blockTable.getXSize(), blockTable.getYSize(), blockTable.getZSize());
 	ctx->select();
 	ctx->put("TABLE", table);
-	// ƒR[ƒ‹ƒoƒbƒNƒ‚[ƒh‚ğŒˆ‚ß‚é
+	// ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ãƒ¢ãƒ¼ãƒ‰ã‚’æ±ºã‚ã‚‹
 	std::vector<Variant> modeV;
 	lua.call("getCallbackMode", std::vector<Object>{}, std::vector<Type>{ T_STRING}, modeV);
 	this->mode = modeV.at(0).string;
@@ -78,10 +78,10 @@ void ScriptBiome::onBeginGenerate(BlockTable & blockTable) {
 
 void ScriptBiome::onEndGenerate(BlockTable & blockTable) {
 	lua.call("onPostGenerate", std::vector<Object>{}, std::vector<Type>{}, std::vector<Variant>{});
-	//ƒRƒ“ƒeƒLƒXƒg‚ğíœ
+	//ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã‚’å‰Šé™¤
 	ctx->dispose();
 	this->ctx = nullptr;
-	// o—Í‚ğƒRƒs[
+	// å‡ºåŠ›ã‚’ã‚³ãƒ”ãƒ¼
 	for (int x = 0; x < this->table->getXSize(); x++) {
 		for (int y = 0; y < this->table->getYSize(); y++) {
 			for (int z = 0; z < this->table->getZSize(); z++) {

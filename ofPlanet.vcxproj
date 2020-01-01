@@ -103,6 +103,7 @@
       <AdditionalIncludeDirectories>src;$(SolutionDir)packages\lua.5.3.5.1\build\native\include;$(SolutionDir)packages\soil.1.16.0\build\native\include;%(AdditionalIncludeDirectories);src\PerlinNoise;src\any;src\common;src\game;src\imguiex;src\input;src\io;src\luaex;src\mapbox;src\picojson;src\scene;src\shader;src\text;src\world;src\world\biome;src\world\engine;..\..\..\..\addons\ofxImGui\libs;..\..\..\..\addons\ofxImGui\libs\imgui;..\..\..\..\addons\ofxImGui\libs\imgui\src;..\..\..\..\addons\ofxImGui\src</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
       <ObjectFileName>$(IntDir)</ObjectFileName>
+      <TreatWarningAsError>false</TreatWarningAsError>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -139,11 +140,12 @@
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>EnableAllWarnings</WarningLevel>
       <AdditionalIncludeDirectories>src;$(SolutionDir)packages\lua.5.3.5.1\build\native\include;$(SolutionDir)packages\soil.1.16.0\build\native\include;%(AdditionalIncludeDirectories);src\PerlinNoise;src\any;src\common;src\game;src\imguiex;src\input;src\io;src\luaex;src\mapbox;src\picojson;src\scene;src\shader;src\text;src\world;src\world\biome;src\world\engine;..\..\..\..\addons\ofxImGui\libs;..\..\..\..\addons\ofxImGui\libs\imgui;..\..\..\..\addons\ofxImGui\libs\imgui\src;..\..\..\..\addons\ofxImGui\src</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <ObjectFileName>$(IntDir)</ObjectFileName>
+      <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>

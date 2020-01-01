@@ -5,7 +5,7 @@ std::vector<std::string> Strings::split(const std::string& input,
                                         const char c) {
         std::vector<std::string> ret;
         std::string buf;
-        for (int i = 0; i < input.size(); i++) {
+        for (int i = 0; i < static_cast<int>(input.size()); i++) {
                 char e = input[i];
                 if (e == c) {
                         ret.push_back(buf);
@@ -22,10 +22,10 @@ std::vector<std::string> Strings::split(const std::string& input,
 
 std::string Strings::lstrip(const std::string& input) {
         std::string buf;
-        for (int i = 0; i < input.size(); i++) {
+        for (int i = 0; i < static_cast<int>(input.size()); i++) {
                 auto c = input[i];
                 if (c != ' ' && c != '\t' && c != '\n') {
-                        for (int j = i; j < input.size(); j++) {
+                        for (int j = i; j < static_cast<int>(input.size()); j++) {
                                 buf.push_back(input[j]);
                         }
                         break;
@@ -53,7 +53,7 @@ bool Strings::include(const std::string& input, const char c) {
 
 std::string Strings::replace(const std::string& input, char oldc, char newc) {
         std::string buf;
-        for (int i = 0; i < input.size(); i++) {
+        for (int i = 0; i < static_cast<int>(input.size()); i++) {
                 char c = input.at(i);
                 if (c == oldc) {
                         buf += newc;
@@ -78,7 +78,7 @@ bool Strings::hasPrefix(const std::string & input, const std::string & prefix) {
 	if (prefix.size() > input.size()) {
 		return false;
 	}
-	for (int i = 0; i < prefix.size(); i++) {
+	for (int i = 0; i < static_cast<int>(prefix.size()); i++) {
 		if (prefix[i] != input[i]) {
 			return false;
 		}
@@ -89,7 +89,7 @@ bool Strings::hasSuffix(const std::string & input, const std::string & suffix) {
 	if (suffix.size() > input.size()) {
 		return false;
 	}
-	for (int i = 0; i < suffix.size(); i++) {
+	for (int i = 0; i < static_cast<int>(suffix.size()); i++) {
 		char sc = suffix[i];
 		char ic = input[suffix.size() - i];
 		if (sc != ic) {

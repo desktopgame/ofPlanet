@@ -46,7 +46,7 @@ std::string ObjBuilder::toString() const {
 	}
 	for (auto face : faces) {
 		ss << "f ";
-		for (int i = 0; i < face.size(); i++) {
+		for (int i = 0; i < static_cast<int>(face.size()); i++) {
 			bool last = i == (face.size() - 1);
 			auto polygon = face[i];
 			int vi = polygon.vertexIndex.index;

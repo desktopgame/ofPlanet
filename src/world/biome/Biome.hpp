@@ -11,7 +11,7 @@ class Biome {
        public:
         Biome() = default;
         virtual ~Biome() = default;
-		//FIXME:‚±‚±‚É’è‹`‚·‚é‚×‚«‚Å‚È‚¢
+		//FIXME:ã“ã“ã«å®šç¾©ã™ã‚‹ã¹ãã§ãªã„
 		virtual void onGUI() = 0;
         virtual void generate(BlockTable& blockTable) = 0;
 
