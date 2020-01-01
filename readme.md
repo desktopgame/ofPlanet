@@ -174,6 +174,13 @@ blocks.jsonは例えば以下のようなファイルです。
 ![エクスポート画面](ss_export.png)
 
 # 開発者マニュアル
+## ビルド
+このプロジェクトのビルドにはopenframeworksが必要です。  
+ディレクトリは以下の場所である必要があります。
+````
+your_dir/of_v0.10.1_vs2017_release/apps/myApps/ofPlanet
+````
+
 ## Luaスクリプト
 原則として、luaスクリプトは全て `Runtime/data/script` に配置します。  
 ※ `ofPlanet.exe` が `Runtime` にあるとする
