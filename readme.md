@@ -94,7 +94,7 @@ end
 textures.jsonは例えば以下のようなファイルです。
 ````
 {
-  "baseDirectory": "./data/assets/image/block",
+  "baseDirectory": "./data/image/block",
   "textures": [
     {
       "baseFileName": "DirtBlock",
