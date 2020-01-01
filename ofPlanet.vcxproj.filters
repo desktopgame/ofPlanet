@@ -73,16 +73,10 @@
     <ClCompile Include="src\scene\SceneManager.cpp">
       <Filter>src\scene</Filter>
     </ClCompile>
-    <ClCompile Include="src\shader\AABB.cpp">
-      <Filter>src\shader</Filter>
-    </ClCompile>
     <ClCompile Include="src\shader\Camera.cpp">
       <Filter>src\shader</Filter>
     </ClCompile>
     <ClCompile Include="src\shader\CameraRegistry.cpp">
-      <Filter>src\shader</Filter>
-    </ClCompile>
-    <ClCompile Include="src\shader\CubeMap.cpp">
       <Filter>src\shader</Filter>
     </ClCompile>
     <ClCompile Include="src\shader\Flag.cpp">
@@ -97,40 +91,7 @@
     <ClCompile Include="src\shader\MaterialRegistry.cpp">
       <Filter>src\shader</Filter>
     </ClCompile>
-    <ClCompile Include="src\shader\ModelTexture.cpp">
-      <Filter>src\shader</Filter>
-    </ClCompile>
     <ClCompile Include="src\shader\NameSet.cpp">
-      <Filter>src\shader</Filter>
-    </ClCompile>
-    <ClCompile Include="src\shader\Plane.cpp">
-      <Filter>src\shader</Filter>
-    </ClCompile>
-    <ClCompile Include="src\shader\RenderBuffer.cpp">
-      <Filter>src\shader</Filter>
-    </ClCompile>
-    <ClCompile Include="src\shader\ScreenBuffer.cpp">
-      <Filter>src\shader</Filter>
-    </ClCompile>
-    <ClCompile Include="src\shader\Shader.cpp">
-      <Filter>src\shader</Filter>
-    </ClCompile>
-    <ClCompile Include="src\shader\ShaderProperty.cpp">
-      <Filter>src\shader</Filter>
-    </ClCompile>
-    <ClCompile Include="src\shader\ShaderRegistry.cpp">
-      <Filter>src\shader</Filter>
-    </ClCompile>
-    <ClCompile Include="src\shader\Texture.cpp">
-      <Filter>src\shader</Filter>
-    </ClCompile>
-    <ClCompile Include="src\shader\Transform.cpp">
-      <Filter>src\shader</Filter>
-    </ClCompile>
-    <ClCompile Include="src\shader\Vertex.cpp">
-      <Filter>src\shader</Filter>
-    </ClCompile>
-    <ClCompile Include="src\shader\VertexArray.cpp">
       <Filter>src\shader</Filter>
     </ClCompile>
     <ClCompile Include="src\text\Encoding.cpp">
@@ -168,12 +129,6 @@
     </ClCompile>
     <ClCompile Include="src\world\engine\Xorshift.cpp">
       <Filter>src\world\engine</Filter>
-    </ClCompile>
-    <ClCompile Include="src\world\Entity.cpp">
-      <Filter>src\world</Filter>
-    </ClCompile>
-    <ClCompile Include="src\world\EntityRigidbody.cpp">
-      <Filter>src\world</Filter>
     </ClCompile>
     <ClCompile Include="src\world\MultiBlock.cpp">
       <Filter>src\world</Filter>
@@ -311,6 +266,12 @@
     <ClCompile Include="src\imguiex\Float3.cpp" />
     <ClCompile Include="src\common\ObjBuilder.cpp" />
     <ClCompile Include="src\imguiex\FloatXZ.cpp" />
+    <ClCompile Include="src\shader\ShaderProperty.cpp" />
+    <ClCompile Include="src\shader\Plane.cpp" />
+    <ClCompile Include="src\shader\Shader.cpp" />
+    <ClCompile Include="src\shader\ShaderRegistry.cpp" />
+    <ClCompile Include="src\shader\Texture.cpp" />
+    <ClCompile Include="src\shader\Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -507,12 +468,6 @@
     <ClInclude Include="src\scene\SceneManager.hpp">
       <Filter>src\scene</Filter>
     </ClInclude>
-    <ClInclude Include="src\shader\AABB.hpp">
-      <Filter>src\shader</Filter>
-    </ClInclude>
-    <ClInclude Include="src\shader\Buffer.hpp">
-      <Filter>src\shader</Filter>
-    </ClInclude>
     <ClInclude Include="src\shader\Camera.hpp">
       <Filter>src\shader</Filter>
     </ClInclude>
@@ -520,9 +475,6 @@
       <Filter>src\shader</Filter>
     </ClInclude>
     <ClInclude Include="src\shader\CameraRegistry.hpp">
-      <Filter>src\shader</Filter>
-    </ClInclude>
-    <ClInclude Include="src\shader\CubeMap.hpp">
       <Filter>src\shader</Filter>
     </ClInclude>
     <ClInclude Include="src\shader\Flag.hpp">
@@ -537,40 +489,7 @@
     <ClInclude Include="src\shader\MaterialRegistry.hpp">
       <Filter>src\shader</Filter>
     </ClInclude>
-    <ClInclude Include="src\shader\ModelTexture.hpp">
-      <Filter>src\shader</Filter>
-    </ClInclude>
     <ClInclude Include="src\shader\NameSet.hpp">
-      <Filter>src\shader</Filter>
-    </ClInclude>
-    <ClInclude Include="src\shader\Plane.hpp">
-      <Filter>src\shader</Filter>
-    </ClInclude>
-    <ClInclude Include="src\shader\RenderBuffer.hpp">
-      <Filter>src\shader</Filter>
-    </ClInclude>
-    <ClInclude Include="src\shader\ScreenBuffer.hpp">
-      <Filter>src\shader</Filter>
-    </ClInclude>
-    <ClInclude Include="src\shader\Shader.hpp">
-      <Filter>src\shader</Filter>
-    </ClInclude>
-    <ClInclude Include="src\shader\ShaderProperty.hpp">
-      <Filter>src\shader</Filter>
-    </ClInclude>
-    <ClInclude Include="src\shader\ShaderRegistry.hpp">
-      <Filter>src\shader</Filter>
-    </ClInclude>
-    <ClInclude Include="src\shader\Texture.hpp">
-      <Filter>src\shader</Filter>
-    </ClInclude>
-    <ClInclude Include="src\shader\Transform.hpp">
-      <Filter>src\shader</Filter>
-    </ClInclude>
-    <ClInclude Include="src\shader\Vertex.hpp">
-      <Filter>src\shader</Filter>
-    </ClInclude>
-    <ClInclude Include="src\shader\VertexArray.hpp">
       <Filter>src\shader</Filter>
     </ClInclude>
     <ClInclude Include="src\text\Encoding.hpp">
@@ -617,12 +536,6 @@
     </ClInclude>
     <ClInclude Include="src\world\engine\Xorshift.hpp">
       <Filter>src\world\engine</Filter>
-    </ClInclude>
-    <ClInclude Include="src\world\Entity.hpp">
-      <Filter>src\world</Filter>
-    </ClInclude>
-    <ClInclude Include="src\world\EntityRigidbody.hpp">
-      <Filter>src\world</Filter>
     </ClInclude>
     <ClInclude Include="src\world\MultiBlock.hpp">
       <Filter>src\world</Filter>
@@ -908,6 +821,12 @@
     <ClInclude Include="src\common\ObjBuilder.hpp" />
     <ClInclude Include="src\imguiex\FloatXZ.hpp" />
     <ClInclude Include="src\PerlinNoise\PerlinNoise.hpp" />
+    <ClInclude Include="src\shader\ShaderProperty.hpp" />
+    <ClInclude Include="src\shader\Plane.hpp" />
+    <ClInclude Include="src\shader\Shader.hpp" />
+    <ClInclude Include="src\shader\ShaderRegistry.hpp" />
+    <ClInclude Include="src\shader\Texture.hpp" />
+    <ClInclude Include="src\shader\Transform.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="icon.rc" />

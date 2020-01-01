@@ -13,13 +13,10 @@
 #include "../game/ofApp.h"
 #include "../shader/Camera.hpp"
 #include "../shader/CameraRegistry.hpp"
-#include "../shader/Shader.hpp"
-#include "../shader/ShaderRegistry.hpp"
 #include "Block.hpp"
 #include "BlockPack.hpp"
 #include "BlockRenderer.hpp"
 #include "Camera.hpp"
-#include "Entity.hpp"
 #include "TexturePack.hpp"
 namespace planet {
 
@@ -86,31 +83,6 @@ void World::update() {
         if (!isPlayMode()) {
                 return;
         }
-        auto w = std::const_pointer_cast<World>(shared_from_this());
-        /*
-for (int x = 0; x < xSize; x++) {
-        for (int y = 0; y < ySize; y++) {
-                for (int z = 0; z < zSize; z++) {
-                        auto block = getBlockBehavior(x, y, z);
-                        if (!block) {
-                                continue;
-                        }
-                        block->update(w, x, y, z);
-                }
-        }
-}
-        */
-        for (auto entity : entities) {
-                entity->update();
-        }
-        auto iter = std::remove_if(
-            entities.begin(), entities.end(),
-            [](std::shared_ptr<Entity> e) { return e->isDestroyed(); });
-        entities.erase(iter, entities.end());
-        while (!entityBuf.empty()) {
-                entities.push_back(entityBuf.back());
-                entityBuf.pop_back();
-        }
 }
 
 void World::drawToBuffer() {
@@ -125,12 +97,6 @@ void World::drawToBuffer() {
         ofEnableAlphaBlending();
         ofSetBackgroundColor(0, 0, 0, 0);
         renderer.render();
-        for (auto entity : entities) {
-                entity->draw();
-        }
-		if(isDrawSkyBox()) {
-			skybox->draw();
-		}
         fbo.end();
         // screenBuffer.unbind();
 }
@@ -167,36 +133,6 @@ void World::rehash() {
         }
         renderer.rehash();
 }
-
-std::shared_ptr<Entity> World::spawn(std::shared_ptr<Entity> entity) {
-	this->entityBuf.emplace_back(entity);
-	return entity;
-}
-
-std::shared_ptr<Entity> World::getEntity(int index) {
-        return entities.at(index);
-}
-
-std::shared_ptr<Entity> World::findEntityWithTag(const std::string & tag) const {
-	for (auto e : entities) {
-		if (e->getTag() == tag) {
-			return e;
-		}
-	}
-	return nullptr;
-}
-
-std::vector<std::shared_ptr<Entity>> World::findEntitiesWithTag(const std::string & tag) const {
-	std::vector<std::shared_ptr<Entity>> v;
-	for (auto e : entities) {
-		if (e->getTag() == tag) {
-			v.emplace_back(e);
-		}
-	}
-	return v;
-}
-
-int World::getEntityCount() const { return static_cast<int>(entities.size()); }
 
 void World::setBlockBehavior(glm::vec3 pos,
                              std::shared_ptr<BlockBehavior> block) {
@@ -359,12 +295,7 @@ void World::setPlayMode(bool playMode) {
         this->bIsPlayMode = playMode;
 }
 bool World::isPlayMode() const { return bIsPlayMode; }
-void World::setDrawSkyBox(bool drawSkyBox) {
-	this->bIsDrawSkyBox = drawSkyBox;
-}
-bool World::isDrawSkyBox() const {
-	return bIsDrawSkyBox;
-}
+
 NameSet World::spriteNameSet(const NameSet& nameSet) {
         NameSet ns = nameSet;
         ns.shader = "Sprite";
@@ -384,25 +315,12 @@ World::World(const NameSet& nameSet, const glm::ivec3& size)
 
 World::World(const NameSet& nameSet, int xSize, int ySize, int zSize)
 	: blocks(),
-	entities(),
-	entityBuf(),
 	xSize(xSize),
 	ySize(ySize),
 	zSize(zSize),
 	renderer(nameSet),
 	isInvalid(true),
 	bIsPlayMode(false),
-	fbo(),
-	screenBuffer(spriteNameSet(nameSet), ofGetWidth(), ofGetHeight()),
-	skybox(std::make_shared<CubeMap>(TexturePack::getCurrent()->getSkybox(),
-		nameSet.toggleSkybox(true)
-		.toggleVertex(true)
-		.toggleProjectionMatrix(true)
-		.toggleViewMatrix(true)
-		.toggleModelMatrix(true)
-		.changeShader("Skybox"),
-		glm::vec3(xSize, ySize, zSize), 64, 64)),
-        bIsDrawSkyBox(true) {
-        nameSet.getCamera()->addObserver(skybox);
+	fbo() {
 }
 }  // namespace planet

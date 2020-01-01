@@ -13,7 +13,6 @@
 #include "../common/FirstPersonController.hpp"
 #include "../common/Timer.hpp"
 #include "../scene/Scene.hpp"
-#include "../shader/ModelTexture.hpp"
 #include "../shader/Plane.hpp"
 #include "../shader/Transform.hpp"
 #include "../world/Planet.hpp"

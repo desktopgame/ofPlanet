@@ -6,7 +6,6 @@
 #include <unordered_map>
 #include <vector>
 
-#include "../shader/CubeMap.hpp"
 #include "../shader/Texture.hpp"
 #include "TextureSet.hpp"
 
@@ -27,7 +26,6 @@ class TexturePack : public std::enable_shared_from_this<TexturePack> {
         void removeTextureSet(int index);
         int getTextureSetCount() const;
 
-        CubeMapDesc getSkybox() const;
         std::shared_ptr<Texture> getImage(const std::string& name) const;
 
         bool isSelected() const;
@@ -42,7 +40,6 @@ class TexturePack : public std::enable_shared_from_this<TexturePack> {
        private:
         bool selected;
         std::string name;
-        CubeMapDesc skybox;
         std::vector<TextureSet> textureSets;
         std::unordered_map<std::string, std::shared_ptr<Texture> > images;
         static std::vector<std::shared_ptr<TexturePack> > texturePacks;

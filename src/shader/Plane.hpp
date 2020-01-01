@@ -3,10 +3,8 @@
 #define SHADER_PLANE_HPP
 #include <ofVbo.h>
 
-#include "Buffer.hpp"
 #include "CameraObserver.hpp"
 #include "NameSet.hpp"
-#include "VertexArray.hpp"
 namespace planet {
 
 enum class PlaneType : unsigned int {

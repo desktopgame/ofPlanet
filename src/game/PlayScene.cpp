@@ -80,7 +80,6 @@ void PlayScene::show() {
 			cam->setLookAt(glm::vec3(w->getXSize() / 2, 0, w->getZSize() / 2));
 			cam->rehash();
 			w->setPlayMode(false);
-			w->setDrawSkyBox(false);
 		}
 }
 

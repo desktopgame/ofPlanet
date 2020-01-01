@@ -117,8 +117,6 @@ int TexturePack::getTextureSetCount() const {
         return static_cast<int>(textureSets.size());
 }
 
-CubeMapDesc TexturePack::getSkybox() const { return skybox; }
-
 std::shared_ptr<Texture> TexturePack::getImage(const std::string& name) const {
         return images.at(name);
 }
@@ -154,7 +152,7 @@ void TexturePack::resolve() {
 
 // protected
 TexturePack::TexturePack()
-    : selected(false), name(), textureSets(), images(), skybox() {}
+    : selected(false), name(), textureSets(), images() {}
 
 std::shared_ptr<TexturePack> TexturePack::registerTexturePack(
     const std::shared_ptr<TexturePack> pack) {
