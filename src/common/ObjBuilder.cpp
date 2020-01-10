@@ -36,10 +36,10 @@ ObjModel & ObjModel::face(const ObjFace & face) {
 std::stringstream & operator<<(std::stringstream & ss, const ObjModel & model) {
 	ss << "o " << model.name << std::endl;
 	for (auto vert : model.vertices) {
-		ss << "v " << vert.x << " " << vert.y << " " << vert.z << std::endl;
+		ss << "v " << vert.x << " " << vert.z << " " << vert.y << std::endl;
 	}
 	for (auto norm : model.normals) {
-		ss << "vn " << norm.x << " " << norm.y << " " << norm.z << std::endl;
+		ss << "vn " << norm.x << " " << norm.z << " " << norm.y << std::endl;
 	}
 	for (auto texcoord : model.texcoords) {
 		ss << "vt " << texcoord.x << " " << texcoord.y << std::endl;
