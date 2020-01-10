@@ -29,6 +29,33 @@ ofApp::ofApp()
 void ofApp::setup() {
         ofSeedRandom(time(NULL));
 		ofBackground(ofColor::black);
+		glm::vec3 size(1, 1, 1);
+		ObjBuilder builder;
+		//0, 1, 2, 2, 3, 0
+		builder.newModel("front")
+			.vertex(glm::vec3(-size.x, -size.y, size.z))
+			.vertex(glm::vec3(size.x, -size.y, size.z))
+			.vertex(glm::vec3(size.x, size.y, size.z))
+			.vertex(glm::vec3(-size.x, size.y, size.z))
+			.normal(glm::vec3(0, 0, 1))
+			.normal(glm::vec3(0, 0, 1))
+			.normal(glm::vec3(0, 0, 1))
+			.normal(glm::vec3(0, 0, 1))
+			.texcoord(glm::vec2(0, 1))
+			.texcoord(glm::vec2(1, 1))
+			.texcoord(glm::vec2(1, 0))
+			.texcoord(glm::vec2(0, 0))
+			.face(ObjFace{
+				ObjPolygon(ObjIndex(0), ObjIndex(0), ObjIndex(0)),
+				ObjPolygon(ObjIndex(1), ObjIndex(1), ObjIndex(1)),
+				ObjPolygon(ObjIndex(2), ObjIndex(2), ObjIndex(2)),
+			})
+			.face(ObjFace{
+				ObjPolygon(ObjIndex(2), ObjIndex(2), ObjIndex(2)),
+				ObjPolygon(ObjIndex(3), ObjIndex(3), ObjIndex(3)),
+				ObjPolygon(ObjIndex(0), ObjIndex(0), ObjIndex(0)),
+			});
+		std::cout << builder.toString() << std::endl;
 #if _DEBUG
         glDebugMessageCallback(
             reinterpret_cast<GLDEBUGPROC>(ofApp::bridgeDebugMessage), NULL);
