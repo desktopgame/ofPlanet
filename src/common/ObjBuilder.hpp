@@ -36,8 +36,6 @@ public:
 	std::vector<glm::vec2> texcoords;
 	std::vector<ObjFace> faces;
 };
-std::stringstream& operator<< (std::stringstream& ss, const ObjModel& model);
-std::stringstream& operator<< (std::stringstream& ss, const ObjModel* model);
 class ObjBuilder {
 public:
 	explicit ObjBuilder();
@@ -45,6 +43,10 @@ public:
 	ObjModel& newModel(const std::string& name);
 	std::string toString() const;
 private:
+	void toStringImpl(std::stringstream& ss, int index) const;
+	int resolveVertexIndex(int modelIndex, int localVertexIndex) const;
+	int resolveNormalIndex(int modelIndex, int localNormalIndex) const;
+	int resolveTexcoordIndex(int modelIndex, int localTexcoordIndex) const;
 	std::vector<ObjModel*> models;
 };
 }
