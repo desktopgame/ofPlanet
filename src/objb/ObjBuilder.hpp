@@ -7,10 +7,16 @@
 #include <ostream>
 
 namespace objb {
+enum class IndexMode {
+	Local,
+	Global,
+};
 struct ObjIndex {
 	const int index;
 	const bool valid;
+	const IndexMode mode;
 
+	explicit ObjIndex(int index, IndexMode mode);
 	explicit ObjIndex(int index);
 	explicit ObjIndex();
 };
@@ -45,6 +51,9 @@ public:
 	ObjModel& newModel(const std::string& name);
 	void reserveModels(int size);
 	ObjBuilder& material(const std::string& _material);
+	ObjBuilder& globalVertex(glm::vec3 vertex);
+	ObjBuilder& globalNormal(glm::vec3 normal);
+	ObjBuilder& globalTexcoord(glm::vec2 texcoord);
 	std::string toString() const;
 	
 	template<typename StreamType>
@@ -61,6 +70,9 @@ private:
 	int resolveNormalIndex(std::vector<int>& cache, int modelIndex, int localNormalIndex) const;
 	int resolveTexcoordIndex(std::vector<int>& cache, int modelIndex, int localTexcoordIndex) const;
 	std::vector<ObjModel*> models;
+	std::vector<glm::vec3> vertices;
+	std::vector<glm::vec3> normals;
+	std::vector<glm::vec2> texcoords;
 };
 template<typename StreamType>
 inline void ObjBuilder::write(StreamType & stream) const {
@@ -69,6 +81,17 @@ inline void ObjBuilder::write(StreamType & stream) const {
 	}
 	std::vector<int> vcache, ncache, tccache;
 	int size = static_cast<int>(models.size());
+	stream << "# Global Data" << std::endl;
+	for (auto vert : vertices) {
+		stream << "v " << vert.x << " " << vert.y << " " << vert.z << std::endl;
+	}
+	for (auto norm : normals) {
+		stream << "vn " << norm.x << " " << norm.y << " " << norm.z << std::endl;
+	}
+	for (auto texcoord : texcoords) {
+		stream << "vt " << texcoord.x << " " << texcoord.y << std::endl;
+	}
+	stream << "# Local Data" << std::endl;
 	for (int i = 0; i <size; i++) {
 		writeImpl(stream, i, vcache, ncache, tccache);
 	}
@@ -94,9 +117,15 @@ inline void ObjBuilder::writeImpl(StreamType & stream, int index, std::vector<in
 			int vi = polygon.vertexIndex.index;
 			int ti = polygon.texcoordIndex.index;
 			int ni = polygon.normalIndex.index;
-			vi = resolveVertexIndex(vertCache, index, vi);
-			ti = resolveTexcoordIndex(texcoordCache, index, ti);
-			ni = resolveNormalIndex(normCache, index, ni);
+			if (polygon.vertexIndex.mode == IndexMode::Local) {
+				vi = resolveVertexIndex(vertCache, index, vi);
+			}
+			if (polygon.normalIndex.mode == IndexMode::Local) {
+				ni = resolveNormalIndex(normCache, index, ni);
+			}
+			if (polygon.texcoordIndex.mode == IndexMode::Local) {
+				ti = resolveTexcoordIndex(texcoordCache, index, ti);
+			}
 			if (polygon.vertexIndex.valid && polygon.texcoordIndex.valid && polygon.normalIndex.valid) {
 				stream << vi << "/" << ti << "/" << ni;
 			}

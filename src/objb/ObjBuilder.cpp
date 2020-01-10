@@ -2,11 +2,12 @@
 #include <sstream>
 
 namespace objb {
-
 // ObjIndex
-ObjIndex::ObjIndex(int index) : index(index), valid(true) {
+ObjIndex::ObjIndex(int index, IndexMode mode) : index(index), mode(mode), valid(true) {
 }
-ObjIndex::ObjIndex() : index(0), valid(false) {
+ObjIndex::ObjIndex(int index) : index(index), mode(IndexMode::Local), valid(true) {
+}
+ObjIndex::ObjIndex() : index(0), mode(IndexMode::Local), valid(false) {
 }
 // ObjPolygon
 ObjPolygon::ObjPolygon(ObjIndex vertexIndex, ObjIndex texcoordIndex, ObjIndex normalIndex)
@@ -57,6 +58,18 @@ void ObjBuilder::reserveModels(int size) {
 }
 ObjBuilder & ObjBuilder::material(const std::string & _material) {
 	this->_material = _material;
+	return *this;
+}
+ObjBuilder & ObjBuilder::globalVertex(glm::vec3 vertex) {
+	vertices.emplace_back(vertex);
+	return *this;
+}
+ObjBuilder & ObjBuilder::globalNormal(glm::vec3 normal) {
+	normals.emplace_back(normal);
+	return *this;
+}
+ObjBuilder & ObjBuilder::globalTexcoord(glm::vec2 texcoord) {
+	texcoords.emplace_back(texcoord);
 	return *this;
 }
 std::string ObjBuilder::toString() const {
@@ -127,13 +140,30 @@ int ObjBuilder::resolveVertexIndex(std::vector<int>& cache, int modelIndex, int 
 	if (localVertexIndex == -1) {
 		return -1;
 	}
-	return countVertex(cache, modelIndex) - static_cast<int>(models[modelIndex]->vertices.size()) + localVertexIndex;
+	return
+		countVertex(cache, modelIndex) -
+		static_cast<int>(models[modelIndex]->vertices.size()) +
+		localVertexIndex +
+		static_cast<int>(this->vertices.size());
 }
 int ObjBuilder::resolveNormalIndex(std::vector<int>& cache, int modelIndex, int localNormalIndex) const {
-	return countNormal(cache, modelIndex) - static_cast<int>(models[modelIndex]->normals.size()) + localNormalIndex;
+	if (localNormalIndex == -1) {
+		return -1;
+	}
+	return
+		countNormal(cache, modelIndex) -
+		static_cast<int>(models[modelIndex]->normals.size()) +
+		localNormalIndex +
+		static_cast<int>(this->normals.size());
 }
 int ObjBuilder::resolveTexcoordIndex(std::vector<int>& cache, int modelIndex, int localTexcoordIndex) const {
-
-	return countTexcoord(cache, modelIndex) - static_cast<int>(models[modelIndex]->texcoords.size()) + localTexcoordIndex;
+	if (localTexcoordIndex == -1) {
+		return -1;
+	}
+	return
+		countTexcoord(cache, modelIndex) -
+		static_cast<int>(models[modelIndex]->texcoords.size()) +
+		localTexcoordIndex +
+		static_cast<int>(this->texcoords.size());
 }
 }

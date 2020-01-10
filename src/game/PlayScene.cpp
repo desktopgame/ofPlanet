@@ -203,6 +203,24 @@ void PlayScene::exportObj(const std::string & outputFile) {
 	using namespace objb;
 	ObjBuilder ob;
 	MtlBuilder mb;
+	ob
+		.globalTexcoord(glm::vec2(0, 0))
+		.globalTexcoord(glm::vec2(1, 0))
+		.globalTexcoord(glm::vec2(1, 1))
+		.globalTexcoord(glm::vec2(0, 1))
+		//top
+		.globalNormal(glm::vec3(0, 1, 0))
+		//bottom
+		.globalNormal(glm::vec3(0, 1, 0))
+		//left
+		.globalNormal(glm::vec3(-1, 0, 0))
+		//right
+		.globalNormal(glm::vec3(0, 1, 0))
+		//front
+		.globalNormal(glm::vec3(0, 1, 0))
+		//back
+		.globalNormal(glm::vec3(0, 0, 1))
+	;
 	int xsize = w->getXSize();
 	int ysize = w->getYSize();
 	int zsize = w->getZSize();
@@ -285,16 +303,11 @@ void PlayScene::genTopPlane(objb::ObjBuilder & ob, objb::MtlBuilder& mb, int x, 
 		.vertex(glm::vec3(size.x, 0, size.z) + glm::vec3(x, y, z))
 		.vertex(glm::vec3(-size.x, 0, -size.z) + glm::vec3(x, y, z))
 		.vertex(glm::vec3(size.x, 0, -size.z) + glm::vec3(x, y, z))
-		.normal(glm::vec3(0, 1, 0))
-		.texcoord(glm::vec2(0, 0))
-		.texcoord(glm::vec2(1, 0))
-		.texcoord(glm::vec2(1, 1))
-		.texcoord(glm::vec2(0, 1))
 		.face(ObjFace{
-			ObjPolygon(ObjIndex(1), ObjIndex(1), ObjIndex(1)),
-			ObjPolygon(ObjIndex(2), ObjIndex(2), ObjIndex(1)),
-			ObjPolygon(ObjIndex(4), ObjIndex(3), ObjIndex(1)),
-			ObjPolygon(ObjIndex(3), ObjIndex(4), ObjIndex(1)),
+			ObjPolygon(ObjIndex(1), ObjIndex(1, IndexMode::Global), ObjIndex(1, IndexMode::Global)),
+			ObjPolygon(ObjIndex(2), ObjIndex(2, IndexMode::Global), ObjIndex(1, IndexMode::Global)),
+			ObjPolygon(ObjIndex(4), ObjIndex(3, IndexMode::Global), ObjIndex(1, IndexMode::Global)),
+			ObjPolygon(ObjIndex(3), ObjIndex(4, IndexMode::Global), ObjIndex(1, IndexMode::Global)),
 	});
 }
 
@@ -308,16 +321,11 @@ void PlayScene::genBottomPlane(objb::ObjBuilder & ob, objb::MtlBuilder& mb, int 
 		.vertex(glm::vec3(-size.x, -2, size.z) + glm::vec3(x, y, z))
 		.vertex(glm::vec3(size.x, -2, -size.z) + glm::vec3(x, y, z))
 		.vertex(glm::vec3(-size.x, -2, -size.z) + glm::vec3(x, y, z))
-		.normal(glm::vec3(0, 1, 0))
-		.texcoord(glm::vec2(0, 0))
-		.texcoord(glm::vec2(1, 0))
-		.texcoord(glm::vec2(1, 1))
-		.texcoord(glm::vec2(0, -1))
 		.face(ObjFace{
-			ObjPolygon(ObjIndex(1), ObjIndex(1), ObjIndex(1)),
-			ObjPolygon(ObjIndex(2), ObjIndex(2), ObjIndex(1)),
-			ObjPolygon(ObjIndex(4), ObjIndex(3), ObjIndex(1)),
-			ObjPolygon(ObjIndex(3), ObjIndex(4), ObjIndex(1)),
+			ObjPolygon(ObjIndex(1), ObjIndex(1, IndexMode::Global), ObjIndex(2, IndexMode::Global)),
+			ObjPolygon(ObjIndex(2), ObjIndex(2, IndexMode::Global), ObjIndex(2, IndexMode::Global)),
+			ObjPolygon(ObjIndex(4), ObjIndex(3, IndexMode::Global), ObjIndex(2, IndexMode::Global)),
+			ObjPolygon(ObjIndex(3), ObjIndex(4, IndexMode::Global), ObjIndex(2, IndexMode::Global)),
 		});
 }
 
@@ -331,16 +339,11 @@ void PlayScene::genLeftPlane(objb::ObjBuilder & ob, objb::MtlBuilder& mb, int x,
 		.vertex(glm::vec3(-size.x, -2, -size.z) + glm::vec3(x, y, z))
 		.vertex(glm::vec3(-size.x, 0, size.z) + glm::vec3(x, y, z))
 		.vertex(glm::vec3(-size.x, -2, size.z) + glm::vec3(x, y, z))
-		.normal(glm::vec3(-1, 0, 0))
-		.texcoord(glm::vec2(0, 0))
-		.texcoord(glm::vec2(1, 0))
-		.texcoord(glm::vec2(1, 1))
-		.texcoord(glm::vec2(0, -1))
 		.face(ObjFace{
-			ObjPolygon(ObjIndex(1), ObjIndex(1), ObjIndex(1)),
-			ObjPolygon(ObjIndex(2), ObjIndex(2), ObjIndex(1)),
-			ObjPolygon(ObjIndex(4), ObjIndex(3), ObjIndex(1)),
-			ObjPolygon(ObjIndex(3), ObjIndex(4), ObjIndex(1)),
+			ObjPolygon(ObjIndex(1), ObjIndex(1, IndexMode::Global), ObjIndex(3, IndexMode::Global)),
+			ObjPolygon(ObjIndex(2), ObjIndex(2, IndexMode::Global), ObjIndex(3, IndexMode::Global)),
+			ObjPolygon(ObjIndex(4), ObjIndex(3, IndexMode::Global), ObjIndex(3, IndexMode::Global)),
+			ObjPolygon(ObjIndex(3), ObjIndex(4, IndexMode::Global), ObjIndex(3, IndexMode::Global)),
 		});
 }
 
@@ -354,16 +357,11 @@ void PlayScene::genRightPlane(objb::ObjBuilder & ob, objb::MtlBuilder& mb, int x
 		.vertex(glm::vec3(size.x, -2, size.z) + glm::vec3(x, y, z))
 		.vertex(glm::vec3(size.x, 0, -size.z) + glm::vec3(x, y, z))
 		.vertex(glm::vec3(size.x, -2, -size.z) + glm::vec3(x, y, z))
-		.normal(glm::vec3(0, 1, 0))
-		.texcoord(glm::vec2(0, 0))
-		.texcoord(glm::vec2(1, 0))
-		.texcoord(glm::vec2(1, 1))
-		.texcoord(glm::vec2(0, -1))
 		.face(ObjFace{
-			ObjPolygon(ObjIndex(1), ObjIndex(1), ObjIndex(1)),
-			ObjPolygon(ObjIndex(2), ObjIndex(2), ObjIndex(1)),
-			ObjPolygon(ObjIndex(4), ObjIndex(3), ObjIndex(1)),
-			ObjPolygon(ObjIndex(3), ObjIndex(4), ObjIndex(1)),
+			ObjPolygon(ObjIndex(1), ObjIndex(1, IndexMode::Global), ObjIndex(4, IndexMode::Global)),
+			ObjPolygon(ObjIndex(2), ObjIndex(2, IndexMode::Global), ObjIndex(4, IndexMode::Global)),
+			ObjPolygon(ObjIndex(4), ObjIndex(3, IndexMode::Global), ObjIndex(4, IndexMode::Global)),
+			ObjPolygon(ObjIndex(3), ObjIndex(4, IndexMode::Global), ObjIndex(4, IndexMode::Global)),
 	});
 }
 
@@ -377,16 +375,11 @@ void PlayScene::genFrontPlane(objb::ObjBuilder & ob, objb::MtlBuilder& mb, int x
 		.vertex(glm::vec3(size.x, -2, -size.z) + glm::vec3(x, y, z))
 		.vertex(glm::vec3(-size.x, 0, -size.z) + glm::vec3(x, y, z))
 		.vertex(glm::vec3(-size.x, -2, -size.z) + glm::vec3(x, y, z))
-		.normal(glm::vec3(0, 1, 0))
-		.texcoord(glm::vec2(0, 0))
-		.texcoord(glm::vec2(1, 0))
-		.texcoord(glm::vec2(1, 1))
-		.texcoord(glm::vec2(0, -1))
 		.face(ObjFace{
-			ObjPolygon(ObjIndex(1), ObjIndex(1), ObjIndex(1)),
-			ObjPolygon(ObjIndex(2), ObjIndex(2), ObjIndex(1)),
-			ObjPolygon(ObjIndex(4), ObjIndex(3), ObjIndex(1)),
-			ObjPolygon(ObjIndex(3), ObjIndex(4), ObjIndex(1)),
+			ObjPolygon(ObjIndex(1), ObjIndex(1, IndexMode::Global), ObjIndex(5, IndexMode::Global)),
+			ObjPolygon(ObjIndex(2), ObjIndex(2, IndexMode::Global), ObjIndex(5, IndexMode::Global)),
+			ObjPolygon(ObjIndex(4), ObjIndex(3, IndexMode::Global), ObjIndex(5, IndexMode::Global)),
+			ObjPolygon(ObjIndex(3), ObjIndex(4, IndexMode::Global), ObjIndex(5, IndexMode::Global)),
 		});
 }
 
@@ -400,16 +393,11 @@ void PlayScene::genBackPlane(objb::ObjBuilder & ob, objb::MtlBuilder& mb, int x,
 		.vertex(glm::vec3(-size.x, -2, size.z) + glm::vec3(x, y, z))
 		.vertex(glm::vec3(size.x, 0, size.z) + glm::vec3(x, y, z))
 		.vertex(glm::vec3(size.x, -2, size.z) + glm::vec3(x, y, z))
-		.normal(glm::vec3(0, 0, 1))
-		.texcoord(glm::vec2(0, 0))
-		.texcoord(glm::vec2(1, 0))
-		.texcoord(glm::vec2(1, 1))
-		.texcoord(glm::vec2(0, -1))
 		.face(ObjFace{
-			ObjPolygon(ObjIndex(1), ObjIndex(1), ObjIndex(1)),
-			ObjPolygon(ObjIndex(2), ObjIndex(2), ObjIndex(1)),
-			ObjPolygon(ObjIndex(4), ObjIndex(3), ObjIndex(1)),
-			ObjPolygon(ObjIndex(3), ObjIndex(4), ObjIndex(1)),
+			ObjPolygon(ObjIndex(1), ObjIndex(1, IndexMode::Global), ObjIndex(6, IndexMode::Global)),
+			ObjPolygon(ObjIndex(2), ObjIndex(2, IndexMode::Global), ObjIndex(6, IndexMode::Global)),
+			ObjPolygon(ObjIndex(4), ObjIndex(3, IndexMode::Global), ObjIndex(6, IndexMode::Global)),
+			ObjPolygon(ObjIndex(3), ObjIndex(4, IndexMode::Global), ObjIndex(6, IndexMode::Global)),
 	});
 }
 
