@@ -43,6 +43,7 @@ public:
 	explicit ObjBuilder();
 	~ObjBuilder();
 	ObjModel& newModel(const std::string& name);
+	void reserveModels(int size);
 	ObjBuilder& material(const std::string& _material);
 	std::string toString() const;
 	
@@ -50,12 +51,15 @@ public:
 	void write(StreamType& stream) const;
 private:
 	template<typename StreamType>
-	void writeImpl(StreamType& stream, int index) const;
+	void writeImpl(StreamType& stream, int index, std::vector<int>& vertCache, std::vector<int>& normCache, std::vector<int>& texcoordCache) const;
 
 	std::string _material;
-	int resolveVertexIndex(int modelIndex, int localVertexIndex) const;
-	int resolveNormalIndex(int modelIndex, int localNormalIndex) const;
-	int resolveTexcoordIndex(int modelIndex, int localTexcoordIndex) const;
+	int countVertex(std::vector<int>& cache, int modelIndex) const;
+	int countNormal(std::vector<int>& cache, int modelIndex) const;
+	int countTexcoord(std::vector<int>& cache, int modelIndex) const;
+	int resolveVertexIndex(std::vector<int>& cache, int modelIndex, int localVertexIndex) const;
+	int resolveNormalIndex(std::vector<int>& cache, int modelIndex, int localNormalIndex) const;
+	int resolveTexcoordIndex(std::vector<int>& cache, int modelIndex, int localTexcoordIndex) const;
 	std::vector<ObjModel*> models;
 };
 template<typename StreamType>
@@ -63,12 +67,14 @@ inline void ObjBuilder::write(StreamType & stream) const {
 	if (!_material.empty()) {
 		stream << "mtllib " << _material << std::endl;
 	}
-	for (int i = 0; i < static_cast<int>(models.size()); i++) {
-		writeImpl(stream, i);
+	std::vector<int> vcache, ncache, tccache;
+	int size = static_cast<int>(models.size());
+	for (int i = 0; i <size; i++) {
+		writeImpl(stream, i, vcache, ncache, tccache);
 	}
 }
 template<typename StreamType>
-inline void ObjBuilder::writeImpl(StreamType & stream, int index) const {
+inline void ObjBuilder::writeImpl(StreamType & stream, int index, std::vector<int>& vertCache, std::vector<int>& normCache, std::vector<int>& texcoordCache) const {
 	auto model = models.at(index);
 	stream << "o " << model->name << std::endl;
 	for (auto vert : model->vertices) {
@@ -88,9 +94,9 @@ inline void ObjBuilder::writeImpl(StreamType & stream, int index) const {
 			int vi = polygon.vertexIndex.index;
 			int ti = polygon.texcoordIndex.index;
 			int ni = polygon.normalIndex.index;
-			vi = resolveVertexIndex(index, vi);
-			ti = resolveTexcoordIndex(index, ti);
-			ni = resolveNormalIndex(index, ni);
+			vi = resolveVertexIndex(vertCache, index, vi);
+			ti = resolveTexcoordIndex(texcoordCache, index, ti);
+			ni = resolveNormalIndex(normCache, index, ni);
 			if (polygon.vertexIndex.valid && polygon.texcoordIndex.valid && polygon.normalIndex.valid) {
 				stream << vi << "/" << ti << "/" << ni;
 			}

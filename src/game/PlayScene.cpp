@@ -206,7 +206,9 @@ void PlayScene::exportObj(const std::string & outputFile) {
 	int xsize = w->getXSize();
 	int ysize = w->getYSize();
 	int zsize = w->getZSize();
+	xsize = zsize = 32;
 	glm::vec3 size(1, 1, 1);
+	ob.reserveModels(xsize * ysize * zsize);
 	for (int x = 0; x < xsize; x++) {
 		for (int y = 0; y < ysize; y++) {
 			for (int z = 0; z < zsize; z++) {

@@ -52,6 +52,9 @@ ObjModel& ObjBuilder::newModel(const std::string& name) {
 	models.emplace_back(model);
 	return *model;
 }
+void ObjBuilder::reserveModels(int size) {
+	models.reserve(size);
+}
 ObjBuilder & ObjBuilder::material(const std::string & _material) {
 	this->_material = _material;
 	return *this;
@@ -61,37 +64,76 @@ std::string ObjBuilder::toString() const {
 	write(ss);
 	return ss.str();
 }
-int ObjBuilder::resolveVertexIndex(int modelIndex, int localVertexIndex) const {
-	int verts = 0;
-	auto model = models.at(modelIndex);
-	for (int i = 0; i < modelIndex; i++) {
-		verts += static_cast<int>(models.at(i)->vertices.size());
+int ObjBuilder::countVertex(std::vector<int>& cache, int modelIndex) const {
+	int verts = -1;
+	if (modelIndex < static_cast<int>(cache.size())) {
+		verts = cache.at(modelIndex);
 	}
+	if (verts == -1) {
+		if (modelIndex == 0) {
+			verts = static_cast<int>(models.at(0)->vertices.size());
+		} else {
+			verts = countVertex(cache, modelIndex - 1);
+			verts += models[modelIndex]->vertices.size();
+		}
+		while (static_cast<int>(cache.size()) <= modelIndex) {
+			cache.emplace_back(-1);
+		}
+		cache[modelIndex] = verts;
+	}
+	return verts;
+}
+int ObjBuilder::countNormal(std::vector<int>& cache, int modelIndex) const {
+	int norms = -1;
+	if (modelIndex < static_cast<int>(cache.size())) {
+		norms = cache.at(modelIndex);
+	}
+	if (norms == -1) {
+		if (modelIndex == 0) {
+			norms = static_cast<int>(models.at(0)->normals.size());
+		}
+		else {
+			norms = countVertex(cache, modelIndex - 1);
+			norms += models[modelIndex]->normals.size();
+		}
+		while (static_cast<int>(cache.size()) <= modelIndex) {
+			cache.emplace_back(-1);
+		}
+		cache[modelIndex] = norms;
+	}
+	return norms;
+}
+int ObjBuilder::countTexcoord(std::vector<int>& cache, int modelIndex) const {
+	int texcoords = -1;
+	if (modelIndex < static_cast<int>(cache.size())) {
+		texcoords = cache.at(modelIndex);
+	}
+	if (texcoords == -1) {
+		if (modelIndex == 0) {
+			texcoords = static_cast<int>(models.at(0)->texcoords.size());
+		}
+		else {
+			texcoords = countVertex(cache, modelIndex - 1);
+			texcoords += models[modelIndex]->texcoords.size();
+		}
+		while (static_cast<int>(cache.size()) <= modelIndex) {
+			cache.emplace_back(-1);
+		}
+		cache[modelIndex] = texcoords;
+	}
+	return texcoords;
+}
+int ObjBuilder::resolveVertexIndex(std::vector<int>& cache, int modelIndex, int localVertexIndex) const {
 	if (localVertexIndex == -1) {
 		return -1;
 	}
-	return verts + localVertexIndex;
+	return countVertex(cache, modelIndex) - static_cast<int>(models[modelIndex]->vertices.size()) + localVertexIndex;
 }
-int ObjBuilder::resolveNormalIndex(int modelIndex, int localNormalIndex) const {
-	int norms = 0;
-	auto model = models.at(modelIndex);
-	for (int i = 0; i < modelIndex; i++) {
-		norms += static_cast<int>(models.at(i)->normals.size());
-	}
-	if (localNormalIndex == -1) {
-		return -1;
-	}
-	return norms + localNormalIndex;
+int ObjBuilder::resolveNormalIndex(std::vector<int>& cache, int modelIndex, int localNormalIndex) const {
+	return countNormal(cache, modelIndex) - static_cast<int>(models[modelIndex]->normals.size()) + localNormalIndex;
 }
-int ObjBuilder::resolveTexcoordIndex(int modelIndex, int localTexcoordIndex) const {
-	int texcoords = 0;
-	auto model = models.at(modelIndex);
-	for (int i = 0; i < modelIndex; i++) {
-		texcoords += static_cast<int>(models.at(i)->normals.size());
-	}
-	if (localTexcoordIndex == -1) {
-		return -1;
-	}
-	return texcoords + localTexcoordIndex;
+int ObjBuilder::resolveTexcoordIndex(std::vector<int>& cache, int modelIndex, int localTexcoordIndex) const {
+
+	return countTexcoord(cache, modelIndex) - static_cast<int>(models[modelIndex]->texcoords.size()) + localTexcoordIndex;
 }
 }
