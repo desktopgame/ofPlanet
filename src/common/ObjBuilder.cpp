@@ -33,6 +33,10 @@ ObjModel & ObjModel::face(const ObjFace & face) {
 	faces.emplace_back(face);
 	return *this;
 }
+ObjModel & ObjModel::useMaterial(const std::string& material) {
+	this->material = material;
+	return *this;
+}
 // ObjBuilder
 ObjBuilder::ObjBuilder() : models() {
 }
@@ -47,8 +51,15 @@ ObjModel& ObjBuilder::newModel(const std::string& name) {
 	models.emplace_back(model);
 	return *model;
 }
+ObjBuilder & ObjBuilder::material(const std::string & _material) {
+	this->_material = _material;
+	return *this;
+}
 std::string ObjBuilder::toString() const {
 	std::stringstream ss;
+	if (!_material.empty()) {
+		ss << "mtllib " << _material << std::endl;
+	}
 	for (int i = 0; i < static_cast<int>(models.size()); i++) {
 		toStringImpl(ss, i);
 	}
@@ -89,6 +100,9 @@ void ObjBuilder::toStringImpl(std::stringstream & ss, int index) const {
 			if (!last) {
 				ss << " ";
 			}
+		}
+		if (!model->material.empty()) {
+			ss << "usemtl " << model->material << std::endl;
 		}
 		ss << std::endl;
 	}

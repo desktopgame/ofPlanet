@@ -30,7 +30,9 @@ public:
 	ObjModel& normal(const glm::vec3& normal);
 	ObjModel& texcoord(const glm::vec2& texcoord);
 	ObjModel& face(const ObjFace& face);
+	ObjModel& useMaterial(const std::string& material);
 	std::string name;
+	std::string material;
 	std::vector<glm::vec3> vertices;
 	std::vector<glm::vec3> normals;
 	std::vector<glm::vec2> texcoords;
@@ -41,8 +43,10 @@ public:
 	explicit ObjBuilder();
 	~ObjBuilder();
 	ObjModel& newModel(const std::string& name);
+	ObjBuilder& material(const std::string& _material);
 	std::string toString() const;
 private:
+	std::string _material;
 	void toStringImpl(std::stringstream& ss, int index) const;
 	int resolveVertexIndex(int modelIndex, int localVertexIndex) const;
 	int resolveNormalIndex(int modelIndex, int localNormalIndex) const;
