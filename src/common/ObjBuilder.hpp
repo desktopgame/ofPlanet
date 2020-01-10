@@ -23,20 +23,29 @@ struct ObjPolygon {
 	explicit ObjPolygon(ObjIndex vertexIndex, ObjIndex texcoordIndex);
 };
 using ObjFace = std::vector<ObjPolygon>;
-class ObjBuilder {
+class ObjModel {
 public:
-	explicit ObjBuilder();
-
-	ObjBuilder& vertex(const glm::vec3& vertex);
-	ObjBuilder& normal(const glm::vec3& normal);
-	ObjBuilder& texcoord(const glm::vec2& texcoord);
-	ObjBuilder& face(const ObjFace& face);
-	std::string toString() const;
-private:
+	explicit ObjModel(const std::string& name);
+	ObjModel& vertex(const glm::vec3& vertex);
+	ObjModel& normal(const glm::vec3& normal);
+	ObjModel& texcoord(const glm::vec2& texcoord);
+	ObjModel& face(const ObjFace& face);
+	std::string name;
 	std::vector<glm::vec3> vertices;
 	std::vector<glm::vec3> normals;
 	std::vector<glm::vec2> texcoords;
 	std::vector<ObjFace> faces;
+};
+std::stringstream& operator<< (std::stringstream& ss, const ObjModel& model);
+std::stringstream& operator<< (std::stringstream& ss, const ObjModel* model);
+class ObjBuilder {
+public:
+	explicit ObjBuilder();
+	~ObjBuilder();
+	ObjModel& newModel(const std::string& name);
+	std::string toString() const;
+private:
+	std::vector<ObjModel*> models;
 };
 }
 #endif
