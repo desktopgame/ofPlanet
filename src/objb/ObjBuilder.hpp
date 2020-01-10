@@ -1,16 +1,16 @@
 #pragma once
-#ifndef COMMON_OBJBUILDER_HPP
-#define COMMON_OBJBUILDER_HPP
+#ifndef OBJB_OBJBUILDER_HPP
+#define OBJB_OBJBUILDER_HPP
 #include <glm/glm.hpp>
 #include <vector>
 #include <string>
 #include <ostream>
 
-namespace planet {
+namespace objb {
 struct ObjIndex {
 	const int index;
 	const bool valid;
-	
+
 	explicit ObjIndex(int index);
 	explicit ObjIndex();
 };

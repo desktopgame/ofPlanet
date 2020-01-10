@@ -13,7 +13,7 @@
 #include "../world/BlockPack.hpp"
 #include "../world/TextureInfoCollection.hpp"
 #include "../world/BlockInfoCollection.hpp"
-#include "../common/ObjBuilder.hpp"
+#include "../objb/ObjBuilder.hpp"
 #include "PlayScene.hpp"
 namespace planet {
 
@@ -30,6 +30,7 @@ void ofApp::setup() {
         ofSeedRandom(time(NULL));
 		ofBackground(ofColor::black);
 		glm::vec3 size(1, 1, 1);
+		using namespace objb;
 		ObjBuilder builder;
 		//0, 1, 2, 2, 3, 0
 		builder.newModel("top")

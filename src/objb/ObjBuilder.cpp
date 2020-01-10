@@ -1,7 +1,8 @@
 #include "ObjBuilder.hpp"
 #include <sstream>
 
-namespace planet {
+namespace objb {
+
 // ObjIndex
 ObjIndex::ObjIndex(int index) : index(index), valid(true) {
 }
@@ -9,10 +10,10 @@ ObjIndex::ObjIndex() : index(0), valid(false) {
 }
 // ObjPolygon
 ObjPolygon::ObjPolygon(ObjIndex vertexIndex, ObjIndex texcoordIndex, ObjIndex normalIndex)
- : vertexIndex(vertexIndex), texcoordIndex(texcoordIndex), normalIndex(normalIndex) {
+	: vertexIndex(vertexIndex), texcoordIndex(texcoordIndex), normalIndex(normalIndex) {
 }
 ObjPolygon::ObjPolygon(ObjIndex vertexIndex, ObjIndex texcoordIndex)
- : vertexIndex(vertexIndex), texcoordIndex(texcoordIndex), normalIndex() {
+	: vertexIndex(vertexIndex), texcoordIndex(texcoordIndex), normalIndex() {
 }
 // ObjModel
 ObjModel::ObjModel(const std::string& name) : name(name), vertices(), normals(), texcoords() {

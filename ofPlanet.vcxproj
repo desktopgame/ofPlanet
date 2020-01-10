@@ -185,7 +185,6 @@
     <ClCompile Include="src\common\FirstPersonController.cpp" />
     <ClCompile Include="src\common\glfw.cpp" />
     <ClCompile Include="src\common\MouseScroll.cpp" />
-    <ClCompile Include="src\common\ObjBuilder.cpp" />
     <ClCompile Include="src\common\Random.cpp" />
     <ClCompile Include="src\common\Stopwatch.cpp" />
     <ClCompile Include="src\common\Timer.cpp" />
@@ -213,6 +212,7 @@
     <ClCompile Include="src\io\File.cpp" />
     <ClCompile Include="src\io\Path.cpp" />
     <ClCompile Include="src\luaex\luaex.cpp" />
+    <ClCompile Include="src\objb\ObjBuilder.cpp" />
     <ClCompile Include="src\scene\Scene.cpp" />
     <ClCompile Include="src\scene\SceneManager.cpp" />
     <ClCompile Include="src\shader\Camera.cpp" />
@@ -270,7 +270,6 @@
     <ClInclude Include="src\common\glfw.hpp" />
     <ClInclude Include="src\common\GLM.hpp" />
     <ClInclude Include="src\common\MouseScroll.hpp" />
-    <ClInclude Include="src\common\ObjBuilder.hpp" />
     <ClInclude Include="src\common\Random.hpp" />
     <ClInclude Include="src\common\StateValue.hpp" />
     <ClInclude Include="src\common\Stopwatch.hpp" />
@@ -306,6 +305,7 @@
     <ClInclude Include="src\mapbox\recursive_wrapper.hpp" />
     <ClInclude Include="src\mapbox\variant.hpp" />
     <ClInclude Include="src\mapbox\variant_io.hpp" />
+    <ClInclude Include="src\objb\ObjBuilder.hpp" />
     <ClInclude Include="src\PerlinNoise\PerlinNoise.hpp" />
     <ClInclude Include="src\picojson\picojson.h" />
     <ClInclude Include="src\scene\Scene.hpp" />

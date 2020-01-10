@@ -10,9 +10,6 @@
     <ClCompile Include="src\common\MouseScroll.cpp">
       <Filter>src\common</Filter>
     </ClCompile>
-    <ClCompile Include="src\common\ObjBuilder.cpp">
-      <Filter>src\common</Filter>
-    </ClCompile>
     <ClCompile Include="src\common\Random.cpp">
       <Filter>src\common</Filter>
     </ClCompile>
@@ -244,6 +241,7 @@
     <ClCompile Include="..\..\..\..\addons\ofxImGui\libs\imgui\src\imgui_widgets.cpp">
       <Filter>addons\ofxImGui\libs\imgui\src</Filter>
     </ClCompile>
+    <ClCompile Include="src\objb\ObjBuilder.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -330,9 +328,6 @@
       <Filter>src\common</Filter>
     </ClInclude>
     <ClInclude Include="src\common\MouseScroll.hpp">
-      <Filter>src\common</Filter>
-    </ClInclude>
-    <ClInclude Include="src\common\ObjBuilder.hpp">
       <Filter>src\common</Filter>
     </ClInclude>
     <ClInclude Include="src\common\Random.hpp">
@@ -620,6 +615,7 @@
     <ClInclude Include="..\..\..\..\addons\ofxImGui\libs\imgui\src\imstb_truetype.h">
       <Filter>addons\ofxImGui\libs\imgui\src</Filter>
     </ClInclude>
+    <ClInclude Include="src\objb\ObjBuilder.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="icon.rc" />
