@@ -26,6 +26,8 @@
 #include "../world/biome/ScriptBiome.hpp"
 #include "../world/WorldIO.hpp"
 #include "../io/Directory.hpp"
+#include "../objb/ObjBuilder.hpp"
+#include "../objb/MtlBuilder.hpp"
 #include "Screen.hpp"
 namespace planet {
 using ExportMode = enum {
@@ -176,27 +178,237 @@ void PlayScene::playDraw() {
 		std::string outputFile = exportFile.getString();
 		if (exportMode == EXPORT_JSON) {
 			outputFile = Strings::fixsuffix(outputFile, ".json");
-			File::remove(outputFile);
-			WorldIO::toJson(outputFile, planet->getWorld());
+			exportJson(outputFile);
 		} else if (exportMode == EXPORT_OBJ) {
 			outputFile = Strings::fixsuffix(outputFile, ".obj");
-			File::remove(outputFile);
+			exportObj(outputFile);
 		} else if (exportMode == EXPORT_BMP) {
 			outputFile = Strings::fixsuffix(outputFile, ".bmp");
-			File::remove(outputFile);
-			auto w = planet->getWorld();
-			BlockTable blockTable = planet->getBlockTable();
-			Terrain terrain = blockTable.getTerrain();
-			std::vector<unsigned char> pixelVec = terrain.toPixelVec();
-			int err = SOIL_save_image(outputFile.c_str(), SOIL_SAVE_TYPE_BMP, w->getXSize(), w->getZSize(), 4, pixelVec.data());
-			if (err == 0) {
-				std::cout << "export failed." << std::endl;
-			}
+			exportBmp(outputFile);
 		}
 	}
 	ImGui::End();
 	ImGui::PopStyleColor();
 	gui.end();
+}
+
+void PlayScene::exportJson(const std::string & outputFile) {
+	File::remove(outputFile);
+	WorldIO::toJson(outputFile, planet->getWorld());
+}
+
+void PlayScene::exportObj(const std::string & outputFile) {
+	File::remove(outputFile);
+	auto w = planet->getWorld();
+	using namespace objb;
+	ObjBuilder ob;
+	MtlBuilder mb;
+	int xsize = w->getXSize();
+	int ysize = w->getYSize();
+	int zsize = w->getZSize();
+	glm::vec3 size(1, 1, 1);
+	for (int x = 0; x < xsize; x++) {
+		for (int y = 0; y < ysize; y++) {
+			for (int z = 0; z < zsize; z++) {
+				auto block = w->getBlockBehavior(x, y, z);
+				if (!block) {
+					continue;
+				}
+				bool overXP = x + 1 >= w->getXSize();
+				bool overYP = y + 1 >= w->getYSize();
+				bool overZP = z + 1 >= w->getZSize();
+				bool overXN = x - 1 < 0;
+				bool overYN = y - 1 < 0;
+				bool overZN = z - 1 < 0;
+				
+				bool hasBlockXP = overXP ? false : w->getBlockBehavior(x + 1, y, z) != nullptr;
+				bool hasBlockYP = overYP ? false : w->getBlockBehavior(x, y + 1, z) != nullptr;
+				bool hasBlockZP = overZP ? false : w->getBlockBehavior(x, y, z + 1) != nullptr;
+				bool hasBlockXN = overXN ? false : w->getBlockBehavior(x - 1, y, z) != nullptr;
+				bool hasBlockYN = overYN ? false : w->getBlockBehavior(x, y - 1, z) != nullptr;
+				bool hasBlockZN = overZN ? false : w->getBlockBehavior(x, y, z - 1) != nullptr;
+				bool hiddenBlock = hasBlockXP && hasBlockYP && hasBlockZP && hasBlockXN && hasBlockYN && hasBlockZN;
+				if (hiddenBlock) {
+					continue;
+				}
+				if (!hasBlockYP) {
+					genTopPlane(ob, mb, x*2, y * 2, z * 2, size);
+				}
+				if (!hasBlockYN) {
+					genBottomPlane(ob, mb, x * 2, y * 2, z * 2, size);
+				}
+				if (!hasBlockXP) {
+					genRightPlane(ob, mb, x * 2, y * 2, z * 2, size);
+				}
+				if (!hasBlockXN) {
+					genLeftPlane(ob, mb, x * 2, y * 2, z * 2, size);
+				}
+				if (!hasBlockZP) {
+					genFrontPlane(ob, mb, x * 2, y * 2, z * 2, size);
+				}
+				if (!hasBlockZN) {
+					genBackPlane(ob, mb, x * 2, y * 2, z * 2, size);
+				}
+			}
+		}
+	}
+
+	std::ofstream ofs(outputFile);
+	if (!ofs.fail()) {
+		ob.write(ofs);
+	}
+	ofs.close();
+}
+
+void PlayScene::exportBmp(const std::string & outputFile) {
+	File::remove(outputFile);
+	auto w = planet->getWorld();
+	BlockTable blockTable = planet->getBlockTable();
+	Terrain terrain = blockTable.getTerrain();
+	std::vector<unsigned char> pixelVec = terrain.toPixelVec();
+	int err = SOIL_save_image(outputFile.c_str(), SOIL_SAVE_TYPE_BMP, w->getXSize(), w->getZSize(), 4, pixelVec.data());
+	if (err == 0) {
+		std::cout << "export failed." << std::endl;
+	}
+}
+
+void PlayScene::genTopPlane(objb::ObjBuilder & ob, objb::MtlBuilder& mb, int x, int y, int z, glm::vec3 size) {
+	using namespace objb;
+	char buf[256];
+	std::memset(buf, '\0', 256);
+	std::sprintf(buf, "plane%d%d%d_Top", x, y, z);
+
+	ob.newModel(buf)
+		.vertex(glm::vec3(-size.x, 0, size.z) + glm::vec3(x,y,z))
+		.vertex(glm::vec3(size.x, 0, size.z) + glm::vec3(x, y, z))
+		.vertex(glm::vec3(-size.x, 0, -size.z) + glm::vec3(x, y, z))
+		.vertex(glm::vec3(size.x, 0, -size.z) + glm::vec3(x, y, z))
+		.normal(glm::vec3(0, 1, 0))
+		.texcoord(glm::vec2(0, 0))
+		.texcoord(glm::vec2(1, 0))
+		.texcoord(glm::vec2(1, 1))
+		.texcoord(glm::vec2(0, 1))
+		.face(ObjFace{
+			ObjPolygon(ObjIndex(1), ObjIndex(1), ObjIndex(1)),
+			ObjPolygon(ObjIndex(2), ObjIndex(2), ObjIndex(1)),
+			ObjPolygon(ObjIndex(4), ObjIndex(3), ObjIndex(1)),
+			ObjPolygon(ObjIndex(3), ObjIndex(4), ObjIndex(1)),
+	});
+}
+
+void PlayScene::genBottomPlane(objb::ObjBuilder & ob, objb::MtlBuilder& mb, int x, int y, int z, glm::vec3 size) {
+	using namespace objb;
+	char buf[256];
+	std::memset(buf, '\0', 256);
+	std::sprintf(buf, "plane%d%d%d_Bottom", x, y, z);
+	ob.newModel(buf)
+		.vertex(glm::vec3(size.x, -2, size.z) + glm::vec3(x, y, z))
+		.vertex(glm::vec3(-size.x, -2, size.z) + glm::vec3(x, y, z))
+		.vertex(glm::vec3(size.x, -2, -size.z) + glm::vec3(x, y, z))
+		.vertex(glm::vec3(-size.x, -2, -size.z) + glm::vec3(x, y, z))
+		.normal(glm::vec3(0, 1, 0))
+		.texcoord(glm::vec2(0, 0))
+		.texcoord(glm::vec2(1, 0))
+		.texcoord(glm::vec2(1, 1))
+		.texcoord(glm::vec2(0, -1))
+		.face(ObjFace{
+			ObjPolygon(ObjIndex(1), ObjIndex(1), ObjIndex(1)),
+			ObjPolygon(ObjIndex(2), ObjIndex(2), ObjIndex(1)),
+			ObjPolygon(ObjIndex(4), ObjIndex(3), ObjIndex(1)),
+			ObjPolygon(ObjIndex(3), ObjIndex(4), ObjIndex(1)),
+		});
+}
+
+void PlayScene::genLeftPlane(objb::ObjBuilder & ob, objb::MtlBuilder& mb, int x, int y, int z, glm::vec3 size) {
+	using namespace objb;
+	char buf[256];
+	std::memset(buf, '\0', 256);
+	std::sprintf(buf, "plane%d%d%d_Left", x, y, z);
+	ob.newModel(buf)
+		.vertex(glm::vec3(-size.x, 0, -size.z) + glm::vec3(x, y, z))
+		.vertex(glm::vec3(-size.x, -2, -size.z) + glm::vec3(x, y, z))
+		.vertex(glm::vec3(-size.x, 0, size.z) + glm::vec3(x, y, z))
+		.vertex(glm::vec3(-size.x, -2, size.z) + glm::vec3(x, y, z))
+		.normal(glm::vec3(-1, 0, 0))
+		.texcoord(glm::vec2(0, 0))
+		.texcoord(glm::vec2(1, 0))
+		.texcoord(glm::vec2(1, 1))
+		.texcoord(glm::vec2(0, -1))
+		.face(ObjFace{
+			ObjPolygon(ObjIndex(1), ObjIndex(1), ObjIndex(1)),
+			ObjPolygon(ObjIndex(2), ObjIndex(2), ObjIndex(1)),
+			ObjPolygon(ObjIndex(4), ObjIndex(3), ObjIndex(1)),
+			ObjPolygon(ObjIndex(3), ObjIndex(4), ObjIndex(1)),
+		});
+}
+
+void PlayScene::genRightPlane(objb::ObjBuilder & ob, objb::MtlBuilder& mb, int x, int y, int z, glm::vec3 size) {
+	using namespace objb;
+	char buf[256];
+	std::memset(buf, '\0', 256);
+	std::sprintf(buf, "plane%d%d%d_Right", x, y, z);
+	ob.newModel(buf)
+		.vertex(glm::vec3(size.x, 0, size.z) + glm::vec3(x, y, z))
+		.vertex(glm::vec3(size.x, -2, size.z) + glm::vec3(x, y, z))
+		.vertex(glm::vec3(size.x, 0, -size.z) + glm::vec3(x, y, z))
+		.vertex(glm::vec3(size.x, -2, -size.z) + glm::vec3(x, y, z))
+		.normal(glm::vec3(0, 1, 0))
+		.texcoord(glm::vec2(0, 0))
+		.texcoord(glm::vec2(1, 0))
+		.texcoord(glm::vec2(1, 1))
+		.texcoord(glm::vec2(0, -1))
+		.face(ObjFace{
+			ObjPolygon(ObjIndex(1), ObjIndex(1), ObjIndex(1)),
+			ObjPolygon(ObjIndex(2), ObjIndex(2), ObjIndex(1)),
+			ObjPolygon(ObjIndex(4), ObjIndex(3), ObjIndex(1)),
+			ObjPolygon(ObjIndex(3), ObjIndex(4), ObjIndex(1)),
+	});
+}
+
+void PlayScene::genFrontPlane(objb::ObjBuilder & ob, objb::MtlBuilder& mb, int x, int y, int z, glm::vec3 size) {
+	using namespace objb;
+	char buf[256];
+	std::memset(buf, '\0', 256);
+	std::sprintf(buf, "plane%d%d%d_Front", x, y, z);
+	ob.newModel(buf)
+		.vertex(glm::vec3(size.x, 0, -size.z) + glm::vec3(x, y, z))
+		.vertex(glm::vec3(size.x, -2, -size.z) + glm::vec3(x, y, z))
+		.vertex(glm::vec3(-size.x, 0, -size.z) + glm::vec3(x, y, z))
+		.vertex(glm::vec3(-size.x, -2, -size.z) + glm::vec3(x, y, z))
+		.normal(glm::vec3(0, 1, 0))
+		.texcoord(glm::vec2(0, 0))
+		.texcoord(glm::vec2(1, 0))
+		.texcoord(glm::vec2(1, 1))
+		.texcoord(glm::vec2(0, -1))
+		.face(ObjFace{
+			ObjPolygon(ObjIndex(1), ObjIndex(1), ObjIndex(1)),
+			ObjPolygon(ObjIndex(2), ObjIndex(2), ObjIndex(1)),
+			ObjPolygon(ObjIndex(4), ObjIndex(3), ObjIndex(1)),
+			ObjPolygon(ObjIndex(3), ObjIndex(4), ObjIndex(1)),
+		});
+}
+
+void PlayScene::genBackPlane(objb::ObjBuilder & ob, objb::MtlBuilder& mb, int x, int y, int z, glm::vec3 size) {
+	using namespace objb;
+	char buf[256];
+	std::memset(buf, '\0', 256);
+	std::sprintf(buf, "plane%d%d%d_Back", x, y, z);
+	ob.newModel(buf)
+		.vertex(glm::vec3(-size.x, 0, size.z) + glm::vec3(x, y, z))
+		.vertex(glm::vec3(-size.x, -2, size.z) + glm::vec3(x, y, z))
+		.vertex(glm::vec3(size.x, 0, size.z) + glm::vec3(x, y, z))
+		.vertex(glm::vec3(size.x, -2, size.z) + glm::vec3(x, y, z))
+		.normal(glm::vec3(0, 0, 1))
+		.texcoord(glm::vec2(0, 0))
+		.texcoord(glm::vec2(1, 0))
+		.texcoord(glm::vec2(1, 1))
+		.texcoord(glm::vec2(0, -1))
+		.face(ObjFace{
+			ObjPolygon(ObjIndex(1), ObjIndex(1), ObjIndex(1)),
+			ObjPolygon(ObjIndex(2), ObjIndex(2), ObjIndex(1)),
+			ObjPolygon(ObjIndex(4), ObjIndex(3), ObjIndex(1)),
+			ObjPolygon(ObjIndex(3), ObjIndex(4), ObjIndex(1)),
+	});
 }
 
 // private

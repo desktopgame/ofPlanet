@@ -58,55 +58,8 @@ ObjBuilder & ObjBuilder::material(const std::string & _material) {
 }
 std::string ObjBuilder::toString() const {
 	std::stringstream ss;
-	if (!_material.empty()) {
-		ss << "mtllib " << _material << std::endl;
-	}
-	for (int i = 0; i < static_cast<int>(models.size()); i++) {
-		toStringImpl(ss, i);
-	}
+	write(ss);
 	return ss.str();
-}
-void ObjBuilder::toStringImpl(std::stringstream & ss, int index) const {
-	auto model = models.at(index);
-	ss << "o " << model->name << std::endl;
-	for (auto vert : model->vertices) {
-		ss << "v " << vert.x << " " << vert.y << " " << vert.z << std::endl;
-	}
-	for (auto norm : model->normals) {
-		ss << "vn " << norm.x << " " << norm.y << " " << norm.z << std::endl;
-	}
-	for (auto texcoord : model->texcoords) {
-		ss << "vt " << texcoord.x << " " << texcoord.y << std::endl;
-	}
-	for (auto face : model->faces) {
-		ss << "f ";
-		for (int i = 0; i < static_cast<int>(face.size()); i++) {
-			bool last = i == (face.size() - 1);
-			auto polygon = face[i];
-			int vi = polygon.vertexIndex.index;
-			int ti = polygon.texcoordIndex.index;
-			int ni = polygon.normalIndex.index;
-			vi = resolveVertexIndex(index, vi);
-			ti = resolveTexcoordIndex(index, ti);
-			ni = resolveNormalIndex(index, ni);
-			if (polygon.vertexIndex.valid && polygon.texcoordIndex.valid && polygon.normalIndex.valid) {
-				ss << vi << "/" << ti << "/" << ni;
-			}
-			else if (polygon.vertexIndex.valid && polygon.texcoordIndex.valid) {
-				ss << vi << "/" << ti;
-			}
-			else if (polygon.vertexIndex.valid) {
-				ss << vi;
-			}
-			if (!last) {
-				ss << " ";
-			}
-		}
-		if (!model->material.empty()) {
-			ss << "usemtl " << model->material << std::endl;
-		}
-		ss << std::endl;
-	}
 }
 int ObjBuilder::resolveVertexIndex(int modelIndex, int localVertexIndex) const {
 	int verts = 0;
