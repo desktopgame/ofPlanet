@@ -32,120 +32,101 @@ void ofApp::setup() {
 		glm::vec3 size(1, 1, 1);
 		ObjBuilder builder;
 		//0, 1, 2, 2, 3, 0
-		builder.newModel("front")
-			.vertex(glm::vec3(-size.x, -size.y, size.z))
-			.vertex(glm::vec3(size.x, -size.y, size.z))
-			.vertex(glm::vec3(size.x, size.y, size.z))
-			.vertex(glm::vec3(-size.x, size.y, size.z))
-			.normal(glm::vec3(0, 0, 1))
-			.normal(glm::vec3(0, 0, 1))
-			.normal(glm::vec3(0, 0, 1))
-			.normal(glm::vec3(0, 0, 1))
-			.texcoord(glm::vec2(0, 1))
-			.texcoord(glm::vec2(1, 1))
-			.texcoord(glm::vec2(1, 0))
+		builder.newModel("top")
+			.vertex(glm::vec3(-size.x, 0, size.z))
+			.vertex(glm::vec3(size.x, 0, size.z))
+			.vertex(glm::vec3(-size.x, 0, -size.z))
+			.vertex(glm::vec3(size.x, 0, -size.z))
+			.normal(glm::vec3(0, 1, 0))
 			.texcoord(glm::vec2(0, 0))
+			.texcoord(glm::vec2(1, 0))
+			.texcoord(glm::vec2(1, 1))
+			.texcoord(glm::vec2(0, 1))
 			.face(ObjFace{
-				ObjPolygon(ObjIndex(0), ObjIndex(0), ObjIndex(0)),
 				ObjPolygon(ObjIndex(1), ObjIndex(1), ObjIndex(1)),
-				ObjPolygon(ObjIndex(2), ObjIndex(2), ObjIndex(2)),
-			})
+				ObjPolygon(ObjIndex(2), ObjIndex(2), ObjIndex(1)),
+				ObjPolygon(ObjIndex(4), ObjIndex(3), ObjIndex(1)),
+				ObjPolygon(ObjIndex(3), ObjIndex(4), ObjIndex(1)),
+			});
+		builder.newModel("front")
+			.vertex(glm::vec3(size.x, 0, -size.z))
+			.vertex(glm::vec3(size.x, -2, -size.z))
+			.vertex(glm::vec3(-size.x, 0, -size.z))
+			.vertex(glm::vec3(-size.x, -2, -size.z))
+			.normal(glm::vec3(0, 1, 0))
+			.texcoord(glm::vec2(0, 0))
+			.texcoord(glm::vec2(1, 0))
+			.texcoord(glm::vec2(1, 1))
+			.texcoord(glm::vec2(0, -1))
 			.face(ObjFace{
-				ObjPolygon(ObjIndex(2), ObjIndex(2), ObjIndex(2)),
-				ObjPolygon(ObjIndex(3), ObjIndex(3), ObjIndex(3)),
-				ObjPolygon(ObjIndex(0), ObjIndex(0), ObjIndex(0)),
+				ObjPolygon(ObjIndex(1), ObjIndex(1), ObjIndex(1)),
+				ObjPolygon(ObjIndex(2), ObjIndex(2), ObjIndex(1)),
+				ObjPolygon(ObjIndex(4), ObjIndex(3), ObjIndex(1)),
+				ObjPolygon(ObjIndex(3), ObjIndex(4), ObjIndex(1)),
 			});
 		builder.newModel("back")
-			.vertex(glm::vec3(size.x, -size.y, -size.z))
-			.vertex(glm::vec3(-size.x, -size.y, -size.z))
-			.vertex(glm::vec3(-size.x, size.y, -size.z))
-			.vertex(glm::vec3(size.x, size.y, -size.z))
-			.normal(glm::vec3(0, 0, -1))
-			.normal(glm::vec3(0, 0, -1))
-			.normal(glm::vec3(0, 0, -1))
-			.normal(glm::vec3(0, 0, -1))
-			.texcoord(glm::vec2(0, 1))
-			.texcoord(glm::vec2(1, 1))
-			.texcoord(glm::vec2(1, 0))
+			.vertex(glm::vec3(-size.x, 0, size.z))
+			.vertex(glm::vec3(-size.x, -2, size.z))
+			.vertex(glm::vec3(size.x, 0, size.z))
+			.vertex(glm::vec3(size.x, -2, size.z))
+			.normal(glm::vec3(0, 0, 1))
 			.texcoord(glm::vec2(0, 0))
+			.texcoord(glm::vec2(1, 0))
+			.texcoord(glm::vec2(1, 1))
+			.texcoord(glm::vec2(0, -1))
 			.face(ObjFace{
-				ObjPolygon(ObjIndex(0), ObjIndex(0), ObjIndex(0)),
 				ObjPolygon(ObjIndex(1), ObjIndex(1), ObjIndex(1)),
-				ObjPolygon(ObjIndex(2), ObjIndex(2), ObjIndex(2)),
-				})
-			.face(ObjFace{
-				ObjPolygon(ObjIndex(2), ObjIndex(2), ObjIndex(2)),
-				ObjPolygon(ObjIndex(3), ObjIndex(3), ObjIndex(3)),
-				ObjPolygon(ObjIndex(0), ObjIndex(0), ObjIndex(0)),
+				ObjPolygon(ObjIndex(2), ObjIndex(2), ObjIndex(1)),
+				ObjPolygon(ObjIndex(4), ObjIndex(3), ObjIndex(1)),
+				ObjPolygon(ObjIndex(3), ObjIndex(4), ObjIndex(1)),
 			});
-		builder.newModel("left")
-			.vertex(glm::vec3(-size.x, -size.y, -size.z))
-			.vertex(glm::vec3(-size.x, -size.y, size.z))
-			.vertex(glm::vec3(-size.x, size.y, size.z))
-			.vertex(glm::vec3(-size.x, size.y, -size.z))
-			.normal(glm::vec3(-1, 0, 0))
-			.normal(glm::vec3(-1, 0, 0))
-			.normal(glm::vec3(-1, 0, 0))
-			.normal(glm::vec3(-1, 0, 0))
-			.texcoord(glm::vec2(0, 1))
-			.texcoord(glm::vec2(1, 1))
-			.texcoord(glm::vec2(1, 0))
+		builder.newModel("bottom")
+			.vertex(glm::vec3(size.x, -2, size.z))
+			.vertex(glm::vec3(-size.x, -2, size.z))
+			.vertex(glm::vec3(size.x, -2, -size.z))
+			.vertex(glm::vec3(-size.x, -2, -size.z))
+			.normal(glm::vec3(0, 1, 0))
 			.texcoord(glm::vec2(0, 0))
+			.texcoord(glm::vec2(1, 0))
+			.texcoord(glm::vec2(1, 1))
+			.texcoord(glm::vec2(0, -1))
 			.face(ObjFace{
-				ObjPolygon(ObjIndex(0), ObjIndex(0), ObjIndex(0)),
 				ObjPolygon(ObjIndex(1), ObjIndex(1), ObjIndex(1)),
-				ObjPolygon(ObjIndex(2), ObjIndex(2), ObjIndex(2)),
-				})
-			.face(ObjFace{
-				ObjPolygon(ObjIndex(2), ObjIndex(2), ObjIndex(2)),
-				ObjPolygon(ObjIndex(3), ObjIndex(3), ObjIndex(3)),
-				ObjPolygon(ObjIndex(0), ObjIndex(0), ObjIndex(0)),
+				ObjPolygon(ObjIndex(2), ObjIndex(2), ObjIndex(1)),
+				ObjPolygon(ObjIndex(4), ObjIndex(3), ObjIndex(1)),
+				ObjPolygon(ObjIndex(3), ObjIndex(4), ObjIndex(1)),
 			});
 		builder.newModel("right")
-			.vertex(glm::vec3(size.x, -size.y, size.z))
-			.vertex(glm::vec3(size.x, -size.y, -size.z))
-			.vertex(glm::vec3(size.x, size.y, -size.z))
-			.vertex(glm::vec3(size.x, size.y, size.z))
-			.normal(glm::vec3(1, 0, 0))
-			.normal(glm::vec3(1, 0, 0))
-			.normal(glm::vec3(1, 0, 0))
-			.normal(glm::vec3(1, 0, 0))
-			.texcoord(glm::vec2(0, 1))
-			.texcoord(glm::vec2(1, 1))
-			.texcoord(glm::vec2(1, 0))
+			.vertex(glm::vec3(size.x, 0, size.z))
+			.vertex(glm::vec3(size.x, -2, size.z))
+			.vertex(glm::vec3(size.x, 0, -size.z))
+			.vertex(glm::vec3(size.x, -2, -size.z))
+			.normal(glm::vec3(0, 1, 0))
 			.texcoord(glm::vec2(0, 0))
+			.texcoord(glm::vec2(1, 0))
+			.texcoord(glm::vec2(1, 1))
+			.texcoord(glm::vec2(0, -1))
 			.face(ObjFace{
-				ObjPolygon(ObjIndex(0), ObjIndex(0), ObjIndex(0)),
 				ObjPolygon(ObjIndex(1), ObjIndex(1), ObjIndex(1)),
-				ObjPolygon(ObjIndex(2), ObjIndex(2), ObjIndex(2)),
-				})
-			.face(ObjFace{
-				ObjPolygon(ObjIndex(2), ObjIndex(2), ObjIndex(2)),
-				ObjPolygon(ObjIndex(3), ObjIndex(3), ObjIndex(3)),
-				ObjPolygon(ObjIndex(0), ObjIndex(0), ObjIndex(0)),
+				ObjPolygon(ObjIndex(2), ObjIndex(2), ObjIndex(1)),
+				ObjPolygon(ObjIndex(4), ObjIndex(3), ObjIndex(1)),
+				ObjPolygon(ObjIndex(3), ObjIndex(4), ObjIndex(1)),
 			});
-		builder.newModel("top")
-			.vertex(glm::vec3(-size.x, size.y, size.z))
-			.vertex(glm::vec3(size.x, size.y, size.z))
-			.vertex(glm::vec3(size.x, size.y, -size.z))
-			.vertex(glm::vec3(-size.x, size.y, -size.z))
-			.normal(glm::vec3(0, 1, 0))
-			.normal(glm::vec3(0, 1, 0))
-			.normal(glm::vec3(0, 1, 0))
-			.normal(glm::vec3(0, 1, 0))
+		builder.newModel("left")
+			.vertex(glm::vec3(-size.x, 0, -size.z))
+			.vertex(glm::vec3(-size.x, -2, -size.z))
+			.vertex(glm::vec3(-size.x, 0, size.z))
+			.vertex(glm::vec3(-size.x, -2, size.z))
+			.normal(glm::vec3(-1, 0, 0))
 			.texcoord(glm::vec2(0, 0))
 			.texcoord(glm::vec2(1, 0))
 			.texcoord(glm::vec2(1, 1))
-			.texcoord(glm::vec2(0, 1))
+			.texcoord(glm::vec2(0, -1))
 			.face(ObjFace{
-				ObjPolygon(ObjIndex(0), ObjIndex(0), ObjIndex(0)),
 				ObjPolygon(ObjIndex(1), ObjIndex(1), ObjIndex(1)),
-				ObjPolygon(ObjIndex(2), ObjIndex(2), ObjIndex(2)),
-			})
-			.face(ObjFace{
-				ObjPolygon(ObjIndex(2), ObjIndex(2), ObjIndex(2)),
-				ObjPolygon(ObjIndex(3), ObjIndex(3), ObjIndex(3)),
-				ObjPolygon(ObjIndex(0), ObjIndex(0), ObjIndex(0)),
+				ObjPolygon(ObjIndex(2), ObjIndex(2), ObjIndex(1)),
+				ObjPolygon(ObjIndex(4), ObjIndex(3), ObjIndex(1)),
+				ObjPolygon(ObjIndex(3), ObjIndex(4), ObjIndex(1)),
 			});
 		File::writeAllText("C:\\Work\\myobj.obj", builder.toString());
 #if _DEBUG
