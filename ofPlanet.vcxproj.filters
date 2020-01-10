@@ -242,6 +242,7 @@
       <Filter>addons\ofxImGui\libs\imgui\src</Filter>
     </ClCompile>
     <ClCompile Include="src\objb\ObjBuilder.cpp" />
+    <ClCompile Include="src\objb\MtlBuilder.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -616,6 +617,7 @@
       <Filter>addons\ofxImGui\libs\imgui\src</Filter>
     </ClInclude>
     <ClInclude Include="src\objb\ObjBuilder.hpp" />
+    <ClInclude Include="src\objb\MtlBuilder.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="icon.rc" />

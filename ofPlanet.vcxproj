@@ -212,6 +212,7 @@
     <ClCompile Include="src\io\File.cpp" />
     <ClCompile Include="src\io\Path.cpp" />
     <ClCompile Include="src\luaex\luaex.cpp" />
+    <ClCompile Include="src\objb\MtlBuilder.cpp" />
     <ClCompile Include="src\objb\ObjBuilder.cpp" />
     <ClCompile Include="src\scene\Scene.cpp" />
     <ClCompile Include="src\scene\SceneManager.cpp" />
@@ -305,6 +306,7 @@
     <ClInclude Include="src\mapbox\recursive_wrapper.hpp" />
     <ClInclude Include="src\mapbox\variant.hpp" />
     <ClInclude Include="src\mapbox\variant_io.hpp" />
+    <ClInclude Include="src\objb\MtlBuilder.hpp" />
     <ClInclude Include="src\objb\ObjBuilder.hpp" />
     <ClInclude Include="src\PerlinNoise\PerlinNoise.hpp" />
     <ClInclude Include="src\picojson\picojson.h" />
