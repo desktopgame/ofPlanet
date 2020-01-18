@@ -234,9 +234,9 @@ void PlayScene::exportObj(const std::string & outputFile) {
 				if (!block) {
 					continue;
 				}
-				bool overXP = x + 1 >= w->getXSize();
-				bool overYP = y + 1 >= w->getYSize();
-				bool overZP = z + 1 >= w->getZSize();
+				bool overXP = x + 1 >= xsize;
+				bool overYP = y + 1 >= ysize;
+				bool overZP = z + 1 >= zsize;
 				bool overXN = x - 1 < 0;
 				bool overYN = y - 1 < 0;
 				bool overZN = z - 1 < 0;
@@ -298,17 +298,25 @@ void PlayScene::genTopPlane(objb::ObjBuilder & ob, objb::MtlBuilder& mb, int x, 
 	std::memset(buf, '\0', 256);
 	std::sprintf(buf, "plane%d%d%d_Top", x, y, z);
 
-	ob.newModel(buf)
-		.vertex(glm::vec3(-size.x, 0, size.z) + glm::vec3(x,y,z))
-		.vertex(glm::vec3(size.x, 0, size.z) + glm::vec3(x, y, z))
-		.vertex(glm::vec3(-size.x, 0, -size.z) + glm::vec3(x, y, z))
-		.vertex(glm::vec3(size.x, 0, -size.z) + glm::vec3(x, y, z))
-		.face(ObjFace{
-			ObjPolygon(ObjIndex(1), ObjIndex(1, IndexMode::Global), ObjIndex(1, IndexMode::Global)),
-			ObjPolygon(ObjIndex(2), ObjIndex(2, IndexMode::Global), ObjIndex(1, IndexMode::Global)),
-			ObjPolygon(ObjIndex(4), ObjIndex(3, IndexMode::Global), ObjIndex(1, IndexMode::Global)),
-			ObjPolygon(ObjIndex(3), ObjIndex(4, IndexMode::Global), ObjIndex(1, IndexMode::Global)),
-	});
+	ObjFace face;
+
+	ObjPolygon polyA(ObjIndex(1), ObjIndex(1, IndexMode::Global), ObjIndex(1, IndexMode::Global));
+	ObjPolygon polyB(ObjIndex(2), ObjIndex(2, IndexMode::Global), ObjIndex(1, IndexMode::Global));
+	ObjPolygon polyC(ObjIndex(4), ObjIndex(3, IndexMode::Global), ObjIndex(1, IndexMode::Global));
+	ObjPolygon polyD(ObjIndex(3), ObjIndex(4, IndexMode::Global), ObjIndex(1, IndexMode::Global));
+
+	auto& aa = ob.newModel(buf)
+		.sharedVertex(glm::vec3(-size.x, 0, size.z) + glm::vec3(x, y, z), polyA)
+		.sharedVertex(glm::vec3(size.x, 0, size.z) + glm::vec3(x, y, z), polyB)
+		.sharedVertex(glm::vec3(-size.x, 0, -size.z) + glm::vec3(x, y, z), polyC)
+		.sharedVertex(glm::vec3(size.x, 0, -size.z) + glm::vec3(x, y, z), polyD);
+	//ok
+	face.emplace_back(polyC);
+	face.emplace_back(polyA);
+	face.emplace_back(polyB);
+	face.emplace_back(polyD);
+
+	aa.face(face);
 }
 
 void PlayScene::genBottomPlane(objb::ObjBuilder & ob, objb::MtlBuilder& mb, int x, int y, int z, glm::vec3 size) {
@@ -316,17 +324,26 @@ void PlayScene::genBottomPlane(objb::ObjBuilder & ob, objb::MtlBuilder& mb, int 
 	char buf[256];
 	std::memset(buf, '\0', 256);
 	std::sprintf(buf, "plane%d%d%d_Bottom", x, y, z);
-	ob.newModel(buf)
-		.vertex(glm::vec3(size.x, -2, size.z) + glm::vec3(x, y, z))
-		.vertex(glm::vec3(-size.x, -2, size.z) + glm::vec3(x, y, z))
-		.vertex(glm::vec3(size.x, -2, -size.z) + glm::vec3(x, y, z))
-		.vertex(glm::vec3(-size.x, -2, -size.z) + glm::vec3(x, y, z))
-		.face(ObjFace{
-			ObjPolygon(ObjIndex(1), ObjIndex(1, IndexMode::Global), ObjIndex(2, IndexMode::Global)),
-			ObjPolygon(ObjIndex(2), ObjIndex(2, IndexMode::Global), ObjIndex(2, IndexMode::Global)),
-			ObjPolygon(ObjIndex(4), ObjIndex(3, IndexMode::Global), ObjIndex(2, IndexMode::Global)),
-			ObjPolygon(ObjIndex(3), ObjIndex(4, IndexMode::Global), ObjIndex(2, IndexMode::Global)),
-		});
+
+	ObjFace face;
+
+	ObjPolygon polyA(ObjIndex(1), ObjIndex(1, IndexMode::Global), ObjIndex(2, IndexMode::Global));
+	ObjPolygon polyB(ObjIndex(2), ObjIndex(2, IndexMode::Global), ObjIndex(2, IndexMode::Global));
+	ObjPolygon polyC(ObjIndex(4), ObjIndex(3, IndexMode::Global), ObjIndex(2, IndexMode::Global));
+	ObjPolygon polyD(ObjIndex(3), ObjIndex(4, IndexMode::Global), ObjIndex(2, IndexMode::Global));
+
+	auto& aa = ob.newModel(buf)
+		.sharedVertex(glm::vec3(size.x, -2, size.z) + glm::vec3(x, y, z), polyA)
+		.sharedVertex(glm::vec3(-size.x, -2, size.z) + glm::vec3(x, y, z), polyB)
+		.sharedVertex(glm::vec3(size.x, -2, -size.z) + glm::vec3(x, y, z), polyC)
+		.sharedVertex(glm::vec3(-size.x, -2, -size.z) + glm::vec3(x, y, z), polyD);
+	//ok
+	face.emplace_back(polyC);
+	face.emplace_back(polyA);
+	face.emplace_back(polyB);
+	face.emplace_back(polyD);
+
+	aa.face(face);
 }
 
 void PlayScene::genLeftPlane(objb::ObjBuilder & ob, objb::MtlBuilder& mb, int x, int y, int z, glm::vec3 size) {
@@ -334,17 +351,27 @@ void PlayScene::genLeftPlane(objb::ObjBuilder & ob, objb::MtlBuilder& mb, int x,
 	char buf[256];
 	std::memset(buf, '\0', 256);
 	std::sprintf(buf, "plane%d%d%d_Left", x, y, z);
-	ob.newModel(buf)
-		.vertex(glm::vec3(-size.x, 0, -size.z) + glm::vec3(x, y, z))
-		.vertex(glm::vec3(-size.x, -2, -size.z) + glm::vec3(x, y, z))
-		.vertex(glm::vec3(-size.x, 0, size.z) + glm::vec3(x, y, z))
-		.vertex(glm::vec3(-size.x, -2, size.z) + glm::vec3(x, y, z))
-		.face(ObjFace{
-			ObjPolygon(ObjIndex(1), ObjIndex(1, IndexMode::Global), ObjIndex(3, IndexMode::Global)),
-			ObjPolygon(ObjIndex(2), ObjIndex(2, IndexMode::Global), ObjIndex(3, IndexMode::Global)),
-			ObjPolygon(ObjIndex(4), ObjIndex(3, IndexMode::Global), ObjIndex(3, IndexMode::Global)),
-			ObjPolygon(ObjIndex(3), ObjIndex(4, IndexMode::Global), ObjIndex(3, IndexMode::Global)),
-		});
+
+	ObjFace face;
+
+	ObjPolygon polyA(ObjIndex(1), ObjIndex(1, IndexMode::Global), ObjIndex(3, IndexMode::Global));
+	ObjPolygon polyB(ObjIndex(2), ObjIndex(2, IndexMode::Global), ObjIndex(3, IndexMode::Global));
+	ObjPolygon polyC(ObjIndex(4), ObjIndex(3, IndexMode::Global), ObjIndex(3, IndexMode::Global));
+	ObjPolygon polyD(ObjIndex(3), ObjIndex(4, IndexMode::Global), ObjIndex(3, IndexMode::Global));
+
+	auto& aa = ob.newModel(buf)
+		.sharedVertex(glm::vec3(-size.x, 0, -size.z) + glm::vec3(x, y, z), polyA)
+		.sharedVertex(glm::vec3(-size.x, -2, -size.z) + glm::vec3(x, y, z), polyB)
+		.sharedVertex(glm::vec3(-size.x, 0, size.z) + glm::vec3(x, y, z), polyC)
+		.sharedVertex(glm::vec3(-size.x, -2, size.z) + glm::vec3(x, y, z), polyD);
+
+	//ok
+	face.emplace_back(polyD);
+	face.emplace_back(polyC);
+	face.emplace_back(polyA);
+	face.emplace_back(polyB);
+
+	aa.face(face);
 }
 
 void PlayScene::genRightPlane(objb::ObjBuilder & ob, objb::MtlBuilder& mb, int x, int y, int z, glm::vec3 size) {
@@ -352,17 +379,27 @@ void PlayScene::genRightPlane(objb::ObjBuilder & ob, objb::MtlBuilder& mb, int x
 	char buf[256];
 	std::memset(buf, '\0', 256);
 	std::sprintf(buf, "plane%d%d%d_Right", x, y, z);
-	ob.newModel(buf)
-		.vertex(glm::vec3(size.x, 0, size.z) + glm::vec3(x, y, z))
-		.vertex(glm::vec3(size.x, -2, size.z) + glm::vec3(x, y, z))
-		.vertex(glm::vec3(size.x, 0, -size.z) + glm::vec3(x, y, z))
-		.vertex(glm::vec3(size.x, -2, -size.z) + glm::vec3(x, y, z))
-		.face(ObjFace{
-			ObjPolygon(ObjIndex(1), ObjIndex(1, IndexMode::Global), ObjIndex(4, IndexMode::Global)),
-			ObjPolygon(ObjIndex(2), ObjIndex(2, IndexMode::Global), ObjIndex(4, IndexMode::Global)),
-			ObjPolygon(ObjIndex(4), ObjIndex(3, IndexMode::Global), ObjIndex(4, IndexMode::Global)),
-			ObjPolygon(ObjIndex(3), ObjIndex(4, IndexMode::Global), ObjIndex(4, IndexMode::Global)),
-	});
+
+	ObjFace face;
+
+	ObjPolygon polyA(ObjIndex(1), ObjIndex(1, IndexMode::Global), ObjIndex(4, IndexMode::Global));
+	ObjPolygon polyB(ObjIndex(2), ObjIndex(2, IndexMode::Global), ObjIndex(4, IndexMode::Global));
+	ObjPolygon polyC(ObjIndex(4), ObjIndex(3, IndexMode::Global), ObjIndex(4, IndexMode::Global));
+	ObjPolygon polyD(ObjIndex(3), ObjIndex(4, IndexMode::Global), ObjIndex(4, IndexMode::Global));
+
+	auto& aa = ob.newModel(buf)
+		.sharedVertex(glm::vec3(size.x, 0, size.z) + glm::vec3(x, y, z), polyA)
+		.sharedVertex(glm::vec3(size.x, -2, size.z) + glm::vec3(x, y, z), polyB)
+		.sharedVertex(glm::vec3(size.x, 0, -size.z) + glm::vec3(x, y, z), polyC)
+		.sharedVertex(glm::vec3(size.x, -2, -size.z) + glm::vec3(x, y, z), polyD);
+
+	//ok
+	face.emplace_back(polyD);
+	face.emplace_back(polyC);
+	face.emplace_back(polyA);
+	face.emplace_back(polyB);
+
+	aa.face(face);
 }
 
 void PlayScene::genFrontPlane(objb::ObjBuilder & ob, objb::MtlBuilder& mb, int x, int y, int z, glm::vec3 size) {
@@ -370,17 +407,33 @@ void PlayScene::genFrontPlane(objb::ObjBuilder & ob, objb::MtlBuilder& mb, int x
 	char buf[256];
 	std::memset(buf, '\0', 256);
 	std::sprintf(buf, "plane%d%d%d_Front", x, y, z);
-	ob.newModel(buf)
-		.vertex(glm::vec3(size.x, 0, -size.z) + glm::vec3(x, y, z))
-		.vertex(glm::vec3(size.x, -2, -size.z) + glm::vec3(x, y, z))
-		.vertex(glm::vec3(-size.x, 0, -size.z) + glm::vec3(x, y, z))
-		.vertex(glm::vec3(-size.x, -2, -size.z) + glm::vec3(x, y, z))
-		.face(ObjFace{
-			ObjPolygon(ObjIndex(1), ObjIndex(1, IndexMode::Global), ObjIndex(5, IndexMode::Global)),
-			ObjPolygon(ObjIndex(2), ObjIndex(2, IndexMode::Global), ObjIndex(5, IndexMode::Global)),
-			ObjPolygon(ObjIndex(4), ObjIndex(3, IndexMode::Global), ObjIndex(5, IndexMode::Global)),
-			ObjPolygon(ObjIndex(3), ObjIndex(4, IndexMode::Global), ObjIndex(5, IndexMode::Global)),
-		});
+
+	ObjFace face;
+
+	ObjPolygon polyA(ObjIndex(1), ObjIndex(1, IndexMode::Global), ObjIndex(5, IndexMode::Global));
+	ObjPolygon polyB(ObjIndex(2), ObjIndex(2, IndexMode::Global), ObjIndex(5, IndexMode::Global));
+	ObjPolygon polyC(ObjIndex(4), ObjIndex(3, IndexMode::Global), ObjIndex(5, IndexMode::Global));
+	ObjPolygon polyD(ObjIndex(3), ObjIndex(4, IndexMode::Global), ObjIndex(5, IndexMode::Global));
+
+	auto& aa = ob.newModel(buf)
+		.sharedVertex(glm::vec3(size.x, 0, -size.z) + glm::vec3(x, y, z), polyA)
+		.sharedVertex(glm::vec3(size.x, -2, -size.z) + glm::vec3(x, y, z), polyB)
+		.sharedVertex(glm::vec3(-size.x, 0, -size.z) + glm::vec3(x, y, z), polyC)
+		.sharedVertex(glm::vec3(-size.x, -2, -size.z) + glm::vec3(x, y, z), polyD);
+
+	face.emplace_back(polyC);
+	face.emplace_back(polyD);
+	face.emplace_back(polyB);
+	face.emplace_back(polyA);
+	//dcab
+	//dabc
+	//bdac
+	//dacb
+	//cdab
+	//bcda
+	//cbda
+	//cdba
+	aa.face(face);
 }
 
 void PlayScene::genBackPlane(objb::ObjBuilder & ob, objb::MtlBuilder& mb, int x, int y, int z, glm::vec3 size) {
@@ -388,17 +441,27 @@ void PlayScene::genBackPlane(objb::ObjBuilder & ob, objb::MtlBuilder& mb, int x,
 	char buf[256];
 	std::memset(buf, '\0', 256);
 	std::sprintf(buf, "plane%d%d%d_Back", x, y, z);
-	ob.newModel(buf)
-		.vertex(glm::vec3(-size.x, 0, size.z) + glm::vec3(x, y, z))
-		.vertex(glm::vec3(-size.x, -2, size.z) + glm::vec3(x, y, z))
-		.vertex(glm::vec3(size.x, 0, size.z) + glm::vec3(x, y, z))
-		.vertex(glm::vec3(size.x, -2, size.z) + glm::vec3(x, y, z))
-		.face(ObjFace{
-			ObjPolygon(ObjIndex(1), ObjIndex(1, IndexMode::Global), ObjIndex(6, IndexMode::Global)),
-			ObjPolygon(ObjIndex(2), ObjIndex(2, IndexMode::Global), ObjIndex(6, IndexMode::Global)),
-			ObjPolygon(ObjIndex(4), ObjIndex(3, IndexMode::Global), ObjIndex(6, IndexMode::Global)),
-			ObjPolygon(ObjIndex(3), ObjIndex(4, IndexMode::Global), ObjIndex(6, IndexMode::Global)),
-	});
+
+	ObjFace face;
+
+	ObjPolygon polyA(ObjIndex(1), ObjIndex(1, IndexMode::Global), ObjIndex(6, IndexMode::Global));
+	ObjPolygon polyB(ObjIndex(2), ObjIndex(2, IndexMode::Global), ObjIndex(6, IndexMode::Global));
+	ObjPolygon polyC(ObjIndex(4), ObjIndex(3, IndexMode::Global), ObjIndex(6, IndexMode::Global));
+	ObjPolygon polyD(ObjIndex(3), ObjIndex(4, IndexMode::Global), ObjIndex(6, IndexMode::Global));
+
+	auto& aa = ob.newModel(buf)
+		.sharedVertex(glm::vec3(-size.x, 0, size.z) + glm::vec3(x, y, z), polyA)
+		.sharedVertex(glm::vec3(-size.x, -2, size.z) + glm::vec3(x, y, z), polyB)
+		.sharedVertex(glm::vec3(size.x, 0, size.z) + glm::vec3(x, y, z), polyC)
+		.sharedVertex(glm::vec3(size.x, -2, size.z) + glm::vec3(x, y, z), polyD);
+
+	face.emplace_back(polyC);
+	face.emplace_back(polyD);
+	face.emplace_back(polyB);
+	face.emplace_back(polyA);
+
+
+	aa.face(face);
 }
 
 // private

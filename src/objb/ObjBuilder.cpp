@@ -1,5 +1,6 @@
 #include "ObjBuilder.hpp"
 #include <sstream>
+#include <iostream>
 
 namespace objb {
 // ObjIndex
@@ -17,7 +18,42 @@ ObjPolygon::ObjPolygon(ObjIndex vertexIndex, ObjIndex texcoordIndex)
 	: vertexIndex(vertexIndex), texcoordIndex(texcoordIndex), normalIndex() {
 }
 // ObjModel
-ObjModel::ObjModel(const std::string& name) : name(name), vertices(), normals(), texcoords() {
+ObjModel::ObjModel(ObjBuilder& builder, const std::string& name) : useIndexCount(0), builder(builder), name(name), vertices(), normals(), texcoords() {
+}
+ObjModel & ObjModel::sharedVertex(const glm::vec3 & aVertex, ObjPolygon& destPoly) {
+	//*
+	int sum = 0;
+	bool found = false;
+	for (int i = 0; i < builder.getModelCount(); i++) {
+		auto& model = builder.getModelAt(i);
+		if (&model == this) {
+			break;
+		}
+		for (int j = 0; j < static_cast<int>(model.vertices.size()); j++) {
+			glm::vec3 otherVert = model.vertices.at(j);
+			sum++;
+			if (aVertex == otherVert) {
+				destPoly.vertexIndex.index = sum + builder.getGlobalVertexCount();
+				destPoly.vertexIndex.mode = IndexMode::Global;
+//				destPoly.vertexIndex = ObjIndex(sum + 1 + builder.getGlobalVertexCount(), IndexMode::Global);
+				found = true;
+				useIndexCount++;
+				break;
+			}
+		}
+		if (found) {
+			break;
+		}
+	}
+	if (!found) {
+		vertices.emplace_back(aVertex);
+		destPoly.vertexIndex.index = builder.countVertex();
+		destPoly.vertexIndex.mode = IndexMode::Global;
+		
+	}
+	return *this;
+	//*/
+	//return vertex(aVertex);
 }
 ObjModel & ObjModel::vertex(const glm::vec3 & vertex) {
 	vertices.emplace_back(vertex);
@@ -39,8 +75,11 @@ ObjModel & ObjModel::useMaterial(const std::string& material) {
 	this->material = material;
 	return *this;
 }
+int ObjModel::getUseIndexCount() {
+	return  useIndexCount;
+}
 // ObjBuilder
-ObjBuilder::ObjBuilder() : models() {
+ObjBuilder::ObjBuilder() : models(), allVertexCount(0){
 }
 ObjBuilder::~ObjBuilder() {
 	for (auto model : models) {
@@ -49,7 +88,7 @@ ObjBuilder::~ObjBuilder() {
 	models.clear();
 }
 ObjModel& ObjBuilder::newModel(const std::string& name) {
-	auto model = new ObjModel(name);
+	auto model = new ObjModel(*this, name);
 	models.emplace_back(model);
 	return *model;
 }
@@ -77,6 +116,25 @@ std::string ObjBuilder::toString() const {
 	write(ss);
 	return ss.str();
 }
+ObjModel & ObjBuilder::getModelAt(int index) {
+	return *models.at(index);
+}
+int ObjBuilder::getModelCount() const {
+	return static_cast<int>(models.size());
+}
+int ObjBuilder::getGlobalVertexCount() const {
+	return static_cast<int>(vertices.size());
+}
+int ObjBuilder::getGlobalNormalCount() const {
+	return static_cast<int>(normals.size());
+}
+int ObjBuilder::getGloalTexcoordCount() const {
+	return static_cast<int>(texcoords.size());
+}
+int ObjBuilder::countVertex() {
+	allVertexCount++;
+	return allVertexCount;
+}
 int ObjBuilder::countVertex(std::vector<int>& cache, int modelIndex) const {
 	int verts = -1;
 	if (modelIndex < static_cast<int>(cache.size())) {
@@ -85,7 +143,8 @@ int ObjBuilder::countVertex(std::vector<int>& cache, int modelIndex) const {
 	if (verts == -1) {
 		if (modelIndex == 0) {
 			verts = static_cast<int>(models.at(0)->vertices.size());
-		} else {
+		}
+		else {
 			verts = countVertex(cache, modelIndex - 1);
 			verts += models[modelIndex]->vertices.size();
 		}

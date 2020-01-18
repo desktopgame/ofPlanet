@@ -12,37 +12,43 @@ enum class IndexMode {
 	Global,
 };
 struct ObjIndex {
-	const int index;
-	const bool valid;
-	const IndexMode mode;
+	int index;
+	bool valid;
+	IndexMode mode;
 
 	explicit ObjIndex(int index, IndexMode mode);
 	explicit ObjIndex(int index);
 	explicit ObjIndex();
 };
 struct ObjPolygon {
-	const ObjIndex vertexIndex;
-	const ObjIndex texcoordIndex;
-	const ObjIndex normalIndex;
+	ObjIndex vertexIndex;
+	ObjIndex texcoordIndex;
+	ObjIndex normalIndex;
 
 	explicit ObjPolygon(ObjIndex vertexIndex, ObjIndex texcoordIndex, ObjIndex normalIndex);
 	explicit ObjPolygon(ObjIndex vertexIndex, ObjIndex texcoordIndex);
 };
 using ObjFace = std::vector<ObjPolygon>;
+class ObjBuilder;
 class ObjModel {
 public:
-	explicit ObjModel(const std::string& name);
+	explicit ObjModel(ObjBuilder& builder, const std::string& name);
+	ObjModel& sharedVertex(const glm::vec3& aVertex, ObjPolygon& destPoly);
 	ObjModel& vertex(const glm::vec3& vertex);
 	ObjModel& normal(const glm::vec3& normal);
 	ObjModel& texcoord(const glm::vec2& texcoord);
 	ObjModel& face(const ObjFace& face);
 	ObjModel& useMaterial(const std::string& material);
+	int getUseIndexCount();
 	std::string name;
 	std::string material;
 	std::vector<glm::vec3> vertices;
 	std::vector<glm::vec3> normals;
 	std::vector<glm::vec2> texcoords;
 	std::vector<ObjFace> faces;
+private:
+	int useIndexCount;
+	ObjBuilder& builder;
 };
 class ObjBuilder {
 public:
@@ -58,6 +64,14 @@ public:
 	
 	template<typename StreamType>
 	void write(StreamType& stream) const;
+
+	ObjModel& getModelAt(int index);
+	int getModelCount() const;
+	int getGlobalVertexCount() const;
+	int getGlobalNormalCount() const;
+	int getGloalTexcoordCount() const;
+
+	int countVertex();
 private:
 	template<typename StreamType>
 	void writeImpl(StreamType& stream, int index, std::vector<int>& vertCache, std::vector<int>& normCache, std::vector<int>& texcoordCache) const;
@@ -73,6 +87,7 @@ private:
 	std::vector<glm::vec3> vertices;
 	std::vector<glm::vec3> normals;
 	std::vector<glm::vec2> texcoords;
+	int allVertexCount;
 };
 template<typename StreamType>
 inline void ObjBuilder::write(StreamType & stream) const {
@@ -92,6 +107,20 @@ inline void ObjBuilder::write(StreamType & stream) const {
 		stream << "vt " << texcoord.x << " " << texcoord.y << std::endl;
 	}
 	stream << "# Local Data" << std::endl;
+	// æ‚É’¸“_, –@ü, UV‚¾‚¯‚ð‘‚«ž‚ñ‚Å‚¨‚­
+	for (int i = 0; i < size; i++) {
+		auto model = models.at(i);
+		for (auto vert : model->vertices) {
+			stream << "v " << vert.x << " " << vert.y << " " << vert.z << std::endl;
+		}
+		for (auto norm : model->normals) {
+			stream << "vn " << norm.x << " " << norm.y << " " << norm.z << std::endl;
+		}
+		for (auto texcoord : model->texcoords) {
+			stream << "vt " << texcoord.x << " " << texcoord.y << std::endl;
+		}
+	}
+	// –Ê‚ðì¬‚·‚é
 	for (int i = 0; i <size; i++) {
 		writeImpl(stream, i, vcache, ncache, tccache);
 	}
@@ -99,17 +128,8 @@ inline void ObjBuilder::write(StreamType & stream) const {
 template<typename StreamType>
 inline void ObjBuilder::writeImpl(StreamType & stream, int index, std::vector<int>& vertCache, std::vector<int>& normCache, std::vector<int>& texcoordCache) const {
 	auto model = models.at(index);
-	stream << "o " << model->name << std::endl;
-	for (auto vert : model->vertices) {
-		stream << "v " << vert.x << " " << vert.y << " " << vert.z << std::endl;
-	}
-	for (auto norm : model->normals) {
-		stream << "vn " << norm.x << " " << norm.y << " " << norm.z << std::endl;
-	}
-	for (auto texcoord : model->texcoords) {
-		stream << "vt " << texcoord.x << " " << texcoord.y << std::endl;
-	}
 	for (auto face : model->faces) {
+		stream << "o " << model->name << std::endl;
 		stream << "f ";
 		for (int i = 0; i < static_cast<int>(face.size()); i++) {
 			bool last = i == (face.size() - 1);
