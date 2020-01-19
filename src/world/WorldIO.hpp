@@ -46,12 +46,12 @@ private:
 
 	static glm::vec3 asVec3(int x, int y, int z);
 
-	static void genTopPlane(objb::ObjBuilder& ob, objb::MtlBuilder& mb, int x, int y, int z, glm::vec3 size, const std::shared_ptr<World>& world);
-	static void genBottomPlane(objb::ObjBuilder& ob, objb::MtlBuilder& mb, int x, int y, int z, glm::vec3 size, const std::shared_ptr<World>& world);
-	static void genLeftPlane(objb::ObjBuilder& ob, objb::MtlBuilder& mb, int x, int y, int z, glm::vec3 size, const std::shared_ptr<World>& world);
-	static void genRightPlane(objb::ObjBuilder& ob, objb::MtlBuilder& mb, int x, int y, int z, glm::vec3 size, const std::shared_ptr<World>& world);
-	static void genFrontPlane(objb::ObjBuilder& ob, objb::MtlBuilder& mb, int x, int y, int z, glm::vec3 size, const std::shared_ptr<World>& world);
-	static void genBackPlane(objb::ObjBuilder& ob, objb::MtlBuilder& mb, int x, int y, int z, glm::vec3 size, const std::shared_ptr<World>& world);
+	static void genTopPlane(std::vector<std::string>& texVec, objb::ObjBuilder& ob, objb::MtlBuilder& mb, glm::ivec3 worldPos, glm::ivec3 objPos, glm::vec3 size, const std::shared_ptr<World>& world);
+	static void genBottomPlane(std::vector<std::string>& texVec, objb::ObjBuilder& ob, objb::MtlBuilder& mb, glm::ivec3 worldPos, glm::ivec3 objPos, glm::vec3 size, const std::shared_ptr<World>& world);
+	static void genLeftPlane(std::vector<std::string>& texVec, objb::ObjBuilder& ob, objb::MtlBuilder& mb, glm::ivec3 worldPos, glm::ivec3 objPos, glm::vec3 size, const std::shared_ptr<World>& world);
+	static void genRightPlane(std::vector<std::string>& texVec, objb::ObjBuilder& ob, objb::MtlBuilder& mb, glm::ivec3 worldPos, glm::ivec3 objPos, glm::vec3 size, const std::shared_ptr<World>& world);
+	static void genFrontPlane(std::vector<std::string>& texVec, objb::ObjBuilder& ob, objb::MtlBuilder& mb, glm::ivec3 worldPos, glm::ivec3 objPos, glm::vec3 size, const std::shared_ptr<World>& world);
+	static void genBackPlane(std::vector<std::string>& texVec, objb::ObjBuilder& ob, objb::MtlBuilder& mb, glm::ivec3 worldPos, glm::ivec3 objPos, glm::vec3 size, const std::shared_ptr<World>& world);
 
 	WorldIO() = delete;
 	~WorldIO() = delete;

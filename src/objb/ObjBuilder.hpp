@@ -130,6 +130,9 @@ inline void ObjBuilder::writeImpl(StreamType & stream, int index, std::vector<in
 	auto model = models.at(index);
 	for (auto face : model->faces) {
 		stream << "o " << model->name << std::endl;
+		if (!model->material.empty()) {
+			stream << "usemtl " << model->material << std::endl;
+		}
 		stream << "f ";
 		for (int i = 0; i < static_cast<int>(face.size()); i++) {
 			bool last = i == (face.size() - 1);
@@ -158,9 +161,6 @@ inline void ObjBuilder::writeImpl(StreamType & stream, int index, std::vector<in
 			if (!last) {
 				stream << " ";
 			}
-		}
-		if (!model->material.empty()) {
-			stream << "usemtl " << model->material << std::endl;
 		}
 		stream << std::endl;
 	}

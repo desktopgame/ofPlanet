@@ -14,7 +14,7 @@ namespace planet {
 std::vector<std::shared_ptr<TexturePack> > TexturePack::texturePacks;
 
 std::shared_ptr<TexturePack> TexturePack::load(const TextureInfoCollection & textureInfoCollection) {
-	auto tp = new TexturePack();
+	auto tp = new TexturePack(textureInfoCollection.getBaseDirectory());
 	auto ret = std::shared_ptr<TexturePack>(tp);
 	// load texturesets
 	for (int i = 0; i < textureInfoCollection.getTextureInfoCount(); i++) {
@@ -75,8 +75,8 @@ std::shared_ptr<TexturePack> TexturePack::load(const TextureInfoCollection & tex
 	return registerTexturePack(ret);
 }
 
-std::shared_ptr<TexturePack> TexturePack::make(const std::string& name) {
-        auto tp = new TexturePack();
+std::shared_ptr<TexturePack> TexturePack::make(const std::string& baseDirectory, const std::string& name) {
+        auto tp = new TexturePack(baseDirectory);
         tp->name = name;
         return registerTexturePack(std::shared_ptr<TexturePack>(tp));
 }
@@ -150,9 +150,13 @@ void TexturePack::resolve() {
         }
 }
 
+std::string TexturePack::getBaseDirectory() const {
+	return baseDirectory;
+}
+
 // protected
-TexturePack::TexturePack()
-    : selected(false), name(), textureSets(), images() {}
+TexturePack::TexturePack(const std::string& baseDirectory)
+    : selected(false), baseDirectory(baseDirectory),name(), textureSets(), images() {}
 
 std::shared_ptr<TexturePack> TexturePack::registerTexturePack(
     const std::shared_ptr<TexturePack> pack) {

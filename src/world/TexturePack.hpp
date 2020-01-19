@@ -17,7 +17,7 @@ class Plane;
 class TexturePack : public std::enable_shared_from_this<TexturePack> {
        public:
 		static std::shared_ptr<TexturePack> load(const TextureInfoCollection& textureInfoCollection);
-        static std::shared_ptr<TexturePack> make(const std::string& name);
+        static std::shared_ptr<TexturePack> make(const std::string& baseDirectory, const std::string& name);
         static std::shared_ptr<TexturePack> getCurrent();
 
         void addTextureSet(const TextureSet& set);
@@ -32,13 +32,16 @@ class TexturePack : public std::enable_shared_from_this<TexturePack> {
         void select();
         void resolve();
 
+		std::string getBaseDirectory() const;
+
        protected:
-        explicit TexturePack();
+        explicit TexturePack(const std::string& baseDirectory);
         static std::shared_ptr<TexturePack> registerTexturePack(
             const std::shared_ptr<TexturePack> pack);
 
        private:
         bool selected;
+		std::string baseDirectory;
         std::string name;
         std::vector<TextureSet> textureSets;
         std::unordered_map<std::string, std::shared_ptr<Texture> > images;

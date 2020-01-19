@@ -22,10 +22,12 @@ class Texture {
 
         unsigned char* getData() const;
         GLuint getName() const;
+		std::string getPath() const;
 
        private:
         Texture(const Texture& obj) = delete;
         Texture& operator=(const Texture&) = delete;
+		std::string path;
         Flag loadFlag;
         Flag bindFlag;
         int width, height, ch;

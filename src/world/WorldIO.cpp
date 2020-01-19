@@ -6,6 +6,7 @@
 #include "TexturePack.hpp"
 #include "Block.hpp"
 #include "../io/File.hpp"
+#include "../io/Path.hpp"
 #include "../picojson/picojson.h"
 #include <soil.h>
 #include <future>
@@ -111,6 +112,7 @@ AsyncOperation WorldIO::toObj(const std::string & outputPath, const std::shared_
 			.globalNormal(glm::vec3(0, 1, 0))
 			.globalNormal(glm::vec3(0, 0, 1))
 			;
+		ob.material(outputPath + ".mtl");
 		int xsize = w->getXSize();
 		int ysize = w->getYSize();
 		int zsize = w->getZSize();
@@ -118,6 +120,7 @@ AsyncOperation WorldIO::toObj(const std::string & outputPath, const std::shared_
 		float all = static_cast<float>(xsize * ysize * zsize);
 		glm::vec3 size(1, 1, 1);
 		ob.reserveModels(xsize * ysize * zsize);
+		std::vector<std::string> texVec;
 		for (int x = 0; x < xsize; x++) {
 			for (int y = 0; y < ysize; y++) {
 				for (int z = 0; z < zsize; z++) {
@@ -145,33 +148,39 @@ AsyncOperation WorldIO::toObj(const std::string & outputPath, const std::shared_
 						continue;
 					}
 					if (!hasBlockYP) {
-						genTopPlane(ob, mb, x * 2, y * 2, z * 2, size, w);
+						genTopPlane(texVec, ob, mb, glm::ivec3(x,y,z), glm::ivec3(x * 2, y * 2, z * 2), size, w);
 					}
 					if (!hasBlockYN) {
-						genBottomPlane(ob, mb, x * 2, y * 2, z * 2, size, w);
+						genBottomPlane(texVec, ob, mb, glm::ivec3(x, y, z), glm::ivec3(x * 2, y * 2, z * 2), size, w);
 					}
 					if (!hasBlockXP) {
-						genRightPlane(ob, mb, x * 2, y * 2, z * 2, size, w);
+						genRightPlane(texVec, ob, mb, glm::ivec3(x, y, z), glm::ivec3(x * 2, y * 2, z * 2), size, w);
 					}
 					if (!hasBlockXN) {
-						genLeftPlane(ob, mb, x * 2, y * 2, z * 2, size, w);
+						genLeftPlane(texVec, ob, mb, glm::ivec3(x, y, z), glm::ivec3(x * 2, y * 2, z * 2), size, w);
 					}
 					if (!hasBlockZP) {
-						genFrontPlane(ob, mb, x * 2, y * 2, z * 2, size, w);
+						genFrontPlane(texVec, ob, mb, glm::ivec3(x, y, z), glm::ivec3(x * 2, y * 2, z * 2), size, w);
 					}
 					if (!hasBlockZN) {
-						genBackPlane(ob, mb, x * 2, y * 2, z * 2, size, w);
+						genBackPlane(texVec, ob, mb, glm::ivec3(x, y, z), glm::ivec3(x * 2, y * 2, z * 2), size, w);
 					}
 					ret->setValue(sumf(x,y,z) / all);
 				}
 			}
 		}
-
-		std::ofstream ofs(outputPath);
-		if (!ofs.fail()) {
-			ob.write(ofs);
+		// OBJ‚ð•Û‘¶
+		std::ofstream objOFS(outputPath);
+		if (!objOFS.fail()) {
+			ob.write(objOFS);
 		}
-		ofs.close();
+		objOFS.close();
+		// MTL‚ð•Û‘¶
+		std::ofstream mtlOFS(outputPath + ".mtl");
+		if (!objOFS.fail()) {
+			mtlOFS << mb.toString() << std::endl;
+		}
+		mtlOFS.close();
 		ret->setValue(1.0f);
 	}).detach();
 	return ret;
@@ -198,11 +207,15 @@ glm::vec3 WorldIO::asVec3(int x, int y, int z) {
 }
 
 // private
-void WorldIO::genTopPlane(objb::ObjBuilder & ob, objb::MtlBuilder& mb, int x, int y, int z, glm::vec3 size, const std::shared_ptr<World>& world) {
+void WorldIO::genTopPlane(std::vector<std::string>& texVec, objb::ObjBuilder & ob, objb::MtlBuilder& mb, glm::ivec3 worldPos, glm::ivec3 objPos, glm::vec3 size, const std::shared_ptr<World>& world) {
 	using namespace objb;
 	char buf[256];
 	std::memset(buf, '\0', 256);
-	std::sprintf(buf, "plane%d%d%d_Top", x, y, z);
+	std::sprintf(buf, "plane%d%d%d_Top", objPos.x, objPos.y, objPos.z);
+	auto blockBeh = world->getBlockBehavior(worldPos.x, worldPos.y, worldPos.z);
+	auto block = std::static_pointer_cast<Block>(blockBeh);
+	auto texPath = Path::build(std::vector<std::string>{TexturePack::getCurrent()->getBaseDirectory(), block->getTextureSet().getTopImage()->getPath()});
+	auto texName = block->getTextureReference() + std::string("_Top");
 
 	ObjFace face;
 
@@ -212,10 +225,16 @@ void WorldIO::genTopPlane(objb::ObjBuilder & ob, objb::MtlBuilder& mb, int x, in
 	ObjPolygon polyD(ObjIndex(3), ObjIndex(4, IndexMode::Global), ObjIndex(1, IndexMode::Global));
 
 	auto& aa = ob.newModel(buf)
-		.sharedVertex(glm::vec3(-size.x, 0, size.z) + asVec3(x, y, z), polyA)
-		.sharedVertex(glm::vec3(size.x, 0, size.z) + asVec3(x, y, z), polyB)
-		.sharedVertex(glm::vec3(-size.x, 0, -size.z) + asVec3(x, y, z), polyC)
-		.sharedVertex(glm::vec3(size.x, 0, -size.z) + asVec3(x, y, z), polyD);
+		.sharedVertex(glm::vec3(-size.x, 0, size.z) + asVec3(objPos.x, objPos.y, objPos.z), polyA)
+		.sharedVertex(glm::vec3(size.x, 0, size.z) + asVec3(objPos.x, objPos.y, objPos.z), polyB)
+		.sharedVertex(glm::vec3(-size.x, 0, -size.z) + asVec3(objPos.x, objPos.y, objPos.z), polyC)
+		.sharedVertex(glm::vec3(size.x, 0, -size.z) + asVec3(objPos.x, objPos.y, objPos.z), polyD);
+
+	if (std::find(texVec.begin(), texVec.end(), texName) == texVec.end()) {
+		mb.newElement(texName).map_Kd(texPath);
+		texVec.emplace_back(texName);
+	}
+	aa.useMaterial(texName);
 
 	face.emplace_back(polyC);
 	face.emplace_back(polyA);
@@ -225,11 +244,15 @@ void WorldIO::genTopPlane(objb::ObjBuilder & ob, objb::MtlBuilder& mb, int x, in
 	aa.face(face);
 }
 
-void WorldIO::genBottomPlane(objb::ObjBuilder & ob, objb::MtlBuilder& mb, int x, int y, int z, glm::vec3 size, const std::shared_ptr<World>& world) {
+void WorldIO::genBottomPlane(std::vector<std::string>& texVec, objb::ObjBuilder & ob, objb::MtlBuilder& mb, glm::ivec3 worldPos, glm::ivec3 objPos, glm::vec3 size, const std::shared_ptr<World>& world) {
 	using namespace objb;
 	char buf[256];
 	std::memset(buf, '\0', 256);
-	std::sprintf(buf, "plane%d%d%d_Bottom", x, y, z);
+	std::sprintf(buf, "plane%d%d%d_Bottom", objPos.x, objPos.y, objPos.z);
+	auto blockBeh = world->getBlockBehavior(worldPos.x, worldPos.y, worldPos.z);
+	auto block = std::static_pointer_cast<Block>(blockBeh);
+	auto texPath = Path::build(std::vector<std::string>{TexturePack::getCurrent()->getBaseDirectory(), block->getTextureSet().getBottomImage()->getPath()});
+	auto texName = block->getTextureReference() + std::string("_Bottom");
 
 	ObjFace face;
 
@@ -239,10 +262,16 @@ void WorldIO::genBottomPlane(objb::ObjBuilder & ob, objb::MtlBuilder& mb, int x,
 	ObjPolygon polyD(ObjIndex(3), ObjIndex(4, IndexMode::Global), ObjIndex(2, IndexMode::Global));
 
 	auto& aa = ob.newModel(buf)
-		.sharedVertex(glm::vec3(size.x, -2, size.z) + asVec3(x, y, z), polyA)
-		.sharedVertex(glm::vec3(-size.x, -2, size.z) + asVec3(x, y, z), polyB)
-		.sharedVertex(glm::vec3(size.x, -2, -size.z) + asVec3(x, y, z), polyC)
-		.sharedVertex(glm::vec3(-size.x, -2, -size.z) + asVec3(x, y, z), polyD);
+		.sharedVertex(glm::vec3(size.x, -2, size.z) + asVec3(objPos.x, objPos.y, objPos.z), polyA)
+		.sharedVertex(glm::vec3(-size.x, -2, size.z) + asVec3(objPos.x, objPos.y, objPos.z), polyB)
+		.sharedVertex(glm::vec3(size.x, -2, -size.z) + asVec3(objPos.x, objPos.y, objPos.z), polyC)
+		.sharedVertex(glm::vec3(-size.x, -2, -size.z) + asVec3(objPos.x, objPos.y, objPos.z), polyD);
+
+	if (std::find(texVec.begin(), texVec.end(), texName) == texVec.end()) {
+		mb.newElement(texName).map_Kd(texPath);
+		texVec.emplace_back(texName);
+	}
+	aa.useMaterial(texName);
 
 	face.emplace_back(polyC);
 	face.emplace_back(polyA);
@@ -252,11 +281,15 @@ void WorldIO::genBottomPlane(objb::ObjBuilder & ob, objb::MtlBuilder& mb, int x,
 	aa.face(face);
 }
 
-void WorldIO::genLeftPlane(objb::ObjBuilder & ob, objb::MtlBuilder& mb, int x, int y, int z, glm::vec3 size, const std::shared_ptr<World>& world) {
+void WorldIO::genLeftPlane(std::vector<std::string>& texVec, objb::ObjBuilder & ob, objb::MtlBuilder& mb, glm::ivec3 worldPos, glm::ivec3 objPos, glm::vec3 size, const std::shared_ptr<World>& world) {
 	using namespace objb;
 	char buf[256];
 	std::memset(buf, '\0', 256);
-	std::sprintf(buf, "plane%d%d%d_Left", x, y, z);
+	std::sprintf(buf, "plane%d%d%d_Left", objPos.x, objPos.y, objPos.z);
+	auto blockBeh = world->getBlockBehavior(worldPos.x, worldPos.y, worldPos.z);
+	auto block = std::static_pointer_cast<Block>(blockBeh);
+	auto texPath = Path::build(std::vector<std::string>{TexturePack::getCurrent()->getBaseDirectory(), block->getTextureSet().getLeftImage()->getPath()});
+	auto texName = block->getTextureReference() + std::string("_Left");
 
 	ObjFace face;
 
@@ -266,10 +299,17 @@ void WorldIO::genLeftPlane(objb::ObjBuilder & ob, objb::MtlBuilder& mb, int x, i
 	ObjPolygon polyD(ObjIndex(3), ObjIndex(4, IndexMode::Global), ObjIndex(3, IndexMode::Global));
 
 	auto& aa = ob.newModel(buf)
-		.sharedVertex(glm::vec3(-size.x, 0, -size.z) + asVec3(x, y, z), polyA)
-		.sharedVertex(glm::vec3(-size.x, -2, -size.z) + asVec3(x, y, z), polyB)
-		.sharedVertex(glm::vec3(-size.x, 0, size.z) + asVec3(x, y, z), polyC)
-		.sharedVertex(glm::vec3(-size.x, -2, size.z) + asVec3(x, y, z), polyD);
+		.sharedVertex(glm::vec3(-size.x, 0, -size.z) + asVec3(objPos.x, objPos.y, objPos.z), polyA)
+		.sharedVertex(glm::vec3(-size.x, -2, -size.z) + asVec3(objPos.x, objPos.y, objPos.z), polyB)
+		.sharedVertex(glm::vec3(-size.x, 0, size.z) + asVec3(objPos.x, objPos.y, objPos.z), polyC)
+		.sharedVertex(glm::vec3(-size.x, -2, size.z) + asVec3(objPos.x, objPos.y, objPos.z), polyD);
+
+	if (std::find(texVec.begin(), texVec.end(), texName) == texVec.end()) {
+		mb.newElement(texName).map_Kd(texPath);
+		texVec.emplace_back(texName);
+	}
+	aa.useMaterial(texName);
+
 
 	face.emplace_back(polyD);
 	face.emplace_back(polyC);
@@ -279,11 +319,15 @@ void WorldIO::genLeftPlane(objb::ObjBuilder & ob, objb::MtlBuilder& mb, int x, i
 	aa.face(face);
 }
 
-void WorldIO::genRightPlane(objb::ObjBuilder & ob, objb::MtlBuilder& mb, int x, int y, int z, glm::vec3 size, const std::shared_ptr<World>& world) {
+void WorldIO::genRightPlane(std::vector<std::string>& texVec, objb::ObjBuilder & ob, objb::MtlBuilder& mb, glm::ivec3 worldPos, glm::ivec3 objPos, glm::vec3 size, const std::shared_ptr<World>& world) {
 	using namespace objb;
 	char buf[256];
 	std::memset(buf, '\0', 256);
-	std::sprintf(buf, "plane%d%d%d_Right", x, y, z);
+	std::sprintf(buf, "plane%d%d%d_Right", objPos.x, objPos.y, objPos.z);
+	auto blockBeh = world->getBlockBehavior(worldPos.x, worldPos.y, worldPos.z);
+	auto block = std::static_pointer_cast<Block>(blockBeh);
+	auto texPath = Path::build(std::vector<std::string>{TexturePack::getCurrent()->getBaseDirectory(), block->getTextureSet().getRightImage()->getPath()});
+	auto texName = block->getTextureReference() + std::string("_Right");
 
 	ObjFace face;
 
@@ -293,10 +337,17 @@ void WorldIO::genRightPlane(objb::ObjBuilder & ob, objb::MtlBuilder& mb, int x, 
 	ObjPolygon polyD(ObjIndex(3), ObjIndex(4, IndexMode::Global), ObjIndex(4, IndexMode::Global));
 
 	auto& aa = ob.newModel(buf)
-		.sharedVertex(glm::vec3(size.x, 0, size.z) + asVec3(x, y, z), polyA)
-		.sharedVertex(glm::vec3(size.x, -2, size.z) + asVec3(x, y, z), polyB)
-		.sharedVertex(glm::vec3(size.x, 0, -size.z) + asVec3(x, y, z), polyC)
-		.sharedVertex(glm::vec3(size.x, -2, -size.z) + asVec3(x, y, z), polyD);
+		.sharedVertex(glm::vec3(size.x, 0, size.z) + asVec3(objPos.x, objPos.y, objPos.z), polyA)
+		.sharedVertex(glm::vec3(size.x, -2, size.z) + asVec3(objPos.x, objPos.y, objPos.z), polyB)
+		.sharedVertex(glm::vec3(size.x, 0, -size.z) + asVec3(objPos.x, objPos.y, objPos.z), polyC)
+		.sharedVertex(glm::vec3(size.x, -2, -size.z) + asVec3(objPos.x, objPos.y, objPos.z), polyD);
+
+	if (std::find(texVec.begin(), texVec.end(), texName) == texVec.end()) {
+		mb.newElement(texName).map_Kd(texPath);
+		texVec.emplace_back(texName);
+	}
+	aa.useMaterial(texName);
+
 
 	face.emplace_back(polyD);
 	face.emplace_back(polyC);
@@ -306,11 +357,15 @@ void WorldIO::genRightPlane(objb::ObjBuilder & ob, objb::MtlBuilder& mb, int x, 
 	aa.face(face);
 }
 
-void WorldIO::genFrontPlane(objb::ObjBuilder & ob, objb::MtlBuilder& mb, int x, int y, int z, glm::vec3 size, const std::shared_ptr<World>& world) {
+void WorldIO::genFrontPlane(std::vector<std::string>& texVec, objb::ObjBuilder & ob, objb::MtlBuilder& mb, glm::ivec3 worldPos, glm::ivec3 objPos, glm::vec3 size, const std::shared_ptr<World>& world) {
 	using namespace objb;
 	char buf[256];
 	std::memset(buf, '\0', 256);
-	std::sprintf(buf, "plane%d%d%d_Front", x, y, z);
+	std::sprintf(buf, "plane%d%d%d_Front", objPos.x, objPos.y, objPos.z);
+	auto blockBeh = world->getBlockBehavior(worldPos.x, worldPos.y, worldPos.z);
+	auto block = std::static_pointer_cast<Block>(blockBeh);
+	auto texPath = Path::build(std::vector<std::string>{TexturePack::getCurrent()->getBaseDirectory(), block->getTextureSet().getFrontImage()->getPath()});
+	auto texName = block->getTextureReference() + std::string("_Front");
 
 	ObjFace face;
 
@@ -320,10 +375,16 @@ void WorldIO::genFrontPlane(objb::ObjBuilder & ob, objb::MtlBuilder& mb, int x, 
 	ObjPolygon polyD(ObjIndex(3), ObjIndex(4, IndexMode::Global), ObjIndex(6, IndexMode::Global));
 
 	auto& aa = ob.newModel(buf)
-		.sharedVertex(glm::vec3(-size.x, 0, size.z) + asVec3(x, y, z), polyA)
-		.sharedVertex(glm::vec3(-size.x, -2, size.z) + asVec3(x, y, z), polyB)
-		.sharedVertex(glm::vec3(size.x, 0, size.z) + asVec3(x, y, z), polyC)
-		.sharedVertex(glm::vec3(size.x, -2, size.z) + asVec3(x, y, z), polyD);
+		.sharedVertex(glm::vec3(-size.x, 0, size.z) + asVec3(objPos.x, objPos.y, objPos.z), polyA)
+		.sharedVertex(glm::vec3(-size.x, -2, size.z) + asVec3(objPos.x, objPos.y, objPos.z), polyB)
+		.sharedVertex(glm::vec3(size.x, 0, size.z) + asVec3(objPos.x, objPos.y, objPos.z), polyC)
+		.sharedVertex(glm::vec3(size.x, -2, size.z) + asVec3(objPos.x, objPos.y, objPos.z), polyD);
+
+	if (std::find(texVec.begin(), texVec.end(), texName) == texVec.end()) {
+		mb.newElement(texName).map_Kd(texPath);
+		texVec.emplace_back(texName);
+	}
+	aa.useMaterial(texName);
 
 	face.emplace_back(polyC);
 	face.emplace_back(polyA);
@@ -333,11 +394,15 @@ void WorldIO::genFrontPlane(objb::ObjBuilder & ob, objb::MtlBuilder& mb, int x, 
 	aa.face(face);
 }
 
-void WorldIO::genBackPlane(objb::ObjBuilder & ob, objb::MtlBuilder& mb, int x, int y, int z, glm::vec3 size, const std::shared_ptr<World>& world) {
+void WorldIO::genBackPlane(std::vector<std::string>& texVec, objb::ObjBuilder & ob, objb::MtlBuilder& mb, glm::ivec3 worldPos, glm::ivec3 objPos, glm::vec3 size, const std::shared_ptr<World>& world) {
 	using namespace objb;
 	char buf[256];
 	std::memset(buf, '\0', 256);
-	std::sprintf(buf, "plane%d%d%d_Back", x, y, z);
+	std::sprintf(buf, "plane%d%d%d_Back", objPos.x, objPos.y, objPos.z);
+	auto blockBeh = world->getBlockBehavior(worldPos.x, worldPos.y, worldPos.z);
+	auto block = std::static_pointer_cast<Block>(blockBeh);
+	auto texPath = Path::build(std::vector<std::string>{TexturePack::getCurrent()->getBaseDirectory(), block->getTextureSet().getBackImage()->getPath()});
+	auto texName = block->getTextureReference() + std::string("_Back");
 
 	ObjFace face;
 
@@ -347,10 +412,17 @@ void WorldIO::genBackPlane(objb::ObjBuilder & ob, objb::MtlBuilder& mb, int x, i
 	ObjPolygon polyD(ObjIndex(3), ObjIndex(4, IndexMode::Global), ObjIndex(5, IndexMode::Global));
 
 	auto& aa = ob.newModel(buf)
-		.sharedVertex(glm::vec3(size.x, 0, -size.z) + asVec3(x, y, z), polyA)
-		.sharedVertex(glm::vec3(size.x, -2, -size.z) + asVec3(x, y, z), polyB)
-		.sharedVertex(glm::vec3(-size.x, 0, -size.z) + asVec3(x, y, z), polyC)
-		.sharedVertex(glm::vec3(-size.x, -2, -size.z) + asVec3(x, y, z), polyD);
+		.sharedVertex(glm::vec3(size.x, 0, -size.z) + asVec3(objPos.x, objPos.y, objPos.z), polyA)
+		.sharedVertex(glm::vec3(size.x, -2, -size.z) + asVec3(objPos.x, objPos.y, objPos.z), polyB)
+		.sharedVertex(glm::vec3(-size.x, 0, -size.z) + asVec3(objPos.x, objPos.y, objPos.z), polyC)
+		.sharedVertex(glm::vec3(-size.x, -2, -size.z) + asVec3(objPos.x, objPos.y, objPos.z), polyD);
+
+	if (std::find(texVec.begin(), texVec.end(), texName) == texVec.end()) {
+		mb.newElement(texName).map_Kd(texPath);
+		texVec.emplace_back(texName);
+	}
+	aa.useMaterial(texName);
+
 
 	face.emplace_back(polyC);
 	face.emplace_back(polyA);
