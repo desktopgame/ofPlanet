@@ -106,6 +106,55 @@ AsyncOperation WorldIO::toObj(const std::string & outputDir, const std::shared_p
 			.globalTexcoord(glm::vec2(1, 0))
 			.globalTexcoord(glm::vec2(1, 1))
 			.globalTexcoord(glm::vec2(0, 1))
+/*
+*--
+|
+*--
+			.globalTexcoord(glm::vec2(1, 1))
+			.globalTexcoord(glm::vec2(0, 1))
+			.globalTexcoord(glm::vec2(0, 0))
+			.globalTexcoord(glm::vec2(1, 0))
+
+.globalTexcoord(glm::vec2(1, 1))
+.globalTexcoord(glm::vec2(0, 1))
+.globalTexcoord(glm::vec2(1, 0))
+.globalTexcoord(glm::vec2(0, 0))
+
+‰E
+.globalTexcoord(glm::vec2(1, 0))
+.globalTexcoord(glm::vec2(0, 0))
+.globalTexcoord(glm::vec2(1, 1))
+.globalTexcoord(glm::vec2(0, 1))
+
+
+.globalTexcoord(glm::vec2(1, 0))
+.globalTexcoord(glm::vec2(0, 0))
+.globalTexcoord(glm::vec2(0, 1))
+.globalTexcoord(glm::vec2(1, 1))
+
+.globalTexcoord(glm::vec2(0, 0))
+.globalTexcoord(glm::vec2(1, 0))
+.globalTexcoord(glm::vec2(0, 1))
+.globalTexcoord(glm::vec2(1, 1))
+*/
+
+/*
+invert y
+.globalTexcoord(glm::vec2(0, 0))
+.globalTexcoord(glm::vec2(0, 1))
+.globalTexcoord(glm::vec2(1, 0))
+.globalTexcoord(glm::vec2(1, 1))
+*/
+
+.globalTexcoord(glm::vec2(1, 1))
+.globalTexcoord(glm::vec2(1, 0))
+.globalTexcoord(glm::vec2(0, 1))
+.globalTexcoord(glm::vec2(0, 0))
+
+
+
+
+
 			.globalNormal(glm::vec3(0, 1, 0))
 			.globalNormal(glm::vec3(0, 1, 0))
 			.globalNormal(glm::vec3(-1, 0, 0))
@@ -302,10 +351,10 @@ void WorldIO::genLeftPlane(const std::string& outputDir, std::vector<std::string
 
 	ObjFace face;
 
-	ObjPolygon polyA(ObjIndex(1), ObjIndex(1, IndexMode::Global), ObjIndex(3, IndexMode::Global));
-	ObjPolygon polyB(ObjIndex(2), ObjIndex(2, IndexMode::Global), ObjIndex(3, IndexMode::Global));
-	ObjPolygon polyC(ObjIndex(4), ObjIndex(3, IndexMode::Global), ObjIndex(3, IndexMode::Global));
-	ObjPolygon polyD(ObjIndex(3), ObjIndex(4, IndexMode::Global), ObjIndex(3, IndexMode::Global));
+	ObjPolygon polyA(ObjIndex(1), ObjIndex(5, IndexMode::Global), ObjIndex(3, IndexMode::Global));
+	ObjPolygon polyB(ObjIndex(2), ObjIndex(6, IndexMode::Global), ObjIndex(3, IndexMode::Global));
+	ObjPolygon polyC(ObjIndex(4), ObjIndex(7, IndexMode::Global), ObjIndex(3, IndexMode::Global));
+	ObjPolygon polyD(ObjIndex(3), ObjIndex(8, IndexMode::Global), ObjIndex(3, IndexMode::Global));
 
 	auto& aa = ob.newModel(buf)
 		.sharedVertex(glm::vec3(-size.x, 0, -size.z) + asVec3(objPos.x, objPos.y, objPos.z), polyA)
@@ -343,10 +392,10 @@ void WorldIO::genRightPlane(const std::string& outputDir, std::vector<std::strin
 
 	ObjFace face;
 
-	ObjPolygon polyA(ObjIndex(1), ObjIndex(1, IndexMode::Global), ObjIndex(4, IndexMode::Global));
-	ObjPolygon polyB(ObjIndex(2), ObjIndex(2, IndexMode::Global), ObjIndex(4, IndexMode::Global));
-	ObjPolygon polyC(ObjIndex(4), ObjIndex(3, IndexMode::Global), ObjIndex(4, IndexMode::Global));
-	ObjPolygon polyD(ObjIndex(3), ObjIndex(4, IndexMode::Global), ObjIndex(4, IndexMode::Global));
+	ObjPolygon polyA(ObjIndex(1), ObjIndex(5, IndexMode::Global), ObjIndex(4, IndexMode::Global));
+	ObjPolygon polyB(ObjIndex(2), ObjIndex(6, IndexMode::Global), ObjIndex(4, IndexMode::Global));
+	ObjPolygon polyC(ObjIndex(4), ObjIndex(7, IndexMode::Global), ObjIndex(4, IndexMode::Global));
+	ObjPolygon polyD(ObjIndex(3), ObjIndex(8, IndexMode::Global), ObjIndex(4, IndexMode::Global));
 
 	auto& aa = ob.newModel(buf)
 		.sharedVertex(glm::vec3(size.x, 0, size.z) + asVec3(objPos.x, objPos.y, objPos.z), polyA)
@@ -384,10 +433,10 @@ void WorldIO::genFrontPlane(const std::string& outputDir, std::vector<std::strin
 
 	ObjFace face;
 
-	ObjPolygon polyA(ObjIndex(1), ObjIndex(1, IndexMode::Global), ObjIndex(6, IndexMode::Global));
-	ObjPolygon polyB(ObjIndex(2), ObjIndex(2, IndexMode::Global), ObjIndex(6, IndexMode::Global));
-	ObjPolygon polyC(ObjIndex(4), ObjIndex(3, IndexMode::Global), ObjIndex(6, IndexMode::Global));
-	ObjPolygon polyD(ObjIndex(3), ObjIndex(4, IndexMode::Global), ObjIndex(6, IndexMode::Global));
+	ObjPolygon polyA(ObjIndex(1), ObjIndex(5, IndexMode::Global), ObjIndex(6, IndexMode::Global));
+	ObjPolygon polyB(ObjIndex(2), ObjIndex(6, IndexMode::Global), ObjIndex(6, IndexMode::Global));
+	ObjPolygon polyC(ObjIndex(4), ObjIndex(7, IndexMode::Global), ObjIndex(6, IndexMode::Global));
+	ObjPolygon polyD(ObjIndex(3), ObjIndex(8, IndexMode::Global), ObjIndex(6, IndexMode::Global));
 
 	auto& aa = ob.newModel(buf)
 		.sharedVertex(glm::vec3(-size.x, 0, size.z) + asVec3(objPos.x, objPos.y, objPos.z), polyA)
@@ -424,10 +473,10 @@ void WorldIO::genBackPlane(const std::string& outputDir, std::vector<std::string
 
 	ObjFace face;
 
-	ObjPolygon polyA(ObjIndex(1), ObjIndex(1, IndexMode::Global), ObjIndex(5, IndexMode::Global));
-	ObjPolygon polyB(ObjIndex(2), ObjIndex(2, IndexMode::Global), ObjIndex(5, IndexMode::Global));
-	ObjPolygon polyC(ObjIndex(4), ObjIndex(3, IndexMode::Global), ObjIndex(5, IndexMode::Global));
-	ObjPolygon polyD(ObjIndex(3), ObjIndex(4, IndexMode::Global), ObjIndex(5, IndexMode::Global));
+	ObjPolygon polyA(ObjIndex(1), ObjIndex(5, IndexMode::Global), ObjIndex(5, IndexMode::Global));
+	ObjPolygon polyB(ObjIndex(2), ObjIndex(6, IndexMode::Global), ObjIndex(5, IndexMode::Global));
+	ObjPolygon polyC(ObjIndex(4), ObjIndex(7, IndexMode::Global), ObjIndex(5, IndexMode::Global));
+	ObjPolygon polyD(ObjIndex(3), ObjIndex(8, IndexMode::Global), ObjIndex(5, IndexMode::Global));
 
 	auto& aa = ob.newModel(buf)
 		.sharedVertex(glm::vec3(size.x, 0, -size.z) + asVec3(objPos.x, objPos.y, objPos.z), polyA)
