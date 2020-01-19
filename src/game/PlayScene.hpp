@@ -47,12 +47,6 @@ class PlayScene : public Scene {
 		void exportJson(const std::string& outputFile);
 		void exportObj(const std::string& outputFile);
 		void exportBmp(const std::string& outputFile);
-		void genTopPlane(objb::ObjBuilder& ob, objb::MtlBuilder& mb, int x, int y, int z, glm::vec3 size);
-		void genBottomPlane(objb::ObjBuilder& ob, objb::MtlBuilder& mb, int x, int y, int z, glm::vec3 size);
-		void genLeftPlane(objb::ObjBuilder& ob, objb::MtlBuilder& mb, int x, int y, int z, glm::vec3 size);
-		void genRightPlane(objb::ObjBuilder& ob, objb::MtlBuilder& mb, int x, int y, int z, glm::vec3 size);
-		void genFrontPlane(objb::ObjBuilder& ob, objb::MtlBuilder& mb, int x, int y, int z, glm::vec3 size);
-		void genBackPlane(objb::ObjBuilder& ob, objb::MtlBuilder& mb, int x, int y, int z, glm::vec3 size);
 
         ofEasyCam cam;
         std::shared_ptr<Planet> planet;
