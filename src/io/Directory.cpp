@@ -1,7 +1,11 @@
 #include "Directory.hpp"
-
 #include "../text/Encoding.hpp"
 #include "Path.hpp"
+
+#if _WIN32
+#include <Windows.h>
+#endif
+
 namespace planet {
 
 std::vector<std::string> Directory::files(const std::string& path,
@@ -25,6 +29,11 @@ std::vector<std::string> Directory::entries(const std::string& path,
         return Directory::hidden::entries(
             path, recursive,
             [](std::string file, DWORD attr) -> bool { return true; });
+}
+void Directory::create(const std::string & dir) {
+	if (!Path::isExists(dir)) {
+		CreateDirectoryA(dir.c_str(), NULL);
+	}
 }
 namespace Directory {
 namespace hidden {

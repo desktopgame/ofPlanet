@@ -13,6 +13,8 @@ namespace Directory {
 std::vector<std::string> files(const std::string& path, bool recursive);
 std::vector<std::string> directories(const std::string& path, bool recursive);
 std::vector<std::string> entries(const std::string& path, bool recursive);
+void create(const std::string& dir);
+
 namespace hidden {
 std::vector<std::string> entries(
     const std::string& path, bool recursive,

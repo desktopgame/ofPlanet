@@ -45,10 +45,10 @@ PlayScene::PlayScene()
       fpsCon(),
       biomeNames("Biome"),
       exportTypes(),
-	exportFile("File"),
+	exportDir("Output Directory"),
 	cameraSpeed("CameraSpeed", 0.01f),
 	worldSize("Size", 2), asyncOp(nullptr) {
-	exportFile.setString("./data");
+	exportDir.setString("dist");
 	worldSize.value = glm::vec3(128, 64, 128);
 	cameraSpeed.value = 0.01f;
 	fpsCon.enable();
@@ -177,7 +177,7 @@ void PlayScene::playDraw() {
 	//[JSON] [OBJ]
 	exportTypes.draw();
 	int exportMode = exportTypes.mode;
-	exportFile.draw();
+	exportDir.draw();
 	// 処理中ならラベルだけを表示
 	bool processing = isProcessing();
 	if (processing) {
@@ -188,18 +188,14 @@ void PlayScene::playDraw() {
 	} else {
 		//そうでなければボタンを表示
 		if (ImGui::Button("Export")) {
-			std::string outputFile = exportFile.getString();
+			Directory::create(exportDir.getString());
 			if (exportMode == EXPORT_JSON) {
-				outputFile = Strings::fixsuffix(outputFile, ".json");
-				exportJson(outputFile);
-			}
-			else if (exportMode == EXPORT_OBJ) {
-				outputFile = Strings::fixsuffix(outputFile, ".obj");
-				exportObj(outputFile);
+				exportJson(Path::build(std::vector<std::string>{exportDir.getString(), "data.json"}));
+			} else if (exportMode == EXPORT_OBJ) {
+				exportObj(Path::build(std::vector<std::string>{exportDir.getString(), "data.obj"}));
 			}
 			else if (exportMode == EXPORT_BMP) {
-				outputFile = Strings::fixsuffix(outputFile, ".bmp");
-				exportBmp(outputFile);
+				exportBmp(Path::build(std::vector<std::string>{exportDir.getString(), "data.bmp"}));
 			}
 		}
 	}
@@ -218,6 +214,7 @@ void PlayScene::exportJson(const std::string & outputFile) {
 void PlayScene::exportObj(const std::string & outputFile) {
 	if (!isProcessing()) {
 		File::remove(outputFile);
+		File::remove(outputFile + ".mtl");
 		this->asyncOp = WorldIO::toObj(outputFile, planet->getWorld());
 	}
 }

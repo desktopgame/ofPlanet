@@ -61,7 +61,7 @@ class PlayScene : public Scene {
 		std::vector<std::shared_ptr<Biome> > biomes;
 		imguiex::ListBox biomeNames;
 		imguiex::RadioButtonGroup exportTypes;
-		imguiex::InputField<> exportFile;
+		imguiex::InputField<> exportDir;
 		imguiex::Float cameraSpeed;
 		imguiex::FloatXZ worldSize;
 		AsyncOperation asyncOp;
