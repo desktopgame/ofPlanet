@@ -44,6 +44,8 @@ private:
 	template<typename T>
 	static float sumf(T a, T b, T c) { return static_cast<float>(onef(a) * onef(b) * onef(c)); }
 
+	static glm::vec3 asVec3(int x, int y, int z);
+
 	static void genTopPlane(objb::ObjBuilder& ob, objb::MtlBuilder& mb, int x, int y, int z, glm::vec3 size, const std::shared_ptr<World>& world);
 	static void genBottomPlane(objb::ObjBuilder& ob, objb::MtlBuilder& mb, int x, int y, int z, glm::vec3 size, const std::shared_ptr<World>& world);
 	static void genLeftPlane(objb::ObjBuilder& ob, objb::MtlBuilder& mb, int x, int y, int z, glm::vec3 size, const std::shared_ptr<World>& world);

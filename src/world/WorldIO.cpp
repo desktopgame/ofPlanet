@@ -144,7 +144,7 @@ AsyncOperation WorldIO::toObj(const std::string & outputPath, const std::shared_
 						ret->setValue(sumf(x, y, z) / all);
 						continue;
 					}
-					hasBlockXP = hasBlockYP = hasBlockZP = hasBlockXN = hasBlockYN = hasBlockZN = false;
+					//hasBlockXP = hasBlockYP = hasBlockZP = hasBlockXN = hasBlockYN = hasBlockZN = false;
 					if (!hasBlockYP) {
 						genTopPlane(ob, mb, x * 2, y * 2, z * 2, size, w);
 					}
@@ -194,6 +194,10 @@ AsyncOperation WorldIO::toBmp(const std::string & outputPath, const std::shared_
 	return ret;
 }
 
+glm::vec3 WorldIO::asVec3(int x, int y, int z) {
+	return glm::vec3(x, y, z);
+}
+
 // private
 void WorldIO::genTopPlane(objb::ObjBuilder & ob, objb::MtlBuilder& mb, int x, int y, int z, glm::vec3 size, const std::shared_ptr<World>& world) {
 	using namespace objb;
@@ -209,10 +213,10 @@ void WorldIO::genTopPlane(objb::ObjBuilder & ob, objb::MtlBuilder& mb, int x, in
 	ObjPolygon polyD(ObjIndex(3), ObjIndex(4, IndexMode::Global), ObjIndex(1, IndexMode::Global));
 
 	auto& aa = ob.newModel(buf)
-		.sharedVertex(glm::vec3(-size.x, 0, size.z) + glm::vec3(x, y, z), polyA)
-		.sharedVertex(glm::vec3(size.x, 0, size.z) + glm::vec3(x, y, z), polyB)
-		.sharedVertex(glm::vec3(-size.x, 0, -size.z) + glm::vec3(x, y, z), polyC)
-		.sharedVertex(glm::vec3(size.x, 0, -size.z) + glm::vec3(x, y, z), polyD);
+		.sharedVertex(glm::vec3(-size.x, 0, size.z) + asVec3(x, y, z), polyA)
+		.sharedVertex(glm::vec3(size.x, 0, size.z) + asVec3(x, y, z), polyB)
+		.sharedVertex(glm::vec3(-size.x, 0, -size.z) + asVec3(x, y, z), polyC)
+		.sharedVertex(glm::vec3(size.x, 0, -size.z) + asVec3(x, y, z), polyD);
 	//ok
 	face.emplace_back(polyC);
 	face.emplace_back(polyA);
@@ -236,10 +240,10 @@ void WorldIO::genBottomPlane(objb::ObjBuilder & ob, objb::MtlBuilder& mb, int x,
 	ObjPolygon polyD(ObjIndex(3), ObjIndex(4, IndexMode::Global), ObjIndex(2, IndexMode::Global));
 
 	auto& aa = ob.newModel(buf)
-		.sharedVertex(glm::vec3(size.x, -2, size.z) + glm::vec3(x, y, z), polyA)
-		.sharedVertex(glm::vec3(-size.x, -2, size.z) + glm::vec3(x, y, z), polyB)
-		.sharedVertex(glm::vec3(size.x, -2, -size.z) + glm::vec3(x, y, z), polyC)
-		.sharedVertex(glm::vec3(-size.x, -2, -size.z) + glm::vec3(x, y, z), polyD);
+		.sharedVertex(glm::vec3(size.x, -2, size.z) + asVec3(x, y, z), polyA)
+		.sharedVertex(glm::vec3(-size.x, -2, size.z) + asVec3(x, y, z), polyB)
+		.sharedVertex(glm::vec3(size.x, -2, -size.z) + asVec3(x, y, z), polyC)
+		.sharedVertex(glm::vec3(-size.x, -2, -size.z) + asVec3(x, y, z), polyD);
 	//ok
 	face.emplace_back(polyC);
 	face.emplace_back(polyA);
@@ -263,10 +267,10 @@ void WorldIO::genLeftPlane(objb::ObjBuilder & ob, objb::MtlBuilder& mb, int x, i
 	ObjPolygon polyD(ObjIndex(3), ObjIndex(4, IndexMode::Global), ObjIndex(3, IndexMode::Global));
 
 	auto& aa = ob.newModel(buf)
-		.sharedVertex(glm::vec3(-size.x, 0, -size.z) + glm::vec3(x, y, z), polyA)
-		.sharedVertex(glm::vec3(-size.x, -2, -size.z) + glm::vec3(x, y, z), polyB)
-		.sharedVertex(glm::vec3(-size.x, 0, size.z) + glm::vec3(x, y, z), polyC)
-		.sharedVertex(glm::vec3(-size.x, -2, size.z) + glm::vec3(x, y, z), polyD);
+		.sharedVertex(glm::vec3(-size.x, 0, -size.z) + asVec3(x, y, z), polyA)
+		.sharedVertex(glm::vec3(-size.x, -2, -size.z) + asVec3(x, y, z), polyB)
+		.sharedVertex(glm::vec3(-size.x, 0, size.z) + asVec3(x, y, z), polyC)
+		.sharedVertex(glm::vec3(-size.x, -2, size.z) + asVec3(x, y, z), polyD);
 
 	//ok
 	face.emplace_back(polyD);
@@ -291,10 +295,10 @@ void WorldIO::genRightPlane(objb::ObjBuilder & ob, objb::MtlBuilder& mb, int x, 
 	ObjPolygon polyD(ObjIndex(3), ObjIndex(4, IndexMode::Global), ObjIndex(4, IndexMode::Global));
 
 	auto& aa = ob.newModel(buf)
-		.sharedVertex(glm::vec3(size.x, 0, size.z) + glm::vec3(x, y, z), polyA)
-		.sharedVertex(glm::vec3(size.x, -2, size.z) + glm::vec3(x, y, z), polyB)
-		.sharedVertex(glm::vec3(size.x, 0, -size.z) + glm::vec3(x, y, z), polyC)
-		.sharedVertex(glm::vec3(size.x, -2, -size.z) + glm::vec3(x, y, z), polyD);
+		.sharedVertex(glm::vec3(size.x, 0, size.z) + asVec3(x, y, z), polyA)
+		.sharedVertex(glm::vec3(size.x, -2, size.z) + asVec3(x, y, z), polyB)
+		.sharedVertex(glm::vec3(size.x, 0, -size.z) + asVec3(x, y, z), polyC)
+		.sharedVertex(glm::vec3(size.x, -2, -size.z) + asVec3(x, y, z), polyD);
 
 	//ok
 	face.emplace_back(polyD);
@@ -313,21 +317,36 @@ void WorldIO::genFrontPlane(objb::ObjBuilder & ob, objb::MtlBuilder& mb, int x, 
 
 	ObjFace face;
 
+	ObjPolygon polyA(ObjIndex(1), ObjIndex(1, IndexMode::Global), ObjIndex(6, IndexMode::Global));
+	ObjPolygon polyB(ObjIndex(2), ObjIndex(2, IndexMode::Global), ObjIndex(6, IndexMode::Global));
+	ObjPolygon polyC(ObjIndex(4), ObjIndex(3, IndexMode::Global), ObjIndex(6, IndexMode::Global));
+	ObjPolygon polyD(ObjIndex(3), ObjIndex(4, IndexMode::Global), ObjIndex(6, IndexMode::Global));
+
+	auto& aa = ob.newModel(buf)
+		.sharedVertex(glm::vec3(-size.x, 0, size.z) + asVec3(x, y, z), polyA)
+		.sharedVertex(glm::vec3(-size.x, -2, size.z) + asVec3(x, y, z), polyB)
+		.sharedVertex(glm::vec3(size.x, 0, size.z) + asVec3(x, y, z), polyC)
+		.sharedVertex(glm::vec3(size.x, -2, size.z) + asVec3(x, y, z), polyD);
+
+	/*
 	ObjPolygon polyA(ObjIndex(1), ObjIndex(1, IndexMode::Global), ObjIndex(5, IndexMode::Global));
 	ObjPolygon polyB(ObjIndex(2), ObjIndex(2, IndexMode::Global), ObjIndex(5, IndexMode::Global));
 	ObjPolygon polyC(ObjIndex(4), ObjIndex(3, IndexMode::Global), ObjIndex(5, IndexMode::Global));
 	ObjPolygon polyD(ObjIndex(3), ObjIndex(4, IndexMode::Global), ObjIndex(5, IndexMode::Global));
 
 	auto& aa = ob.newModel(buf)
-		.sharedVertex(glm::vec3(size.x, 0, -size.z) + glm::vec3(x, y, z), polyA)
-		.sharedVertex(glm::vec3(size.x, -2, -size.z) + glm::vec3(x, y, z), polyB)
-		.sharedVertex(glm::vec3(-size.x, 0, -size.z) + glm::vec3(x, y, z), polyC)
-		.sharedVertex(glm::vec3(-size.x, -2, -size.z) + glm::vec3(x, y, z), polyD);
-
+		.sharedVertex(glm::vec3(size.x, 0, -size.z) + asVec3(x, y, z), polyA)
+		.sharedVertex(glm::vec3(size.x, -2, -size.z) + asVec3(x, y, z), polyB)
+		.sharedVertex(glm::vec3(-size.x, 0, -size.z) + asVec3(x, y, z), polyC)
+		.sharedVertex(glm::vec3(-size.x, -2, -size.z) + asVec3(x, y, z), polyD);
+	*/
 	face.emplace_back(polyC);
-	face.emplace_back(polyD);
-	face.emplace_back(polyB);
 	face.emplace_back(polyA);
+	face.emplace_back(polyB);
+	face.emplace_back(polyD);
+	//cdba
+	//cabd ok
+
 	//dcab
 	//dabc
 	//bdac
@@ -347,21 +366,33 @@ void WorldIO::genBackPlane(objb::ObjBuilder & ob, objb::MtlBuilder& mb, int x, i
 
 	ObjFace face;
 
+	ObjPolygon polyA(ObjIndex(1), ObjIndex(1, IndexMode::Global), ObjIndex(5, IndexMode::Global));
+	ObjPolygon polyB(ObjIndex(2), ObjIndex(2, IndexMode::Global), ObjIndex(5, IndexMode::Global));
+	ObjPolygon polyC(ObjIndex(4), ObjIndex(3, IndexMode::Global), ObjIndex(5, IndexMode::Global));
+	ObjPolygon polyD(ObjIndex(3), ObjIndex(4, IndexMode::Global), ObjIndex(5, IndexMode::Global));
+
+	auto& aa = ob.newModel(buf)
+		.sharedVertex(glm::vec3(size.x, 0, -size.z) + asVec3(x, y, z), polyA)
+		.sharedVertex(glm::vec3(size.x, -2, -size.z) + asVec3(x, y, z), polyB)
+		.sharedVertex(glm::vec3(-size.x, 0, -size.z) + asVec3(x, y, z), polyC)
+		.sharedVertex(glm::vec3(-size.x, -2, -size.z) + asVec3(x, y, z), polyD);
+	/*
 	ObjPolygon polyA(ObjIndex(1), ObjIndex(1, IndexMode::Global), ObjIndex(6, IndexMode::Global));
 	ObjPolygon polyB(ObjIndex(2), ObjIndex(2, IndexMode::Global), ObjIndex(6, IndexMode::Global));
 	ObjPolygon polyC(ObjIndex(4), ObjIndex(3, IndexMode::Global), ObjIndex(6, IndexMode::Global));
 	ObjPolygon polyD(ObjIndex(3), ObjIndex(4, IndexMode::Global), ObjIndex(6, IndexMode::Global));
 
 	auto& aa = ob.newModel(buf)
-		.sharedVertex(glm::vec3(-size.x, 0, size.z) + glm::vec3(x, y, z), polyA)
-		.sharedVertex(glm::vec3(-size.x, -2, size.z) + glm::vec3(x, y, z), polyB)
-		.sharedVertex(glm::vec3(size.x, 0, size.z) + glm::vec3(x, y, z), polyC)
-		.sharedVertex(glm::vec3(size.x, -2, size.z) + glm::vec3(x, y, z), polyD);
+		.sharedVertex(glm::vec3(-size.x, 0, size.z) + asVec3(x, y, z), polyA)
+		.sharedVertex(glm::vec3(-size.x, -2, size.z) + asVec3(x, y, z), polyB)
+		.sharedVertex(glm::vec3(size.x, 0, size.z) + asVec3(x, y, z), polyC)
+		.sharedVertex(glm::vec3(size.x, -2, size.z) + asVec3(x, y, z), polyD);
+	*/
 
 	face.emplace_back(polyC);
-	face.emplace_back(polyD);
-	face.emplace_back(polyB);
 	face.emplace_back(polyA);
+	face.emplace_back(polyB);
+	face.emplace_back(polyD);
 
 
 	aa.face(face);
