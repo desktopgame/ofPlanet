@@ -106,55 +106,10 @@ AsyncOperation WorldIO::toObj(const std::string & outputDir, const std::shared_p
 			.globalTexcoord(glm::vec2(1, 0))
 			.globalTexcoord(glm::vec2(1, 1))
 			.globalTexcoord(glm::vec2(0, 1))
-/*
-*--
-|
-*--
 			.globalTexcoord(glm::vec2(1, 1))
+			.globalTexcoord(glm::vec2(1, 0))
 			.globalTexcoord(glm::vec2(0, 1))
 			.globalTexcoord(glm::vec2(0, 0))
-			.globalTexcoord(glm::vec2(1, 0))
-
-.globalTexcoord(glm::vec2(1, 1))
-.globalTexcoord(glm::vec2(0, 1))
-.globalTexcoord(glm::vec2(1, 0))
-.globalTexcoord(glm::vec2(0, 0))
-
-‰E
-.globalTexcoord(glm::vec2(1, 0))
-.globalTexcoord(glm::vec2(0, 0))
-.globalTexcoord(glm::vec2(1, 1))
-.globalTexcoord(glm::vec2(0, 1))
-
-
-.globalTexcoord(glm::vec2(1, 0))
-.globalTexcoord(glm::vec2(0, 0))
-.globalTexcoord(glm::vec2(0, 1))
-.globalTexcoord(glm::vec2(1, 1))
-
-.globalTexcoord(glm::vec2(0, 0))
-.globalTexcoord(glm::vec2(1, 0))
-.globalTexcoord(glm::vec2(0, 1))
-.globalTexcoord(glm::vec2(1, 1))
-*/
-
-/*
-invert y
-.globalTexcoord(glm::vec2(0, 0))
-.globalTexcoord(glm::vec2(0, 1))
-.globalTexcoord(glm::vec2(1, 0))
-.globalTexcoord(glm::vec2(1, 1))
-*/
-
-.globalTexcoord(glm::vec2(1, 1))
-.globalTexcoord(glm::vec2(1, 0))
-.globalTexcoord(glm::vec2(0, 1))
-.globalTexcoord(glm::vec2(0, 0))
-
-
-
-
-
 			.globalNormal(glm::vec3(0, 1, 0))
 			.globalNormal(glm::vec3(0, 1, 0))
 			.globalNormal(glm::vec3(-1, 0, 0))
