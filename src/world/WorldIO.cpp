@@ -144,7 +144,6 @@ AsyncOperation WorldIO::toObj(const std::string & outputPath, const std::shared_
 						ret->setValue(sumf(x, y, z) / all);
 						continue;
 					}
-					//hasBlockXP = hasBlockYP = hasBlockZP = hasBlockXN = hasBlockYN = hasBlockZN = false;
 					if (!hasBlockYP) {
 						genTopPlane(ob, mb, x * 2, y * 2, z * 2, size, w);
 					}
@@ -217,7 +216,7 @@ void WorldIO::genTopPlane(objb::ObjBuilder & ob, objb::MtlBuilder& mb, int x, in
 		.sharedVertex(glm::vec3(size.x, 0, size.z) + asVec3(x, y, z), polyB)
 		.sharedVertex(glm::vec3(-size.x, 0, -size.z) + asVec3(x, y, z), polyC)
 		.sharedVertex(glm::vec3(size.x, 0, -size.z) + asVec3(x, y, z), polyD);
-	//ok
+
 	face.emplace_back(polyC);
 	face.emplace_back(polyA);
 	face.emplace_back(polyB);
@@ -244,7 +243,7 @@ void WorldIO::genBottomPlane(objb::ObjBuilder & ob, objb::MtlBuilder& mb, int x,
 		.sharedVertex(glm::vec3(-size.x, -2, size.z) + asVec3(x, y, z), polyB)
 		.sharedVertex(glm::vec3(size.x, -2, -size.z) + asVec3(x, y, z), polyC)
 		.sharedVertex(glm::vec3(-size.x, -2, -size.z) + asVec3(x, y, z), polyD);
-	//ok
+
 	face.emplace_back(polyC);
 	face.emplace_back(polyA);
 	face.emplace_back(polyB);
@@ -272,7 +271,6 @@ void WorldIO::genLeftPlane(objb::ObjBuilder & ob, objb::MtlBuilder& mb, int x, i
 		.sharedVertex(glm::vec3(-size.x, 0, size.z) + asVec3(x, y, z), polyC)
 		.sharedVertex(glm::vec3(-size.x, -2, size.z) + asVec3(x, y, z), polyD);
 
-	//ok
 	face.emplace_back(polyD);
 	face.emplace_back(polyC);
 	face.emplace_back(polyA);
@@ -300,7 +298,6 @@ void WorldIO::genRightPlane(objb::ObjBuilder & ob, objb::MtlBuilder& mb, int x, 
 		.sharedVertex(glm::vec3(size.x, 0, -size.z) + asVec3(x, y, z), polyC)
 		.sharedVertex(glm::vec3(size.x, -2, -size.z) + asVec3(x, y, z), polyD);
 
-	//ok
 	face.emplace_back(polyD);
 	face.emplace_back(polyC);
 	face.emplace_back(polyA);
@@ -328,33 +325,11 @@ void WorldIO::genFrontPlane(objb::ObjBuilder & ob, objb::MtlBuilder& mb, int x, 
 		.sharedVertex(glm::vec3(size.x, 0, size.z) + asVec3(x, y, z), polyC)
 		.sharedVertex(glm::vec3(size.x, -2, size.z) + asVec3(x, y, z), polyD);
 
-	/*
-	ObjPolygon polyA(ObjIndex(1), ObjIndex(1, IndexMode::Global), ObjIndex(5, IndexMode::Global));
-	ObjPolygon polyB(ObjIndex(2), ObjIndex(2, IndexMode::Global), ObjIndex(5, IndexMode::Global));
-	ObjPolygon polyC(ObjIndex(4), ObjIndex(3, IndexMode::Global), ObjIndex(5, IndexMode::Global));
-	ObjPolygon polyD(ObjIndex(3), ObjIndex(4, IndexMode::Global), ObjIndex(5, IndexMode::Global));
-
-	auto& aa = ob.newModel(buf)
-		.sharedVertex(glm::vec3(size.x, 0, -size.z) + asVec3(x, y, z), polyA)
-		.sharedVertex(glm::vec3(size.x, -2, -size.z) + asVec3(x, y, z), polyB)
-		.sharedVertex(glm::vec3(-size.x, 0, -size.z) + asVec3(x, y, z), polyC)
-		.sharedVertex(glm::vec3(-size.x, -2, -size.z) + asVec3(x, y, z), polyD);
-	*/
 	face.emplace_back(polyC);
 	face.emplace_back(polyA);
 	face.emplace_back(polyB);
 	face.emplace_back(polyD);
-	//cdba
-	//cabd ok
 
-	//dcab
-	//dabc
-	//bdac
-	//dacb
-	//cdab
-	//bcda
-	//cbda
-	//cdba
 	aa.face(face);
 }
 
@@ -376,24 +351,11 @@ void WorldIO::genBackPlane(objb::ObjBuilder & ob, objb::MtlBuilder& mb, int x, i
 		.sharedVertex(glm::vec3(size.x, -2, -size.z) + asVec3(x, y, z), polyB)
 		.sharedVertex(glm::vec3(-size.x, 0, -size.z) + asVec3(x, y, z), polyC)
 		.sharedVertex(glm::vec3(-size.x, -2, -size.z) + asVec3(x, y, z), polyD);
-	/*
-	ObjPolygon polyA(ObjIndex(1), ObjIndex(1, IndexMode::Global), ObjIndex(6, IndexMode::Global));
-	ObjPolygon polyB(ObjIndex(2), ObjIndex(2, IndexMode::Global), ObjIndex(6, IndexMode::Global));
-	ObjPolygon polyC(ObjIndex(4), ObjIndex(3, IndexMode::Global), ObjIndex(6, IndexMode::Global));
-	ObjPolygon polyD(ObjIndex(3), ObjIndex(4, IndexMode::Global), ObjIndex(6, IndexMode::Global));
-
-	auto& aa = ob.newModel(buf)
-		.sharedVertex(glm::vec3(-size.x, 0, size.z) + asVec3(x, y, z), polyA)
-		.sharedVertex(glm::vec3(-size.x, -2, size.z) + asVec3(x, y, z), polyB)
-		.sharedVertex(glm::vec3(size.x, 0, size.z) + asVec3(x, y, z), polyC)
-		.sharedVertex(glm::vec3(size.x, -2, size.z) + asVec3(x, y, z), polyD);
-	*/
 
 	face.emplace_back(polyC);
 	face.emplace_back(polyA);
 	face.emplace_back(polyB);
 	face.emplace_back(polyD);
-
 
 	aa.face(face);
 }
