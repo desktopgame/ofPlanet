@@ -93,11 +93,12 @@ AsyncOperation WorldIO::toJson(const std::string & outputPath, const std::shared
 	return ret;
 }
 
-AsyncOperation WorldIO::toObj(const std::string & outputPath, const std::shared_ptr<World>& world) {
+AsyncOperation WorldIO::toObj(const std::string & outputDir, const std::shared_ptr<World>& world) {
+	auto outputPath = Path::build(std::vector<std::string>{outputDir, "data.obj"});
 	auto ret = std::make_shared<Progress>();
 	auto w = world;
 	using namespace objb;
-	std::thread([outputPath, w, ret]() -> void {
+	std::thread([outputPath, w, ret, outputDir]() -> void {
 		ObjBuilder ob;
 		MtlBuilder mb;
 		ob
@@ -112,7 +113,7 @@ AsyncOperation WorldIO::toObj(const std::string & outputPath, const std::shared_
 			.globalNormal(glm::vec3(0, 1, 0))
 			.globalNormal(glm::vec3(0, 0, 1))
 			;
-		ob.material(outputPath + ".mtl");
+		ob.material("data.obj.mtl");
 		int xsize = w->getXSize();
 		int ysize = w->getYSize();
 		int zsize = w->getZSize();
@@ -148,22 +149,22 @@ AsyncOperation WorldIO::toObj(const std::string & outputPath, const std::shared_
 						continue;
 					}
 					if (!hasBlockYP) {
-						genTopPlane(texVec, ob, mb, glm::ivec3(x,y,z), glm::ivec3(x * 2, y * 2, z * 2), size, w);
+						genTopPlane(outputDir, texVec, ob, mb, glm::ivec3(x,y,z), glm::ivec3(x * 2, y * 2, z * 2), size, w);
 					}
 					if (!hasBlockYN) {
-						genBottomPlane(texVec, ob, mb, glm::ivec3(x, y, z), glm::ivec3(x * 2, y * 2, z * 2), size, w);
+						genBottomPlane(outputDir, texVec, ob, mb, glm::ivec3(x, y, z), glm::ivec3(x * 2, y * 2, z * 2), size, w);
 					}
 					if (!hasBlockXP) {
-						genRightPlane(texVec, ob, mb, glm::ivec3(x, y, z), glm::ivec3(x * 2, y * 2, z * 2), size, w);
+						genRightPlane(outputDir, texVec, ob, mb, glm::ivec3(x, y, z), glm::ivec3(x * 2, y * 2, z * 2), size, w);
 					}
 					if (!hasBlockXN) {
-						genLeftPlane(texVec, ob, mb, glm::ivec3(x, y, z), glm::ivec3(x * 2, y * 2, z * 2), size, w);
+						genLeftPlane(outputDir, texVec, ob, mb, glm::ivec3(x, y, z), glm::ivec3(x * 2, y * 2, z * 2), size, w);
 					}
 					if (!hasBlockZP) {
-						genFrontPlane(texVec, ob, mb, glm::ivec3(x, y, z), glm::ivec3(x * 2, y * 2, z * 2), size, w);
+						genFrontPlane(outputDir, texVec, ob, mb, glm::ivec3(x, y, z), glm::ivec3(x * 2, y * 2, z * 2), size, w);
 					}
 					if (!hasBlockZN) {
-						genBackPlane(texVec, ob, mb, glm::ivec3(x, y, z), glm::ivec3(x * 2, y * 2, z * 2), size, w);
+						genBackPlane(outputDir, texVec, ob, mb, glm::ivec3(x, y, z), glm::ivec3(x * 2, y * 2, z * 2), size, w);
 					}
 					ret->setValue(sumf(x,y,z) / all);
 				}
@@ -207,15 +208,17 @@ glm::vec3 WorldIO::asVec3(int x, int y, int z) {
 }
 
 // private
-void WorldIO::genTopPlane(std::vector<std::string>& texVec, objb::ObjBuilder & ob, objb::MtlBuilder& mb, glm::ivec3 worldPos, glm::ivec3 objPos, glm::vec3 size, const std::shared_ptr<World>& world) {
+void WorldIO::genTopPlane(const std::string& outputDir, std::vector<std::string>& texVec, objb::ObjBuilder & ob, objb::MtlBuilder& mb, glm::ivec3 worldPos, glm::ivec3 objPos, glm::vec3 size, const std::shared_ptr<World>& world) {
 	using namespace objb;
 	char buf[256];
 	std::memset(buf, '\0', 256);
 	std::sprintf(buf, "plane%d%d%d_Top", objPos.x, objPos.y, objPos.z);
 	auto blockBeh = world->getBlockBehavior(worldPos.x, worldPos.y, worldPos.z);
 	auto block = std::static_pointer_cast<Block>(blockBeh);
-	auto texPath = Path::build(std::vector<std::string>{TexturePack::getCurrent()->getBaseDirectory(), block->getTextureSet().getTopImage()->getPath()});
+	auto texPath = block->getTextureSet().getTopImage()->getPath();
 	auto texName = block->getTextureReference() + std::string("_Top");
+	auto texFileName = Path::getFileNameFromPath(block->getTextureSet().getTopImage()->getPath());
+	auto copyFile = Path::build(std::vector<std::string>{outputDir, texFileName});
 
 	ObjFace face;
 
@@ -231,8 +234,9 @@ void WorldIO::genTopPlane(std::vector<std::string>& texVec, objb::ObjBuilder & o
 		.sharedVertex(glm::vec3(size.x, 0, -size.z) + asVec3(objPos.x, objPos.y, objPos.z), polyD);
 
 	if (std::find(texVec.begin(), texVec.end(), texName) == texVec.end()) {
-		mb.newElement(texName).map_Kd(texPath);
+		mb.newElement(texName).map_Kd(texFileName);
 		texVec.emplace_back(texName);
+		File::copy(texPath, copyFile);
 	}
 	aa.useMaterial(texName);
 
@@ -244,15 +248,17 @@ void WorldIO::genTopPlane(std::vector<std::string>& texVec, objb::ObjBuilder & o
 	aa.face(face);
 }
 
-void WorldIO::genBottomPlane(std::vector<std::string>& texVec, objb::ObjBuilder & ob, objb::MtlBuilder& mb, glm::ivec3 worldPos, glm::ivec3 objPos, glm::vec3 size, const std::shared_ptr<World>& world) {
+void WorldIO::genBottomPlane(const std::string& outputDir, std::vector<std::string>& texVec, objb::ObjBuilder & ob, objb::MtlBuilder& mb, glm::ivec3 worldPos, glm::ivec3 objPos, glm::vec3 size, const std::shared_ptr<World>& world) {
 	using namespace objb;
 	char buf[256];
 	std::memset(buf, '\0', 256);
 	std::sprintf(buf, "plane%d%d%d_Bottom", objPos.x, objPos.y, objPos.z);
 	auto blockBeh = world->getBlockBehavior(worldPos.x, worldPos.y, worldPos.z);
 	auto block = std::static_pointer_cast<Block>(blockBeh);
-	auto texPath = Path::build(std::vector<std::string>{TexturePack::getCurrent()->getBaseDirectory(), block->getTextureSet().getBottomImage()->getPath()});
+	auto texPath = block->getTextureSet().getBottomImage()->getPath();
 	auto texName = block->getTextureReference() + std::string("_Bottom");
+	auto texFileName = Path::getFileNameFromPath(block->getTextureSet().getBottomImage()->getPath());
+	auto copyFile = Path::build(std::vector<std::string>{outputDir, texFileName});
 
 	ObjFace face;
 
@@ -268,8 +274,9 @@ void WorldIO::genBottomPlane(std::vector<std::string>& texVec, objb::ObjBuilder 
 		.sharedVertex(glm::vec3(-size.x, -2, -size.z) + asVec3(objPos.x, objPos.y, objPos.z), polyD);
 
 	if (std::find(texVec.begin(), texVec.end(), texName) == texVec.end()) {
-		mb.newElement(texName).map_Kd(texPath);
+		mb.newElement(texName).map_Kd(texFileName);
 		texVec.emplace_back(texName);
+		File::copy(texPath, copyFile);
 	}
 	aa.useMaterial(texName);
 
@@ -281,15 +288,17 @@ void WorldIO::genBottomPlane(std::vector<std::string>& texVec, objb::ObjBuilder 
 	aa.face(face);
 }
 
-void WorldIO::genLeftPlane(std::vector<std::string>& texVec, objb::ObjBuilder & ob, objb::MtlBuilder& mb, glm::ivec3 worldPos, glm::ivec3 objPos, glm::vec3 size, const std::shared_ptr<World>& world) {
+void WorldIO::genLeftPlane(const std::string& outputDir, std::vector<std::string>& texVec, objb::ObjBuilder & ob, objb::MtlBuilder& mb, glm::ivec3 worldPos, glm::ivec3 objPos, glm::vec3 size, const std::shared_ptr<World>& world) {
 	using namespace objb;
 	char buf[256];
 	std::memset(buf, '\0', 256);
 	std::sprintf(buf, "plane%d%d%d_Left", objPos.x, objPos.y, objPos.z);
 	auto blockBeh = world->getBlockBehavior(worldPos.x, worldPos.y, worldPos.z);
 	auto block = std::static_pointer_cast<Block>(blockBeh);
-	auto texPath = Path::build(std::vector<std::string>{TexturePack::getCurrent()->getBaseDirectory(), block->getTextureSet().getLeftImage()->getPath()});
+	auto texPath =block->getTextureSet().getLeftImage()->getPath();
 	auto texName = block->getTextureReference() + std::string("_Left");
+	auto texFileName = Path::getFileNameFromPath(block->getTextureSet().getLeftImage()->getPath());
+	auto copyFile = Path::build(std::vector<std::string>{outputDir, texFileName});
 
 	ObjFace face;
 
@@ -305,8 +314,9 @@ void WorldIO::genLeftPlane(std::vector<std::string>& texVec, objb::ObjBuilder & 
 		.sharedVertex(glm::vec3(-size.x, -2, size.z) + asVec3(objPos.x, objPos.y, objPos.z), polyD);
 
 	if (std::find(texVec.begin(), texVec.end(), texName) == texVec.end()) {
-		mb.newElement(texName).map_Kd(texPath);
+		mb.newElement(texName).map_Kd(texFileName);
 		texVec.emplace_back(texName);
+		File::copy(texPath, copyFile);
 	}
 	aa.useMaterial(texName);
 
@@ -319,15 +329,17 @@ void WorldIO::genLeftPlane(std::vector<std::string>& texVec, objb::ObjBuilder & 
 	aa.face(face);
 }
 
-void WorldIO::genRightPlane(std::vector<std::string>& texVec, objb::ObjBuilder & ob, objb::MtlBuilder& mb, glm::ivec3 worldPos, glm::ivec3 objPos, glm::vec3 size, const std::shared_ptr<World>& world) {
+void WorldIO::genRightPlane(const std::string& outputDir, std::vector<std::string>& texVec, objb::ObjBuilder & ob, objb::MtlBuilder& mb, glm::ivec3 worldPos, glm::ivec3 objPos, glm::vec3 size, const std::shared_ptr<World>& world) {
 	using namespace objb;
 	char buf[256];
 	std::memset(buf, '\0', 256);
 	std::sprintf(buf, "plane%d%d%d_Right", objPos.x, objPos.y, objPos.z);
 	auto blockBeh = world->getBlockBehavior(worldPos.x, worldPos.y, worldPos.z);
 	auto block = std::static_pointer_cast<Block>(blockBeh);
-	auto texPath = Path::build(std::vector<std::string>{TexturePack::getCurrent()->getBaseDirectory(), block->getTextureSet().getRightImage()->getPath()});
+	auto texPath =  block->getTextureSet().getRightImage()->getPath();
 	auto texName = block->getTextureReference() + std::string("_Right");
+	auto texFileName = Path::getFileNameFromPath(block->getTextureSet().getRightImage()->getPath());
+	auto copyFile = Path::build(std::vector<std::string>{outputDir, texFileName });
 
 	ObjFace face;
 
@@ -343,8 +355,9 @@ void WorldIO::genRightPlane(std::vector<std::string>& texVec, objb::ObjBuilder &
 		.sharedVertex(glm::vec3(size.x, -2, -size.z) + asVec3(objPos.x, objPos.y, objPos.z), polyD);
 
 	if (std::find(texVec.begin(), texVec.end(), texName) == texVec.end()) {
-		mb.newElement(texName).map_Kd(texPath);
+		mb.newElement(texName).map_Kd(texFileName);
 		texVec.emplace_back(texName);
+		File::copy(texPath, copyFile);
 	}
 	aa.useMaterial(texName);
 
@@ -357,15 +370,17 @@ void WorldIO::genRightPlane(std::vector<std::string>& texVec, objb::ObjBuilder &
 	aa.face(face);
 }
 
-void WorldIO::genFrontPlane(std::vector<std::string>& texVec, objb::ObjBuilder & ob, objb::MtlBuilder& mb, glm::ivec3 worldPos, glm::ivec3 objPos, glm::vec3 size, const std::shared_ptr<World>& world) {
+void WorldIO::genFrontPlane(const std::string& outputDir, std::vector<std::string>& texVec, objb::ObjBuilder & ob, objb::MtlBuilder& mb, glm::ivec3 worldPos, glm::ivec3 objPos, glm::vec3 size, const std::shared_ptr<World>& world) {
 	using namespace objb;
 	char buf[256];
 	std::memset(buf, '\0', 256);
 	std::sprintf(buf, "plane%d%d%d_Front", objPos.x, objPos.y, objPos.z);
 	auto blockBeh = world->getBlockBehavior(worldPos.x, worldPos.y, worldPos.z);
 	auto block = std::static_pointer_cast<Block>(blockBeh);
-	auto texPath = Path::build(std::vector<std::string>{TexturePack::getCurrent()->getBaseDirectory(), block->getTextureSet().getFrontImage()->getPath()});
+	auto texPath =  block->getTextureSet().getFrontImage()->getPath();
 	auto texName = block->getTextureReference() + std::string("_Front");
+	auto texFileName = Path::getFileNameFromPath(block->getTextureSet().getFrontImage()->getPath());
+	auto copyFile = Path::build(std::vector<std::string>{outputDir, texFileName});
 
 	ObjFace face;
 
@@ -381,8 +396,9 @@ void WorldIO::genFrontPlane(std::vector<std::string>& texVec, objb::ObjBuilder &
 		.sharedVertex(glm::vec3(size.x, -2, size.z) + asVec3(objPos.x, objPos.y, objPos.z), polyD);
 
 	if (std::find(texVec.begin(), texVec.end(), texName) == texVec.end()) {
-		mb.newElement(texName).map_Kd(texPath);
+		mb.newElement(texName).map_Kd(texFileName);
 		texVec.emplace_back(texName);
+		File::copy(texPath, copyFile);
 	}
 	aa.useMaterial(texName);
 
@@ -394,15 +410,17 @@ void WorldIO::genFrontPlane(std::vector<std::string>& texVec, objb::ObjBuilder &
 	aa.face(face);
 }
 
-void WorldIO::genBackPlane(std::vector<std::string>& texVec, objb::ObjBuilder & ob, objb::MtlBuilder& mb, glm::ivec3 worldPos, glm::ivec3 objPos, glm::vec3 size, const std::shared_ptr<World>& world) {
+void WorldIO::genBackPlane(const std::string& outputDir, std::vector<std::string>& texVec, objb::ObjBuilder & ob, objb::MtlBuilder& mb, glm::ivec3 worldPos, glm::ivec3 objPos, glm::vec3 size, const std::shared_ptr<World>& world) {
 	using namespace objb;
 	char buf[256];
 	std::memset(buf, '\0', 256);
 	std::sprintf(buf, "plane%d%d%d_Back", objPos.x, objPos.y, objPos.z);
 	auto blockBeh = world->getBlockBehavior(worldPos.x, worldPos.y, worldPos.z);
 	auto block = std::static_pointer_cast<Block>(blockBeh);
-	auto texPath = Path::build(std::vector<std::string>{TexturePack::getCurrent()->getBaseDirectory(), block->getTextureSet().getBackImage()->getPath()});
+	auto texPath = block->getTextureSet().getBackImage()->getPath();
 	auto texName = block->getTextureReference() + std::string("_Back");
+	auto texFileName = Path::getFileNameFromPath(block->getTextureSet().getBackImage()->getPath());
+	auto copyFile = Path::build(std::vector<std::string>{outputDir, texFileName});
 
 	ObjFace face;
 
@@ -418,8 +436,9 @@ void WorldIO::genBackPlane(std::vector<std::string>& texVec, objb::ObjBuilder & 
 		.sharedVertex(glm::vec3(-size.x, -2, -size.z) + asVec3(objPos.x, objPos.y, objPos.z), polyD);
 
 	if (std::find(texVec.begin(), texVec.end(), texName) == texVec.end()) {
-		mb.newElement(texName).map_Kd(texPath);
+		mb.newElement(texName).map_Kd(texFileName);
 		texVec.emplace_back(texName);
+		File::copy(texPath, copyFile);
 	}
 	aa.useMaterial(texName);
 

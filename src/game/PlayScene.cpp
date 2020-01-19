@@ -192,7 +192,7 @@ void PlayScene::playDraw() {
 			if (exportMode == EXPORT_JSON) {
 				exportJson(Path::build(std::vector<std::string>{exportDir.getString(), "data.json"}));
 			} else if (exportMode == EXPORT_OBJ) {
-				exportObj(Path::build(std::vector<std::string>{exportDir.getString(), "data.obj"}));
+				exportObj(exportDir.getString());
 			}
 			else if (exportMode == EXPORT_BMP) {
 				exportBmp(Path::build(std::vector<std::string>{exportDir.getString(), "data.bmp"}));
@@ -211,11 +211,12 @@ void PlayScene::exportJson(const std::string & outputFile) {
 	}
 }
 
-void PlayScene::exportObj(const std::string & outputFile) {
+void PlayScene::exportObj(const std::string & outputDir) {
 	if (!isProcessing()) {
+		auto outputFile = Path::build(std::vector<std::string>{outputDir, "data.obj"});
 		File::remove(outputFile);
 		File::remove(outputFile + ".mtl");
-		this->asyncOp = WorldIO::toObj(outputFile, planet->getWorld());
+		this->asyncOp = WorldIO::toObj(outputDir, planet->getWorld());
 	}
 }
 

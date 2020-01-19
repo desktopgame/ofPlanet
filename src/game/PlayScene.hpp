@@ -47,7 +47,7 @@ class PlayScene : public Scene {
 		void playUpdate();
 		void playDraw();
 		void exportJson(const std::string& outputFile);
-		void exportObj(const std::string& outputFile);
+		void exportObj(const std::string& outputDir);
 		void exportBmp(const std::string& outputFile);
 
         ofEasyCam cam;

@@ -4,6 +4,11 @@
 #include <sstream>
 #include <cstdio>
 #include "Path.hpp"
+
+#if _WIN32
+#include <Windows.h>
+#endif
+
 namespace planet {
 
 std::string File::readAllText(const std::string& path) {
@@ -29,5 +34,8 @@ void File::remove(const std::string & path) {
 	if (Path::isExists(path)) {
 		::remove(path.c_str());
 	}
+}
+void File::copy(const std::string & from, const std::string & to) {
+	CopyFileA(from.c_str(), to.c_str(), TRUE);
 }
 }  // namespace planet

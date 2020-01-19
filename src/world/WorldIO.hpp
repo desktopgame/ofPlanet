@@ -29,7 +29,7 @@ using AsyncOperation = std::shared_ptr<ReadonlyProgress>;
 class WorldIO {
 public:
 	static AsyncOperation toJson(const std::string& outputPath, const std::shared_ptr<World>& world);
-	static AsyncOperation toObj(const std::string& outputPath, const std::shared_ptr<World>& world);
+	static AsyncOperation toObj(const std::string& outputDir, const std::shared_ptr<World>& world);
 	static AsyncOperation toBmp(const std::string& outputPath, const std::shared_ptr<Planet>& planet);
 private:
 	template<typename T>
@@ -46,12 +46,12 @@ private:
 
 	static glm::vec3 asVec3(int x, int y, int z);
 
-	static void genTopPlane(std::vector<std::string>& texVec, objb::ObjBuilder& ob, objb::MtlBuilder& mb, glm::ivec3 worldPos, glm::ivec3 objPos, glm::vec3 size, const std::shared_ptr<World>& world);
-	static void genBottomPlane(std::vector<std::string>& texVec, objb::ObjBuilder& ob, objb::MtlBuilder& mb, glm::ivec3 worldPos, glm::ivec3 objPos, glm::vec3 size, const std::shared_ptr<World>& world);
-	static void genLeftPlane(std::vector<std::string>& texVec, objb::ObjBuilder& ob, objb::MtlBuilder& mb, glm::ivec3 worldPos, glm::ivec3 objPos, glm::vec3 size, const std::shared_ptr<World>& world);
-	static void genRightPlane(std::vector<std::string>& texVec, objb::ObjBuilder& ob, objb::MtlBuilder& mb, glm::ivec3 worldPos, glm::ivec3 objPos, glm::vec3 size, const std::shared_ptr<World>& world);
-	static void genFrontPlane(std::vector<std::string>& texVec, objb::ObjBuilder& ob, objb::MtlBuilder& mb, glm::ivec3 worldPos, glm::ivec3 objPos, glm::vec3 size, const std::shared_ptr<World>& world);
-	static void genBackPlane(std::vector<std::string>& texVec, objb::ObjBuilder& ob, objb::MtlBuilder& mb, glm::ivec3 worldPos, glm::ivec3 objPos, glm::vec3 size, const std::shared_ptr<World>& world);
+	static void genTopPlane(const std::string& outputDir, std::vector<std::string>& texVec, objb::ObjBuilder& ob, objb::MtlBuilder& mb, glm::ivec3 worldPos, glm::ivec3 objPos, glm::vec3 size, const std::shared_ptr<World>& world);
+	static void genBottomPlane(const std::string& outputDir, std::vector<std::string>& texVec, objb::ObjBuilder& ob, objb::MtlBuilder& mb, glm::ivec3 worldPos, glm::ivec3 objPos, glm::vec3 size, const std::shared_ptr<World>& world);
+	static void genLeftPlane(const std::string& outputDir, std::vector<std::string>& texVec, objb::ObjBuilder& ob, objb::MtlBuilder& mb, glm::ivec3 worldPos, glm::ivec3 objPos, glm::vec3 size, const std::shared_ptr<World>& world);
+	static void genRightPlane(const std::string& outputDir, std::vector<std::string>& texVec, objb::ObjBuilder& ob, objb::MtlBuilder& mb, glm::ivec3 worldPos, glm::ivec3 objPos, glm::vec3 size, const std::shared_ptr<World>& world);
+	static void genFrontPlane(const std::string& outputDir, std::vector<std::string>& texVec, objb::ObjBuilder& ob, objb::MtlBuilder& mb, glm::ivec3 worldPos, glm::ivec3 objPos, glm::vec3 size, const std::shared_ptr<World>& world);
+	static void genBackPlane(const std::string& outputDir, std::vector<std::string>& texVec, objb::ObjBuilder& ob, objb::MtlBuilder& mb, glm::ivec3 worldPos, glm::ivec3 objPos, glm::vec3 size, const std::shared_ptr<World>& world);
 
 	WorldIO() = delete;
 	~WorldIO() = delete;
