@@ -15,19 +15,8 @@
 #include "luaex/luaex.hpp"
 #include "luaex/luaimpl.hpp"
 
-static int say(lua_State* a) {
-	std::cout << "say C++" << std::endl;
-	return 0;
-}
-
-void test() {
-}
-
 //========================================================================
 int main() {
-#ifdef _DEBUG
-	test();
-#endif
         ofGLFWWindowSettings settings;
         settings.resizable = false;
         settings.glVersionMajor = 4;
