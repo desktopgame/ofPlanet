@@ -1,6 +1,7 @@
 #include "ObjBuilder.hpp"
 #include <sstream>
 #include <iostream>
+#include <algorithm>
 
 namespace objb {
 // ObjIndex
@@ -21,10 +22,10 @@ ObjPolygon::ObjPolygon(ObjIndex vertexIndex, ObjIndex texcoordIndex)
 ObjModel::ObjModel(ObjBuilder& builder, const std::string& name) : useIndexCount(0), builder(builder), name(name), vertices(), normals(), texcoords() {
 }
 ObjModel & ObjModel::sharedVertex(const glm::vec3 & aVertex, ObjPolygon& destPoly) {
-	//*
 	int sum = 0;
 	bool found = false;
-	for (int i = 0; i < builder.getModelCount(); i++) {
+	int startIndex = 0;
+	for (int i = startIndex; i < builder.getModelCount(); i++) {
 		auto& model = builder.getModelAt(i);
 		if (&model == this) {
 			break;
@@ -35,7 +36,6 @@ ObjModel & ObjModel::sharedVertex(const glm::vec3 & aVertex, ObjPolygon& destPol
 			if (aVertex == otherVert) {
 				destPoly.vertexIndex.index = sum + builder.getGlobalVertexCount();
 				destPoly.vertexIndex.mode = IndexMode::Global;
-//				destPoly.vertexIndex = ObjIndex(sum + 1 + builder.getGlobalVertexCount(), IndexMode::Global);
 				found = true;
 				useIndexCount++;
 				break;
@@ -52,8 +52,6 @@ ObjModel & ObjModel::sharedVertex(const glm::vec3 & aVertex, ObjPolygon& destPol
 		
 	}
 	return *this;
-	//*/
-	//return vertex(aVertex);
 }
 ObjModel & ObjModel::vertex(const glm::vec3 & vertex) {
 	vertices.emplace_back(vertex);

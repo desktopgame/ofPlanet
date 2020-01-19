@@ -17,6 +17,7 @@
 #include "../shader/Transform.hpp"
 #include "../world/Planet.hpp"
 #include "../world/World.hpp"
+#include "../world/WorldIO.hpp"
 #include "../world/biome/Biome.hpp"
 #include "../imguiex/ListBox.hpp"
 #include "../imguiex/CheckBox.hpp"
@@ -42,6 +43,7 @@ class PlayScene : public Scene {
         bool isFinished() const override;
 
        private:
+		bool isProcessing() const;
 		void playUpdate();
 		void playDraw();
 		void exportJson(const std::string& outputFile);
@@ -62,6 +64,7 @@ class PlayScene : public Scene {
 		imguiex::InputField<> exportFile;
 		imguiex::Float cameraSpeed;
 		imguiex::FloatXZ worldSize;
+		AsyncOperation asyncOp;
 
         static NameSet createPlaneNameSet();
         static NameSet createGunNameSet();

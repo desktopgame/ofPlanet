@@ -47,7 +47,7 @@ PlayScene::PlayScene()
       exportTypes(),
 	exportFile("File"),
 	cameraSpeed("CameraSpeed", 0.01f),
-	worldSize("Size", 2) {
+	worldSize("Size", 2), asyncOp(nullptr) {
 	exportFile.setString("./data");
 	worldSize.value = glm::vec3(128, 64, 128);
 	cameraSpeed.value = 0.01f;
@@ -98,6 +98,10 @@ void PlayScene::hide() {}
 std::string PlayScene::getNextScene() const { return ""; }
 
 bool PlayScene::isFinished() const { return false; }
+
+bool PlayScene::isProcessing() const {
+	return this->asyncOp != nullptr && !this->asyncOp->isDone();
+}
 
 void PlayScene::playUpdate() {
 	auto w = planet->getWorld();
@@ -174,17 +178,29 @@ void PlayScene::playDraw() {
 	exportTypes.draw();
 	int exportMode = exportTypes.mode;
 	exportFile.draw();
-	if (ImGui::Button("Export")) {
-		std::string outputFile = exportFile.getString();
-		if (exportMode == EXPORT_JSON) {
-			outputFile = Strings::fixsuffix(outputFile, ".json");
-			exportJson(outputFile);
-		} else if (exportMode == EXPORT_OBJ) {
-			outputFile = Strings::fixsuffix(outputFile, ".obj");
-			exportObj(outputFile);
-		} else if (exportMode == EXPORT_BMP) {
-			outputFile = Strings::fixsuffix(outputFile, ".bmp");
-			exportBmp(outputFile);
+	// 処理中ならラベルだけを表示
+	bool processing = isProcessing();
+	if (processing) {
+		char buf[256];
+		std::memset(buf, '\0', 256);
+		std::sprintf(buf, "processing now... %f %%", (this->asyncOp->getValue() * 100.0f));
+		ImGui::Text(buf);
+	} else {
+		//そうでなければボタンを表示
+		if (ImGui::Button("Export")) {
+			std::string outputFile = exportFile.getString();
+			if (exportMode == EXPORT_JSON) {
+				outputFile = Strings::fixsuffix(outputFile, ".json");
+				exportJson(outputFile);
+			}
+			else if (exportMode == EXPORT_OBJ) {
+				outputFile = Strings::fixsuffix(outputFile, ".obj");
+				exportObj(outputFile);
+			}
+			else if (exportMode == EXPORT_BMP) {
+				outputFile = Strings::fixsuffix(outputFile, ".bmp");
+				exportBmp(outputFile);
+			}
 		}
 	}
 	ImGui::End();
@@ -193,20 +209,25 @@ void PlayScene::playDraw() {
 }
 
 void PlayScene::exportJson(const std::string & outputFile) {
-	File::remove(outputFile);
-	WorldIO::toJson(outputFile, planet->getWorld());
+	if (!isProcessing()) {
+		File::remove(outputFile);
+		this->asyncOp = WorldIO::toJson(outputFile, planet->getWorld());
+	}
 }
 
 void PlayScene::exportObj(const std::string & outputFile) {
-	File::remove(outputFile);
-	WorldIO::toObj(outputFile, planet->getWorld());
+	if (!isProcessing()) {
+		File::remove(outputFile);
+		this->asyncOp = WorldIO::toObj(outputFile, planet->getWorld());
+	}
 }
 
 void PlayScene::exportBmp(const std::string & outputFile) {
-	File::remove(outputFile);
-	WorldIO::toBmp(outputFile, planet);
+	if (!isProcessing()) {
+		File::remove(outputFile);
+		this->asyncOp = WorldIO::toBmp(outputFile, planet);
+	}
 }
-
 
 // private
 NameSet PlayScene::createPlaneNameSet() {
