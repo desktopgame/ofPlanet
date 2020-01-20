@@ -13,7 +13,6 @@ void MouseScroll::enable() {
                 return;
         }
         this->enabled = true;
-        //glfw::hideCursor();
 }
 
 void MouseScroll::disable() {
@@ -21,11 +20,9 @@ void MouseScroll::disable() {
                 return;
         }
         this->enabled = false;
-        //glfw::showCursor();
 }
 
 void MouseScroll::update() {
-        // check mouse
         diffMousePos.x = diffMousePos.y = 0;
 		double dmx = ofGetMouseX();
 		double dmy = ofGetMouseY();
