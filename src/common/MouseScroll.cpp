@@ -1,6 +1,8 @@
 #include "MouseScroll.hpp"
 
 #include "glfw.hpp"
+#include <ofBaseApp.h>
+#include <ofEvents.h>
 namespace planet {
 
 MouseScroll::MouseScroll()
@@ -25,8 +27,8 @@ void MouseScroll::disable() {
 void MouseScroll::update() {
         // check mouse
         diffMousePos.x = diffMousePos.y = 0;
-        double dmx = glfw::getMouseX();
-        double dmy = glfw::getMouseY();
+		double dmx = ofGetMouseX();
+		double dmy = ofGetMouseY();
         if (oldMousePos.x == -1 && oldMousePos.y == -1) {
                 this->oldMousePos.x = dmx;
                 this->oldMousePos.y = dmy;

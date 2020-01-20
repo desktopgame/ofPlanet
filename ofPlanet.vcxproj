@@ -191,7 +191,6 @@
     <ClCompile Include="src\common\WASDMove.cpp" />
     <ClCompile Include="src\game\main.cpp" />
     <ClCompile Include="src\game\ofApp.cpp" />
-    <ClCompile Include="src\game\PlayScene.cpp" />
     <ClCompile Include="src\imguiex\CheckBox.cpp" />
     <ClCompile Include="src\imguiex\Float.cpp" />
     <ClCompile Include="src\imguiex\Float2.cpp" />
@@ -199,13 +198,6 @@
     <ClCompile Include="src\imguiex\FloatXZ.cpp" />
     <ClCompile Include="src\imguiex\ListBox.cpp" />
     <ClCompile Include="src\imguiex\RadioButtonGroup.cpp" />
-    <ClCompile Include="src\input\Input.cpp" />
-    <ClCompile Include="src\input\InputState.cpp" />
-    <ClCompile Include="src\input\InputSystem.cpp" />
-    <ClCompile Include="src\input\KeyboardBuffer.cpp" />
-    <ClCompile Include="src\input\KeyboardState.cpp" />
-    <ClCompile Include="src\input\MouseBuffer.cpp" />
-    <ClCompile Include="src\input\MouseState.cpp" />
     <ClCompile Include="src\io\CommandReader.cpp" />
     <ClCompile Include="src\io\Directory.cpp" />
     <ClCompile Include="src\io\File.cpp" />
@@ -213,8 +205,6 @@
     <ClCompile Include="src\luaex\luaex.cpp" />
     <ClCompile Include="src\objb\MtlBuilder.cpp" />
     <ClCompile Include="src\objb\ObjBuilder.cpp" />
-    <ClCompile Include="src\scene\Scene.cpp" />
-    <ClCompile Include="src\scene\SceneManager.cpp" />
     <ClCompile Include="src\shader\Camera.cpp" />
     <ClCompile Include="src\shader\CameraRegistry.cpp" />
     <ClCompile Include="src\shader\Flag.cpp" />
@@ -276,7 +266,6 @@
     <ClInclude Include="src\common\Timer.hpp" />
     <ClInclude Include="src\common\WASDMove.hpp" />
     <ClInclude Include="src\game\ofApp.h" />
-    <ClInclude Include="src\game\PlayScene.hpp" />
     <ClInclude Include="src\imguiex\CheckBox.hpp" />
     <ClInclude Include="src\imguiex\Float.hpp" />
     <ClInclude Include="src\imguiex\Float2.hpp" />
@@ -285,15 +274,6 @@
     <ClInclude Include="src\imguiex\InputField.hpp" />
     <ClInclude Include="src\imguiex\ListBox.hpp" />
     <ClInclude Include="src\imguiex\RadioButtonGroup.hpp" />
-    <ClInclude Include="src\input\ButtonState.hpp" />
-    <ClInclude Include="src\input\Input.hpp" />
-    <ClInclude Include="src\input\InputState.hpp" />
-    <ClInclude Include="src\input\InputSystem.hpp" />
-    <ClInclude Include="src\input\KeyboardBuffer.hpp" />
-    <ClInclude Include="src\input\KeyboardState.hpp" />
-    <ClInclude Include="src\input\MouseBuffer.hpp" />
-    <ClInclude Include="src\input\MouseButton.hpp" />
-    <ClInclude Include="src\input\MouseState.hpp" />
     <ClInclude Include="src\io\CommandReader.hpp" />
     <ClInclude Include="src\io\Directory.hpp" />
     <ClInclude Include="src\io\File.hpp" />
@@ -308,8 +288,6 @@
     <ClInclude Include="src\objb\ObjBuilder.hpp" />
     <ClInclude Include="src\PerlinNoise\PerlinNoise.hpp" />
     <ClInclude Include="src\picojson\picojson.h" />
-    <ClInclude Include="src\scene\Scene.hpp" />
-    <ClInclude Include="src\scene\SceneManager.hpp" />
     <ClInclude Include="src\shader\Camera.hpp" />
     <ClInclude Include="src\shader\CameraObserver.hpp" />
     <ClInclude Include="src\shader\CameraRegistry.hpp" />

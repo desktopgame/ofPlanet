@@ -5,7 +5,6 @@
 #include <ofMath.h>
 
 #include "../shader/Transform.hpp"
-#include "../input/Input.hpp"
 #include "glfw.hpp"
 namespace planet {
 
@@ -40,14 +39,14 @@ void FirstPersonController::update() {
 			transform.rotation.x += mouseScroll.getAmount().x * rotateSpeed;
 			transform.rotation.y += mouseScroll.getAmount().y * rotateSpeed;
 		} else {
-			if (Input::getKey(glfw::Key_left)) {
+			if (ofGetKeyPressed(OF_KEY_LEFT)) {
 				transform.rotation.x += rotateSpeed;
-			} else if (Input::getKey(glfw::Key_right)) {
+			} else if (ofGetKeyPressed(OF_KEY_RIGHT)) {
 				transform.rotation.x -= rotateSpeed;
 			}
-			if (Input::getKey(glfw::Key_up)) {
+			if (ofGetKeyPressed(OF_KEY_UP)) {
 				transform.rotation.y += rotateSpeed;
-			} else if (Input::getKey(glfw::Key_down)) {
+			} else if (ofGetKeyPressed(OF_KEY_DOWN)) {
 				transform.rotation.y -= rotateSpeed;
 			}
 		}

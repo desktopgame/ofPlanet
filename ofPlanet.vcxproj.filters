@@ -28,9 +28,6 @@
     <ClCompile Include="src\game\ofApp.cpp">
       <Filter>src\game</Filter>
     </ClCompile>
-    <ClCompile Include="src\game\PlayScene.cpp">
-      <Filter>src\game</Filter>
-    </ClCompile>
     <ClCompile Include="src\imguiex\CheckBox.cpp">
       <Filter>src\imguiex</Filter>
     </ClCompile>
@@ -52,27 +49,6 @@
     <ClCompile Include="src\imguiex\RadioButtonGroup.cpp">
       <Filter>src\imguiex</Filter>
     </ClCompile>
-    <ClCompile Include="src\input\Input.cpp">
-      <Filter>src\input</Filter>
-    </ClCompile>
-    <ClCompile Include="src\input\InputState.cpp">
-      <Filter>src\input</Filter>
-    </ClCompile>
-    <ClCompile Include="src\input\InputSystem.cpp">
-      <Filter>src\input</Filter>
-    </ClCompile>
-    <ClCompile Include="src\input\KeyboardBuffer.cpp">
-      <Filter>src\input</Filter>
-    </ClCompile>
-    <ClCompile Include="src\input\KeyboardState.cpp">
-      <Filter>src\input</Filter>
-    </ClCompile>
-    <ClCompile Include="src\input\MouseBuffer.cpp">
-      <Filter>src\input</Filter>
-    </ClCompile>
-    <ClCompile Include="src\input\MouseState.cpp">
-      <Filter>src\input</Filter>
-    </ClCompile>
     <ClCompile Include="src\io\CommandReader.cpp">
       <Filter>src\io</Filter>
     </ClCompile>
@@ -87,12 +63,6 @@
     </ClCompile>
     <ClCompile Include="src\luaex\luaex.cpp">
       <Filter>src\luaex</Filter>
-    </ClCompile>
-    <ClCompile Include="src\scene\Scene.cpp">
-      <Filter>src\scene</Filter>
-    </ClCompile>
-    <ClCompile Include="src\scene\SceneManager.cpp">
-      <Filter>src\scene</Filter>
     </ClCompile>
     <ClCompile Include="src\shader\Camera.cpp">
       <Filter>src\shader</Filter>
@@ -346,9 +316,6 @@
     <ClInclude Include="src\game\ofApp.h">
       <Filter>src\game</Filter>
     </ClInclude>
-    <ClInclude Include="src\game\PlayScene.hpp">
-      <Filter>src\game</Filter>
-    </ClInclude>
     <ClInclude Include="src\imguiex\CheckBox.hpp">
       <Filter>src\imguiex</Filter>
     </ClInclude>
@@ -372,33 +339,6 @@
     </ClInclude>
     <ClInclude Include="src\imguiex\RadioButtonGroup.hpp">
       <Filter>src\imguiex</Filter>
-    </ClInclude>
-    <ClInclude Include="src\input\ButtonState.hpp">
-      <Filter>src\input</Filter>
-    </ClInclude>
-    <ClInclude Include="src\input\Input.hpp">
-      <Filter>src\input</Filter>
-    </ClInclude>
-    <ClInclude Include="src\input\InputState.hpp">
-      <Filter>src\input</Filter>
-    </ClInclude>
-    <ClInclude Include="src\input\InputSystem.hpp">
-      <Filter>src\input</Filter>
-    </ClInclude>
-    <ClInclude Include="src\input\KeyboardBuffer.hpp">
-      <Filter>src\input</Filter>
-    </ClInclude>
-    <ClInclude Include="src\input\KeyboardState.hpp">
-      <Filter>src\input</Filter>
-    </ClInclude>
-    <ClInclude Include="src\input\MouseBuffer.hpp">
-      <Filter>src\input</Filter>
-    </ClInclude>
-    <ClInclude Include="src\input\MouseButton.hpp">
-      <Filter>src\input</Filter>
-    </ClInclude>
-    <ClInclude Include="src\input\MouseState.hpp">
-      <Filter>src\input</Filter>
     </ClInclude>
     <ClInclude Include="src\io\CommandReader.hpp">
       <Filter>src\io</Filter>
@@ -435,12 +375,6 @@
     </ClInclude>
     <ClInclude Include="src\picojson\picojson.h">
       <Filter>src\picojson</Filter>
-    </ClInclude>
-    <ClInclude Include="src\scene\Scene.hpp">
-      <Filter>src\scene</Filter>
-    </ClInclude>
-    <ClInclude Include="src\scene\SceneManager.hpp">
-      <Filter>src\scene</Filter>
     </ClInclude>
     <ClInclude Include="src\shader\Camera.hpp">
       <Filter>src\shader</Filter>

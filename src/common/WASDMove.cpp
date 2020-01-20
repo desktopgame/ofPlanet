@@ -18,14 +18,14 @@ void WASDMove::update() {
         this->sprint = ofGetKeyPressed(ofKey::OF_KEY_LEFT_SHIFT);
         // check key
         this->axis = glm::ivec2();
-        if (glfw::isKeyPressed('W')) {
+        if (glfw::getKey(glfw::Key_w)) {
                 this->axis.y = 1;
-        } else if (glfw::isKeyPressed('S')) {
+        } else if (glfw::getKey(glfw::Key_s)) {
                 this->axis.y = -1;
         }
-        if (glfw::isKeyPressed('A')) {
+        if (glfw::getKey(glfw::Key_a)) {
                 this->axis.x = -1;
-        } else if (glfw::isKeyPressed('D')) {
+        } else if (glfw::getKey(glfw::Key_d)) {
                 this->axis.x = 1;
         }
 }
