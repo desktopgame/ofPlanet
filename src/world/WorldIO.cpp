@@ -150,7 +150,6 @@ AsyncOperation WorldIO::toObj(const std::string& outputDir,
                 int xsize = w->getXSize();
                 int ysize = w->getYSize();
                 int zsize = w->getZSize();
-                xsize = zsize = 32;
                 float all = static_cast<float>(xsize * ysize * zsize);
                 glm::vec3 size(1, 1, 1);
                 ob.reserveModels(xsize * ysize * zsize);
