@@ -34,7 +34,7 @@ void FirstPersonController::update() {
         glm::ivec2 axis = wasdMove.getAxis();
         this->moveLeft = this->moveRight = this->moveFront = this->moveBack =
             false;
-        // rotate
+		// ‰ñ“]î•ñ‚ÌÝ’è
 		if (this->mode == Mode::Mouse) {
 			transform.rotation.x += mouseScroll.getAmount().x * rotateSpeed;
 			transform.rotation.y += mouseScroll.getAmount().y * rotateSpeed;
@@ -61,7 +61,7 @@ void FirstPersonController::update() {
         if (transform.rotation.z > 360) {
                 transform.rotation.z -= 360;
         }
-        // move
+		// ˆÚ“®•ûŒü‚ÌÝ’è
         this->velocity = glm::vec3();
         glm::vec3 force = glm::vec3(wasdMove.getScale() * moveSpeed, 0,
                                     wasdMove.getScale() * moveSpeed);
