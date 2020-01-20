@@ -21,7 +21,8 @@ ObjPolygon::ObjPolygon(ObjIndex vertexIndex, ObjIndex texcoordIndex)
     : vertexIndex(vertexIndex), texcoordIndex(texcoordIndex), normalIndex() {}
 // ObjModel
 ObjModel::ObjModel(ObjBuilder& builder, const std::string& name)
-    : useIndexCount(0),
+    : vertexCount(0),
+	  useIndexCount(0),
       builder(builder),
       name(name),
       vertices(),
@@ -37,7 +38,7 @@ ObjModel& ObjModel::sharedVertex(const glm::vec3& aVertex,
                 if (&model == this) {
                         break;
                 }
-                for (int j = 0; j < static_cast<int>(model.vertices.size());
+                for (int j = 0; j < model.vertexCount;
                      j++) {
                         glm::vec3 otherVert = model.vertices.at(j);
                         sum++;
@@ -58,11 +59,13 @@ ObjModel& ObjModel::sharedVertex(const glm::vec3& aVertex,
                 vertices.emplace_back(aVertex);
                 destPoly.vertexIndex.index = builder.countVertex();
                 destPoly.vertexIndex.mode = IndexMode::Global;
+				this->vertexCount++;
         }
         return *this;
 }
 ObjModel& ObjModel::vertex(const glm::vec3& vertex) {
         vertices.emplace_back(vertex);
+		this->vertexCount++;
         return *this;
 }
 ObjModel& ObjModel::normal(const glm::vec3& normal) {
