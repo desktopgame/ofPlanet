@@ -7,7 +7,9 @@
 
 #include "Flag.hpp"
 namespace planet {
-
+/**
+ * Texture は、テクスチャをOpenGLと紐付けるクラスです。
+ */
 class Texture {
        public:
         explicit Texture();

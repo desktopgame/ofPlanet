@@ -3,7 +3,9 @@
 #define SHADER_MATERIAL_HPP
 #include <ofVec4f.h>
 namespace planet {
-
+/**
+ * Material は、オブジェクトの材質を定義します。
+ */
 class Material {
        public:
         explicit Material();

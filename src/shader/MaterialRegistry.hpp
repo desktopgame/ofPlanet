@@ -7,6 +7,9 @@
 namespace planet {
 
 class Material;
+/**
+ * MaterialRegistry は、マテリアルを名前と紐付けて管理するレジストリです。
+ */
 class MaterialRegistry {
        public:
         static std::shared_ptr<Material> create(const std::string& name);

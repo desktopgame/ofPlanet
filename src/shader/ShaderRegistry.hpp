@@ -8,6 +8,9 @@
 namespace planet {
 
 class Shader;
+/**
+ * ShaderRegistry は、シェーダを名前と紐付けて管理するレジストリです。
+ */
 class ShaderRegistry {
        public:
         static void loadFile(const std::string& name,

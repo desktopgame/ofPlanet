@@ -10,7 +10,9 @@ namespace planet {
 class Shader;
 class Camera;
 class Material;
-
+/**
+ * NameSet は、シェーダーに値を注入するための名前の一覧です。
+ */
 class NameSet {
        public:
         explicit NameSet();

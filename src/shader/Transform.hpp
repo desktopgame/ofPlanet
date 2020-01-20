@@ -3,6 +3,9 @@
 #define SHADER_TRANSFORM_HPP
 #include <ofVec3f.h>
 namespace planet {
+/**
+ * Transform は、オブジェクトの座標,回転などを持つクラスです。
+ */
 struct Transform {
         Transform();
         glm::vec3 forward() const;

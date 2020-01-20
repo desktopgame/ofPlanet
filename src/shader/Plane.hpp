@@ -6,7 +6,9 @@
 #include "CameraObserver.hpp"
 #include "NameSet.hpp"
 namespace planet {
-
+/**
+ * PlaneType は平面の方向を設定する列挙型です。
+ */
 enum class PlaneType : unsigned int {
         Front = 0,
         Back = 1,
@@ -18,6 +20,9 @@ enum class PlaneType : unsigned int {
 };
 
 class Shader;
+/**
+ * Plane は平面を描画するためのクラスです。
+ */
 class Plane : public CameraObserver {
        public:
         explicit Plane(PlaneType type, const NameSet& nameSet,

@@ -7,6 +7,9 @@
 
 #include "Flag.hpp"
 namespace planet {
+/**
+ * Shader は、ofShaderのラッパーです。
+ */
 class Shader {
        public:
         explicit Shader();

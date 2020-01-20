@@ -3,7 +3,7 @@
 #include <string>
 namespace planet {
 /**
- * Flag is check a enabled state.
+ * Flag は真偽値を１つだけもつフラグです。
  */
 class Flag {
        public:
@@ -12,15 +12,15 @@ class Flag {
          */
         explicit Flag(bool enabled);
         /**
-         * update flag to a true.
+		 * フラグを有効にします。
          */
         void enable();
         /**
-         * update flag to a false
+		 * フラグを無効にします。
          */
         void disable();
         /**
-         * throw exception if not matches condition.
+         * フラグが要求と一致しないなら例外をスローします。
          * @param require
          * @param message
          */
