@@ -80,26 +80,23 @@ void ofApp::setup() {
             reinterpret_cast<GLDEBUGPROC>(ofApp::bridgeDebugMessage), NULL);
         glEnable(GL_DEBUG_OUTPUT);
 #endif
+		// カメラ, マテリアルの設定
         CameraRegistry::setDefaultScreenSize(glm::vec2(1280, 720), false);
         auto cam = CameraRegistry::create("Block");
         auto mat = MaterialRegistry::create("Block");
-        CameraRegistry::create("BlockInv");
         mat->ambient = glm::vec4(0.5f, 0.5f, 0.5f, 1.0f);
         mat->diffuse = glm::vec4(0.5f, 0.5f, 0.5f, 1.0f);
         mat->specular = glm::vec4(0.f, 0.f, 0.f, 1.0f);
         mat->shininess = 50;
         cam->rehash();
-        ShaderRegistry::loadFile("Block", "shaders/block.vert",
-                                 "shaders/block.frag");
-        ShaderRegistry::loadFile("Skybox", "shaders/skybox.vert",
-                                 "shaders/skybox.frag");
-        ShaderRegistry::loadFile("Sprite", "shaders/sprite.vert",
-                                 "shaders/sprite.frag");
-        ShaderRegistry::loadFile("Model", "shaders/model.vert",
-                                 "shaders/model.frag");
+		// シェーダの読み込み
+        ShaderRegistry::loadFile("Block", "shaders/block.vert", "shaders/block.frag");
+        ShaderRegistry::loadFile("Skybox", "shaders/skybox.vert", "shaders/skybox.frag");
+        ShaderRegistry::loadFile("Sprite", "shaders/sprite.vert", "shaders/sprite.frag");
+        ShaderRegistry::loadFile("Model", "shaders/model.vert", "shaders/model.frag");
         ShaderRegistry::loadFile("FBX", "shaders/fbx.vert", "shaders/fbx.frag");
 		ShaderRegistry::loadFile("AABB", "shaders/aabb.vert", "shaders/aabb.frag");
-
+		// 設定ファイルの読み込み
 		TextureInfoCollection tic;
 		tic.deserialize(File::readAllText("./textures.json"));
 		BlockInfoCollection bic;
@@ -107,15 +104,12 @@ void ofApp::setup() {
 		BlockPack::load(bic);
         TexturePack::load(tic);
 		TexturePack::getCurrent()->resolve();
-//        sceneManager.put("Play", std::make_shared<PlayScene>());
-//        sceneManager.bind("Play");
-
+		// 描画設定
 		glEnable(GL_CULL_FACE);
 		glCullFace(GL_BACK);
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		// set title mode
 		auto w = planet->getWorld();
 		if (w) {
 			auto cam = CameraRegistry::get("Block");
@@ -128,9 +122,6 @@ void ofApp::setup() {
 
 //--------------------------------------------------------------
 void ofApp::update() {
-//        inputSystem.updateBuffers();
- //       sceneManager.update();
-
 	auto w = planet->getWorld();
 	if (!w) {
 		return;
@@ -145,18 +136,18 @@ void ofApp::update() {
 	const float hfwsx = fwsx / 2;
 	const float hfwsz = fwsz / 2;
 	const int OF_KEY_SPACE = 32;
-	// updfate camera
+	// プレイモードかそうでないかでカメラの挙動を変更します。
 	auto myCam = CameraRegistry::get("Block");
 	if (this->playMode.get()) {
+		// WASD, 矢印キーによる移動と回転
 		fpsCon.update();
 		if (playMode.testIsChanged()) {
 			myCam->setPosition(glm::vec3(wsx / 2, wsy / 2, wsz / 2));
-		}
-		else {
+		} else {
 			myCam->setPosition(myCam->getPosition() + fpsCon.getVelocity());
 		}
 		myCam->setLookAt(myCam->getPosition() + fpsCon.getTransform().forward());
-		// debug
+		// 上昇, 下降
 		if (ofGetKeyPressed(OF_KEY_SPACE)) {
 			myCam->setPosition(myCam->getPosition() + glm::vec3(0, 0.4f, 0));
 		}
@@ -164,8 +155,8 @@ void ofApp::update() {
 			myCam->setPosition(myCam->getPosition() + glm::vec3(0, -0.4f, 0));
 		}
 		myCam->rehash();
-	}
-	else {
+	} else {
+		// プレイモードではないので、オブジェクトの周りを周回します。
 		auto cx = std::cos(cameraAngle);
 		auto cz = std::sin(cameraAngle);
 		myCam->setPosition(glm::vec3(hfwsx + (hfwsx * cx), wsy, hfwsz + (hfwsz * cz)));
@@ -177,22 +168,22 @@ void ofApp::update() {
 
 //--------------------------------------------------------------
 void ofApp::draw() {
+	// 3D機能を有効にして画面を描画
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
 	auto w = planet->getWorld();
 	planet->drawToBuffer();
 	planet->render();
-
+	// 3D機能を無効にして設定画面を描画
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_CULL_FACE);
 	gui.begin();
 	ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0, 1, 0, 1));
-	// Setting Window
+	// --SettingWindowの表示
 	ImGui::Begin("Setting");
 	worldSize.draw();
 	biomeNames.draw();
-	//ImGui::ListBox("Biome", &biomeIndex, biomeList, IM_ARRAYSIZE(biomeList), 4);
 	cameraSpeed.draw();
 	if (ImGui::Button("Generate") && biomeNames.selectedIndex >= 0 && !biomes.empty()) {
 		planet->generate(worldSize.value, biomes.at(biomeNames.selectedIndex));
@@ -200,13 +191,12 @@ void ofApp::draw() {
 	ImGui::Checkbox("PlayMode", &playMode.getNewValue());
 	playMode.detect();
 	ImGui::End();
-	// Parameter Window
+	// --ParameterWindowの表示
 	ImGui::Begin("Parameter");
 	biomes.at(biomeNames.selectedIndex)->onGUI();
 	ImGui::End();
-	// Exporter Window
+	// --ExporterWindowの表示
 	ImGui::Begin("Exporter");
-	//[JSON] [OBJ]
 	exportTypes.draw();
 	int exportMode = exportTypes.mode;
 	exportDir.draw();
@@ -217,18 +207,15 @@ void ofApp::draw() {
 		std::memset(buf, '\0', 256);
 		std::sprintf(buf, "processing now... %f %%", (this->asyncOp->getValue() * 100.0f));
 		ImGui::Text(buf);
-	}
-	else {
+	} else {
 		//そうでなければボタンを表示
 		if (ImGui::Button("Export")) {
 			Directory::create(exportDir.getString());
 			if (exportMode == EXPORT_JSON) {
 				exportJson(Path::build(std::vector<std::string>{exportDir.getString(), "data.json"}));
-			}
-			else if (exportMode == EXPORT_OBJ) {
+			} else if (exportMode == EXPORT_OBJ) {
 				exportObj(exportDir.getString());
-			}
-			else if (exportMode == EXPORT_BMP) {
+			} else if (exportMode == EXPORT_BMP) {
 				exportBmp(Path::build(std::vector<std::string>{exportDir.getString(), "data.bmp"}));
 			}
 		}
