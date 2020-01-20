@@ -5,12 +5,19 @@
 #include <string>
 
 namespace imguiex {
+/**
+ * InputField は、ImGuiのラッパーです。
+ */
 template<int N=255>
 class InputField {
 public:
 	explicit InputField(const std::string& label);
 
+	/**
+	 * GUIを描画して値を更新します。
+	 */
 	void draw();
+
 	void setString(const std::string& str);
 	std::string getString() const;
 
