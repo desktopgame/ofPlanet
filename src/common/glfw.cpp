@@ -17,28 +17,10 @@ void hideCursor() {
         glfwSetInputMode(glfwWindow->getGLFWWindow(), GLFW_CURSOR,
                          GLFW_CURSOR_DISABLED);
 }
-double getMouseX() {
-        double x, y;
-        ofAppGLFWWindow* glfwWindow = (ofAppGLFWWindow*)ofGetWindowPtr();
-        glfwGetCursorPos(glfwWindow->getGLFWWindow(), &x, &y);
-        return x;
-}
-double getMouseY() {
-        double x, y;
-        ofAppGLFWWindow* glfwWindow = (ofAppGLFWWindow*)ofGetWindowPtr();
-        glfwGetCursorPos(glfwWindow->getGLFWWindow(), &x, &y);
-        return y;
-}
 int getKey(int keycode) {
         ofAppGLFWWindow* glfwWindow = (ofAppGLFWWindow*)ofGetWindowPtr();
         return glfwGetKey(glfwWindow->getGLFWWindow(), keycode);
 }
-int getMouseButton(int button) {
-        ofAppGLFWWindow* glfwWindow = (ofAppGLFWWindow*)ofGetWindowPtr();
-        return glfwGetMouseButton(glfwWindow->getGLFWWindow(), button);
-}
-bool isKeyPressed(int keycode) { return getKey(keycode) == GLFW_PRESS; }
-bool isKeyReleased(int keycode) { return getKey(keycode) == GLFW_RELEASE; }
 extern int Version_major = 3;
 extern int Version_minor = 3;
 extern int Version_revision = 0;

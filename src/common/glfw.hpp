@@ -4,15 +4,21 @@
 namespace planet {
 
 namespace glfw {
-
+/**
+ * マウスカーソルを表示します。
+ */
 void showCursor();
+
+/**
+ * マウスカーソルを非表示にします。
+ */
 void hideCursor();
-double getMouseX();
-double getMouseY();
+/**
+ * 指定のキーが押されているなら true を返します。
+ * @param keycode
+ * @return
+ */
 int getKey(int keycode);
-int getMouseButton(int button);
-bool isKeyPressed(int keycode);
-bool isKeyReleased(int keycode);
 
 extern int _glfw3_h_;
 extern int Version_major;
