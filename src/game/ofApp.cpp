@@ -9,6 +9,7 @@
 #include <ctime>
 #include <sstream>
 #include <string>
+#include <future>
 
 #include "../common/GLM.hpp"
 #include "../common/glfw.hpp"
@@ -51,6 +52,7 @@ ofApp::ofApp()
       exportDir("Output Directory"),
       cameraSpeed("CameraSpeed", 0.01f),
       worldSize("Size", 2),
+	splitCount("SplitCount", 0),
       asyncOp(nullptr) {
         exportDir.setString("dist");
         worldSize.value = glm::vec3(128, 64, 128);
@@ -69,6 +71,8 @@ ofApp::ofApp()
         }
         biomeNames.rehash();
         exportTypes.labels = std::vector<std::string>{"JSON", "OBJ", "BMP"};
+		splitCount.min = 0;
+		splitCount.max = 8;
 }
 
 //--------------------------------------------------------------
@@ -213,6 +217,7 @@ void ofApp::draw() {
         // --ExporterWindowの表示
         ImGui::Begin("Exporter");
         exportTypes.draw();
+		splitCount.draw();
         int exportMode = exportTypes.mode;
         exportDir.draw();
         // 処理中ならラベルだけを表示
@@ -398,13 +403,53 @@ void ofApp::exportJson(const std::string& outputFile) {
 }
 
 void ofApp::exportObj(const std::string& outputDir) {
-        if (!isProcessing()) {
-                auto outputFile = Path::build(
-                    std::vector<std::string>{outputDir, "data.obj"});
-                File::remove(outputFile);
-                File::remove(outputFile + ".mtl");
-                this->asyncOp = WorldIO::toObj(outputDir, planet->getWorld());
-        }
+		if (isProcessing()) {
+			return;
+		}
+		if (splitCount.value <= 1) {
+			auto outputFile = Path::build(
+				std::vector<std::string>{outputDir, "data.obj"});
+			File::remove(outputFile);
+			File::remove(outputFile + ".mtl");
+			this->asyncOp = WorldIO::toObj(outputDir, planet->getWorld());
+		} else {
+			char buf[64];
+			std::memset(buf, '\0', 64);
+			std::string cpOutputDir = outputDir;
+			int splitCountN = splitCount.value;
+			auto worlds = planet->getWorld()->split(splitCountN);
+			auto asyncs = std::vector<AsyncOperation>();
+			for (int i = 0; i < splitCountN; i++) {
+				std::sprintf(buf, "_Split%d", i);
+
+				auto newOutputDir = cpOutputDir + std::string(buf);
+				Directory::create(newOutputDir);
+				auto outputFile = Path::build(
+					std::vector<std::string>{newOutputDir, "data.obj"});
+				File::remove(outputFile);
+				File::remove(outputFile + ".mtl");
+				asyncs.emplace_back(WorldIO::toObj(newOutputDir, worlds.at(i)));
+			}
+			auto aAsync = std::make_shared<Progress>();
+			this->asyncOp = aAsync;
+			std::thread([aAsync, asyncs, splitCountN]() -> void {
+				bool run = true;
+				int count = 0;
+				while (run) {
+					run = false;
+					count = 0;
+					// すべて終わるまで待機
+					for (auto aa : asyncs) {
+						if (!aa->isDone()) {
+							run = true;
+						} else {
+							count++;
+						}
+					}
+				}
+				aAsync->setValue(static_cast<float>(count) / static_cast<float>(splitCountN));
+			}).detach();
+		}
 }
 
 void ofApp::exportBmp(const std::string& outputFile) {

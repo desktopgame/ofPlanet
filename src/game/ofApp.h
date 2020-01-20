@@ -13,6 +13,7 @@
 #include "../common/Random.hpp"
 #include "../common/StateValue.hpp"
 #include "../imguiex/CheckBox.hpp"
+#include "../imguiex/Integer.hpp"
 #include "../imguiex/Float.hpp"
 #include "../imguiex/FloatXZ.hpp"
 #include "../imguiex/InputField.hpp"
@@ -77,6 +78,7 @@ class ofApp : public ofBaseApp {
         imguiex::InputField<> exportDir;
         imguiex::Float cameraSpeed;
         imguiex::FloatXZ worldSize;
+		imguiex::Integer splitCount;
         AsyncOperation asyncOp;
 
         static NameSet createPlaneNameSet();

@@ -66,6 +66,8 @@ class World : public std::enable_shared_from_this<World> {
         void setPlayMode(bool playMode);
         bool isPlayMode() const;
 
+		std::vector<std::shared_ptr<World> > split(int splitNum) const;
+
        private:
         static NameSet spriteNameSet(const NameSet& nameSet);
         void checkFBO();
@@ -79,6 +81,7 @@ class World : public std::enable_shared_from_this<World> {
         int fboW, fboH;
         BlockRenderer renderer;
         ofFbo fbo;
+		NameSet nameSet;
         bool bIsPlayMode;
 };
 

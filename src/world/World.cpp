@@ -290,6 +290,26 @@ glm::ivec3 World::getSize() const { return glm::ivec3(xSize, ySize, zSize); }
 void World::setPlayMode(bool playMode) { this->bIsPlayMode = playMode; }
 bool World::isPlayMode() const { return bIsPlayMode; }
 
+std::vector<std::shared_ptr<World>> World::split(int splitNum) const {
+	int sx = xSize / splitNum;
+	int sz = zSize / splitNum;
+	std::vector<std::shared_ptr<World> > ret;
+	for (int n = 0; n < splitNum; n++) {
+		auto w = World::create(nameSet, glm::ivec3(sx, ySize, sz));
+		for (int x = (sx*n); x < (sx*n) + sx; x++) {
+			for (int y = 0; y < ySize; y++) {
+				for (int z = (sz*n); z < (sz*n) + sz; z++) {
+					int ix = x - (sx * n);
+					int iz = z - (sz * n);
+					w->setBlockBehavior(glm::ivec3(ix, y, iz), this->getBlockBehavior(x, y, z));
+				}
+			}
+		}
+		ret.emplace_back(w);
+	}
+	return ret;
+}
+
 NameSet World::spriteNameSet(const NameSet& nameSet) {
         NameSet ns = nameSet;
         ns.shader = "Sprite";
@@ -324,6 +344,7 @@ World::World(const NameSet& nameSet, int xSize, int ySize, int zSize)
       renderer(nameSet),
       isInvalid(true),
       bIsPlayMode(false),
+	  nameSet(nameSet),
       fbo(),
       fboW(-1),
       fboH(-1) {}
