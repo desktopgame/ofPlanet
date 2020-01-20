@@ -30,37 +30,17 @@ ObjModel::ObjModel(ObjBuilder& builder, const std::string& name)
       texcoords() {}
 ObjModel& ObjModel::sharedVertex(const glm::vec3& aVertex,
                                  ObjPolygon& destPoly) {
-        int sum = 0;
-        bool found = false;
-        int startIndex = 0;
-        for (int i = startIndex; i < builder.getModelCount(); i++) {
-                auto& model = builder.getModelAt(i);
-                if (&model == this) {
-                        break;
-                }
-                for (int j = 0; j < model.vertexCount;
-                     j++) {
-                        glm::vec3 otherVert = model.vertices.at(j);
-                        sum++;
-                        if (aVertex == otherVert) {
-                                destPoly.vertexIndex.index =
-                                    sum + builder.getGlobalVertexCount();
-                                destPoly.vertexIndex.mode = IndexMode::Global;
-                                found = true;
-                                useIndexCount++;
-                                break;
-                        }
-                }
-                if (found) {
-                        break;
-                }
-        }
-        if (!found) {
+		auto indexF = parallelSearchVertices(0, aVertex, 0, builder.getModelCount());
+		indexF.wait();
+		int index = indexF.get();
+        if (index == -1) {
+				this->vertexCount++;
                 vertices.emplace_back(aVertex);
                 destPoly.vertexIndex.index = builder.countVertex();
-                destPoly.vertexIndex.mode = IndexMode::Global;
-				this->vertexCount++;
-        }
+		} else {
+				destPoly.vertexIndex.index = index;
+		}
+		destPoly.vertexIndex.mode = IndexMode::Global;
         return *this;
 }
 ObjModel& ObjModel::vertex(const glm::vec3& vertex) {
@@ -85,6 +65,66 @@ ObjModel& ObjModel::useMaterial(const std::string& material) {
         return *this;
 }
 int ObjModel::getUseIndexCount() { return useIndexCount; }
+int ObjModel::fastVertexCount() const { return vertexCount; }
+bool ObjModel::checkRange(glm::vec3 first, glm::vec3 last, glm::vec3 value) {
+	float minX = std::min(first.x, last.x);
+	float minY = std::min(first.y, last.y);
+	float minZ = std::min(first.z, last.z);
+	float maxX = std::max(first.x, last.x);
+	float maxY = std::max(first.y, last.y);
+	float maxZ = std::max(first.z, last.z);
+	if (value.x < minX || value.x > maxX) {
+		return false;
+	}
+	if (value.y < minY || value.y > maxY) {
+		return false;
+	}
+	if (value.z < minZ || value.z > maxZ) {
+		return false;
+	}
+	return true;
+}
+std::future<int> ObjModel::parallelSearchVertices(int level, glm::vec3 aVertex, int modelOffset, int modelCount) {
+	if (modelCount < 128 || level > 3) {
+		auto f = std::async(std::launch::async, [this, aVertex, modelOffset, modelCount]() -> int {
+			int index = -1;
+			// 自分が見ている範囲のモデルをチェック
+			for (int i = modelOffset; i < modelOffset + modelCount; i++) {
+				auto& model = builder.getModelAt(i);
+				/*
+				glm::vec3 first = model.vertices.at(0);
+				glm::vec3 last = model.vertices.at(static_cast<int>(model.vertices.size()) - 1);
+				if (!ObjModel::checkRange(first, last, aVertex)) {
+					continue;
+				}
+				*/
+				for (int j = 0; j < model.fastVertexCount();
+					j++) {
+					glm::vec3 otherVert = model.vertices.at(j);
+					if (aVertex == otherVert) {
+						index = (builder.computeSumVertices(i - 1)) + j + builder.getGlobalVertexCount();
+						return index;
+					}
+				}
+			}
+			return index;
+		});
+		return f;
+	} else {
+		bool even = (modelCount % 2 == 0);
+		//[(0, 1000)]
+		//[(0, 500) (500, 1000)]
+		//[(0, 250) (250, 500)], [(500, 750) (750, 1000)]
+		auto a = parallelSearchVertices(level+1,aVertex, modelOffset, modelCount / 2);
+		auto b = parallelSearchVertices(level+1,aVertex, modelOffset + (modelCount / 2), (modelCount / 2) + (even ? 0 : 1));
+		// 見つかったので返す
+		a.wait();
+		int aa = a.get();
+		if (aa >= 0) a;
+		// もう片方を返す
+		return b;
+	}
+}
 // ObjBuilder
 ObjBuilder::ObjBuilder() : models(), allVertexCount(0) {}
 ObjBuilder::~ObjBuilder() {
@@ -120,7 +160,10 @@ std::string ObjBuilder::toString() const {
         write(ss);
         return ss.str();
 }
-ObjModel& ObjBuilder::getModelAt(int index) { return *models.at(index); }
+ObjModel& ObjBuilder::getModelAt(int index) {
+	assert(index >= 0 && index < static_cast<int>(models.size()));
+	return *models.at(index);
+}
 int ObjBuilder::getModelCount() const {
         return static_cast<int>(models.size());
 }
@@ -132,6 +175,13 @@ int ObjBuilder::getGlobalNormalCount() const {
 }
 int ObjBuilder::getGloalTexcoordCount() const {
         return static_cast<int>(texcoords.size());
+}
+int ObjBuilder::computeSumVertices(int modelIndex) {
+	int sum = 0;
+	for (int i = 0; i < modelIndex; i++) {
+		sum += static_cast<int>(models.at(i)->vertices.size());
+	}
+	return sum;
 }
 int ObjBuilder::countVertex() {
         allVertexCount++;
