@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "../common/Stopwatch.hpp"
 #include "../game/ofApp.h"
 #include "../shader/Camera.hpp"
 #include "../shader/CameraRegistry.hpp"

@@ -1,6 +1,5 @@
 #include "ShaderRegistry.hpp"
 
-#include "../common/Stopwatch.hpp"
 #include "../io/File.hpp"
 namespace planet {
 // ShaderRegistry

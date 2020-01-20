@@ -1,6 +1,5 @@
 #include "Planet.hpp"
 
-#include "../common/Stopwatch.hpp"
 #include "World.hpp"
 #include "biome/Biome.hpp"
 namespace planet {

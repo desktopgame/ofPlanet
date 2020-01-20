@@ -186,8 +186,6 @@
     <ClCompile Include="src\common\glfw.cpp" />
     <ClCompile Include="src\common\MouseScroll.cpp" />
     <ClCompile Include="src\common\Random.cpp" />
-    <ClCompile Include="src\common\Stopwatch.cpp" />
-    <ClCompile Include="src\common\Timer.cpp" />
     <ClCompile Include="src\common\WASDMove.cpp" />
     <ClCompile Include="src\game\main.cpp" />
     <ClCompile Include="src\game\ofApp.cpp" />
@@ -262,8 +260,6 @@
     <ClInclude Include="src\common\MouseScroll.hpp" />
     <ClInclude Include="src\common\Random.hpp" />
     <ClInclude Include="src\common\StateValue.hpp" />
-    <ClInclude Include="src\common\Stopwatch.hpp" />
-    <ClInclude Include="src\common\Timer.hpp" />
     <ClInclude Include="src\common\WASDMove.hpp" />
     <ClInclude Include="src\game\ofApp.h" />
     <ClInclude Include="src\imguiex\CheckBox.hpp" />

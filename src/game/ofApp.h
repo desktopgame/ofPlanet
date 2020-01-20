@@ -13,7 +13,6 @@
 #include "../common/Random.hpp"
 #include "../common/StateValue.hpp"
 #include "../common/FirstPersonController.hpp"
-#include "../common/Timer.hpp"
 #include "../shader/Plane.hpp"
 #include "../shader/Transform.hpp"
 #include "../world/Planet.hpp"
@@ -63,8 +62,6 @@ class ofApp : public ofBaseApp {
                                        GLvoid* user_param);
 
 		bool isProcessing() const;
-		void playUpdate();
-		void playDraw();
 		void exportJson(const std::string& outputFile);
 		void exportObj(const std::string& outputDir);
 		void exportBmp(const std::string& outputFile);

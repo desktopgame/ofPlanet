@@ -13,12 +13,6 @@
     <ClCompile Include="src\common\Random.cpp">
       <Filter>src\common</Filter>
     </ClCompile>
-    <ClCompile Include="src\common\Stopwatch.cpp">
-      <Filter>src\common</Filter>
-    </ClCompile>
-    <ClCompile Include="src\common\Timer.cpp">
-      <Filter>src\common</Filter>
-    </ClCompile>
     <ClCompile Include="src\common\WASDMove.cpp">
       <Filter>src\common</Filter>
     </ClCompile>
@@ -302,12 +296,6 @@
       <Filter>src\common</Filter>
     </ClInclude>
     <ClInclude Include="src\common\StateValue.hpp">
-      <Filter>src\common</Filter>
-    </ClInclude>
-    <ClInclude Include="src\common\Stopwatch.hpp">
-      <Filter>src\common</Filter>
-    </ClInclude>
-    <ClInclude Include="src\common\Timer.hpp">
       <Filter>src\common</Filter>
     </ClInclude>
     <ClInclude Include="src\common\WASDMove.hpp">

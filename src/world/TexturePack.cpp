@@ -2,7 +2,6 @@
 
 #include <algorithm>
 
-#include "../common/Stopwatch.hpp"
 #include "../io/Directory.hpp"
 #include "../io/Path.hpp"
 #include "../shader/NameSet.hpp"
