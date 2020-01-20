@@ -1,36 +1,34 @@
 #pragma once
 
-#include <glm/glm.hpp>
-#include <ofMain.h>
-
 #include <ofEasyCam.h>
+#include <ofMain.h>
 #include <ofShader.h>
 #include <ofxImGui.h>
+
+#include <glm/glm.hpp>
+#include <memory>
 #include <vector>
 
-#include <memory>
-
+#include "../common/FirstPersonController.hpp"
 #include "../common/Random.hpp"
 #include "../common/StateValue.hpp"
-#include "../common/FirstPersonController.hpp"
+#include "../imguiex/CheckBox.hpp"
+#include "../imguiex/Float.hpp"
+#include "../imguiex/FloatXZ.hpp"
+#include "../imguiex/InputField.hpp"
+#include "../imguiex/ListBox.hpp"
+#include "../imguiex/RadioButtonGroup.hpp"
 #include "../shader/Plane.hpp"
 #include "../shader/Transform.hpp"
 #include "../world/Planet.hpp"
 #include "../world/World.hpp"
 #include "../world/WorldIO.hpp"
 #include "../world/biome/Biome.hpp"
-#include "../imguiex/ListBox.hpp"
-#include "../imguiex/CheckBox.hpp"
-#include "../imguiex/RadioButtonGroup.hpp"
-#include "../imguiex/InputField.hpp"
-#include "../imguiex/Float.hpp"
-#include "../imguiex/FloatXZ.hpp"
-
 
 namespace objb {
-	class ObjBuilder;
-	class MtlBuilder;
-}
+class ObjBuilder;
+class MtlBuilder;
+}  // namespace objb
 
 namespace planet {
 
@@ -54,35 +52,34 @@ class ofApp : public ofBaseApp {
         void dragEvent(ofDragInfo dragInfo);
         void gotMessage(ofMessage msg);
 
-
        protected:
         static void bridgeDebugMessage(GLenum source, GLenum type, GLuint eid,
                                        GLenum severity, GLsizei length,
                                        const GLchar* message,
                                        GLvoid* user_param);
 
-		bool isProcessing() const;
-		void exportJson(const std::string& outputFile);
-		void exportObj(const std::string& outputDir);
-		void exportBmp(const std::string& outputFile);
+        bool isProcessing() const;
+        void exportJson(const std::string& outputFile);
+        void exportObj(const std::string& outputDir);
+        void exportBmp(const std::string& outputFile);
 
-		ofEasyCam cam;
-		std::shared_ptr<Planet> planet;
-		Random rand;
-		float cameraAngle;
+        ofEasyCam cam;
+        std::shared_ptr<Planet> planet;
+        Random rand;
+        float cameraAngle;
 
-		ofxImGui::Gui gui;
-		StateValue<bool> playMode;
-		FirstPersonController fpsCon;
-		std::vector<std::shared_ptr<Biome> > biomes;
-		imguiex::ListBox biomeNames;
-		imguiex::RadioButtonGroup exportTypes;
-		imguiex::InputField<> exportDir;
-		imguiex::Float cameraSpeed;
-		imguiex::FloatXZ worldSize;
-		AsyncOperation asyncOp;
+        ofxImGui::Gui gui;
+        StateValue<bool> playMode;
+        FirstPersonController fpsCon;
+        std::vector<std::shared_ptr<Biome> > biomes;
+        imguiex::ListBox biomeNames;
+        imguiex::RadioButtonGroup exportTypes;
+        imguiex::InputField<> exportDir;
+        imguiex::Float cameraSpeed;
+        imguiex::FloatXZ worldSize;
+        AsyncOperation asyncOp;
 
-		static NameSet createPlaneNameSet();
-		static NameSet createGunNameSet();
+        static NameSet createPlaneNameSet();
+        static NameSet createGunNameSet();
 };
 }  // namespace planet

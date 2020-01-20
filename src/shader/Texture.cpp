@@ -22,7 +22,7 @@ Texture::~Texture() {
 void Texture::load(const std::string& path) {
         loadFlag.check(false, "already was loaded");
         loadFlag.enable();
-		this->path = path;
+        this->path = path;
         this->data =
             SOIL_load_image(path.c_str(), &width, &height, &ch, SOIL_LOAD_RGBA);
         glBindTexture(GL_TEXTURE_2D, name);

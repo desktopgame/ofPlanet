@@ -1,4 +1,5 @@
 #include "Directory.hpp"
+
 #include "../text/Encoding.hpp"
 #include "Path.hpp"
 
@@ -30,10 +31,10 @@ std::vector<std::string> Directory::entries(const std::string& path,
             path, recursive,
             [](std::string file, DWORD attr) -> bool { return true; });
 }
-void Directory::create(const std::string & dir) {
-	if (!Path::isExists(dir)) {
-		CreateDirectoryA(dir.c_str(), NULL);
-	}
+void Directory::create(const std::string& dir) {
+        if (!Path::isExists(dir)) {
+                CreateDirectoryA(dir.c_str(), NULL);
+        }
 }
 namespace Directory {
 namespace hidden {

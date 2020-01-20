@@ -10,12 +10,12 @@ class Random {
        public:
         explicit Random();
 
-		/**
-		 * 指定の範囲の乱数を生成します。
-		 * @param min
-		 * @param max
-		 * @retunr
-		 */
+        /**
+         * 指定の範囲の乱数を生成します。
+         * @param min
+         * @param max
+         * @retunr
+         */
         template <typename T>
         T generate(const T min, const T max);
 

@@ -6,11 +6,11 @@
 #include "TexturePack.hpp"
 #include "World.hpp"
 namespace planet {
-Block::Block(const std::string & name, const std::string & textureReference, int id)
-: name(name), textureReference(textureReference),id(id) {
-}
+Block::Block(const std::string& name, const std::string& textureReference,
+             int id)
+    : name(name), textureReference(textureReference), id(id) {}
 std::shared_ptr<BlockBehavior> Block::newBehavior() {
-	return std::const_pointer_cast<BlockBehavior>(shared_from_this());
+        return std::const_pointer_cast<BlockBehavior>(shared_from_this());
 }
 void Block::update(std::shared_ptr<World> world, int x, int y, int z) {}
 
@@ -60,11 +60,11 @@ void Block::setTextureSetIndex(int textureSetIndex) {
 int Block::getTextureSetIndex() const { return textureSetIndex; }
 
 std::string Block::getTextureReference() const {
-	return this->textureReference;
+        return this->textureReference;
 }
 
 std::string Block::getName() const { return name; }
 
 int Block::getID() const { return id; }
 
-}// namespace planet
+}  // namespace planet

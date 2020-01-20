@@ -6,7 +6,8 @@
 namespace planet {
 
 // BlockPrefab
-BlockPrefab::BlockPrefab(int id, bool instanced) : id(id), instanced(instanced) {}
+BlockPrefab::BlockPrefab(int id, bool instanced)
+    : id(id), instanced(instanced) {}
 
 BlockPrefab::BlockPrefab() : id(-1), instanced(false) {}
 // BlockTable
@@ -61,10 +62,6 @@ int BlockTable::getXSize() const { return xSize; }
 int BlockTable::getYSize() const { return ySize; }
 
 int BlockTable::getZSize() const { return zSize; }
-void BlockTable::setTerrain(const Terrain terrain) {
-	this->terrain = terrain;
-}
-Terrain BlockTable::getTerrain() const {
-	return terrain;
-}
+void BlockTable::setTerrain(const Terrain terrain) { this->terrain = terrain; }
+Terrain BlockTable::getTerrain() const { return terrain; }
 }  // namespace planet

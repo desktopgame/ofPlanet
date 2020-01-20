@@ -53,8 +53,8 @@ class World : public std::enable_shared_from_this<World> {
         glm::vec3 fixedPos(glm::vec3 from, glm::vec3 to, bool& hitBlockX,
                            bool& hitBlockY, bool& hitBlockZ);
         bool isContains(int x, int y, int z) const;
-		bool isContains(const glm::ivec3& v) const;
-		bool isContains(const glm::vec3& v) const;
+        bool isContains(const glm::ivec3& v) const;
+        bool isContains(const glm::vec3& v) const;
         bool isEmpty(int x, int y, int z) const;
         int getGroundY(int x, int z) const;
 
@@ -68,7 +68,7 @@ class World : public std::enable_shared_from_this<World> {
 
        private:
         static NameSet spriteNameSet(const NameSet& nameSet);
-		void checkFBO();
+        void checkFBO();
         BlockColliderType getColliderType(int x, int y, int z);
         explicit World(const NameSet& nameSet, const glm::ivec3& size);
         explicit World(const NameSet& nameSet, int xSize, int ySize, int zSize);
@@ -76,7 +76,7 @@ class World : public std::enable_shared_from_this<World> {
             blocks;
         bool isInvalid;
         int xSize, ySize, zSize;
-		int fboW, fboH;
+        int fboW, fboH;
         BlockRenderer renderer;
         ofFbo fbo;
         bool bIsPlayMode;

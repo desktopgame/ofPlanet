@@ -34,22 +34,22 @@ void FirstPersonController::update() {
         glm::ivec2 axis = wasdMove.getAxis();
         this->moveLeft = this->moveRight = this->moveFront = this->moveBack =
             false;
-		// ‰ñ“]î•ñ‚ÌÝ’è
-		if (this->mode == Mode::Mouse) {
-			transform.rotation.x += mouseScroll.getAmount().x * rotateSpeed;
-			transform.rotation.y += mouseScroll.getAmount().y * rotateSpeed;
-		} else {
-			if (ofGetKeyPressed(OF_KEY_LEFT)) {
-				transform.rotation.x += rotateSpeed;
-			} else if (ofGetKeyPressed(OF_KEY_RIGHT)) {
-				transform.rotation.x -= rotateSpeed;
-			}
-			if (ofGetKeyPressed(OF_KEY_UP)) {
-				transform.rotation.y += rotateSpeed;
-			} else if (ofGetKeyPressed(OF_KEY_DOWN)) {
-				transform.rotation.y -= rotateSpeed;
-			}
-		}
+        // ‰ñ“]î•ñ‚ÌÝ’è
+        if (this->mode == Mode::Mouse) {
+                transform.rotation.x += mouseScroll.getAmount().x * rotateSpeed;
+                transform.rotation.y += mouseScroll.getAmount().y * rotateSpeed;
+        } else {
+                if (ofGetKeyPressed(OF_KEY_LEFT)) {
+                        transform.rotation.x += rotateSpeed;
+                } else if (ofGetKeyPressed(OF_KEY_RIGHT)) {
+                        transform.rotation.x -= rotateSpeed;
+                }
+                if (ofGetKeyPressed(OF_KEY_UP)) {
+                        transform.rotation.y += rotateSpeed;
+                } else if (ofGetKeyPressed(OF_KEY_DOWN)) {
+                        transform.rotation.y -= rotateSpeed;
+                }
+        }
         transform.rotation.y = ofClamp(transform.rotation.y, -90.0f, 90.0f);
 
         if (transform.rotation.x > 360) {
@@ -61,7 +61,7 @@ void FirstPersonController::update() {
         if (transform.rotation.z > 360) {
                 transform.rotation.z -= 360;
         }
-		// ˆÚ“®•ûŒü‚ÌÝ’è
+        // ˆÚ“®•ûŒü‚ÌÝ’è
         this->velocity = glm::vec3();
         glm::vec3 force = glm::vec3(wasdMove.getScale() * moveSpeed, 0,
                                     wasdMove.getScale() * moveSpeed);
@@ -94,16 +94,26 @@ bool FirstPersonController::isMoveRight() const { return moveRight; }
 bool FirstPersonController::isMoveFront() const { return moveFront; }
 
 bool FirstPersonController::isMoveBack() const { return moveBack; }
-void FirstPersonController::setMode(const Mode mode) {
-	this->mode = mode;
+void FirstPersonController::setMode(const Mode mode) { this->mode = mode; }
+FirstPersonController::Mode FirstPersonController::getMode() const {
+        return this->mode;
 }
-FirstPersonController::Mode FirstPersonController::getMode() const { return this->mode; }
-void FirstPersonController::setMoveSpeed(float moveSpeed) { this->moveSpeed = moveSpeed; }
+void FirstPersonController::setMoveSpeed(float moveSpeed) {
+        this->moveSpeed = moveSpeed;
+}
 float FirstPersonController::getMoveSpeed() const { return moveSpeed; }
-void FirstPersonController::setJumpSpeed(float jumpSpeed) { this->jumpSpeed = jumpSpeed; }
+void FirstPersonController::setJumpSpeed(float jumpSpeed) {
+        this->jumpSpeed = jumpSpeed;
+}
 float FirstPersonController::getJumpSpeed() const { return this->jumpSpeed; }
-void FirstPersonController::setRotateSpeed(float rotateSpeed) { this->rotateSpeed = rotateSpeed; }
-float FirstPersonController::getRotateSpeed() const { return this->rotateSpeed; }
-Transform & FirstPersonController::getTransform() { return this->transform;  }
-const Transform & FirstPersonController::getTransform() const { return this->transform; }
+void FirstPersonController::setRotateSpeed(float rotateSpeed) {
+        this->rotateSpeed = rotateSpeed;
+}
+float FirstPersonController::getRotateSpeed() const {
+        return this->rotateSpeed;
+}
+Transform& FirstPersonController::getTransform() { return this->transform; }
+const Transform& FirstPersonController::getTransform() const {
+        return this->transform;
+}
 }  // namespace planet

@@ -7,20 +7,21 @@ namespace imguiex {
  * Float は、ImGuiのラッパーです。
  */
 class Float {
-public:
-	explicit Float(const std::string& label, float step);
+       public:
+        explicit Float(const std::string& label, float step);
 
-	/**
-	 * GUIを描画して値を更新します。
-	 */
-	void draw();
+        /**
+         * GUIを描画して値を更新します。
+         */
+        void draw();
 
-	std::string label;
-	float value;
-	float step;
-	float min;
-	float max;
-private:
+        std::string label;
+        float value;
+        float step;
+        float min;
+        float max;
+
+       private:
 };
-}
+}  // namespace imguiex
 #endif

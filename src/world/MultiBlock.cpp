@@ -7,8 +7,8 @@
 #include "../io/CommandReader.hpp"
 #include "../io/File.hpp"
 #include "../text/Strings.hpp"
-#include "BlockPack.hpp"
 #include "Block.hpp"
+#include "BlockPack.hpp"
 namespace planet {
 
 MultiBlock::MultiBlock() : stacks(), xSize(), zSize(), blockMap() {}
@@ -38,16 +38,17 @@ MultiBlock MultiBlock::fromText(const std::string& text) {
                         mb.stack(lines);
                         copy = lines;
                         lines.clear();
-				} else if (name == "putID") {
-					assert(args.size() == 2);
-					auto key = args[0];
-					auto id = std::stoi(args[1]);
-					mb.encode(key[0], id);
-				} else if(name == "putBlock") {
-					assert(args.size() == 2);
-					auto key = args[0];
-					auto id = BlockPack::getCurrent()->getBlock(args[1])->getID();
-					mb.encode(key[0], id);
+                } else if (name == "putID") {
+                        assert(args.size() == 2);
+                        auto key = args[0];
+                        auto id = std::stoi(args[1]);
+                        mb.encode(key[0], id);
+                } else if (name == "putBlock") {
+                        assert(args.size() == 2);
+                        auto key = args[0];
+                        auto id =
+                            BlockPack::getCurrent()->getBlock(args[1])->getID();
+                        mb.encode(key[0], id);
                 } else if (name == "dup") {
                         assert(args.size() == 1);
                         int count = std::stoi(args[0]);
@@ -92,7 +93,8 @@ std::vector<MultiBlock::Entry> MultiBlock::to3DData() const {
                 auto lines = split(layer, '\n');
                 for (int j = 0; j < static_cast<int>(lines.size()); j++) {
                         auto line = lines[j];
-                        for (int k = 0; k < static_cast<int>(line.size()); k++) {
+                        for (int k = 0; k < static_cast<int>(line.size());
+                             k++) {
                                 glm::vec3 v3(k, y, j);
                                 ret.push_back(MultiBlock::Entry(v3, line[k]));
                         }

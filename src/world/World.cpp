@@ -45,7 +45,7 @@ std::shared_ptr<World> World::create(const NameSet& nameSet, int xSize,
 int World::floatToInt(float f) { return static_cast<int>(std::round(f)); }
 
 void World::load(const BlockTable& table) {
-		auto bp = BlockPack::getCurrent();
+        auto bp = BlockPack::getCurrent();
         for (int x = 0; x < table.getXSize(); x++) {
                 for (int y = 0; y < table.getYSize(); y++) {
                         for (int z = 0; z < table.getZSize(); z++) {
@@ -56,11 +56,10 @@ void World::load(const BlockTable& table) {
                                 if (i.instanced) {
                                         setBlockBehavior(
                                             x, y, z,
-                                            bp->getBlock(i.id)
-                                                ->newBehavior());
+                                            bp->getBlock(i.id)->newBehavior());
                                 } else {
-                                        setBlockBehavior(
-                                            x, y, z, bp->getBlock(i.id));
+                                        setBlockBehavior(x, y, z,
+                                                         bp->getBlock(i.id));
                                 }
                         }
                 }
@@ -85,7 +84,7 @@ void World::update() {
 
 void World::drawToBuffer() {
         rehash();
-		checkFBO();
+        checkFBO();
         // screenBuffer.bind();
         fbo.begin();
         glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ZERO,
@@ -114,7 +113,7 @@ void World::rehash() {
                 return;
         }
         this->isInvalid = false;
-		checkFBO();
+        checkFBO();
         renderer.clear();
         auto w = std::const_pointer_cast<World>(shared_from_this());
         for (int x = 0; x < xSize; x++) {
@@ -263,11 +262,11 @@ bool World::isContains(int x, int y, int z) const {
         if (z < 0 || z >= zSize) return false;
         return true;
 }
-bool World::isContains(const glm::ivec3 & v) const {
-	return isContains(v.x, v.y, v.z);
+bool World::isContains(const glm::ivec3& v) const {
+        return isContains(v.x, v.y, v.z);
 }
-bool World::isContains(const glm::vec3 & v) const {
-	return isContains(floatToInt(v.x), floatToInt(v.y), floatToInt(v.z));
+bool World::isContains(const glm::vec3& v) const {
+        return isContains(floatToInt(v.x), floatToInt(v.y), floatToInt(v.z));
 }
 bool World::isEmpty(int x, int y, int z) const {
         if (!isContains(x, y, z)) {
@@ -288,9 +287,7 @@ int World::getXSize() const { return xSize; }
 int World::getYSize() const { return ySize; }
 int World::getZSize() const { return zSize; }
 glm::ivec3 World::getSize() const { return glm::ivec3(xSize, ySize, zSize); }
-void World::setPlayMode(bool playMode) {
-        this->bIsPlayMode = playMode;
-}
+void World::setPlayMode(bool playMode) { this->bIsPlayMode = playMode; }
 bool World::isPlayMode() const { return bIsPlayMode; }
 
 NameSet World::spriteNameSet(const NameSet& nameSet) {
@@ -299,13 +296,13 @@ NameSet World::spriteNameSet(const NameSet& nameSet) {
         return ns;
 }
 void World::checkFBO() {
-	int newW = ofGetWidth();
-	int newH = ofGetHeight();
-	if (this->fboW != newW || this->fboH != newH) {
-		fbo.allocate(newW, newH);
-		this->fboW = newW;
-		this->fboH = newH;
-	}
+        int newW = ofGetWidth();
+        int newH = ofGetHeight();
+        if (this->fboW != newW || this->fboH != newH) {
+                fbo.allocate(newW, newH);
+                this->fboW = newW;
+                this->fboH = newH;
+        }
 }
 BlockColliderType World::getColliderType(int x, int y, int z) {
         auto block = getBlockBehavior(x, y, z);
@@ -320,15 +317,14 @@ World::World(const NameSet& nameSet, const glm::ivec3& size)
     : World(nameSet, size.x, size.y, size.z) {}
 
 World::World(const NameSet& nameSet, int xSize, int ySize, int zSize)
-	: blocks(),
-	xSize(xSize),
-	ySize(ySize),
-	zSize(zSize),
-	renderer(nameSet),
-	isInvalid(true),
-	bIsPlayMode(false),
-	fbo(),
-    fboW(-1),
-    fboH(-1) {
-}
+    : blocks(),
+      xSize(xSize),
+      ySize(ySize),
+      zSize(zSize),
+      renderer(nameSet),
+      isInvalid(true),
+      bIsPlayMode(false),
+      fbo(),
+      fboW(-1),
+      fboH(-1) {}
 }  // namespace planet

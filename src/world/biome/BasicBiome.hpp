@@ -28,39 +28,40 @@ class BasicBiome : public Biome {
        public:
         explicit BasicBiome();
         virtual ~BasicBiome();
-		virtual void onGUI() override;
+        virtual void onGUI() override;
         void generate(BlockTable& blockTable) override;
 
        protected:
-		virtual bool isUseCallbacks();
+        virtual bool isUseCallbacks();
         virtual float onFixHeight(float y);
-		virtual void onBeginGenerate(BlockTable & blockTable);
-		virtual void onEndGenerate(BlockTable & blockTable);
+        virtual void onBeginGenerate(BlockTable& blockTable);
+        virtual void onEndGenerate(BlockTable& blockTable);
         virtual void onGenerateTerrain(BlockTable& blockTable, int x, int y,
                                        int z);
         virtual void onGenerateWater(BlockTable& blockTable, int x, int y,
                                      int z);
         virtual void onGenerateStructures(BlockTable& blockTable);
-		virtual void onGenerateCave(BlockTable& blockTable, int x, int y, int z, float noise);
+        virtual void onGenerateCave(BlockTable& blockTable, int x, int y, int z,
+                                    float noise);
         virtual void generateStructure(BlockTable& blockTable, MultiBlock mb,
                                        glm::ivec3 intervalMin,
                                        glm::ivec3 intervalMax, int testCount,
                                        int genLimit);
         virtual BlockPrefab createTopBlock(BlockTable& blockTable, int x, int y,
-                                         int z) const;
-        virtual BlockPrefab createFillBlock(BlockTable& blockTable, int startY,
-                                          int x, int y, int z) const;
-        virtual BlockPrefab createWaterBlock(BlockTable& blockTable, int x, int y,
                                            int z) const;
+        virtual BlockPrefab createFillBlock(BlockTable& blockTable, int startY,
+                                            int x, int y, int z) const;
+        virtual BlockPrefab createWaterBlock(BlockTable& blockTable, int x,
+                                             int y, int z) const;
         Random random;
         std::unordered_map<glm::ivec2, int, hidden::Vec2HashFunc,
                            hidden::Vec2HashFunc>
             heightMap;
-		char topBlock[255];
-		char fillBlock[255];
-		char fillHardBlock[255];
-		char waterBlock[255];
-		bool generateCave;
+        char topBlock[255];
+        char fillBlock[255];
+        char fillHardBlock[255];
+        char waterBlock[255];
+        bool generateCave;
 };
 }  // namespace planet
 #endif

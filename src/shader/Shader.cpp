@@ -13,7 +13,7 @@ Shader::~Shader() {}
 void Shader::load(const std::string& vertShader,
                   const std::string& fragShader) {
         bool loaded = shader.load(vertShader, fragShader);
-		assert(loaded);
+        assert(loaded);
 }
 
 void Shader::use() { shader.begin(); }

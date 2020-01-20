@@ -1,8 +1,9 @@
 #include "File.hpp"
 
+#include <cstdio>
 #include <fstream>
 #include <sstream>
-#include <cstdio>
+
 #include "Path.hpp"
 
 #if _WIN32
@@ -30,12 +31,12 @@ void File::writeAllText(const std::string& path, const std::string& str) {
         ofs << str;
         ofs.close();
 }
-void File::remove(const std::string & path) {
-	if (Path::isExists(path)) {
-		::remove(path.c_str());
-	}
+void File::remove(const std::string& path) {
+        if (Path::isExists(path)) {
+                ::remove(path.c_str());
+        }
 }
-void File::copy(const std::string & from, const std::string & to) {
-	CopyFileA(from.c_str(), to.c_str(), TRUE);
+void File::copy(const std::string& from, const std::string& to) {
+        CopyFileA(from.c_str(), to.c_str(), TRUE);
 }
 }  // namespace planet

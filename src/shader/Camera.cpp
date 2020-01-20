@@ -1,7 +1,6 @@
 #include "Camera.hpp"
 
 #include "../common/GLM.hpp"
-
 #include "CameraObserver.hpp"
 namespace planet {
 

@@ -12,11 +12,11 @@ class Flag {
          */
         explicit Flag(bool enabled);
         /**
-		 * フラグを有効にします。
+         * フラグを有効にします。
          */
         void enable();
         /**
-		 * フラグを無効にします。
+         * フラグを無効にします。
          */
         void disable();
         /**
