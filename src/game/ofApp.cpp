@@ -102,7 +102,11 @@ void ofApp::mouseEntered(int x, int y) {}
 void ofApp::mouseExited(int x, int y) {}
 
 //--------------------------------------------------------------
-void ofApp::windowResized(int w, int h) {}
+void ofApp::windowResized(int w, int h) {
+	auto cam = CameraRegistry::ref("Block");
+	cam->setScreenSize(glm::vec2(w, h));
+	cam->rehash();
+}
 
 //--------------------------------------------------------------
 void ofApp::gotMessage(ofMessage msg) {}

@@ -31,9 +31,6 @@
     <ClCompile Include="src\game\PlayScene.cpp">
       <Filter>src\game</Filter>
     </ClCompile>
-    <ClCompile Include="src\game\Screen.cpp">
-      <Filter>src\game</Filter>
-    </ClCompile>
     <ClCompile Include="src\imguiex\CheckBox.cpp">
       <Filter>src\imguiex</Filter>
     </ClCompile>
@@ -350,9 +347,6 @@
       <Filter>src\game</Filter>
     </ClInclude>
     <ClInclude Include="src\game\PlayScene.hpp">
-      <Filter>src\game</Filter>
-    </ClInclude>
-    <ClInclude Include="src\game\Screen.hpp">
       <Filter>src\game</Filter>
     </ClInclude>
     <ClInclude Include="src\imguiex\CheckBox.hpp">

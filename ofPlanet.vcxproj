@@ -192,7 +192,6 @@
     <ClCompile Include="src\game\main.cpp" />
     <ClCompile Include="src\game\ofApp.cpp" />
     <ClCompile Include="src\game\PlayScene.cpp" />
-    <ClCompile Include="src\game\Screen.cpp" />
     <ClCompile Include="src\imguiex\CheckBox.cpp" />
     <ClCompile Include="src\imguiex\Float.cpp" />
     <ClCompile Include="src\imguiex\Float2.cpp" />
@@ -278,7 +277,6 @@
     <ClInclude Include="src\common\WASDMove.hpp" />
     <ClInclude Include="src\game\ofApp.h" />
     <ClInclude Include="src\game\PlayScene.hpp" />
-    <ClInclude Include="src\game\Screen.hpp" />
     <ClInclude Include="src\imguiex\CheckBox.hpp" />
     <ClInclude Include="src\imguiex\Float.hpp" />
     <ClInclude Include="src\imguiex\Float2.hpp" />

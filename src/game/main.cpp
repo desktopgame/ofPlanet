@@ -6,7 +6,6 @@
 #include <ofMain.h>
 #include <iostream>
 
-#include "Screen.hpp"
 #include "ofApp.h"
 
 #include "../world/TextureInfoCollection.hpp"
@@ -18,13 +17,11 @@
 //========================================================================
 int main() {
         ofGLFWWindowSettings settings;
-        settings.resizable = false;
         settings.glVersionMajor = 4;
         settings.glVersionMinor = 4;
-        settings.setSize(planet::Screen::widthi(), planet::Screen::heighti());
+        settings.setSize(1280,720);
         settings.windowMode = ofWindowMode::OF_WINDOW;
 		settings.title = "ofPlanet";
-        planet::Screen::fullScreenMode = false;
 #ifdef _DEBUG
 		ofSetLogLevel(ofLogLevel::OF_LOG_FATAL_ERROR);
 #endif

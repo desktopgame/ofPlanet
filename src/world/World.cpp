@@ -86,6 +86,7 @@ void World::update() {
 
 void World::drawToBuffer() {
         rehash();
+		checkFBO();
         // screenBuffer.bind();
         fbo.begin();
         glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ZERO,
@@ -113,10 +114,8 @@ void World::rehash() {
         if (!isInvalid) {
                 return;
         }
-        if (!fbo.isAllocated()) {
-                fbo.allocate(ofGetWidth(), ofGetHeight());
-        }
         this->isInvalid = false;
+		checkFBO();
         renderer.clear();
         auto w = std::const_pointer_cast<World>(shared_from_this());
         for (int x = 0; x < xSize; x++) {
@@ -300,6 +299,15 @@ NameSet World::spriteNameSet(const NameSet& nameSet) {
         ns.shader = "Sprite";
         return ns;
 }
+void World::checkFBO() {
+	int newW = ofGetWidth();
+	int newH = ofGetHeight();
+	if (this->fboW != newW || this->fboH != newH) {
+		fbo.allocate(newW, newH);
+		this->fboW = newW;
+		this->fboH = newH;
+	}
+}
 BlockColliderType World::getColliderType(int x, int y, int z) {
         auto block = getBlockBehavior(x, y, z);
         if (!block) {
@@ -320,6 +328,8 @@ World::World(const NameSet& nameSet, int xSize, int ySize, int zSize)
 	renderer(nameSet),
 	isInvalid(true),
 	bIsPlayMode(false),
-	fbo() {
+	fbo(),
+    fboW(-1),
+    fboH(-1) {
 }
 }  // namespace planet

@@ -28,7 +28,7 @@
 #include "../io/Directory.hpp"
 #include "../objb/ObjBuilder.hpp"
 #include "../objb/MtlBuilder.hpp"
-#include "Screen.hpp"
+
 namespace planet {
 using ExportMode = enum {
 	EXPORT_JSON = 0,
