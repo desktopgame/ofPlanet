@@ -5,7 +5,17 @@
 namespace planet {
 
 namespace Encoding {
+/**
+ * ワイド文字列をマルチバイト文字列へ変換します。
+ * @param input
+ * @return
+ */
 std::string toMultiByteString(const std::wstring& input);
+/**
+ * マルチバイト文字列をワイド文字列へ変換します。
+ * @param input
+ * @return
+ */
 std::wstring toWideString(const std::string& input);
 }  // namespace Encoding
 }  // namespace planet
