@@ -67,9 +67,6 @@
     <ClCompile Include="src\shader\Flag.cpp">
       <Filter>src\shader</Filter>
     </ClCompile>
-    <ClCompile Include="src\shader\FrameBuffer.cpp">
-      <Filter>src\shader</Filter>
-    </ClCompile>
     <ClCompile Include="src\shader\Material.cpp">
       <Filter>src\shader</Filter>
     </ClCompile>
@@ -374,9 +371,6 @@
       <Filter>src\shader</Filter>
     </ClInclude>
     <ClInclude Include="src\shader\Flag.hpp">
-      <Filter>src\shader</Filter>
-    </ClInclude>
-    <ClInclude Include="src\shader\FrameBuffer.hpp">
       <Filter>src\shader</Filter>
     </ClInclude>
     <ClInclude Include="src\shader\Material.hpp">

@@ -206,7 +206,6 @@
     <ClCompile Include="src\shader\Camera.cpp" />
     <ClCompile Include="src\shader\CameraRegistry.cpp" />
     <ClCompile Include="src\shader\Flag.cpp" />
-    <ClCompile Include="src\shader\FrameBuffer.cpp" />
     <ClCompile Include="src\shader\Material.cpp" />
     <ClCompile Include="src\shader\MaterialRegistry.cpp" />
     <ClCompile Include="src\shader\NameSet.cpp" />
@@ -288,7 +287,6 @@
     <ClInclude Include="src\shader\CameraObserver.hpp" />
     <ClInclude Include="src\shader\CameraRegistry.hpp" />
     <ClInclude Include="src\shader\Flag.hpp" />
-    <ClInclude Include="src\shader\FrameBuffer.hpp" />
     <ClInclude Include="src\shader\Material.hpp" />
     <ClInclude Include="src\shader\MaterialRegistry.hpp" />
     <ClInclude Include="src\shader\NameSet.hpp" />
