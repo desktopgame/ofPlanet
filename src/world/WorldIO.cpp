@@ -182,7 +182,7 @@ AsyncOperation WorldIO::toObj(const std::string & outputDir, const std::shared_p
 		objOFS.close();
 		// MTL‚ð•Û‘¶
 		std::ofstream mtlOFS(outputPath + ".mtl");
-		if (!objOFS.fail()) {
+		if (!mtlOFS.fail()) {
 			mtlOFS << mb.toString() << std::endl;
 		}
 		mtlOFS.close();
