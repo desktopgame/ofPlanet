@@ -1,18 +1,48 @@
 #pragma once
 #ifndef COMMON_STATEVALUE_HPP
 #define COMMON_STATEVALUE_HPP
+/**
+ * StateValue は、値の変更のたびに直前の値と比較して変更されたかどうかを記憶するクラスです。
+ */
 template<typename T>
 class StateValue {
 public:
 	explicit StateValue(T value);
 	explicit StateValue();
 
+	/**
+	 * 値を上書きします。
+	 * @param newValue
+	 */
 	void set(T newValue);
+
+	/**
+	 * 値を返します。
+	 * @return
+	 */
 	T get() const;
+
+	/**
+	 * 変更されているかどうかをチェックします。
+	 */
 	void detect();
+
+	/**
+	 * 変更されているなら true を返します。
+	 * @return
+	 */
 	bool testIsChanged();
 
+	/**
+	 * 以前の値を返します。
+	 * @return
+	 */
 	T& getOldValue();
+
+	/**
+	 * 現在の値を返します。
+	 * @return
+	 */
 	T& getNewValue();
 private:
 	T oldValue;
