@@ -6,6 +6,9 @@
 #include <glm/glm.hpp>
 
 namespace objb {
+/**
+ * MtlElement は、マテリアル定義です。
+ */
 class MtlElement {
 public:
 	explicit MtlElement(const std::string& name);
@@ -31,6 +34,9 @@ public:
 	std::string _map_Kd;
 	
 };
+/**
+ * MtlBuilder は .mtl フォーマットのモデルを出力するためのヘルパーです。
+ */
 class MtlBuilder {
 public:
 	explicit MtlBuilder();

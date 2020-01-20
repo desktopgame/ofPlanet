@@ -7,10 +7,17 @@
 #include <ostream>
 
 namespace objb {
+/**
+ * IndexMode は、あるインデックスが現在のモデルからの位置であるか、
+ * 全ての頂点からの位置であるかを指定する列挙型です。
+ */
 enum class IndexMode {
 	Local,
 	Global,
 };
+/**
+ * ObjIndex は頂点/UV/法線を参照するための整数です。
+ */
 struct ObjIndex {
 	int index;
 	bool valid;
@@ -20,6 +27,9 @@ struct ObjIndex {
 	explicit ObjIndex(int index);
 	explicit ObjIndex();
 };
+/**
+ * ObjPolygon は頂点一つあたりの情報の一覧です。
+ */
 struct ObjPolygon {
 	ObjIndex vertexIndex;
 	ObjIndex texcoordIndex;
@@ -28,16 +38,59 @@ struct ObjPolygon {
 	explicit ObjPolygon(ObjIndex vertexIndex, ObjIndex texcoordIndex, ObjIndex normalIndex);
 	explicit ObjPolygon(ObjIndex vertexIndex, ObjIndex texcoordIndex);
 };
+/**
+ * ObjFace は頂点の一覧で構成される面です。
+ */
 using ObjFace = std::vector<ObjPolygon>;
 class ObjBuilder;
+/**
+ * ObjModel はモデルです。
+ */
 class ObjModel {
 public:
 	explicit ObjModel(ObjBuilder& builder, const std::string& name);
+	/**
+	 * 頂点が既に追加されているならそれを参照するように destPoly を変更し、
+	 * そうでなければ新規に頂点を追加してそれを参照するように destPoly を変更します。
+	 * @param aVertex
+	 * @param destPoly
+	 * @return
+	 */
 	ObjModel& sharedVertex(const glm::vec3& aVertex, ObjPolygon& destPoly);
+
+	/**
+	 * 頂点を追加します。
+	 * @param vertex
+	 * @return
+	 */
 	ObjModel& vertex(const glm::vec3& vertex);
+
+	/**
+	 * 法線を追加します。
+	 * @param normal
+	 * @return
+	 */
 	ObjModel& normal(const glm::vec3& normal);
+	
+	/**
+	 * UV座標を追加します。
+	 * @param texcoord
+	 * @return
+	 */
 	ObjModel& texcoord(const glm::vec2& texcoord);
+
+	/**
+	 * 面を追加します。
+	 * @param face
+	 * @return
+	 */
 	ObjModel& face(const ObjFace& face);
+
+	/**
+	 * このモデルで使用するマテリアルを指定します。
+	 * @param material
+	 * @return
+	 */
 	ObjModel& useMaterial(const std::string& material);
 	int getUseIndexCount();
 	std::string name;
@@ -50,27 +103,101 @@ private:
 	int useIndexCount;
 	ObjBuilder& builder;
 };
+/**
+ * ObjBuilder は .obj フォーマットのモデルを出力するためのヘルパーです。
+ */
 class ObjBuilder {
 public:
 	explicit ObjBuilder();
 	~ObjBuilder();
+	/**
+	 * 新しいモデルを生成します。
+	 * @param name
+	 * @return
+	 */
 	ObjModel& newModel(const std::string& name);
+	/**
+	 * 事前に必要になるモデルの数がおおよそ分かっているなら、
+	 * 事前にベクトルを伸長させます。
+	 * @param size
+	 */
 	void reserveModels(int size);
+
+	/**
+	 * 読み込むマテリアル定義ファイルを追加します。
+	 * @param _material
+	 * @return
+	 */
 	ObjBuilder& material(const std::string& _material);
+
+	/**
+	 * 特定のモデルに紐付けられないグローバルな頂点を追加します。
+	 * @param vertex
+	 * @return
+	 */
 	ObjBuilder& globalVertex(glm::vec3 vertex);
+
+	/**
+	 * 特定のモデルに紐付けられないグローバルな法線を追加します。
+	 * @param vertex
+	 * @return
+	 */
 	ObjBuilder& globalNormal(glm::vec3 normal);
+
+	/**
+	 * 特定のモデルに紐付けられないグローバルなUVを追加します。
+	 * @param vertex
+	 * @return
+	 */
 	ObjBuilder& globalTexcoord(glm::vec2 texcoord);
-	std::string toString() const;
 	
+	/**
+	 * 現在の obj定義 を文字列で返します。
+	 * @return
+	 */
+	std::string toString() const;
+
+	/**
+	 * 現在の obj定義 をストリームへ直接書き込みます。
+	 * @param stream
+	 */
 	template<typename StreamType>
 	void write(StreamType& stream) const;
 
+	/**
+	 * 指定位置のモデルを返します。
+	 * @param index
+	 * @return
+	 */
 	ObjModel& getModelAt(int index);
+
+	/**
+	 * 全てのモデルの数を返します。
+	 * @return
+	 */
 	int getModelCount() const;
+
+	/**
+	 * グローバルな頂点の数を返します。
+	 * @return
+	 */
 	int getGlobalVertexCount() const;
+	/**
+	 * グローバルな法線の数を返します。
+	 * @return
+	 */
 	int getGlobalNormalCount() const;
+	/**
+	 * グローバルなUVの数を返します。
+	 * @return
+	 */
 	int getGloalTexcoordCount() const;
 
+	/**
+	 * 頂点をカウントして返します。
+	 * 最初は 1 を返します。
+	 * @return
+	 */
 	int countVertex();
 private:
 	template<typename StreamType>
