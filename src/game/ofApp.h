@@ -54,6 +54,8 @@ class ofApp : public ofBaseApp {
         void gotMessage(ofMessage msg);
 
        protected:
+		void cameraAuto();
+		void cameraUser();
         static void bridgeDebugMessage(GLenum source, GLenum type, GLuint eid,
                                        GLenum severity, GLsizei length,
                                        const GLchar* message,

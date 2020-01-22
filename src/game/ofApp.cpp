@@ -120,48 +120,10 @@ void ofApp::update() {
                 return;
         }
         w->update();
-        const int wsx = w->getXSize();
-        const int wsy = w->getYSize();
-        const int wsz = w->getZSize();
-        const float fwsx = static_cast<float>(w->getXSize());
-        const float fwsy = static_cast<float>(w->getYSize());
-        const float fwsz = static_cast<float>(w->getZSize());
-        const float hfwsx = fwsx / 2;
-        const float hfwsz = fwsz / 2;
-        const int OF_KEY_SPACE = 32;
-        // プレイモードかそうでないかでカメラの挙動を変更します。
-        auto myCam = CameraRegistry::get("Block");
         if (this->playMode.get()) {
-                // WASD, 矢印キーによる移動と回転
-                fpsCon.update();
-                if (playMode.testIsChanged()) {
-                        myCam->setPosition(
-                            glm::vec3(wsx / 2, wsy / 2, wsz / 2));
-                } else {
-                        myCam->setPosition(myCam->getPosition() +
-                                           fpsCon.getVelocity());
-                }
-                myCam->setLookAt(myCam->getPosition() +
-                                 fpsCon.getTransform().forward());
-                // 上昇, 下降
-                if (ofGetKeyPressed(OF_KEY_SPACE)) {
-                        myCam->setPosition(myCam->getPosition() +
-                                           glm::vec3(0, 0.4f, 0));
-                } else if (glfw::getKey(glfw::Key_left_shift) ||
-                           glfw::getKey(glfw::Key_z)) {
-                        myCam->setPosition(myCam->getPosition() +
-                                           glm::vec3(0, -0.4f, 0));
-                }
-                myCam->rehash();
+			cameraUser();
         } else {
-                // プレイモードではないので、オブジェクトの周りを周回します。
-                auto cx = std::cos(cameraAngle);
-                auto cz = std::sin(cameraAngle);
-                myCam->setPosition(
-                    glm::vec3(hfwsx + (hfwsx * cx), wsy, hfwsz + (hfwsz * cz)));
-                myCam->setLookAt(glm::vec3(wsx / 2, 0, wsz / 2));
-                myCam->rehash();
-                this->cameraAngle += cameraSpeed.value;
+			cameraAuto();
         }
 }
 
@@ -269,6 +231,57 @@ void ofApp::gotMessage(ofMessage msg) {}
 //--------------------------------------------------------------
 void ofApp::dragEvent(ofDragInfo dragInfo) {}
 // protected
+void ofApp::cameraAuto() {
+	auto w = planet->getWorld();
+	const int wsx = w->getXSize();
+	const int wsy = w->getYSize();
+	const int wsz = w->getZSize();
+	const float fwsx = static_cast<float>(w->getXSize());
+	const float fwsy = static_cast<float>(w->getYSize());
+	const float fwsz = static_cast<float>(w->getZSize());
+	const float hfwsx = fwsx / 2;
+	const float hfwsz = fwsz / 2;
+	auto myCam = CameraRegistry::get("Block");
+	// プレイモードではないので、オブジェクトの周りを周回します。
+	auto cx = std::cos(cameraAngle);
+	auto cz = std::sin(cameraAngle);
+	myCam->setPosition(
+		glm::vec3(hfwsx + (hfwsx * cx), wsy, hfwsz + (hfwsz * cz)));
+	myCam->setLookAt(glm::vec3(wsx / 2, 0, wsz / 2));
+	myCam->rehash();
+	this->cameraAngle += cameraSpeed.value;
+}
+void ofApp::cameraUser() {
+	auto w = planet->getWorld();
+	const int wsx = w->getXSize();
+	const int wsy = w->getYSize();
+	const int wsz = w->getZSize();
+	const int OF_KEY_SPACE = 32;
+	auto myCam = CameraRegistry::get("Block");
+	// WASD, 矢印キーによる移動と回転
+	fpsCon.update();
+	if (playMode.testIsChanged()) {
+		myCam->setPosition(
+			glm::vec3(wsx / 2, wsy / 2, wsz / 2));
+	}
+	else {
+		myCam->setPosition(myCam->getPosition() +
+			fpsCon.getVelocity());
+	}
+	myCam->setLookAt(myCam->getPosition() +
+		fpsCon.getTransform().forward());
+	// 上昇, 下降
+	if (ofGetKeyPressed(OF_KEY_SPACE)) {
+		myCam->setPosition(myCam->getPosition() +
+			glm::vec3(0, 0.4f, 0));
+	}
+	else if (glfw::getKey(glfw::Key_left_shift) ||
+		glfw::getKey(glfw::Key_z)) {
+		myCam->setPosition(myCam->getPosition() +
+			glm::vec3(0, -0.4f, 0));
+	}
+	myCam->rehash();
+}
 void ofApp::bridgeDebugMessage(GLenum source, GLenum type, GLuint eid,
                                GLenum severity, GLsizei length,
                                const GLchar* message, GLvoid* user_param) {
