@@ -111,16 +111,6 @@ void ofApp::setup() {
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        auto w = planet->getWorld();
-        if (w) {
-                auto cam = CameraRegistry::get("Block");
-                cam->setPosition(
-                    glm::vec3(w->getXSize(), w->getYSize(), w->getZSize()));
-                cam->setLookAt(
-                    glm::vec3(w->getXSize() / 2, 0, w->getZSize() / 2));
-                cam->rehash();
-                w->setPlayMode(false);
-        }
 }
 
 //--------------------------------------------------------------
