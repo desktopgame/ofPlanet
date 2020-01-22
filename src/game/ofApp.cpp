@@ -129,6 +129,7 @@ void ofApp::update() {
 
 //--------------------------------------------------------------
 void ofApp::draw() {
+		bool processing = isProcessing();
         // 3D機能を有効にして画面を描画
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_CULL_FACE);
@@ -146,7 +147,7 @@ void ofApp::draw() {
         worldSize.draw();
         biomeNames.draw();
         cameraSpeed.draw();
-        if (ImGui::Button("Generate") && biomeNames.selectedIndex >= 0 &&
+        if (!processing && ImGui::Button("Generate") && biomeNames.selectedIndex >= 0 &&
             !biomes.empty()) {
                 planet->generate(worldSize.value,
                                  biomes.at(biomeNames.selectedIndex));
@@ -165,7 +166,6 @@ void ofApp::draw() {
         int exportMode = exportTypes.mode;
         exportDir.draw();
         // 処理中ならラベルだけを表示
-        bool processing = isProcessing();
         if (processing) {
                 char buf[256];
                 std::memset(buf, '\0', 256);
