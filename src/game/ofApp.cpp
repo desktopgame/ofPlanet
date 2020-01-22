@@ -97,15 +97,6 @@ void ofApp::setup() {
         // シェーダの読み込み
         ShaderRegistry::loadFile("Block", "shaders/block.vert",
                                  "shaders/block.frag");
-        ShaderRegistry::loadFile("Skybox", "shaders/skybox.vert",
-                                 "shaders/skybox.frag");
-        ShaderRegistry::loadFile("Sprite", "shaders/sprite.vert",
-                                 "shaders/sprite.frag");
-        ShaderRegistry::loadFile("Model", "shaders/model.vert",
-                                 "shaders/model.frag");
-        ShaderRegistry::loadFile("FBX", "shaders/fbx.vert", "shaders/fbx.frag");
-        ShaderRegistry::loadFile("AABB", "shaders/aabb.vert",
-                                 "shaders/aabb.frag");
         // 設定ファイルの読み込み
         TextureInfoCollection tic;
         tic.deserialize(File::readAllText("./textures.json"));
