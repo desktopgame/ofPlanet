@@ -71,6 +71,7 @@ ofApp::ofApp()
         }
         biomeNames.rehash();
         exportTypes.labels = std::vector<std::string>{"JSON", "OBJ", "BMP"};
+		splitCount.step = 2;
 		splitCount.min = 0;
 		splitCount.max = 8;
 }
@@ -416,11 +417,12 @@ void ofApp::exportObj(const std::string& outputDir) {
 			char buf[64];
 			std::memset(buf, '\0', 64);
 			std::string cpOutputDir = outputDir;
-			int splitCountN = splitCount.value;
-			auto worlds = planet->getWorld()->split(splitCountN);
+			auto worlds = planet->getWorld()->split(splitCount.value);
+			int splitCountN = static_cast<int>(worlds.size());
 			auto asyncs = std::vector<AsyncOperation>();
 			for (int i = 0; i < splitCountN; i++) {
-				std::sprintf(buf, "_Split%d", i);
+				auto wpart = worlds.at(i);
+				std::sprintf(buf, "_Split_x%dz%d", wpart.offset.x, wpart.offset.z);
 
 				auto newOutputDir = cpOutputDir + std::string(buf);
 				Directory::create(newOutputDir);
@@ -428,7 +430,7 @@ void ofApp::exportObj(const std::string& outputDir) {
 					std::vector<std::string>{newOutputDir, "data.obj"});
 				File::remove(outputFile);
 				File::remove(outputFile + ".mtl");
-				asyncs.emplace_back(WorldIO::toObj(newOutputDir, worlds.at(i)));
+				asyncs.emplace_back(WorldIO::toObj(newOutputDir, wpart.world));
 			}
 			auto aAsync = std::make_shared<Progress>();
 			this->asyncOp = aAsync;
