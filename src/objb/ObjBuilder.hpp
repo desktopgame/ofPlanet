@@ -5,7 +5,6 @@
 #include <ostream>
 #include <string>
 #include <vector>
-#include <future>
 
 namespace objb {
 /**
@@ -96,18 +95,15 @@ class ObjModel {
          */
         ObjModel& useMaterial(const std::string& material);
         int getUseIndexCount();
-		int fastVertexCount() const;
         std::string name;
         std::string material;
         std::vector<glm::vec3> vertices;
         std::vector<glm::vec3> normals;
         std::vector<glm::vec2> texcoords;
         std::vector<ObjFace> faces;
-		static bool checkRange(glm::vec3 first, glm::vec3 last, glm::vec3 value);
 
        private:
-		   int vertexCount;
-		std::future<int> parallelSearchVertices(int level, glm::vec3 aVertex, int modelOffset, int modelCount);
+		int vertexCount;
         int useIndexCount;
         ObjBuilder& builder;
 };
@@ -201,14 +197,6 @@ class ObjBuilder {
          */
         int getGloalTexcoordCount() const;
 
-		/**
-		 * 0番目からmodelIndex番目のモデル(これを含む)までの全てのモデルの
-		 * 頂点数の合計を返します。
-		 * @param modelIndex
-		 * @return
-		 */
-		int computeSumVertices(int modelIndex);
-
         /**
          * 頂点をカウントして返します。
          * 最初は 1 を返します。
@@ -232,7 +220,6 @@ class ObjBuilder {
                                int localNormalIndex) const;
         int resolveTexcoordIndex(std::vector<int>& cache, int modelIndex,
                                  int localTexcoordIndex) const;
-		std::vector<int> sumVerticesTable;
         std::vector<ObjModel*> models;
         std::vector<glm::vec3> vertices;
         std::vector<glm::vec3> normals;
