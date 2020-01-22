@@ -187,6 +187,7 @@
     <ClCompile Include="src\common\MouseScroll.cpp" />
     <ClCompile Include="src\common\Random.cpp" />
     <ClCompile Include="src\common\WASDMove.cpp" />
+    <ClCompile Include="src\csvr\Parser.cpp" />
     <ClCompile Include="src\game\main.cpp" />
     <ClCompile Include="src\game\ofApp.cpp" />
     <ClCompile Include="src\imguiex\CheckBox.cpp" />
@@ -261,6 +262,7 @@
     <ClInclude Include="src\common\Random.hpp" />
     <ClInclude Include="src\common\StateValue.hpp" />
     <ClInclude Include="src\common\WASDMove.hpp" />
+    <ClInclude Include="src\csvr\Parser.hpp" />
     <ClInclude Include="src\game\ofApp.h" />
     <ClInclude Include="src\imguiex\CheckBox.hpp" />
     <ClInclude Include="src\imguiex\Float.hpp" />

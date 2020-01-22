@@ -202,6 +202,7 @@
     <ClCompile Include="src\objb\ObjBuilder.cpp" />
     <ClCompile Include="src\objb\MtlBuilder.cpp" />
     <ClCompile Include="src\imguiex\Integer.cpp" />
+    <ClCompile Include="src\csvr\Parser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -530,6 +531,7 @@
     <ClInclude Include="src\objb\ObjBuilder.hpp" />
     <ClInclude Include="src\objb\MtlBuilder.hpp" />
     <ClInclude Include="src\imguiex\Integer.hpp" />
+    <ClInclude Include="src\csvr\Parser.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="icon.rc" />
