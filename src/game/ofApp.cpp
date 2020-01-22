@@ -448,8 +448,9 @@ void ofApp::exportObj(const std::string& outputDir) {
 							count++;
 						}
 					}
+					aAsync->setValue(static_cast<float>(count) / static_cast<float>(splitCountN));
 				}
-				aAsync->setValue(static_cast<float>(count) / static_cast<float>(splitCountN));
+				aAsync->setValue(1.0f);
 			}).detach();
 		}
 }
