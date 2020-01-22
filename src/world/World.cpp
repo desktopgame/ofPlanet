@@ -18,6 +18,8 @@
 #include "TexturePack.hpp"
 namespace planet {
 
+WorldPart::WorldPart(const std::shared_ptr<World>& world, glm::ivec3 offset) : world(world), offset(offset) {
+}
 std::shared_ptr<World> World::create(const NameSet& nameSet,
                                      const glm::ivec3& size) {
         return create(nameSet, size.x, size.y, size.z);
@@ -290,6 +292,30 @@ glm::ivec3 World::getSize() const { return glm::ivec3(xSize, ySize, zSize); }
 void World::setPlayMode(bool playMode) { this->bIsPlayMode = playMode; }
 bool World::isPlayMode() const { return bIsPlayMode; }
 
+std::vector<WorldPart> World::split(int splitNum) const {
+	int sx = xSize / splitNum;
+	int sz = zSize / splitNum;
+	std::vector<WorldPart > ret;
+	for (int i = 0; i < splitNum; i++) {
+		for (int j = 0; j < splitNum; j++) {
+			auto w = World::create(nameSet, glm::ivec3(sx, ySize, sz));
+			for (int x = (sx*i); x < (sx*i) + sx; x++) {
+				for (int y = 0; y < ySize; y++) {
+					for (int z = (sz*j); z < (sz*j) + sz; z++) {
+						int ix = x - (sx * i);
+						int iz = z - (sz * j);
+						w->setBlockBehavior(glm::ivec3(ix, y, iz), this->getBlockBehavior(x, y, z));
+					}
+				}
+			}
+			float xoffs = (sx * splitNum * 2) - ((sx*i) * 2);
+			float zoffs = ((sz*j) * 2);
+			ret.emplace_back(WorldPart(w, glm::ivec3(xoffs, 0, zoffs)));
+		}
+	}
+	return ret;
+}
+
 NameSet World::spriteNameSet(const NameSet& nameSet) {
         NameSet ns = nameSet;
         ns.shader = "Sprite";
@@ -324,6 +350,7 @@ World::World(const NameSet& nameSet, int xSize, int ySize, int zSize)
       renderer(nameSet),
       isInvalid(true),
       bIsPlayMode(false),
+	  nameSet(nameSet),
       fbo(),
       fboW(-1),
       fboH(-1) {}

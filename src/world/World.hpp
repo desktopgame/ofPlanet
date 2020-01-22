@@ -14,6 +14,15 @@
 #include "BlockTable.hpp"
 namespace planet {
 
+class World;
+class WorldPart {
+public:
+	explicit WorldPart(const std::shared_ptr<World>& world, glm::ivec3 offset);
+
+	std::shared_ptr<World> world;
+	glm::ivec3 offset;
+};
+
 class Entity;
 class BlockBehavior;
 class World : public std::enable_shared_from_this<World> {
@@ -66,6 +75,8 @@ class World : public std::enable_shared_from_this<World> {
         void setPlayMode(bool playMode);
         bool isPlayMode() const;
 
+		std::vector<WorldPart> split(int splitNum) const;
+
        private:
         static NameSet spriteNameSet(const NameSet& nameSet);
         void checkFBO();
@@ -79,6 +90,7 @@ class World : public std::enable_shared_from_this<World> {
         int fboW, fboH;
         BlockRenderer renderer;
         ofFbo fbo;
+		NameSet nameSet;
         bool bIsPlayMode;
 };
 
