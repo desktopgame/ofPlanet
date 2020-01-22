@@ -143,6 +143,9 @@ int lua_setblock(lua_State* state) {
         int x = luaL_checkinteger(state, -4);
         int y = luaL_checkinteger(state, -3);
         int z = luaL_checkinteger(state, -2);
+		x = std::max(0, std::min(x, table->getXSize()-1));
+		y = std::max(0, std::min(y, table->getYSize()-1));
+		z = std::max(0, std::min(z, table->getZSize()-1));
         std::string name = luaL_checkstring(state, -1);
         int id = BlockPack::getCurrent()->getBlockIndexForName(name);
         table->set(x, y, z, BlockPrefab(id, false));
@@ -155,6 +158,9 @@ int lua_getblock(lua_State* state) {
         int x = luaL_checkinteger(state, -3);
         int y = luaL_checkinteger(state, -2);
         int z = luaL_checkinteger(state, -1);
+		x = std::max(0, std::min(x, table->getXSize() - 1));
+		y = std::max(0, std::min(y, table->getYSize() - 1));
+		z = std::max(0, std::min(z, table->getZSize() - 1));
         lua_pushstring(
             state,
             blockpack->getBlock(table->get(x, y, z).id)->getName().c_str());
