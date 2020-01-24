@@ -260,13 +260,13 @@ AsyncOperation WorldIO::toObj(const std::string& outputDir,
                                 }
                         }
                 }
-                // OBJ‚ð•Û‘¶
+                // OBJï¿½ï¿½Û‘ï¿½
                 std::ofstream objOFS(outputPath);
                 if (!objOFS.fail()) {
                         ob.write(objOFS);
                 }
                 objOFS.close();
-                // MTL‚ð•Û‘¶
+                // MTLï¿½ï¿½Û‘ï¿½
                 std::ofstream mtlOFS(outputPath + ".mtl");
                 if (!mtlOFS.fail()) {
                         mtlOFS << mb.toString() << std::endl;
@@ -288,9 +288,6 @@ AsyncOperation WorldIO::toBmp(const std::string& outputPath,
                 int err = SOIL_save_image(outputPath.c_str(),
                                           SOIL_SAVE_TYPE_BMP, w->getXSize(),
                                           w->getZSize(), 4, pixelVec.data());
-                if (err == 0) {
-                        std::cout << "export failed." << std::endl;
-                }
                 ret->setValue(1.0f);
         }).detach();
         return ret;
