@@ -1,12 +1,7 @@
 #pragma once
-
-#include <ofEasyCam.h>
 #include <ofMain.h>
 #include <ofShader.h>
 #include <ofxImGui.h>
-
-#include <glm/glm.hpp>
-#include <memory>
 #include <vector>
 
 #include "../common/FirstPersonController.hpp"
@@ -19,21 +14,12 @@
 #include "../imguiex/InputField.hpp"
 #include "../imguiex/ListBox.hpp"
 #include "../imguiex/RadioButtonGroup.hpp"
-#include "../shader/Plane.hpp"
-#include "../shader/Transform.hpp"
 #include "../shader/Camera.hpp"
-#include "../world/Planet.hpp"
-#include "../world/World.hpp"
 #include "../world/WorldIO.hpp"
-#include "../world/biome/Biome.hpp"
-
-namespace objb {
-class ObjBuilder;
-class MtlBuilder;
-}  // namespace objb
 
 namespace planet {
-
+class Planet;
+class Biome;
 class ofApp : public ofBaseApp {
        public:
         ofApp();

@@ -1,30 +1,13 @@
 #include "ofApp.h"
-
-#include <ofImage.h>
-#include <soil.h>
-
-#include <algorithm>
-#include <cassert>
-#include <cstring>
-#include <ctime>
-#include <sstream>
-#include <string>
-#include <future>
-
 #include "../common/GLM.hpp"
 #include "../common/glfw.hpp"
 #include "../io/Directory.hpp"
 #include "../io/File.hpp"
 #include "../io/Path.hpp"
-#include "../objb/MtlBuilder.hpp"
-#include "../objb/ObjBuilder.hpp"
-#include "../shader/Camera.hpp"
-#include "../shader/Texture.hpp"
-#include "../text/Strings.hpp"
-#include "../world/Block.hpp"
+#include "../world/Planet.hpp"
+#include "../world/World.hpp"
 #include "../world/BlockPack.hpp"
 #include "../world/TexturePack.hpp"
-#include "../world/WorldIO.hpp"
 #include "../world/biome/ScriptBiome.hpp"
 namespace planet {
 
