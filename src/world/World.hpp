@@ -8,7 +8,6 @@
 #include <array>
 #include <memory>
 
-#include "BlockColliderType.hpp"
 #include "BlockRenderer.hpp"
 #include "BlockTable.hpp"
 namespace planet {

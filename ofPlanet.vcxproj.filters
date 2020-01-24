@@ -352,9 +352,6 @@
     <ClInclude Include="src\world\Block.hpp">
       <Filter>src\world</Filter>
     </ClInclude>
-    <ClInclude Include="src\world\BlockColliderType.hpp">
-      <Filter>src\world</Filter>
-    </ClInclude>
     <ClInclude Include="src\world\BlockInfoCollection.hpp">
       <Filter>src\world</Filter>
     </ClInclude>

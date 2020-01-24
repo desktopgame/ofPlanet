@@ -285,7 +285,6 @@
     <ClInclude Include="src\world\biome\Biome.hpp" />
     <ClInclude Include="src\world\biome\ScriptBiome.hpp" />
     <ClInclude Include="src\world\Block.hpp" />
-    <ClInclude Include="src\world\BlockColliderType.hpp" />
     <ClInclude Include="src\world\BlockInfoCollection.hpp" />
     <ClInclude Include="src\world\BlockPack.hpp" />
     <ClInclude Include="src\world\BlockRenderer.hpp" />
