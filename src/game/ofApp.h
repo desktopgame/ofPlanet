@@ -41,6 +41,8 @@ class ofApp : public ofBaseApp {
         void gotMessage(ofMessage msg);
 
        protected:
+		void loadBiomes();
+		void loadShader();
 		void cameraAuto();
 		void cameraUser();
         static void bridgeDebugMessage(GLenum source, GLenum type, GLuint eid,

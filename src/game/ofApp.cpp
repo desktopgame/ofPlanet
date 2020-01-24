@@ -42,14 +42,6 @@ ofApp::ofApp()
         fpsCon.setMoveSpeed(1.0f);
         fpsCon.setMode(FirstPersonController::Mode::Key);
         gui.setup();
-        auto files = Directory::files("./data/script", false);
-        for (int i = 0; i < static_cast<int>(files.size()); i++) {
-                auto file = files.at(i);
-                biomes.emplace_back(
-                    std::make_shared<planet::ScriptBiome>(file));
-                biomeNames.items.emplace_back(file);
-        }
-        biomeNames.rehash();
         exportTypes.labels = std::vector<std::string>{"JSON", "OBJ", "BMP"};
 		splitCount.step = 2;
 		splitCount.min = 0;
@@ -65,7 +57,8 @@ void ofApp::setup() {
             reinterpret_cast<GLDEBUGPROC>(ofApp::bridgeDebugMessage), NULL);
         glEnable(GL_DEBUG_OUTPUT);
 #endif
-		shader.load("shaders/block.vert", "shaders/block.frag");
+		loadBiomes();
+		loadShader();
 		camera.setScreenSize(glm::vec2(800, 600));
         // 設定ファイルの読み込み
         TextureInfoCollection tic;
@@ -119,11 +112,17 @@ void ofApp::draw() {
         worldSize.draw();
         biomeNames.draw();
         cameraSpeed.draw();
-        if (!processing && ImGui::Button("Generate") && biomeNames.selectedIndex >= 0 &&
-            !biomes.empty()) {
+        if (!processing &&
+			!biomes.empty() &&
+			biomeNames.selectedIndex >= 0 &&
+			ImGui::Button("Generate")) {
                 planet->generate(worldSize.value,
                                  biomes.at(biomeNames.selectedIndex));
         }
+		if (!processing && ImGui::Button("Reload")) {
+			loadShader();
+			loadBiomes();
+		}
         ImGui::Checkbox("PlayMode", &playMode.getNewValue());
         playMode.detect();
         ImGui::End();
@@ -131,7 +130,9 @@ void ofApp::draw() {
 		ImGui::SetNextWindowPos(ImVec2(ofGetWidth() - 250, 0), ImGuiSetCond_Once);
 		ImGui::SetNextWindowSize(ImVec2(250, 180), ImGuiSetCond_Once);
         ImGui::Begin("Parameter");
-        biomes.at(biomeNames.selectedIndex)->onGUI();
+		if (!biomes.empty()) {
+			biomes.at(biomeNames.selectedIndex)->onGUI();
+		}
         ImGui::End();
         // --ExporterWindowの表示
 		ImGui::SetNextWindowPos(ImVec2(0, ofGetHeight()- 180), ImGuiSetCond_Once);
@@ -206,6 +207,26 @@ void ofApp::gotMessage(ofMessage msg) {}
 //--------------------------------------------------------------
 void ofApp::dragEvent(ofDragInfo dragInfo) {}
 // protected
+void ofApp::loadBiomes() {
+	biomeNames.items.clear();
+	biomes.clear();
+	auto files = Directory::files("./data/script", false);
+	for (int i = 0; i < static_cast<int>(files.size()); i++) {
+		auto file = files.at(i);
+		biomes.emplace_back(
+			std::make_shared<planet::ScriptBiome>(file));
+		biomeNames.items.emplace_back(file);
+	}
+	biomeNames.rehash();
+}
+
+void ofApp::loadShader() {
+	if (shader.isLoaded()) {
+		shader.unload();
+	}
+	shader.load("shaders/block.vert", "shaders/block.frag");
+}
+
 void ofApp::cameraAuto() {
 	auto w = planet->getWorld();
 	const int wsx = w->getXSize();
