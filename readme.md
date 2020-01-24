@@ -194,7 +194,8 @@ LuaでやるべきことはC++から受け取ったノイズ(実数型)を使用
 必要に応じて任意の構造物などを生成することです。  
 
 #### getCallbackMode -> mode
-スクリプトで記述するアルゴリズムに応じてコールバックの種類を決めます。  
+スクリプトで記述するアルゴリズムに応じてコールバックの種類を決めます。    
+最初に一度だけ呼び出されます。
 * "default"
     * 全てのコールバックを呼び出します。
 * "ignore"
@@ -240,6 +241,59 @@ nameが空文字列""のとき、指定位置のブロックを削除します
 
 #### getzsize() -> zsize
 ワールドのZ方向のサイズを返します
+
+#### newstruct(name, format)
+指定の形状の構造物を文字列nameに紐づけて登録します。  
+以下に例を示します。
+
+````
+function getCallbackMode()
+    newstruct("AAA",[[
+,,
+,Wood,
+,,
+
+,,
+,Wood,
+,,
+
+,,
+,Wood,
+,,
+
+,,
+,Wood,
+,,
+
+Leaf,Leaf,Leaf
+Leaf,Leaf,Leaf
+Leaf,Leaf,Leaf
+
+Leaf,Leaf,Leaf
+Leaf,Leaf,Leaf
+Leaf,Leaf,Leaf
+
+Leaf,Leaf,Leaf
+Leaf,Leaf,Leaf
+Leaf,Leaf,Leaf
+]]) 
+    return "default"
+-- return "ignore"
+end
+````
+
+※木を構造物として登録するサンプル  
+１つの文字列の中に複数のCSVを格納するようなイメージです。空行がCSV間の区切りとなります。  
+下に定義されたものほど実際に構造物を生成したときに上の方(+Y)に生成されます。  
+また、指定されるブロック名は `blocks.json` の `reference` と同じ名前である必要があります。  
+なにもない場合は `,,` のように隙間をあけずにカンマを打てばOKです。
+
+#### genstruct(name)
+まだ実験段階です。  
+地上に指定の名前の構造物を生成します。
+
+#### expandstruct(x, y, z, name)
+指定の座標に構造物を配置します。
 
 ### その他
 
