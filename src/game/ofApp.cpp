@@ -59,15 +59,8 @@ void ofApp::setup() {
 #endif
 		loadBiomes();
 		loadShader();
+		loadJson();
 		camera.setScreenSize(glm::vec2(800, 600));
-        // Ý’èƒtƒ@ƒCƒ‹‚Ì“Ç‚Ýž‚Ý
-        TextureInfoCollection tic;
-        tic.deserialize(File::readAllText("./textures.json"));
-        BlockInfoCollection bic;
-        bic.deserialize(File::readAllText("./blocks.json"));
-        BlockPack::load(bic);
-        TexturePack::load(tic);
-        TexturePack::getCurrent()->resolve();
         // •`‰æÝ’è
         glEnable(GL_CULL_FACE);
         glCullFace(GL_BACK);
@@ -169,6 +162,16 @@ void ofApp::loadShader() {
 	shader.load("shaders/block.vert", "shaders/block.frag");
 }
 
+void ofApp::loadJson() {
+	TextureInfoCollection tic;
+	tic.deserialize(File::readAllText("./textures.json"));
+	BlockInfoCollection bic;
+	bic.deserialize(File::readAllText("./blocks.json"));
+	BlockPack::load(bic)->select();
+	TexturePack::load(tic)->select();
+	TexturePack::getCurrent()->resolve();
+}
+
 void ofApp::drawSettingsWindow() {
 	bool processing = isProcessing();
 	ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiSetCond_Once);
@@ -187,6 +190,7 @@ void ofApp::drawSettingsWindow() {
 	if (!processing && ImGui::Button("Reload")) {
 		loadShader();
 		loadBiomes();
+		loadJson();
 	}
 	ImGui::Checkbox("PlayMode", &playMode.getNewValue());
 	playMode.detect();

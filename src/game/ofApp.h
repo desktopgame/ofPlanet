@@ -43,6 +43,7 @@ class ofApp : public ofBaseApp {
        protected:
 		void loadBiomes();
 		void loadShader();
+		void loadJson();
 		void drawSettingsWindow();
 		void drawParameterWindow();
 		void drawExporterWindow();
