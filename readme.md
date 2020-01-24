@@ -353,3 +353,10 @@ Luaには実数型と整数型の区別がありません。
 * [kazuho/picojson](https://github.com/kazuho/picojson)
 * [mapbox/variant](https://github.com/mapbox/variant)
 * [Reputeless/PerlinNoise](https://github.com/Reputeless/PerlinNoise)
+
+# アセット
+* [Stone Texture](https://www.deviantart.com/akinuri/art/Stone-Textures-244325727)
+* [Sand Texture](https://www.deviantart.com/akinuri/art/Sand-Textures-244325158)
+* [Grass Texture](https://www.deviantart.com/akinuri/art/Grass-Textures-218366439)
+* [RPG Maker Tiles](https://www.deviantart.com/ayene-chan/art/RPG-Maker-Tiles-255998841)
+* [RPG-Maker-Tiles-II](https://www.deviantart.com/ayene-chan/art/RPG-Maker-Tiles-II-261010059)
