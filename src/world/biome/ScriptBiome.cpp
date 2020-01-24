@@ -1,18 +1,22 @@
 #include "ScriptBiome.hpp"
 
+#include "../MultiBlock.hpp"
 #include "../Block.hpp"
 #include "../BlockPack.hpp"
+#include "../csvr/Parser.hpp"
 #include "../luaex/luaimpl.hpp"
 
 namespace planet {
 using namespace luaex;
 ScriptBiome::ScriptBiome(const std::string& filename)
-    : lua(), ctx(nullptr), table(nullptr) {
+    : lua(), ctx(nullptr), table(nullptr), multiBlockMap() {
         lua.define("setblock", lua_setblock);
         lua.define("getblock", lua_getblock);
         lua.define("getxsize", lua_getxsize);
         lua.define("getysize", lua_getysize);
         lua.define("getzsize", lua_getzsize);
+		lua.define("newstruct", lua_newstruct);
+		lua.define("genstruct", lua_genstruct);
         lua.loadFile(filename);
         this->globals = lua.getAllVariables();
 }
@@ -65,13 +69,16 @@ void ScriptBiome::onGUI() {
 
 bool ScriptBiome::isUseCallbacks() { return this->mode == "default"; }
 
-void ScriptBiome::onBeginGenerate(BlockTable& blockTable) {
+void ScriptBiome::onBeginGenerateWorld(BlockTable& blockTable) {
         this->ctx = Context::create();
         this->table = std::make_shared<BlockTable>(blockTable.getXSize(),
                                                    blockTable.getYSize(),
                                                    blockTable.getZSize());
+		this->multiBlockMap = std::make_shared<MultiBlockMap>();
         ctx->select();
         ctx->put("TABLE", table);
+		ctx->put("MB", multiBlockMap);
+		ctx->put("HM", heightMap);
         // コールバックモードを決める
         std::vector<Variant> modeV;
         lua.call("getCallbackMode", std::vector<Object>{},
@@ -82,7 +89,7 @@ void ScriptBiome::onBeginGenerate(BlockTable& blockTable) {
         }
 }
 
-void ScriptBiome::onEndGenerate(BlockTable& blockTable) {
+void ScriptBiome::onEndGenerateWorld(BlockTable& blockTable) {
         lua.call("onPostGenerate", std::vector<Object>{}, std::vector<Type>{},
                  std::vector<Variant>{});
         //コンテキストを削除
@@ -97,6 +104,10 @@ void ScriptBiome::onEndGenerate(BlockTable& blockTable) {
                         }
                 }
         }
+}
+
+void ScriptBiome::onEndGenerateTerrain() {
+	ctx->put("HM", heightMap);
 }
 
 float ScriptBiome::onFixHeight(float y) {
@@ -183,5 +194,82 @@ int lua_getzsize(lua_State* state) {
             Context::current()->get("TABLE"));
         lua_pushinteger(state, table->getZSize());
         return 1;
+}
+int lua_newstruct(lua_State* state) {
+	auto blockpack = BlockPack::getCurrent();
+	std::string name = luaL_checkstring(state, -2);
+	std::string body = luaL_checkstring(state, -1);
+	auto pack = BlockPack::getCurrent();
+	auto table = linb::any_cast<std::shared_ptr<BlockTable> >(Context::current()->get("TABLE"));
+	auto mbmap = linb::any_cast<std::shared_ptr<MultiBlockMap> >(Context::current()->get("MB"));
+	MultiBlock mb;
+	// CSVR形式を解析
+	csvr::Parser parser;
+	parser.parse(body);
+	for (int i = 0; i < parser.getTableCount(); i++) {
+		auto& table = parser.getTableAt(i);
+		MultiBlockLayer mbLayer;
+		for (int j = 0; j < static_cast<int>(table.size()); j++) {
+			auto& line = table.at(j);
+			MultiBlockLine mbLine;
+			for (int k = 0; k < static_cast<int>(line.size()); k++) {
+				auto& col = line.at(k);
+				mbLine.emplace_back(col);
+			}
+			mbLayer.emplace_back(mbLine);
+		}
+		mb.emplace_back(mbLayer);
+	}
+	mbmap->insert_or_assign(name, mb);
+	return 0;
+}
+int lua_genstruct(lua_State* state) {
+	using HeightMapT = std::unordered_map<glm::ivec2, int, hidden::Vec2HashFunc, hidden::Vec2HashFunc>;
+	auto table = linb::any_cast<std::shared_ptr<BlockTable>>(Context::current()->get("TABLE"));
+	auto mbmap = linb::any_cast<std::shared_ptr<MultiBlockMap>>(Context::current()->get("MB"));
+	auto hmap = linb::any_cast<HeightMapT>(Context::current()->get("HM"));
+	auto terrain = table->getTerrain();
+	// 構造名を取得する
+	std::string name = luaL_checkstring(state, -1);
+	auto& mb = mbmap->at(name);
+	glm::ivec3 mbSize;
+	multiBlock3DSize(mb, mbSize);
+
+	int genLimit = 5;
+	int testCount = 30000;
+	Random random;
+
+	int success = 0;
+	for (int n = 0; n < testCount; n++) {
+		int x = static_cast<int>(
+			random.generate(0, table->getXSize() - 1));
+		int z = static_cast<int>(
+			random.generate(0, table->getZSize() - 1));
+		int y = hmap[glm::ivec2(x, z)];
+		bool fail = false;
+		for (int l = 0; l < mbSize.x; l++) {
+			for (int p = 0; p < mbSize.z; p++) {
+				glm::ivec2 key((x + p, z + l));
+				if (!hmap.count(key) ||
+					y != hmap[key]) {
+					fail = true;
+					break;
+				}
+			}
+			if (fail) {
+				break;
+			}
+		}
+		if (!fail) {
+			success++;
+			table->expand(x + 1, y + 1, z + 1, mb);
+		}
+		if (success >= genLimit) {
+			break;
+		}
+	}
+
+//	table->expand(mb);
+	return 0;
 }
 }  // namespace planet

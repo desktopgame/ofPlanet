@@ -3,8 +3,10 @@
 #define WORLD_BIOME_SCRIPTBIOME_HPP
 #include "../../luaex/luaex.hpp"
 #include "BasicBiome.hpp"
+#include "MultiBlock.hpp"
 
 namespace planet {
+using MultiBlockMap = std::unordered_map<std::string, MultiBlock>;
 class ScriptBiome : public BasicBiome {
        public:
         explicit ScriptBiome(const std::string& filename);
@@ -12,8 +14,9 @@ class ScriptBiome : public BasicBiome {
 
        protected:
         virtual bool isUseCallbacks() override;
-        virtual void onBeginGenerate(BlockTable& blockTable) override;
-        virtual void onEndGenerate(BlockTable& blockTable) override;
+        virtual void onBeginGenerateWorld(BlockTable& blockTable) override;
+        virtual void onEndGenerateWorld(BlockTable& blockTable) override;
+		virtual void onEndGenerateTerrain() override;
         virtual float onFixHeight(float y) override;
         virtual void onGenerateTerrain(BlockTable& blockTable, int x, int y,
                                        int z) override;
@@ -28,6 +31,7 @@ class ScriptBiome : public BasicBiome {
         std::string mode;
         std::shared_ptr<luaex::Context> ctx;
         std::shared_ptr<BlockTable> table;
+		std::shared_ptr<MultiBlockMap> multiBlockMap;
         std::unordered_map<std::string, luaex::Object> globals;
 };
 
@@ -36,5 +40,7 @@ int lua_getblock(struct lua_State* state);
 int lua_getxsize(struct lua_State* state);
 int lua_getysize(struct lua_State* state);
 int lua_getzsize(struct lua_State* state);
+int lua_newstruct(struct lua_State* state);
+int lua_genstruct(struct lua_State* state);
 }  // namespace planet
 #endif
