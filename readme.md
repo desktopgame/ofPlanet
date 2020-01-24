@@ -355,6 +355,8 @@ Luaには実数型と整数型の区別がありません。
 * [Reputeless/PerlinNoise](https://github.com/Reputeless/PerlinNoise)
 
 # アセット
+このアプリケーションには以下のアセットが含まれています。  
+(使わなくても動作は可能です。)
 * [Stone Texture](https://www.deviantart.com/akinuri/art/Stone-Textures-244325727)
 * [Sand Texture](https://www.deviantart.com/akinuri/art/Sand-Textures-244325158)
 * [Grass Texture](https://www.deviantart.com/akinuri/art/Grass-Textures-218366439)
