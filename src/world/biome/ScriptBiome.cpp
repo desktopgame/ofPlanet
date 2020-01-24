@@ -82,7 +82,7 @@ void ScriptBiome::onBeginGenerateWorld(BlockTable& blockTable) {
 		ctx->put("HM", heightMap);
         // コールバックモードを決める
         std::vector<Variant> modeV;
-        lua.call("getCallbackMode", std::vector<Object>{},
+        lua.call("start", std::vector<Object>{},
                  std::vector<Type>{T_STRING}, modeV);
         this->mode = modeV.at(0).string;
         if (this->mode != "default" && this->mode != "ignore") {

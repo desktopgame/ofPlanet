@@ -47,7 +47,7 @@ fillBlockDeep = "Stone"
 fillBlockShallow = "Dirt"
 iBaseline = 0
 
-function getCallbackMode()
+function start()
     return "default"
 -- return "ignore"
 end
@@ -193,9 +193,12 @@ your_dir/of_v0.10.1_vs2017_release/apps/myApps/ofPlanet
 LuaでやるべきことはC++から受け取ったノイズ(実数型)を使用して地形を生成することと、  
 必要に応じて任意の構造物などを生成することです。  
 
-#### getCallbackMode -> mode
-スクリプトで記述するアルゴリズムに応じてコールバックの種類を決めます。    
+#### start -> mode
+スクリプトの初期化処理をここに記述します。      
 最初に一度だけ呼び出されます。
+
+また、戻り値として次のどちらかを返す必要があります。
+初期化処理のあと、どのコールバックを呼び出すべきかを指定します。
 * "default"
     * 全てのコールバックを呼び出します。
 * "ignore"
@@ -247,7 +250,7 @@ nameが空文字列""のとき、指定位置のブロックを削除します
 以下に例を示します。
 
 ````
-function getCallbackMode()
+function start()
     newstruct("AAA",[[
 ,,
 ,Wood,
