@@ -43,9 +43,6 @@
     <ClCompile Include="src\imguiex\RadioButtonGroup.cpp">
       <Filter>src\imguiex</Filter>
     </ClCompile>
-    <ClCompile Include="src\io\CommandReader.cpp">
-      <Filter>src\io</Filter>
-    </ClCompile>
     <ClCompile Include="src\io\Directory.cpp">
       <Filter>src\io</Filter>
     </ClCompile>
@@ -294,9 +291,6 @@
     </ClInclude>
     <ClInclude Include="src\imguiex\RadioButtonGroup.hpp">
       <Filter>src\imguiex</Filter>
-    </ClInclude>
-    <ClInclude Include="src\io\CommandReader.hpp">
-      <Filter>src\io</Filter>
     </ClInclude>
     <ClInclude Include="src\io\Directory.hpp">
       <Filter>src\io</Filter>

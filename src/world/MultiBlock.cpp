@@ -4,7 +4,6 @@
 #include <sstream>
 #include <stdexcept>
 
-#include "../io/CommandReader.hpp"
 #include "../io/File.hpp"
 #include "../text/Strings.hpp"
 #include "Block.hpp"
