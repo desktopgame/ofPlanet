@@ -26,6 +26,12 @@ void Terrain::addCell(const Cell& cell) {
 }
 Cell Terrain::getCellAt(int index) const { return cells.at(index); }
 int Terrain::getCellCount() const { return static_cast<int>(cells.size()); }
+Cell Terrain::findCell(int x, int z) const {
+	auto iter = std::find_if(
+		cells.begin(), cells.end(),
+		[x, z](const Cell& e) -> bool { return e.x == x && e.z == z; });
+	return *iter;
+}
 void Terrain::addPocket(const Pocket& pocket) { pockets.emplace_back(pocket); }
 Pocket Terrain::getPocketAt(int index) const { return pockets.at(index); }
 int Terrain::getPocketCount() const { return static_cast<int>(pockets.size()); }
@@ -56,11 +62,5 @@ std::vector<unsigned char> Terrain::toPixelVec() const {
                 std::cout << std::endl;
         }
         return v;
-}
-Cell Terrain::findCell(int x, int z) const {
-        auto iter = std::find_if(
-            cells.begin(), cells.end(),
-            [x, z](const Cell& e) -> bool { return e.x == x && e.z == z; });
-        return *iter;
 }
 }  // namespace planet

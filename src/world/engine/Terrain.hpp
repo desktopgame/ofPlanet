@@ -15,6 +15,7 @@ class Terrain {
         void addCell(const Cell& cell);
         Cell getCellAt(int index) const;
         int getCellCount() const;
+		Cell findCell(int x, int z) const;
 
         void addPocket(const Pocket& pocket);
         Pocket getPocketAt(int index) const;
@@ -26,7 +27,6 @@ class Terrain {
         std::vector<unsigned char> toPixelVec() const;
 
        private:
-        Cell findCell(int x, int z) const;
         glm::ivec3 vmin, vmax;
         std::vector<Cell> cells;
         std::vector<Pocket> pockets;
