@@ -84,7 +84,7 @@ void ofApp::setup() {
         glEnable(GL_DEBUG_OUTPUT);
 #endif
         // カメラ, マテリアルの設定
-        CameraRegistry::setDefaultScreenSize(glm::vec2(1280, 720), false);
+        CameraRegistry::setDefaultScreenSize(glm::vec2(800, 600), false);
         auto cam = CameraRegistry::create("Block");
         auto mat = MaterialRegistry::create("Block");
         mat->ambient = glm::vec4(0.5f, 0.5f, 0.5f, 1.0f);
@@ -141,6 +141,8 @@ void ofApp::draw() {
         gui.begin();
         ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0, 1, 0, 1));
         // --SettingWindowの表示
+		ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiSetCond_Once);
+		ImGui::SetNextWindowSize(ImVec2(200, 180), ImGuiSetCond_Once);
         ImGui::Begin("Setting");
         worldSize.draw();
         biomeNames.draw();
@@ -154,10 +156,14 @@ void ofApp::draw() {
         playMode.detect();
         ImGui::End();
         // --ParameterWindowの表示
+		ImGui::SetNextWindowPos(ImVec2(ofGetWidth() - 250, 0), ImGuiSetCond_Once);
+		ImGui::SetNextWindowSize(ImVec2(250, 180), ImGuiSetCond_Once);
         ImGui::Begin("Parameter");
         biomes.at(biomeNames.selectedIndex)->onGUI();
         ImGui::End();
         // --ExporterWindowの表示
+		ImGui::SetNextWindowPos(ImVec2(0, ofGetHeight()- 180), ImGuiSetCond_Once);
+		ImGui::SetNextWindowSize(ImVec2(0, 180), ImGuiSetCond_Once);
         ImGui::Begin("Exporter");
         exportTypes.draw();
 		splitCount.draw();
@@ -386,6 +392,7 @@ void ofApp::bridgeDebugMessage(GLenum source, GLenum type, GLuint eid,
                 ss << "message(" << message << ")";
                 std::cout << ss.str() << std::endl;
         }
+        
 }
 
 void ofApp::exportJson(const std::string& outputFile) {

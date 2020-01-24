@@ -16,9 +16,7 @@
 //========================================================================
 int main() {
         ofGLFWWindowSettings settings;
-        settings.glVersionMajor = 4;
-        settings.glVersionMinor = 4;
-        settings.setSize(1280, 720);
+        settings.setSize(800, 600);
         settings.windowMode = ofWindowMode::OF_WINDOW;
         settings.title = "ofPlanet";
 #ifdef _DEBUG
