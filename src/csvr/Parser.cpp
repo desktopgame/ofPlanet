@@ -32,6 +32,7 @@ int Parser::getTableCount() const {
 int Parser::parse(int start, const std::string & source, Table & table) {
 	int len = static_cast<int>(source.size());
 	int read = 0;
+	int columns = 0;
 	Line line;
 	std::stringstream sbuf;
 	for (int i = start; i < len; i++) {
@@ -41,11 +42,12 @@ int Parser::parse(int start, const std::string & source, Table & table) {
 			line.emplace_back(sbuf.str());
 			sbuf.str("");
 			sbuf.clear(std::stringstream::goodbit);
+			columns++;
 		}
 		else if (c == newline) {
 			if (i == 0) { continue; }
 			auto str = sbuf.str();
-			if (isNullOrEmpty(str)) {
+			if (isNullOrEmpty(str) && columns == 0) {
 				return read;
 			}
 			else {
@@ -55,6 +57,7 @@ int Parser::parse(int start, const std::string & source, Table & table) {
 				table.emplace_back(line);
 				line.clear();
 			}
+			columns = 0;
 		}
 		else {
 			sbuf << c;
