@@ -4,26 +4,20 @@
 #include <memory>
 #include <unordered_map>
 
-#include "BlockBehavior.hpp"
 #include "TextureSet.hpp"
 namespace planet {
 
+class World;
 class BlockRenderer;
-class Block : public BlockBehavior {
+class Block {
        public:
         explicit Block(const std::string& name,
                        const std::string& textureReference, int id);
         virtual ~Block() = default;
 
-        virtual std::shared_ptr<BlockBehavior> newBehavior();
-        virtual void update(std::shared_ptr<World> world, int x, int y,
-                            int z) override;
-        virtual void batch(std::shared_ptr<World> world,
+        void batch(std::shared_ptr<World> world,
                            BlockRenderer& renderer, int x, int y,
-                           int z) override;
-        virtual BlockColliderType getColliderType(std::shared_ptr<World> world,
-                                                  int x, int y,
-                                                  int z) const override;
+                           int z);
 
         TextureSet getTextureSet() const;
 

@@ -56,38 +56,36 @@ AsyncOperation WorldIO::toJson(const std::string& outputPath,
                                         std::shared_ptr<Block> null = nullptr;
                                         auto blockXP =
                                             overXP ? null
-                                                   : world->getBlockBehavior(
+                                                   : world->getBlock(
                                                          x + 1, y, z);
                                         auto blockXN =
                                             overXN ? null
-                                                   : world->getBlockBehavior(
+                                                   : world->getBlock(
                                                          x - 1, y, z);
                                         auto blockYP =
                                             overYP ? null
-                                                   : world->getBlockBehavior(
+                                                   : world->getBlock(
                                                          x, y + 1, z);
                                         auto blockYN =
                                             overYN ? null
-                                                   : world->getBlockBehavior(
+                                                   : world->getBlock(
                                                          x, y - 1, z);
                                         auto blockZP =
                                             overZP ? null
-                                                   : world->getBlockBehavior(
+                                                   : world->getBlock(
                                                          x, y, z + 1);
                                         auto blockZN =
                                             overZN ? null
-                                                   : world->getBlockBehavior(
+                                                   : world->getBlock(
                                                          x, y, z - 1);
                                         auto blockB =
-                                            world->getBlockBehavior(x, y, z);
+                                            world->getBlock(x, y, z);
                                         if (blockB == nullptr) {
                                                 ret->setValue(sumf(x, y, z) /
                                                               all);
                                                 continue;
                                         }
-                                        auto block =
-                                            std::static_pointer_cast<Block>(
-                                                blockB);
+                                        auto block =blockB;
                                         if (blockXP && blockXN && blockYP &&
                                             blockYN && blockZP && blockZN) {
                                         } else {
@@ -158,7 +156,7 @@ AsyncOperation WorldIO::toObj(const std::string& outputDir,
                         for (int y = 0; y < ysize; y++) {
                                 for (int z = 0; z < zsize; z++) {
                                         auto block =
-                                            w->getBlockBehavior(x, y, z);
+                                            w->getBlock(x, y, z);
                                         if (!block) {
                                                 ret->setValue(sumf(x, y, z) /
                                                               all);
@@ -174,32 +172,32 @@ AsyncOperation WorldIO::toObj(const std::string& outputDir,
                                         bool hasBlockXP =
                                             overXP
                                                 ? false
-                                                : w->getBlockBehavior(
+                                                : w->getBlock(
                                                       x + 1, y, z) != nullptr;
                                         bool hasBlockYP =
                                             overYP
                                                 ? false
-                                                : w->getBlockBehavior(
+                                                : w->getBlock(
                                                       x, y + 1, z) != nullptr;
                                         bool hasBlockZP =
                                             overZP
                                                 ? false
-                                                : w->getBlockBehavior(
+                                                : w->getBlock(
                                                       x, y, z + 1) != nullptr;
                                         bool hasBlockXN =
                                             overXN
                                                 ? false
-                                                : w->getBlockBehavior(
+                                                : w->getBlock(
                                                       x - 1, y, z) != nullptr;
                                         bool hasBlockYN =
                                             overYN
                                                 ? false
-                                                : w->getBlockBehavior(
+                                                : w->getBlock(
                                                       x, y - 1, z) != nullptr;
                                         bool hasBlockZN =
                                             overZN
                                                 ? false
-                                                : w->getBlockBehavior(
+                                                : w->getBlock(
                                                       x, y, z - 1) != nullptr;
                                         bool hiddenBlock =
                                             hasBlockXP && hasBlockYP &&
@@ -310,9 +308,8 @@ void WorldIO::genTopPlane(const std::string& outputDir,
         char buf[256];
         std::memset(buf, '\0', 256);
         std::sprintf(buf, "plane%d%d%d_Top", objPos.x, objPos.y, objPos.z);
-        auto blockBeh =
-            world->getBlockBehavior(worldPos.x, worldPos.y, worldPos.z);
-        auto block = std::static_pointer_cast<Block>(blockBeh);
+        auto block =
+            world->getBlock(worldPos.x, worldPos.y, worldPos.z);
         auto texPath = block->getTextureSet().getTopImage()->getPath();
         auto texName = block->getTextureReference() + std::string("_Top");
         auto texFileName = Path::getFileNameFromPath(
@@ -370,9 +367,8 @@ void WorldIO::genBottomPlane(const std::string& outputDir,
         char buf[256];
         std::memset(buf, '\0', 256);
         std::sprintf(buf, "plane%d%d%d_Bottom", objPos.x, objPos.y, objPos.z);
-        auto blockBeh =
-            world->getBlockBehavior(worldPos.x, worldPos.y, worldPos.z);
-        auto block = std::static_pointer_cast<Block>(blockBeh);
+        auto block =
+            world->getBlock(worldPos.x, worldPos.y, worldPos.z);
         auto texPath = block->getTextureSet().getBottomImage()->getPath();
         auto texName = block->getTextureReference() + std::string("_Bottom");
         auto texFileName = Path::getFileNameFromPath(
@@ -430,9 +426,8 @@ void WorldIO::genLeftPlane(const std::string& outputDir,
         char buf[256];
         std::memset(buf, '\0', 256);
         std::sprintf(buf, "plane%d%d%d_Left", objPos.x, objPos.y, objPos.z);
-        auto blockBeh =
-            world->getBlockBehavior(worldPos.x, worldPos.y, worldPos.z);
-        auto block = std::static_pointer_cast<Block>(blockBeh);
+        auto block =
+            world->getBlock(worldPos.x, worldPos.y, worldPos.z);
         auto texPath = block->getTextureSet().getLeftImage()->getPath();
         auto texName = block->getTextureReference() + std::string("_Left");
         auto texFileName = Path::getFileNameFromPath(
@@ -490,9 +485,8 @@ void WorldIO::genRightPlane(const std::string& outputDir,
         char buf[256];
         std::memset(buf, '\0', 256);
         std::sprintf(buf, "plane%d%d%d_Right", objPos.x, objPos.y, objPos.z);
-        auto blockBeh =
-            world->getBlockBehavior(worldPos.x, worldPos.y, worldPos.z);
-        auto block = std::static_pointer_cast<Block>(blockBeh);
+        auto block =
+            world->getBlock(worldPos.x, worldPos.y, worldPos.z);
         auto texPath = block->getTextureSet().getRightImage()->getPath();
         auto texName = block->getTextureReference() + std::string("_Right");
         auto texFileName = Path::getFileNameFromPath(
@@ -550,9 +544,8 @@ void WorldIO::genFrontPlane(const std::string& outputDir,
         char buf[256];
         std::memset(buf, '\0', 256);
         std::sprintf(buf, "plane%d%d%d_Front", objPos.x, objPos.y, objPos.z);
-        auto blockBeh =
-            world->getBlockBehavior(worldPos.x, worldPos.y, worldPos.z);
-        auto block = std::static_pointer_cast<Block>(blockBeh);
+        auto block =
+            world->getBlock(worldPos.x, worldPos.y, worldPos.z);
         auto texPath = block->getTextureSet().getFrontImage()->getPath();
         auto texName = block->getTextureReference() + std::string("_Front");
         auto texFileName = Path::getFileNameFromPath(
@@ -610,9 +603,8 @@ void WorldIO::genBackPlane(const std::string& outputDir,
         char buf[256];
         std::memset(buf, '\0', 256);
         std::sprintf(buf, "plane%d%d%d_Back", objPos.x, objPos.y, objPos.z);
-        auto blockBeh =
-            world->getBlockBehavior(worldPos.x, worldPos.y, worldPos.z);
-        auto block = std::static_pointer_cast<Block>(blockBeh);
+        auto block =
+            world->getBlock(worldPos.x, worldPos.y, worldPos.z);
         auto texPath = block->getTextureSet().getBackImage()->getPath();
         auto texName = block->getTextureReference() + std::string("_Back");
         auto texFileName = Path::getFileNameFromPath(

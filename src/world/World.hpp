@@ -24,7 +24,7 @@ public:
 };
 
 class Entity;
-class BlockBehavior;
+class Block;
 class World : public std::enable_shared_from_this<World> {
        public:
         static std::shared_ptr<World> create(const NameSet& nameSet,
@@ -43,24 +43,15 @@ class World : public std::enable_shared_from_this<World> {
         void invalidate();
         void rehash();
 
-        void setBlockBehavior(glm::vec3 pos,
-                              std::shared_ptr<BlockBehavior> block);
-        void setBlockBehavior(glm::ivec3 pos,
-                              std::shared_ptr<BlockBehavior> block);
-        void setBlockBehavior(float x, float y, float z,
-                              std::shared_ptr<BlockBehavior> block);
-        void setBlockBehavior(int x, int y, int z,
-                              std::shared_ptr<BlockBehavior> block);
-        std::shared_ptr<BlockBehavior> getBlockBehavior(int x, int y,
-                                                        int z) const;
-        std::shared_ptr<BlockBehavior> getBlockBehavior(float x, float y,
-                                                        float z) const;
-        std::shared_ptr<BlockBehavior> getBlockBehavior(glm::vec3 pos) const;
-        std::shared_ptr<BlockBehavior> getBlockBehavior(glm::ivec3 pos) const;
+        void setBlock(glm::vec3 pos,std::shared_ptr<Block> block);
+        void setBlock(glm::ivec3 pos, std::shared_ptr<Block> block);
+        void setBlock(float x, float y, float z, std::shared_ptr<Block> block);
+        void setBlock(int x, int y, int z, std::shared_ptr<Block> block);
+        std::shared_ptr<Block> getBlock(int x, int y,int z) const;
+        std::shared_ptr<Block> getBlock(float x, float y, float z) const;
+        std::shared_ptr<Block> getBlock(glm::vec3 pos) const;
+        std::shared_ptr<Block> getBlock(glm::ivec3 pos) const;
 
-        bool raycast(glm::vec3 from, glm::vec3 to, glm::vec3& hitPos);
-        glm::vec3 fixedPos(glm::vec3 from, glm::vec3 to, bool& hitBlockX,
-                           bool& hitBlockY, bool& hitBlockZ);
         bool isContains(int x, int y, int z) const;
         bool isContains(const glm::ivec3& v) const;
         bool isContains(const glm::vec3& v) const;
@@ -80,10 +71,9 @@ class World : public std::enable_shared_from_this<World> {
        private:
         static NameSet spriteNameSet(const NameSet& nameSet);
         void checkFBO();
-        BlockColliderType getColliderType(int x, int y, int z);
         explicit World(const NameSet& nameSet, const glm::ivec3& size);
         explicit World(const NameSet& nameSet, int xSize, int ySize, int zSize);
-        std::vector<std::vector<std::vector<std::shared_ptr<BlockBehavior> > > >
+        std::vector<std::vector<std::vector<std::shared_ptr<Block> > > >
             blocks;
         bool isInvalid;
         int xSize, ySize, zSize;

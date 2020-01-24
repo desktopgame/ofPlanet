@@ -9,11 +9,6 @@ namespace planet {
 Block::Block(const std::string& name, const std::string& textureReference,
              int id)
     : name(name), textureReference(textureReference), id(id) {}
-std::shared_ptr<BlockBehavior> Block::newBehavior() {
-        return std::const_pointer_cast<BlockBehavior>(shared_from_this());
-}
-void Block::update(std::shared_ptr<World> world, int x, int y, int z) {}
-
 void Block::batch(std::shared_ptr<World> world, BlockRenderer& renderer, int x,
                   int y, int z) {
         TextureSet set = getTextureSet();
@@ -42,11 +37,6 @@ void Block::batch(std::shared_ptr<World> world, BlockRenderer& renderer, int x,
         if (world->isEmpty(x, y - 1, z)) {
                 renderer.putBottom(set.getBottomImage()->getName(), x, y, z);
         }
-}
-
-BlockColliderType Block::getColliderType(std::shared_ptr<World> world, int x,
-                                         int y, int z) const {
-        return BlockColliderType::Hit;
 }
 
 TextureSet Block::getTextureSet() const {
