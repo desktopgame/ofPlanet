@@ -43,6 +43,9 @@ class ofApp : public ofBaseApp {
        protected:
 		void loadBiomes();
 		void loadShader();
+		void drawSettingsWindow();
+		void drawParameterWindow();
+		void drawExporterWindow();
 		void cameraAuto();
 		void cameraUser();
         static void bridgeDebugMessage(GLenum source, GLenum type, GLuint eid,

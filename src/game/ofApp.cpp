@@ -92,7 +92,6 @@ void ofApp::update() {
 
 //--------------------------------------------------------------
 void ofApp::draw() {
-		bool processing = isProcessing();
         // 3D機能を有効にして画面を描画
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_CULL_FACE);
@@ -105,66 +104,9 @@ void ofApp::draw() {
         glDisable(GL_CULL_FACE);
         gui.begin();
         ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0, 1, 0, 1));
-        // --SettingWindowの表示
-		ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiSetCond_Once);
-		ImGui::SetNextWindowSize(ImVec2(200, 180), ImGuiSetCond_Once);
-        ImGui::Begin("Setting");
-        worldSize.draw();
-        biomeNames.draw();
-        cameraSpeed.draw();
-        if (!processing &&
-			!biomes.empty() &&
-			biomeNames.selectedIndex >= 0 &&
-			ImGui::Button("Generate")) {
-                planet->generate(worldSize.value,
-                                 biomes.at(biomeNames.selectedIndex));
-        }
-		if (!processing && ImGui::Button("Reload")) {
-			loadShader();
-			loadBiomes();
-		}
-        ImGui::Checkbox("PlayMode", &playMode.getNewValue());
-        playMode.detect();
-        ImGui::End();
-        // --ParameterWindowの表示
-		ImGui::SetNextWindowPos(ImVec2(ofGetWidth() - 250, 0), ImGuiSetCond_Once);
-		ImGui::SetNextWindowSize(ImVec2(250, 180), ImGuiSetCond_Once);
-        ImGui::Begin("Parameter");
-		if (!biomes.empty()) {
-			biomes.at(biomeNames.selectedIndex)->onGUI();
-		}
-        ImGui::End();
-        // --ExporterWindowの表示
-		ImGui::SetNextWindowPos(ImVec2(0, ofGetHeight()- 180), ImGuiSetCond_Once);
-		ImGui::SetNextWindowSize(ImVec2(0, 180), ImGuiSetCond_Once);
-        ImGui::Begin("Exporter");
-        exportTypes.draw();
-		splitCount.draw();
-        int exportMode = exportTypes.mode;
-        exportDir.draw();
-        // 処理中ならラベルだけを表示
-        if (processing) {
-                char buf[256];
-                std::memset(buf, '\0', 256);
-                std::sprintf(buf, "processing now... %f %%",
-                             (this->asyncOp->getValue() * 100.0f));
-                ImGui::Text(buf);
-        } else {
-                //そうでなければボタンを表示
-                if (ImGui::Button("Export")) {
-                        Directory::create(exportDir.getString());
-                        if (exportMode == EXPORT_JSON) {
-                                exportJson(Path::build(std::vector<std::string>{
-                                    exportDir.getString(), "data.json"}));
-                        } else if (exportMode == EXPORT_OBJ) {
-                                exportObj(exportDir.getString());
-                        } else if (exportMode == EXPORT_BMP) {
-                                exportBmp(Path::build(std::vector<std::string>{
-                                    exportDir.getString(), "data.bmp"}));
-                        }
-                }
-        }
-        ImGui::End();
+		drawSettingsWindow();
+		drawParameterWindow();
+		drawExporterWindow();
         ImGui::PopStyleColor();
         gui.end();
 }
@@ -225,6 +167,77 @@ void ofApp::loadShader() {
 		shader.unload();
 	}
 	shader.load("shaders/block.vert", "shaders/block.frag");
+}
+
+void ofApp::drawSettingsWindow() {
+	bool processing = isProcessing();
+	ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiSetCond_Once);
+	ImGui::SetNextWindowSize(ImVec2(200, 180), ImGuiSetCond_Once);
+	ImGui::Begin("Setting");
+	worldSize.draw();
+	biomeNames.draw();
+	cameraSpeed.draw();
+	if (!processing &&
+		!biomes.empty() &&
+		biomeNames.selectedIndex >= 0 &&
+		ImGui::Button("Generate")) {
+		planet->generate(worldSize.value,
+			biomes.at(biomeNames.selectedIndex));
+	}
+	if (!processing && ImGui::Button("Reload")) {
+		loadShader();
+		loadBiomes();
+	}
+	ImGui::Checkbox("PlayMode", &playMode.getNewValue());
+	playMode.detect();
+	ImGui::End();
+}
+
+void ofApp::drawParameterWindow() {
+	ImGui::SetNextWindowPos(ImVec2(ofGetWidth() - 250, 0), ImGuiSetCond_Once);
+	ImGui::SetNextWindowSize(ImVec2(250, 180), ImGuiSetCond_Once);
+	ImGui::Begin("Parameter");
+	if (!biomes.empty()) {
+		biomes.at(biomeNames.selectedIndex)->onGUI();
+	}
+	ImGui::End();
+}
+
+void ofApp::drawExporterWindow() {
+	bool processing = isProcessing();
+	ImGui::SetNextWindowPos(ImVec2(0, ofGetHeight() - 180), ImGuiSetCond_Once);
+	ImGui::SetNextWindowSize(ImVec2(0, 180), ImGuiSetCond_Once);
+	ImGui::Begin("Exporter");
+	exportTypes.draw();
+	splitCount.draw();
+	int exportMode = exportTypes.mode;
+	exportDir.draw();
+	// 処理中ならラベルだけを表示
+	if (processing) {
+		char buf[256];
+		std::memset(buf, '\0', 256);
+		std::sprintf(buf, "processing now... %f %%",
+			(this->asyncOp->getValue() * 100.0f));
+		ImGui::Text(buf);
+	}
+	else {
+		//そうでなければボタンを表示
+		if (ImGui::Button("Export")) {
+			Directory::create(exportDir.getString());
+			if (exportMode == EXPORT_JSON) {
+				exportJson(Path::build(std::vector<std::string>{
+					exportDir.getString(), "data.json"}));
+			}
+			else if (exportMode == EXPORT_OBJ) {
+				exportObj(exportDir.getString());
+			}
+			else if (exportMode == EXPORT_BMP) {
+				exportBmp(Path::build(std::vector<std::string>{
+					exportDir.getString(), "data.bmp"}));
+			}
+		}
+	}
+	ImGui::End();
 }
 
 void ofApp::cameraAuto() {
