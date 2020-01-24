@@ -289,6 +289,7 @@ Luaには実数型と整数型の区別がありません。
 # ライセンス
 このアプリケーションは以下のライブラリを使用して実装されました。
 * [openframeworks](https://openframeworks.cc/ja/)
+* [ofxImGui](https://github.com/jvcleave/ofxImGui)
 * [soil](https://www.lonesock.net/soil.html)
 * [lua](https://www.lua.org/) 
 * [thelink2012/any](https://github.com/thelink2012/any/blob/master/any.hpp)
