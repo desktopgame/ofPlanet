@@ -29,8 +29,6 @@
 #include "../world/BlockPack.hpp"
 #include "../world/TexturePack.hpp"
 #include "../world/WorldIO.hpp"
-#include "../world/biome/HillBiome.hpp"
-#include "../world/biome/PlainBiome.hpp"
 #include "../world/biome/ScriptBiome.hpp"
 namespace planet {
 

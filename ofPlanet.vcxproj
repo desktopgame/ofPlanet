@@ -220,8 +220,6 @@
     <ClCompile Include="src\text\Encoding.cpp" />
     <ClCompile Include="src\text\Strings.cpp" />
     <ClCompile Include="src\world\biome\BasicBiome.cpp" />
-    <ClCompile Include="src\world\biome\HillBiome.cpp" />
-    <ClCompile Include="src\world\biome\PlainBiome.cpp" />
     <ClCompile Include="src\world\biome\ScriptBiome.cpp" />
     <ClCompile Include="src\world\Block.cpp" />
     <ClCompile Include="src\world\BlockInfoCollection.cpp" />
@@ -304,8 +302,6 @@
     <ClInclude Include="src\text\Strings.hpp" />
     <ClInclude Include="src\world\biome\BasicBiome.hpp" />
     <ClInclude Include="src\world\biome\Biome.hpp" />
-    <ClInclude Include="src\world\biome\HillBiome.hpp" />
-    <ClInclude Include="src\world\biome\PlainBiome.hpp" />
     <ClInclude Include="src\world\biome\ScriptBiome.hpp" />
     <ClInclude Include="src\world\Block.hpp" />
     <ClInclude Include="src\world\BlockBehavior.hpp" />

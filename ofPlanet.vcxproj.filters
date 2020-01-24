@@ -103,12 +103,6 @@
     <ClCompile Include="src\world\biome\BasicBiome.cpp">
       <Filter>src\world\biome</Filter>
     </ClCompile>
-    <ClCompile Include="src\world\biome\HillBiome.cpp">
-      <Filter>src\world\biome</Filter>
-    </ClCompile>
-    <ClCompile Include="src\world\biome\PlainBiome.cpp">
-      <Filter>src\world\biome</Filter>
-    </ClCompile>
     <ClCompile Include="src\world\biome\ScriptBiome.cpp">
       <Filter>src\world\biome</Filter>
     </ClCompile>
@@ -412,12 +406,6 @@
       <Filter>src\world\biome</Filter>
     </ClInclude>
     <ClInclude Include="src\world\biome\Biome.hpp">
-      <Filter>src\world\biome</Filter>
-    </ClInclude>
-    <ClInclude Include="src\world\biome\HillBiome.hpp">
-      <Filter>src\world\biome</Filter>
-    </ClInclude>
-    <ClInclude Include="src\world\biome\PlainBiome.hpp">
       <Filter>src\world\biome</Filter>
     </ClInclude>
     <ClInclude Include="src\world\biome\ScriptBiome.hpp">
