@@ -4,9 +4,9 @@
 #include <vector>
 
 #include "engine/Terrain.hpp"
-namespace planet {
+#include "MultiBlock.hpp"
 
-class MultiBlock;
+namespace planet {
 
 struct BlockPrefab {
         explicit BlockPrefab(int id, bool instanced);

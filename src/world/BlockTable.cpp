@@ -3,6 +3,7 @@
 #include <cassert>
 
 #include "MultiBlock.hpp"
+#include "BlockPack.hpp"
 namespace planet {
 
 // BlockPrefab
@@ -40,12 +41,12 @@ const BlockPrefab& BlockTable::get(int x, int y, int z) const {
 }
 
 void BlockTable::expand(int baseX, int baseY, int baseZ, const MultiBlock& mb) {
-        auto data = mb.to3DData();
+		auto data = toCellVec(mb);
         for (auto e : data) {
-                int x = baseX + (int)e.first.x;
-                int y = baseY + (int)e.first.y;
-                int z = baseZ + (int)e.first.z;
-                int id = mb.decode(e.second);
+                int x = baseX + e.point.x;
+                int y = baseY + e.point.y;
+                int z = baseZ + e.point.z;
+				int id = e.blockId;
                 if (x >= xSize || y >= ySize || z >= zSize) {
                         continue;
                 }
