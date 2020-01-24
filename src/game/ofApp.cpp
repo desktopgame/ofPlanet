@@ -194,8 +194,8 @@ void ofApp::drawSettingsWindow() {
 }
 
 void ofApp::drawParameterWindow() {
-	ImGui::SetNextWindowPos(ImVec2(ofGetWidth() - 250, 0), ImGuiSetCond_Once);
-	ImGui::SetNextWindowSize(ImVec2(300, 180), ImGuiSetCond_Once);
+	ImGui::SetNextWindowPos(ImVec2(ofGetWidth() - 380, 0), ImGuiSetCond_Once);
+	ImGui::SetNextWindowSize(ImVec2(380, 180), ImGuiSetCond_Once);
 	ImGui::Begin("Parameter");
 	if (!biomes.empty()) {
 		biomes.at(biomeNames.selectedIndex)->onGUI();
