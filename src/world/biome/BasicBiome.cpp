@@ -35,9 +35,9 @@ void BasicBiome::generate(BlockTable& blockTable) {
         const int ZSIZE = blockTable.getZSize();
         const int YSIZE_H = YSIZE / 2;
         const int XZ = (XSIZE + ZSIZE) / 2;
-        onBeginGenerate(blockTable);
+        onBeginGenerateWorld(blockTable);
         if (!this->isUseCallbacks()) {
-                onEndGenerate(blockTable);
+                onEndGenerateWorld(blockTable);
                 return;
         }
         Generator gen(XSIZE, YSIZE, ZSIZE);
@@ -46,6 +46,7 @@ void BasicBiome::generate(BlockTable& blockTable) {
         // generate terrain
         auto terrain = gen.generate(seed_gen());
         blockTable.setTerrain(terrain);
+		onBeginGenerateTerrain();
         for (int i = 0; i < terrain.getCellCount(); i++) {
                 Cell cellSrc = terrain.getCellAt(i);
                 Cell cell =
@@ -55,6 +56,7 @@ void BasicBiome::generate(BlockTable& blockTable) {
                 heightMap[glm::ivec2(cell.x, cell.z)] = y;
                 onGenerateTerrain(blockTable, cell.x, y, cell.z);
         }
+		onEndGenerateTerrain();
         // generate water
         for (auto p : heightMap) {
                 auto xz = p.first;
@@ -77,7 +79,7 @@ void BasicBiome::generate(BlockTable& blockTable) {
                                        pocket.zNoise);
                 }
         }
-        onEndGenerate(blockTable);
+        onEndGenerateWorld(blockTable);
 }
 
 bool BasicBiome::isUseCallbacks() { return true; }
@@ -85,9 +87,12 @@ bool BasicBiome::isUseCallbacks() { return true; }
 // protected
 float BasicBiome::onFixHeight(float y) { return y; }
 
-void BasicBiome::onBeginGenerate(BlockTable& blockTable) {}
+void BasicBiome::onBeginGenerateWorld(BlockTable& blockTable) {}
 
-void BasicBiome::onEndGenerate(BlockTable& blockTable) {}
+void BasicBiome::onEndGenerateWorld(BlockTable& blockTable) {}
+
+void BasicBiome::onBeginGenerateTerrain() {
+}
 
 void BasicBiome::onGenerateTerrain(BlockTable& blockTable, int x, int y,
                                    int z) {
@@ -97,6 +102,9 @@ void BasicBiome::onGenerateTerrain(BlockTable& blockTable, int x, int y,
                 blockTable.set(x, y, z,
                                createFillBlock(blockTable, startY, x, y, z));
         }
+}
+
+void BasicBiome::onEndGenerateTerrain() {
 }
 
 void BasicBiome::onGenerateWater(BlockTable& blockTable, int x, int y, int z) {
@@ -117,35 +125,8 @@ void BasicBiome::generateStructure(BlockTable& blockTable, MultiBlock mb,
                                    glm::ivec3 intervalMin,
                                    glm::ivec3 intervalMax, int testCount,
                                    int genLimit) {
-        int success = 0;
-        for (int n = 0; n < testCount; n++) {
-                int x = static_cast<int>(
-                    random.generate(0, blockTable.getXSize() - 1));
-                int z = static_cast<int>(
-                    random.generate(0, blockTable.getZSize() - 1));
-                int y = heightMap[glm::ivec2(x, z)];
-                bool fail = false;
-                for (int l = 0; l < mb.getXSize(); l++) {
-                        for (int p = 0; p < mb.getZSize(); p++) {
-                                glm::ivec2 key((x + p, z + l));
-                                if (!heightMap.count(key) ||
-                                    y != heightMap[key]) {
-                                        fail = true;
-                                        break;
-                                }
-                        }
-                        if (fail) {
-                                break;
-                        }
-                }
-                if (!fail) {
-                        success++;
-                        blockTable.expand(x + 1, y + 1, z + 1, mb);
-                }
-                if (success >= genLimit) {
-                        break;
-                }
-        }
+	
+        
 }
 
 BlockPrefab BasicBiome::createTopBlock(BlockTable& blockTable, int x, int y,

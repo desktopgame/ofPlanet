@@ -34,10 +34,14 @@ class BasicBiome : public Biome {
        protected:
         virtual bool isUseCallbacks();
         virtual float onFixHeight(float y);
-        virtual void onBeginGenerate(BlockTable& blockTable);
-        virtual void onEndGenerate(BlockTable& blockTable);
+        virtual void onBeginGenerateWorld(BlockTable& blockTable);
+        virtual void onEndGenerateWorld(BlockTable& blockTable);
+
+		virtual void onBeginGenerateTerrain();
         virtual void onGenerateTerrain(BlockTable& blockTable, int x, int y,
                                        int z);
+		virtual void onEndGenerateTerrain();
+
         virtual void onGenerateWater(BlockTable& blockTable, int x, int y,
                                      int z);
         virtual void onGenerateStructures(BlockTable& blockTable);
