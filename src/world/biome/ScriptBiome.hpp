@@ -42,5 +42,6 @@ int lua_getysize(struct lua_State* state);
 int lua_getzsize(struct lua_State* state);
 int lua_newstruct(struct lua_State* state);
 int lua_genstruct(struct lua_State* state);
+int lua_expandstruct(struct lua_State* state);
 }  // namespace planet
 #endif

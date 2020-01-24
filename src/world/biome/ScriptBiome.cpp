@@ -17,6 +17,7 @@ ScriptBiome::ScriptBiome(const std::string& filename)
         lua.define("getzsize", lua_getzsize);
 		lua.define("newstruct", lua_newstruct);
 		lua.define("genstruct", lua_genstruct);
+		lua.define("expandstruct", lua_expandstruct);
         lua.loadFile(filename);
         this->globals = lua.getAllVariables();
 }
@@ -270,6 +271,21 @@ int lua_genstruct(lua_State* state) {
 	}
 
 //	table->expand(mb);
+	return 0;
+}
+
+int lua_expandstruct(lua_State * state) {
+	auto table = linb::any_cast<std::shared_ptr<BlockTable>>(Context::current()->get("TABLE"));
+	auto mbmap = linb::any_cast<std::shared_ptr<MultiBlockMap>>(Context::current()->get("MB"));
+	int x = luaL_checkinteger(state, -4);
+	int y = luaL_checkinteger(state, -3);
+	int z = luaL_checkinteger(state, -2);
+	x = std::max(0, std::min(x, table->getXSize() - 1));
+	y = std::max(0, std::min(y, table->getYSize() - 1));
+	z = std::max(0, std::min(z, table->getZSize() - 1));
+	std::string name = luaL_checkstring(state, -1);
+	auto& mb = mbmap->at(name);
+	table->expand(x, y, z, mb);
 	return 0;
 }
 }  // namespace planet
