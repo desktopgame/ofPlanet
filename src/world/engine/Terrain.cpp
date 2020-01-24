@@ -45,15 +45,6 @@ std::vector<unsigned char> Terrain::toPixelVec() const {
                         float noise = (c.noise + 1.f) / 2.0f;
                         float component = 255.f * noise;
                         char bit = static_cast<char>(component);
-                        if (bit < 64) {
-                                std::cout << ":";
-                        } else if (bit < 128) {
-                                std::cout << "*";
-                        } else if (bit < 192) {
-                                std::cout << "#";
-                        } else {
-                                std::cout << "@";
-                        }
                         v.emplace_back(bit);
                         v.emplace_back(bit);
                         v.emplace_back(bit);
