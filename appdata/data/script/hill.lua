@@ -36,5 +36,4 @@ function onGenerateCave(x, y, z, noise)
 end
 
 function onPostGenerate()
-    print("done.")
 end

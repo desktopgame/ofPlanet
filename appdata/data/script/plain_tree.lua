@@ -4,6 +4,35 @@ fillBlockShallow = "Dirt"
 iBaseline = 0
 
 function getCallbackMode()
+    newstruct("AAA",[[
+,,
+,Wood,
+,,
+
+,,
+,Wood,
+,,
+
+,,
+,Wood,
+,,
+
+,,
+,Wood,
+,,
+
+Leaf,Leaf,Leaf
+Leaf,Leaf,Leaf
+Leaf,Leaf,Leaf
+
+Leaf,Leaf,Leaf
+Leaf,Leaf,Leaf
+Leaf,Leaf,Leaf
+
+Leaf,Leaf,Leaf
+Leaf,Leaf,Leaf
+Leaf,Leaf,Leaf
+]]) 
     return "default"
 -- return "ignore"
 end
@@ -25,7 +54,7 @@ function onGenerateTerrain(x, y, z)
         else
             setblock(x, y, z, fillBlockShallow)
         end
-    end
+    end   
 end
 
 function onGenerateWater(x, y, z)
@@ -33,6 +62,7 @@ function onGenerateWater(x, y, z)
 end
 
 function onGenerateStructures()
+    genstruct("AAA")
 end
 
 function onGenerateCave(x, y, z, noise)
