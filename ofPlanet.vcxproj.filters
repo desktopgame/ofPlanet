@@ -61,37 +61,10 @@
     <ClCompile Include="src\shader\Camera.cpp">
       <Filter>src\shader</Filter>
     </ClCompile>
-    <ClCompile Include="src\shader\CameraRegistry.cpp">
-      <Filter>src\shader</Filter>
-    </ClCompile>
-    <ClCompile Include="src\shader\Flag.cpp">
-      <Filter>src\shader</Filter>
-    </ClCompile>
-    <ClCompile Include="src\shader\Material.cpp">
-      <Filter>src\shader</Filter>
-    </ClCompile>
-    <ClCompile Include="src\shader\MaterialRegistry.cpp">
-      <Filter>src\shader</Filter>
-    </ClCompile>
-    <ClCompile Include="src\shader\NameSet.cpp">
-      <Filter>src\shader</Filter>
-    </ClCompile>
     <ClCompile Include="src\shader\Plane.cpp">
       <Filter>src\shader</Filter>
     </ClCompile>
-    <ClCompile Include="src\shader\Shader.cpp">
-      <Filter>src\shader</Filter>
-    </ClCompile>
-    <ClCompile Include="src\shader\ShaderProperty.cpp">
-      <Filter>src\shader</Filter>
-    </ClCompile>
-    <ClCompile Include="src\shader\ShaderRegistry.cpp">
-      <Filter>src\shader</Filter>
-    </ClCompile>
     <ClCompile Include="src\shader\Texture.cpp">
-      <Filter>src\shader</Filter>
-    </ClCompile>
-    <ClCompile Include="src\shader\Transform.cpp">
       <Filter>src\shader</Filter>
     </ClCompile>
     <ClCompile Include="src\text\Encoding.cpp">
@@ -197,6 +170,7 @@
     <ClCompile Include="src\objb\MtlBuilder.cpp" />
     <ClCompile Include="src\imguiex\Integer.cpp" />
     <ClCompile Include="src\csvr\Parser.cpp" />
+    <ClCompile Include="src\shader\Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -360,40 +334,10 @@
     <ClInclude Include="src\shader\Camera.hpp">
       <Filter>src\shader</Filter>
     </ClInclude>
-    <ClInclude Include="src\shader\CameraObserver.hpp">
-      <Filter>src\shader</Filter>
-    </ClInclude>
-    <ClInclude Include="src\shader\CameraRegistry.hpp">
-      <Filter>src\shader</Filter>
-    </ClInclude>
-    <ClInclude Include="src\shader\Flag.hpp">
-      <Filter>src\shader</Filter>
-    </ClInclude>
-    <ClInclude Include="src\shader\Material.hpp">
-      <Filter>src\shader</Filter>
-    </ClInclude>
-    <ClInclude Include="src\shader\MaterialRegistry.hpp">
-      <Filter>src\shader</Filter>
-    </ClInclude>
-    <ClInclude Include="src\shader\NameSet.hpp">
-      <Filter>src\shader</Filter>
-    </ClInclude>
     <ClInclude Include="src\shader\Plane.hpp">
       <Filter>src\shader</Filter>
     </ClInclude>
-    <ClInclude Include="src\shader\Shader.hpp">
-      <Filter>src\shader</Filter>
-    </ClInclude>
-    <ClInclude Include="src\shader\ShaderProperty.hpp">
-      <Filter>src\shader</Filter>
-    </ClInclude>
-    <ClInclude Include="src\shader\ShaderRegistry.hpp">
-      <Filter>src\shader</Filter>
-    </ClInclude>
     <ClInclude Include="src\shader\Texture.hpp">
-      <Filter>src\shader</Filter>
-    </ClInclude>
-    <ClInclude Include="src\shader\Transform.hpp">
       <Filter>src\shader</Filter>
     </ClInclude>
     <ClInclude Include="src\text\Encoding.hpp">
@@ -517,6 +461,7 @@
     <ClInclude Include="src\objb\MtlBuilder.hpp" />
     <ClInclude Include="src\imguiex\Integer.hpp" />
     <ClInclude Include="src\csvr\Parser.hpp" />
+    <ClInclude Include="src\shader\Transform.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="icon.rc" />

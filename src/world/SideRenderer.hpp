@@ -2,6 +2,7 @@
 #ifndef WORLD_SIDERENDERER_HPP
 #define WORLD_SIDERENDERER_HPP
 #include <ofMatrix4x4.h>
+#include <ofShader.h>
 
 #include <array>
 #include <memory>
@@ -10,9 +11,10 @@
 #include "Plane.hpp"
 namespace planet {
 
+class Camera;
 class SideRenderer {
        public:
-        explicit SideRenderer(const NameSet& nameSet);
+        explicit SideRenderer(ofShader& shader);
         ~SideRenderer();
 
         void put(PlaneType type, float x, float y, float z);
@@ -23,7 +25,8 @@ class SideRenderer {
         void putTop(float x, float y, float z);
         void putBottom(float x, float y, float z);
         void clear();
-        void rehash();
+        void updatePlane();
+		void updateCamera(Camera& camera);
         void render(GLuint texture);
 
        private:
@@ -35,8 +38,8 @@ class SideRenderer {
             planes;
         std::array<std::vector<float>, static_cast<int>(PlaneType::Count)>
             posVec;
-        NameSet nameSet;
         ofBufferObject vbo[static_cast<int>(PlaneType::Count)];
+		ofShader& shader;
 };
 }  // namespace planet
 #endif

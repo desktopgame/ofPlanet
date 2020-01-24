@@ -21,6 +21,7 @@
 #include "../imguiex/RadioButtonGroup.hpp"
 #include "../shader/Plane.hpp"
 #include "../shader/Transform.hpp"
+#include "../shader/Camera.hpp"
 #include "../world/Planet.hpp"
 #include "../world/World.hpp"
 #include "../world/WorldIO.hpp"
@@ -66,7 +67,8 @@ class ofApp : public ofBaseApp {
         void exportObj(const std::string& outputDir);
         void exportBmp(const std::string& outputFile);
 
-        ofEasyCam cam;
+		ofShader shader;
+		Camera camera;
         std::shared_ptr<Planet> planet;
         Random rand;
         float cameraAngle;
@@ -83,7 +85,5 @@ class ofApp : public ofBaseApp {
 		imguiex::Integer splitCount;
         AsyncOperation asyncOp;
 
-        static NameSet createPlaneNameSet();
-        static NameSet createGunNameSet();
 };
 }  // namespace planet

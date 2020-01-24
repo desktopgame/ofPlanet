@@ -4,11 +4,11 @@
 #include "biome/Biome.hpp"
 namespace planet {
 
-Planet::Planet(const NameSet& nameSet)
-    : nameSet(nameSet), world(nullptr), blockTable(0, 0, 0) {}
+Planet::Planet(ofShader& shader, Camera& camera)
+    :  shader(shader), camera(camera), world(nullptr), blockTable(0, 0, 0) {}
 
 void Planet::generate(glm::vec3 size, std::shared_ptr<Biome> biome) {
-        this->world = World::create(nameSet, size);
+        this->world = World::create(shader, camera, size);
         glm::ivec3 is = size;
         this->blockTable = BlockTable(is.x, is.y, is.z);
         biome->generate(blockTable);

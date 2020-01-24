@@ -2,9 +2,8 @@
 #ifndef SHADER_PLANE_HPP
 #define SHADER_PLANE_HPP
 #include <ofVbo.h>
+#include <ofShader.h>
 
-#include "CameraObserver.hpp"
-#include "NameSet.hpp"
 namespace planet {
 /**
  * PlaneType は平面の方向を設定する列挙型です。
@@ -18,29 +17,26 @@ enum class PlaneType : unsigned int {
         Bottom = 5,
         Count = 6,
 };
-
+class Camera;
 class Shader;
 /**
  * Plane は平面を描画するためのクラスです。
  */
-class Plane : public CameraObserver {
+class Plane {
        public:
-        explicit Plane(PlaneType type, const NameSet& nameSet,
-                       const glm::vec3 size);
+        explicit Plane(ofShader& shader, PlaneType type, const glm::vec3 size);
         void draw();
         void drawInstanced(int count);
 
-        void onRehash(std::shared_ptr<const Camera> camera) override;
+        void rehash(Camera & camera);
 
         ofVbo& getVAO();
         const ofVbo& getVAO() const;
-        NameSet getNameSet() const;
 
        private:
         void setupOfVboData(std::vector<float> vertex,
                             std::vector<float> normal, std::vector<float> uv);
-        void setupOfVbo(PlaneType type, const NameSet& nameSet,
-                        const glm::vec3 size);
+        void setupOfVbo(PlaneType type, const glm::vec3 size);
         Plane(const Plane& obj) = delete;
         Plane& operator=(const Plane&) = delete;
 
@@ -70,7 +66,7 @@ class Plane : public CameraObserver {
 
         PlaneType type;
         ofVbo ofVAO;
-        NameSet nameSet;
+		ofShader& shader;
 };
 }  // namespace planet
 #endif  // !SHADER_PLANE_HPP

@@ -2,21 +2,17 @@
 
 #include "../common/GLM.hpp"
 #include "../shader/Camera.hpp"
-#include "../shader/Shader.hpp"
 namespace planet {
 
 #define Q_I (glm::mat4(1.0f))
 
-SideRenderer::SideRenderer(const NameSet& nameSet)
-    : isInvalid(true), planes(), nameSet(nameSet), posVec(), vbo() {
+SideRenderer::SideRenderer(ofShader& shader)
+    : shader(shader), isInvalid(true), planes(), posVec(), vbo() {
         for (int i = 0; i < static_cast<int>(PlaneType::Count); i++) {
-                NameSet of = nameSet;
-                of.useOf = true;
                 std::vector<float> v;
-                planes[i] = std::make_shared<Plane>(static_cast<PlaneType>(i),
-                                                    of, glm::vec3(1, 1, 1));
+                planes[i] = std::make_shared<Plane>(shader, static_cast<PlaneType>(i),
+                                                    glm::vec3(1, 1, 1));
                 posVec[i] = v;
-                nameSet.getCamera()->addObserver(planes[i]);
                 vbo[i].allocate();
         }
 }
@@ -61,7 +57,7 @@ void SideRenderer::clear() {
         this->isInvalid = true;
 }
 
-void SideRenderer::rehash() {
+void SideRenderer::updatePlane() {
         if (!isInvalid) {
                 return;
         }
@@ -71,8 +67,14 @@ void SideRenderer::rehash() {
         this->isInvalid = false;
 }
 
+void SideRenderer::updateCamera(Camera & camera) {
+	for (auto& plane : planes) {
+		plane->rehash(camera);
+	}
+}
+
 void SideRenderer::render(GLuint texture) {
-        rehash();
+		updatePlane();
         glBindTexture(GL_TEXTURE_2D, texture);
 
         for (int i = 0; i < static_cast<int>(PlaneType::Count); i++) {
@@ -93,15 +95,10 @@ void SideRenderer::updatePlane(PlaneType type) {
         v.setData(posVec, GL_STATIC_DRAW);
         v.unbind(GL_ARRAY_BUFFER);
         // update vao
-        auto shader = nameSet.getShader();
         ofVbo& vao = planes[index]->getVAO();
-        shader->use();
+		shader.begin();
         vao.bind();
-
         // vertex Attributes
-        assert(nameSet.aPosition.enabled);
-        GLuint matAttrib = shader->getAttribLocation(nameSet.aPosition.name);
-
         vao.setAttributeBuffer(4, v, 3, 0);
         vao.setAttributeDivisor(0, 0);
         vao.setAttributeDivisor(2, 0);
@@ -109,7 +106,7 @@ void SideRenderer::updatePlane(PlaneType type) {
         vao.setAttributeDivisor(4, 1);
 
         vao.unbind();
-        shader->unuse();
+		shader.end();
 }
 
 std::vector<float>& SideRenderer::getPosVec(PlaneType type) {

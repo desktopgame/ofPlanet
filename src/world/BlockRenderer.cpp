@@ -1,8 +1,8 @@
 #include "BlockRenderer.hpp"
 namespace planet {
 
-BlockRenderer::BlockRenderer(const NameSet& nameSet)
-    : nameSet(nameSet), map() {}
+BlockRenderer::BlockRenderer(ofShader& shader)
+    : shader(shader), map() {}
 
 void BlockRenderer::put(GLuint texture, PlaneType type, float x, float y,
                         float z) {
@@ -39,10 +39,16 @@ void BlockRenderer::clear() {
         }
 }
 
-void BlockRenderer::rehash() {
+void BlockRenderer::updatePlane() {
         for (auto& kv : map) {
-                kv.second->rehash();
+                kv.second->updatePlane();
         }
+}
+
+void BlockRenderer::updateCamera(Camera & camera) {
+	for (auto& kv : map) {
+		kv.second->updateCamera(camera);
+	}
 }
 
 void BlockRenderer::render() {
@@ -56,7 +62,7 @@ std::shared_ptr<SideRenderer> BlockRenderer::ref(GLuint texture) {
         if (map.count(texture)) {
                 return map.at(texture);
         }
-        auto r = std::make_shared<SideRenderer>(nameSet);
+        auto r = std::make_shared<SideRenderer>(shader);
         map.insert_or_assign(texture, r);
         return r;
 }

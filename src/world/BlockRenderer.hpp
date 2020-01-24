@@ -2,13 +2,15 @@
 #ifndef WORLD_BLOCKRENDERER_HPP
 #define WORLD_BLOCKRENDERER_HPP
 #include <unordered_map>
+#include <ofShader.h>
 
 #include "SideRenderer.hpp"
 namespace planet {
 
+class Camera;
 class BlockRenderer {
        public:
-        explicit BlockRenderer(const NameSet& nameSet);
+        explicit BlockRenderer(ofShader& shader);
 
         void put(GLuint texture, PlaneType type, float x, float y, float z);
         void putFront(GLuint texture, float x, float y, float z);
@@ -18,13 +20,14 @@ class BlockRenderer {
         void putTop(GLuint texture, float x, float y, float z);
         void putBottom(GLuint texture, float x, float y, float z);
         void clear();
-        void rehash();
+        void updatePlane();
+		void updateCamera(Camera& camera);
         void render();
 
        private:
         std::shared_ptr<SideRenderer> ref(GLuint texture);
-        NameSet nameSet;
         std::unordered_map<GLuint, std::shared_ptr<SideRenderer> > map;
+		ofShader& shader;
 };
 }  // namespace planet
 #endif

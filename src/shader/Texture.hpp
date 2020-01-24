@@ -5,7 +5,6 @@
 
 #include <string>
 
-#include "Flag.hpp"
 namespace planet {
 /**
  * Texture は、テクスチャをOpenGLと紐付けるクラスです。
@@ -30,8 +29,6 @@ class Texture {
         Texture(const Texture& obj) = delete;
         Texture& operator=(const Texture&) = delete;
         std::string path;
-        Flag loadFlag;
-        Flag bindFlag;
         int width, height, ch;
         unsigned char* data;
         GLuint name;

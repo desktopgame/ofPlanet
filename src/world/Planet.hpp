@@ -2,19 +2,20 @@
 #ifndef WORLD_PLANET_HPP
 #define WORLD_PLANET_HPP
 #include <memory>
+#include <ofShader.h>
 
 #include "../common/GLM.hpp"
-#include "../shader/NameSet.hpp"
 #include "BlockTable.hpp"
 namespace planet {
 
 class WorldGenerateService;
 class World;
 class Biome;
+class Camera;
 
 class Planet {
        public:
-        explicit Planet(const NameSet& nameSet);
+        explicit Planet(ofShader& shader, Camera& camera);
 
         void generate(glm::vec3 size, std::shared_ptr<Biome> biome);
 
@@ -26,7 +27,8 @@ class Planet {
         BlockTable getBlockTable() const;
 
        private:
-        NameSet nameSet;
+		ofShader& shader;
+		Camera& camera;
         BlockTable blockTable;
         std::shared_ptr<World> world;
 };

@@ -19,10 +19,6 @@
 #include "../objb/MtlBuilder.hpp"
 #include "../objb/ObjBuilder.hpp"
 #include "../shader/Camera.hpp"
-#include "../shader/CameraRegistry.hpp"
-#include "../shader/Material.hpp"
-#include "../shader/MaterialRegistry.hpp"
-#include "../shader/ShaderRegistry.hpp"
 #include "../shader/Texture.hpp"
 #include "../text/Strings.hpp"
 #include "../world/Block.hpp"
@@ -39,7 +35,10 @@ using ExportMode =
     };
 
 ofApp::ofApp()
-    : planet(std::make_shared<Planet>(createPlaneNameSet())),
+    :
+	  shader(),
+	  camera(),
+	  planet(std::make_shared<Planet>(shader, camera)),
       rand(),
       cameraAngle(0),
       gui(),
@@ -50,7 +49,7 @@ ofApp::ofApp()
       exportDir("Output Directory"),
       cameraSpeed("CameraSpeed", 0.01f),
       worldSize("Size", 2),
-	splitCount("SplitCount", 0),
+	  splitCount("SplitCount", 0),
       asyncOp(nullptr) {
         exportDir.setString("dist");
         worldSize.value = glm::vec3(128, 64, 128);
@@ -83,18 +82,8 @@ void ofApp::setup() {
             reinterpret_cast<GLDEBUGPROC>(ofApp::bridgeDebugMessage), NULL);
         glEnable(GL_DEBUG_OUTPUT);
 #endif
-        // カメラ, マテリアルの設定
-        CameraRegistry::setDefaultScreenSize(glm::vec2(800, 600), false);
-        auto cam = CameraRegistry::create("Block");
-        auto mat = MaterialRegistry::create("Block");
-        mat->ambient = glm::vec4(0.5f, 0.5f, 0.5f, 1.0f);
-        mat->diffuse = glm::vec4(0.5f, 0.5f, 0.5f, 1.0f);
-        mat->specular = glm::vec4(0.f, 0.f, 0.f, 1.0f);
-        mat->shininess = 50;
-        cam->rehash();
-        // シェーダの読み込み
-        ShaderRegistry::loadFile("Block", "shaders/block.vert",
-                                 "shaders/block.frag");
+		shader.load("shaders/block.vert", "shaders/block.frag");
+		camera.setScreenSize(glm::vec2(800, 600));
         // 設定ファイルの読み込み
         TextureInfoCollection tic;
         tic.deserialize(File::readAllText("./textures.json"));
@@ -224,9 +213,8 @@ void ofApp::mouseExited(int x, int y) {}
 
 //--------------------------------------------------------------
 void ofApp::windowResized(int w, int h) {
-        auto cam = CameraRegistry::ref("Block");
-        cam->setScreenSize(glm::vec2(w, h));
-        cam->rehash();
+        camera.setScreenSize(glm::vec2(w, h));
+        camera.rehash();
 }
 
 //--------------------------------------------------------------
@@ -245,14 +233,12 @@ void ofApp::cameraAuto() {
 	const float fwsz = static_cast<float>(w->getZSize());
 	const float hfwsx = fwsx / 2;
 	const float hfwsz = fwsz / 2;
-	auto myCam = CameraRegistry::get("Block");
 	// プレイモードではないので、オブジェクトの周りを周回します。
 	auto cx = std::cos(cameraAngle);
 	auto cz = std::sin(cameraAngle);
-	myCam->setPosition(
-		glm::vec3(hfwsx + (hfwsx * cx), wsy, hfwsz + (hfwsz * cz)));
-	myCam->setLookAt(glm::vec3(wsx / 2, 0, wsz / 2));
-	myCam->rehash();
+	camera.setPosition(glm::vec3(hfwsx + (hfwsx * cx), wsy, hfwsz + (hfwsz * cz)));
+	camera.setLookAt(glm::vec3(wsx / 2, 0, wsz / 2));
+	camera.rehash();
 	this->cameraAngle += cameraSpeed.value;
 }
 void ofApp::cameraUser() {
@@ -261,30 +247,24 @@ void ofApp::cameraUser() {
 	const int wsy = w->getYSize();
 	const int wsz = w->getZSize();
 	const int OF_KEY_SPACE = 32;
-	auto myCam = CameraRegistry::get("Block");
 	// WASD, 矢印キーによる移動と回転
 	fpsCon.update();
 	if (playMode.testIsChanged()) {
-		myCam->setPosition(
-			glm::vec3(wsx / 2, wsy / 2, wsz / 2));
+		camera.setPosition(glm::vec3(wsx / 2, wsy / 2, wsz / 2));
 	}
 	else {
-		myCam->setPosition(myCam->getPosition() +
-			fpsCon.getVelocity());
+		camera.setPosition(camera.getPosition() + fpsCon.getVelocity());
 	}
-	myCam->setLookAt(myCam->getPosition() +
-		fpsCon.getTransform().forward());
+	camera.setLookAt(camera.getPosition() + fpsCon.getTransform().forward());
 	// 上昇, 下降
 	if (ofGetKeyPressed(OF_KEY_SPACE)) {
-		myCam->setPosition(myCam->getPosition() +
-			glm::vec3(0, 0.4f, 0));
+		camera.setPosition(camera.getPosition() + glm::vec3(0, 0.4f, 0));
 	}
 	else if (glfw::getKey(glfw::Key_left_shift) ||
 		glfw::getKey(glfw::Key_z)) {
-		myCam->setPosition(myCam->getPosition() +
-			glm::vec3(0, -0.4f, 0));
+		camera.setPosition(camera.getPosition() + glm::vec3(0, -0.4f, 0));
 	}
-	myCam->rehash();
+	camera.rehash();
 }
 void ofApp::bridgeDebugMessage(GLenum source, GLenum type, GLuint eid,
                                GLenum severity, GLsizei length,
@@ -463,35 +443,5 @@ void ofApp::exportBmp(const std::string& outputFile) {
 
 bool ofApp::isProcessing() const {
         return this->asyncOp != nullptr && !this->asyncOp->isDone();
-}
-
-NameSet ofApp::createPlaneNameSet() {
-        NameSet set;
-        set.shader = "Block";
-        set.camera = "Block";
-        set.material = "Block";
-
-        set.aVertex.enable();
-        set.aNormal.enable();
-        set.aUV.enable();
-
-        set.uAmbient.enable();
-        set.uDiffuse.enable();
-        set.uSpecular.enable();
-        set.uTexture.enable();
-        set.uShininess.enable();
-        set.aPosition.enable();
-
-        set.uMVPMatrix.enable();
-        set.uNormalMatrix.enable();
-        return set;
-}
-
-NameSet ofApp::createGunNameSet() {
-        NameSet nameSet;
-        nameSet.shader = "ModelTexture";
-        nameSet.camera = "Block";
-        nameSet.material = "Block";
-        return nameSet;
 }
 }  // namespace planet

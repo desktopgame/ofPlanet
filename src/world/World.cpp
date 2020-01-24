@@ -10,7 +10,6 @@
 
 #include "../game/ofApp.h"
 #include "../shader/Camera.hpp"
-#include "../shader/CameraRegistry.hpp"
 #include "Block.hpp"
 #include "BlockPack.hpp"
 #include "BlockRenderer.hpp"
@@ -20,14 +19,12 @@ namespace planet {
 
 WorldPart::WorldPart(const std::shared_ptr<World>& world, glm::ivec3 offset) : world(world), offset(offset) {
 }
-std::shared_ptr<World> World::create(const NameSet& nameSet,
-                                     const glm::ivec3& size) {
-        return create(nameSet, size.x, size.y, size.z);
+std::shared_ptr<World> World::create(ofShader& shader, Camera& camera, const glm::ivec3& size) {
+        return create(shader, camera, size.x, size.y, size.z);
 }
 
-std::shared_ptr<World> World::create(const NameSet& nameSet, int xSize,
-                                     int ySize, int zSize) {
-        World* world = new World(nameSet, xSize, ySize, zSize);
+std::shared_ptr<World> World::create(ofShader& shader, Camera& camera, int xSize, int ySize, int zSize) {
+        World* world = new World(shader, camera, xSize, ySize, zSize);
         std::shared_ptr<World> ret = std::shared_ptr<World>(world);
         for (int i = 0; i < xSize; i++) {
                 std::vector<std::vector<std::shared_ptr<Block> > >
@@ -85,6 +82,7 @@ void World::update() {
 }
 
 void World::drawToBuffer() {
+		renderer.updateCamera(camera);
         rehash();
         checkFBO();
         // screenBuffer.bind();
@@ -129,7 +127,7 @@ void World::rehash() {
                         }
                 }
         }
-        renderer.rehash();
+        renderer.updatePlane();
 }
 
 void World::setBlock(glm::vec3 pos,
@@ -210,7 +208,7 @@ std::vector<WorldPart> World::split(int splitNum) const {
 	std::vector<WorldPart > ret;
 	for (int i = 0; i < splitNum; i++) {
 		for (int j = 0; j < splitNum; j++) {
-			auto w = World::create(nameSet, glm::ivec3(sx, ySize, sz));
+			auto w = World::create(shader,camera, glm::ivec3(sx, ySize, sz));
 			for (int x = (sx*i); x < (sx*i) + sx; x++) {
 				for (int y = 0; y < ySize; y++) {
 					for (int z = (sz*j); z < (sz*j) + sz; z++) {
@@ -228,11 +226,6 @@ std::vector<WorldPart> World::split(int splitNum) const {
 	return ret;
 }
 
-NameSet World::spriteNameSet(const NameSet& nameSet) {
-        NameSet ns = nameSet;
-        ns.shader = "Sprite";
-        return ns;
-}
 void World::checkFBO() {
         int newW = ofGetWidth();
         int newH = ofGetHeight();
@@ -244,19 +237,20 @@ void World::checkFBO() {
 }
 
 // private
-World::World(const NameSet& nameSet, const glm::ivec3& size)
-    : World(nameSet, size.x, size.y, size.z) {}
+World::World(ofShader& shader, Camera& camera, const glm::ivec3& size)
+    : World(shader, camera, size.x, size.y, size.z) {}
 
-World::World(const NameSet& nameSet, int xSize, int ySize, int zSize)
+World::World(ofShader& shader, Camera& camera, int xSize, int ySize, int zSize)
     : blocks(),
       xSize(xSize),
       ySize(ySize),
       zSize(zSize),
-      renderer(nameSet),
+      renderer(shader),
       isInvalid(true),
       bIsPlayMode(false),
-	  nameSet(nameSet),
       fbo(),
+	  shader(shader),
+      camera(camera),
       fboW(-1),
       fboH(-1) {}
 }  // namespace planet

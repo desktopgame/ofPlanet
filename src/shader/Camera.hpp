@@ -11,7 +11,6 @@
 #include <vector>
 namespace planet {
 
-class CameraObserver;
 /**
  * Camera はカメラの基本的な行列を計算するクラスです。
  */
@@ -117,19 +116,6 @@ class Camera : public std::enable_shared_from_this<Camera> {
          */
         glm::mat4 computeNormalMatrix(const glm::mat4 model) const;
 
-        /**
-         * @param easyCam
-         */
-        void apply(ofEasyCam& easyCam);
-        /**
-         * @param camera
-         */
-        void apply(ofCamera& camera);
-        /**
-         * カメラ設定の変更を検知するリスナーを追加します。
-         * @param observer
-         */
-        void addObserver(const std::weak_ptr<CameraObserver> observer);
 
        private:
         bool dirty;
@@ -143,7 +129,6 @@ class Camera : public std::enable_shared_from_this<Camera> {
 
         glm::mat4 projectionMatrix;
         glm::mat4 viewMatrix;
-        std::vector<std::weak_ptr<CameraObserver> > observers;
 };
 }  // namespace planet
 #endif

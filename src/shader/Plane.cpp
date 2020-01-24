@@ -1,42 +1,40 @@
 #include "Plane.hpp"
 
 #include "Camera.hpp"
-#include "Material.hpp"
-#include "Shader.hpp"
 namespace planet {
 
-Plane::Plane(PlaneType type, const NameSet& nameSet, const glm::vec3 size)
-    : type(type), nameSet(nameSet), ofVAO() {
-        assert(nameSet.useOf);
-        setupOfVbo(type, nameSet, size);
+Plane::Plane(ofShader& shader, PlaneType type, const glm::vec3 size)
+    : shader(shader), type(type),ofVAO() {
+        setupOfVbo(type, size);
 }
 
 void Plane::draw() {
-        auto shader = nameSet.getShader();
-        shader->use();
+		shader.begin();
         ofVAO.drawElements(GL_TRIANGLES, 6);
-        shader->unuse();
+		shader.end();
 }
 
 void Plane::drawInstanced(int count) {
-        auto shader = nameSet.getShader();
-        shader->use();
+		shader.begin();
         ofVAO.drawElementsInstanced(GL_TRIANGLES, 6, count);
-        shader->unuse();
+		shader.end();
 }
 
-void Plane::onRehash(std::shared_ptr<const Camera> camera) {
-        auto shader = nameSet.getShader();
-        shader->use();
-        nameSet.applyCamera(shader);
-        shader->unuse();
+void Plane::rehash(Camera & camera) {
+		shader.begin();
+		shader.setUniformMatrix4f("uMVPMatrix", (camera.getProjectionMatrix() * camera.getViewMatrix()));
+		shader.setUniformMatrix4f("uNormalMatrix", (camera.computeNormalMatrix(glm::mat4(1.0f))));
+		shader.setUniform4f("uAmbient", glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
+		shader.setUniform4f("uDiffuse", glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
+		shader.setUniform4f("uSpecular", glm::vec4(0.f, 0.f, 0.f, 1.0f));
+		shader.setUniform1f("uShininess", 50);
+		shader.end();
 }
+
 
 ofVbo& Plane::getVAO() { return ofVAO; }
 
 const ofVbo& Plane::getVAO() const { return ofVAO; }
-
-NameSet Plane::getNameSet() const { return nameSet; }
 
 void Plane::setupOfVboData(std::vector<float> vertex, std::vector<float> normal,
                            std::vector<float> uv) {
@@ -47,8 +45,7 @@ void Plane::setupOfVboData(std::vector<float> vertex, std::vector<float> normal,
         ofVAO.unbind();
 }
 
-void Plane::setupOfVbo(PlaneType type, const NameSet& nameSet,
-                       const glm::vec3 size) {
+void Plane::setupOfVbo(PlaneType type, const glm::vec3 size) {
         switch (type) {
                 case PlaneType::Front:
                         setupOfVboData(createFrontVertex(size),
@@ -80,10 +77,12 @@ void Plane::setupOfVbo(PlaneType type, const NameSet& nameSet,
         }
         auto indexData = std::vector<ofIndexType>{0, 1, 2, 2, 3, 0};
         ofVAO.setIndexData(indexData.data(), indexData.size(), GL_STATIC_DRAW);
+/*
         auto shader = nameSet.getShader();
         shader->use();
         nameSet.apply(shader);
         shader->unuse();
+*/
 }
 
 std::vector<float> Plane::createFrontVertex(glm::vec3 size) {

@@ -8,12 +8,12 @@
 #include <array>
 #include <memory>
 
-#include "../shader/NameSet.hpp"
 #include "BlockColliderType.hpp"
 #include "BlockRenderer.hpp"
 #include "BlockTable.hpp"
 namespace planet {
 
+class Camera;
 class World;
 class WorldPart {
 public:
@@ -27,10 +27,8 @@ class Entity;
 class Block;
 class World : public std::enable_shared_from_this<World> {
        public:
-        static std::shared_ptr<World> create(const NameSet& nameSet,
-                                             const glm::ivec3& size);
-        static std::shared_ptr<World> create(const NameSet& nameSet, int xSize,
-                                             int ySize, int zSize);
+        static std::shared_ptr<World> create(ofShader& shader, Camera& camera, const glm::ivec3& size);
+        static std::shared_ptr<World> create(ofShader& shader, Camera& camera, int xSize,int ySize, int zSize);
         static int floatToInt(float f);
 
         void load(const BlockTable& table);
@@ -69,10 +67,9 @@ class World : public std::enable_shared_from_this<World> {
 		std::vector<WorldPart> split(int splitNum) const;
 
        private:
-        static NameSet spriteNameSet(const NameSet& nameSet);
         void checkFBO();
-        explicit World(const NameSet& nameSet, const glm::ivec3& size);
-        explicit World(const NameSet& nameSet, int xSize, int ySize, int zSize);
+        explicit World(ofShader& shader, Camera& camera, const glm::ivec3& size);
+        explicit World(ofShader& shader, Camera& camera, int xSize, int ySize, int zSize);
         std::vector<std::vector<std::vector<std::shared_ptr<Block> > > >
             blocks;
         bool isInvalid;
@@ -80,7 +77,8 @@ class World : public std::enable_shared_from_this<World> {
         int fboW, fboH;
         BlockRenderer renderer;
         ofFbo fbo;
-		NameSet nameSet;
+		ofShader& shader;
+		Camera& camera;
         bool bIsPlayMode;
 };
 

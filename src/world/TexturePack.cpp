@@ -4,7 +4,6 @@
 
 #include "../io/Directory.hpp"
 #include "../io/Path.hpp"
-#include "../shader/NameSet.hpp"
 #include "Block.hpp"
 #include "BlockPack.hpp"
 #include "Plane.hpp"

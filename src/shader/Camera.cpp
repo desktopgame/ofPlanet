@@ -1,7 +1,6 @@
 #include "Camera.hpp"
 
 #include "../common/GLM.hpp"
-#include "CameraObserver.hpp"
 namespace planet {
 
 Camera::Camera()
@@ -73,12 +72,6 @@ bool Camera::rehash() {
         this->projectionMatrix = glm::perspective(
             fov, screenSize.x / screenSize.y, nearPlane, farPlane);
         this->viewMatrix = glm::lookAt(position, lookAt, up);
-        for (auto observerRef : observers) {
-                auto observer = observerRef.lock();
-                if (observer) {
-                        observer->onRehash(shared_from_this());
-                }
-        }
         return true;
 }
 
@@ -101,27 +94,5 @@ glm::mat4 Camera::computeNormalMatrix(const glm::mat4 model) const {
         normalMatrix = glm::inverse(normalMatrix);
         normalMatrix = glm::transpose(normalMatrix);
         return normalMatrix;
-}
-
-void Camera::apply(ofEasyCam& easyCam) {
-        easyCam.setFov(fov);
-        easyCam.setNearClip(nearPlane);
-        easyCam.setFarClip(farPlane);
-        easyCam.setPosition(position);
-        easyCam.lookAt(lookAt, up);
-        easyCam.setAspectRatio(screenSize.x / screenSize.y);
-}
-
-void Camera::apply(ofCamera& camera) {
-        camera.setFov(fov);
-        camera.setNearClip(nearPlane);
-        camera.setFarClip(farPlane);
-        camera.setPosition(position);
-        camera.lookAt(lookAt, up);
-        camera.setAspectRatio(screenSize.x / screenSize.y);
-}
-
-void Camera::addObserver(const std::weak_ptr<CameraObserver> observer) {
-        observers.emplace_back(observer);
 }
 }  // namespace planet
