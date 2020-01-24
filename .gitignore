@@ -351,3 +351,34 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+
+.DS_Store
+
+bin/*
+!data
+bin/data/settings.xml
+
+#
+# https://qiita.com/hisahayashi/items/835e7081742b00093eb4 より追加
+#
+
+# Mac
+resources/*
+config.make
+ofPlanet.xcodeproj
+Makefile
+openFrameworks-Info.plist
+Project.xcconfig
+# addons.make
+
+# Win
+ofPlanet.sdf
+ofPlanet.sln
+ofPlanet.vcxproj
+ofPlanet.vcxproj.filters
+ofPlanet.vcxproj.user
+# addons.make
+icon.aps
+icon.rc
+obj/*
+.vs
