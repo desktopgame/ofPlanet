@@ -50,7 +50,6 @@ std::vector<unsigned char> Terrain::toPixelVec() const {
                         v.emplace_back(bit);
                         v.emplace_back(255);
                 }
-                std::cout << std::endl;
         }
         return v;
 }
