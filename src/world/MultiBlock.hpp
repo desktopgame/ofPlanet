@@ -1,3 +1,4 @@
+#pragma once
 #ifndef GAME_WORLD_MULTIBLOCK_HPP
 #define GAME_WORLD_MULTIBLOCK_HPP
 #include <string>
@@ -8,30 +9,18 @@
 #include "../common/GLM.hpp"
 namespace planet {
 
-class MultiBlock {
-       public:
-        using Entry = std::pair<glm::vec3, char>;
-        explicit MultiBlock();
-        static MultiBlock fromFile(const std::string& file);
-        static MultiBlock fromText(const std::string& text);
-        void encode(char c, int blockId);
-        int decode(char c) const;
-        void stack(const std::string& layer);
-        void stack(const std::vector<std::string> lines);
-        std::vector<Entry> to3DData() const;
-        int getXSize() const;
-        int getYSize() const;
-        int getZSize() const;
-        glm::vec3 getSize() const;
-
-       private:
-        static int checkWidth(const std::vector<std::string> lines);
-        static std::vector<std::string> split(const std::string& input,
-                                              const char c);
-        std::vector<std::string> stacks;
-        std::unordered_map<char, int> blockMap;
-        int xSize;
-        int zSize;
+struct MultiBlockCell {
+	explicit MultiBlockCell(const glm::ivec3& point, int blockId);
+	glm::ivec3 point;
+	int blockId;
 };
+
+using MultiBlockLine = std::vector<std::string>;
+using MultiBlockLayer = std::vector<MultiBlockLine>;
+using MultiBlock = std::vector<MultiBlockLayer>;
+
+bool multiBlock2DSize(const MultiBlockLayer& layer, glm::ivec3& destSize);
+bool multiBlock3DSize(const MultiBlock& multiBlock, glm::ivec3& destSize);
+std::vector<MultiBlockCell> toCellVec(const MultiBlock& block);
 }  // namespace planet
 #endif
