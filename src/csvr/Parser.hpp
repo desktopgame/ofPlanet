@@ -21,10 +21,29 @@ class Parser {
 public:
 	explicit Parser();
 
+	/**
+	 * 指定のCSVRフォーマットの文字列を読み込んで、
+	 * テーブルとして追加します。
+	 */
 	void parse(const std::string& source);
 
+	/**
+	 * 指定位置のテーブルを返します。
+	 * @param index
+	 * @return
+	 */
 	Table& getTableAt(int index);
+
+	/**
+	 * 指定位置のテーブルを返します。
+	 * @param index
+	 * @return
+	 */
 	const Table& getTableAt(int index) const;
+	/**
+	 * テーブルの数を返します。
+	 * @return
+	 */
 	int getTableCount() const;
 
 private:
