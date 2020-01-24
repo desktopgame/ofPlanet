@@ -3,7 +3,7 @@ fillBlockDeep = "Stone"
 fillBlockShallow = "Dirt"
 iBaseline = 0
 
-function getCallbackMode()
+function start()
     return "default"
 -- return "ignore"
 end
