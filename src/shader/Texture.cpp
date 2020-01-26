@@ -1,6 +1,6 @@
 #include "Texture.hpp"
+#include <ofxSOIL.h>
 
-#include <soil.h>
 namespace planet {
 
 Texture::Texture()
@@ -14,13 +14,16 @@ Texture::Texture()
 
 Texture::~Texture() {
         glDeleteTextures(1, &name);
-        SOIL_free_image_data(data);
+        std::free(data);
 }
 
 void Texture::load(const std::string& path) {
+		ofxSOIL::Image img = ofxSOIL::loadImage(path, ofxSOIL::RGBA);
         this->path = path;
-        this->data =
-            SOIL_load_image(path.c_str(), &width, &height, &ch, SOIL_LOAD_RGBA);
+		this->data = img.data;
+		this->width = img.width;
+		this->height = img.height;
+		this->ch = img.channel;
         glBindTexture(GL_TEXTURE_2D, name);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA,
                      GL_UNSIGNED_BYTE, data);

@@ -1,10 +1,8 @@
 #include "WorldIO.hpp"
-
-#include <soil.h>
-
 #include <future>
 #include <sstream>
 #include <thread>
+#include <ofxSOIL.h>
 
 #include "../io/File.hpp"
 #include "../io/Path.hpp"
@@ -285,8 +283,8 @@ AsyncOperation WorldIO::toBmp(const std::string& outputPath,
                 BlockTable blockTable = planet->getBlockTable();
                 Terrain terrain = blockTable.getTerrain();
                 std::vector<unsigned char> pixelVec = terrain.toPixelVec();
-                int err = SOIL_save_image(outputPath.c_str(),
-                                          SOIL_SAVE_TYPE_BMP, w->getXSize(),
+                ofxSOIL::saveImage(outputPath,
+                                          ofxSOIL::TYPE_BMP, w->getXSize(),
                                           w->getZSize(), 4, pixelVec.data());
                 ret->setValue(1.0f);
         }).detach();
