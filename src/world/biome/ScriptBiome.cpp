@@ -4,10 +4,13 @@
 #include "../Block.hpp"
 #include "../BlockPack.hpp"
 #include "../csvr/Parser.hpp"
-#include "../luaex/luaimpl.hpp"
 
+#include <lua.hpp>
+#include <lauxlib.h>
+#include <lualib.h>
+
+using namespace ofxLua;
 namespace planet {
-using namespace luaex;
 ScriptBiome::ScriptBiome(const std::string& filename)
     : lua(), ctx(nullptr), table(nullptr), multiBlockMap() {
         lua.define("setblock", lua_setblock);
@@ -19,13 +22,13 @@ ScriptBiome::ScriptBiome(const std::string& filename)
 		lua.define("genstruct", lua_genstruct);
 		lua.define("expandstruct", lua_expandstruct);
         lua.loadFile(filename);
-        this->globals = lua.getAllVariables();
+        this->globals = lua.getAllVariables().get();
 }
 
 void ScriptBiome::onGUI() {
         // GUIを表示する
         auto iter = globals.begin();
-        std::unordered_map<std::string, luaex::Object> copy;
+        std::unordered_map<std::string, Object> copy;
         while (iter != globals.end()) {
                 auto kv = *iter;
                 auto key = kv.first;
@@ -71,19 +74,17 @@ void ScriptBiome::onGUI() {
 bool ScriptBiome::isUseCallbacks() { return this->mode == "default"; }
 
 void ScriptBiome::onBeginGenerateWorld(BlockTable& blockTable) {
-        this->ctx = Context::create();
+        this->ctx = Context::push();
         this->table = std::make_shared<BlockTable>(blockTable.getXSize(),
                                                    blockTable.getYSize(),
                                                    blockTable.getZSize());
 		this->multiBlockMap = std::make_shared<MultiBlockMap>();
-        ctx->select();
-        ctx->put("TABLE", table);
-		ctx->put("MB", multiBlockMap);
-		ctx->put("HM", heightMap);
+        ctx->set("TABLE", table);
+		ctx->set("MB", multiBlockMap);
+		ctx->set("HM", heightMap);
         // コールバックモードを決める
-        std::vector<Variant> modeV;
-        lua.call("start", std::vector<Object>{},
-                 std::vector<Type>{T_STRING}, modeV);
+        std::vector<Variant> modeV = lua.call("start", std::vector<Object>{},
+                 std::vector<Type>{T_STRING}).get();
         this->mode = modeV.at(0).string;
         if (this->mode != "default" && this->mode != "ignore") {
                 std::cerr << "`" << mode << "` mode is undefined." << std::endl;
@@ -91,10 +92,9 @@ void ScriptBiome::onBeginGenerateWorld(BlockTable& blockTable) {
 }
 
 void ScriptBiome::onEndGenerateWorld(BlockTable& blockTable) {
-        lua.call("onPostGenerate", std::vector<Object>{}, std::vector<Type>{},
-                 std::vector<Variant>{});
+        lua.call("onPostGenerate", std::vector<Object>{}, std::vector<Type>{}).check();
         //コンテキストを削除
-        ctx->dispose();
+		Context::pop();
         this->ctx = nullptr;
         // 出力をコピー
         for (int x = 0; x < this->table->getXSize(); x++) {
@@ -108,50 +108,45 @@ void ScriptBiome::onEndGenerateWorld(BlockTable& blockTable) {
 }
 
 void ScriptBiome::onEndGenerateTerrain() {
-	ctx->put("HM", heightMap);
+	ctx->set("HM", heightMap);
 }
 
 float ScriptBiome::onFixHeight(float y) {
-        std::vector<Variant> r;
-        lua.call("onFixHeight", std::vector<Object>{create(y)},
-                 std::vector<Type>{T_NUMBER}, r);
+        std::vector<Variant> r = lua.call("onFixHeight", std::vector<Object>{create(y)},
+                 std::vector<Type>{T_NUMBER}).get();
         return static_cast<float>(r.at(0).number);
 }
 
 void ScriptBiome::onGenerateTerrain(BlockTable& blockTable, int x, int y,
                                     int z) {
-        std::vector<Variant> r;
-        lua.call("onGenerateTerrain",
+        std::vector<Variant> r = lua.call("onGenerateTerrain",
                  std::vector<Object>{create(x), create(y), create(z)},
-                 std::vector<Type>{}, r);
+                 std::vector<Type>{}).get();
 }
 
 void ScriptBiome::onGenerateWater(BlockTable& blockTable, int x, int y, int z) {
-        std::vector<Variant> r;
-        lua.call("onGenerateWater",
+        std::vector<Variant> r = lua.call("onGenerateWater",
                  std::vector<Object>{create(x), create(y), create(z)},
-                 std::vector<Type>{}, r);
+                 std::vector<Type>{}).get();
 }
 
 void ScriptBiome::onGenerateStructures(BlockTable& blockTable) {
-        std::vector<Variant> r;
-        lua.call("onGenerateStructures", std::vector<Object>{},
-                 std::vector<Type>{}, r);
+        std::vector<Variant> r = lua.call("onGenerateStructures", std::vector<Object>{},
+                 std::vector<Type>{}).get();
 }
 
 void ScriptBiome::onGenerateCave(BlockTable& blockTable, int x, int y, int z,
                                  float noise) {
-        std::vector<Variant> r;
-        lua.call("onGenerateCave",
+        std::vector<Variant> r = lua.call("onGenerateCave",
                  std::vector<Object>{create(x), create(y), create(z),
                                      create(static_cast<double>(noise))},
-                 std::vector<Type>{}, r);
+			std::vector<Type>{}).get();
 }
 
 int lua_setblock(lua_State* state) {
         auto blockpack = BlockPack::getCurrent();
-        auto table = linb::any_cast<std::shared_ptr<BlockTable>>(
-            Context::current()->get("TABLE"));
+        auto table = 
+            Context::top()->get<std::shared_ptr<BlockTable> >("TABLE");
         int x = luaL_checkinteger(state, -4);
         int y = luaL_checkinteger(state, -3);
         int z = luaL_checkinteger(state, -2);
@@ -165,8 +160,7 @@ int lua_setblock(lua_State* state) {
 }
 int lua_getblock(lua_State* state) {
         auto blockpack = BlockPack::getCurrent();
-        auto table = linb::any_cast<std::shared_ptr<BlockTable>>(
-            Context::current()->get("TABLE"));
+        auto table = Context::top()->get<std::shared_ptr<BlockTable> >("TABLE");
         int x = luaL_checkinteger(state, -3);
         int y = luaL_checkinteger(state, -2);
         int z = luaL_checkinteger(state, -1);
@@ -179,20 +173,17 @@ int lua_getblock(lua_State* state) {
         return 1;
 }
 int lua_getxsize(lua_State* state) {
-        auto table = linb::any_cast<std::shared_ptr<BlockTable>>(
-            Context::current()->get("TABLE"));
+		auto table = Context::top()->get<std::shared_ptr<BlockTable> >("TABLE");
         lua_pushinteger(state, table->getXSize());
         return 1;
 }
 int lua_getysize(lua_State* state) {
-        auto table = linb::any_cast<std::shared_ptr<BlockTable>>(
-            Context::current()->get("TABLE"));
+		auto table = Context::top()->get<std::shared_ptr<BlockTable> >("TABLE");
         lua_pushinteger(state, table->getYSize());
         return 1;
 }
 int lua_getzsize(lua_State* state) {
-        auto table = linb::any_cast<std::shared_ptr<BlockTable>>(
-            Context::current()->get("TABLE"));
+		auto table = Context::top()->get<std::shared_ptr<BlockTable> >("TABLE");
         lua_pushinteger(state, table->getZSize());
         return 1;
 }
@@ -201,8 +192,8 @@ int lua_newstruct(lua_State* state) {
 	std::string name = luaL_checkstring(state, -2);
 	std::string body = luaL_checkstring(state, -1);
 	auto pack = BlockPack::getCurrent();
-	auto table = linb::any_cast<std::shared_ptr<BlockTable> >(Context::current()->get("TABLE"));
-	auto mbmap = linb::any_cast<std::shared_ptr<MultiBlockMap> >(Context::current()->get("MB"));
+	auto table = Context::top()->get<std::shared_ptr<BlockTable> >("TABLE");
+	auto mbmap = Context::top()->get<std::shared_ptr<MultiBlockMap> >("MB");
 	MultiBlock mb;
 	// CSVR形式を解析
 	csvr::Parser parser;
@@ -226,9 +217,9 @@ int lua_newstruct(lua_State* state) {
 }
 int lua_genstruct(lua_State* state) {
 	using HeightMapT = std::unordered_map<glm::ivec2, int, hidden::Vec2HashFunc, hidden::Vec2HashFunc>;
-	auto table = linb::any_cast<std::shared_ptr<BlockTable>>(Context::current()->get("TABLE"));
-	auto mbmap = linb::any_cast<std::shared_ptr<MultiBlockMap>>(Context::current()->get("MB"));
-	auto hmap = linb::any_cast<HeightMapT>(Context::current()->get("HM"));
+	auto table = Context::top()->get<std::shared_ptr<BlockTable> >("TABLE");
+	auto mbmap = Context::top()->get<std::shared_ptr<MultiBlockMap> >("MB");
+	auto hmap = Context::top()->get<HeightMapT >("HM");
 	auto terrain = table->getTerrain();
 	// 構造名を取得する
 	std::string name = luaL_checkstring(state, -1);
@@ -275,8 +266,8 @@ int lua_genstruct(lua_State* state) {
 }
 
 int lua_expandstruct(lua_State * state) {
-	auto table = linb::any_cast<std::shared_ptr<BlockTable>>(Context::current()->get("TABLE"));
-	auto mbmap = linb::any_cast<std::shared_ptr<MultiBlockMap>>(Context::current()->get("MB"));
+	auto table = Context::top()->get<std::shared_ptr<BlockTable> >("TABLE");
+	auto mbmap = Context::top()->get<std::shared_ptr<MultiBlockMap> >("MB");
 	int x = luaL_checkinteger(state, -4);
 	int y = luaL_checkinteger(state, -3);
 	int z = luaL_checkinteger(state, -2);

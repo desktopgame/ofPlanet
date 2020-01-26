@@ -9,8 +9,6 @@
 
 #include "../world/BlockInfoCollection.hpp"
 #include "../world/TextureInfoCollection.hpp"
-#include "luaex/luaex.hpp"
-#include "luaex/luaimpl.hpp"
 #include "ofApp.h"
 
 //========================================================================

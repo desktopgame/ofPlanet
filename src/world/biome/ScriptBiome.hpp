@@ -1,7 +1,7 @@
 #pragma once
 #ifndef WORLD_BIOME_SCRIPTBIOME_HPP
 #define WORLD_BIOME_SCRIPTBIOME_HPP
-#include "../../luaex/luaex.hpp"
+#include <ofxLua.h>
 #include "BasicBiome.hpp"
 #include "MultiBlock.hpp"
 
@@ -27,12 +27,12 @@ class ScriptBiome : public BasicBiome {
                                     float noise) override;
 
        private:
-        luaex::Interpreter lua;
+        ofxLua::Interpreter lua;
         std::string mode;
-        std::shared_ptr<luaex::Context> ctx;
+        ofxLua::Context::Instance ctx;
         std::shared_ptr<BlockTable> table;
 		std::shared_ptr<MultiBlockMap> multiBlockMap;
-        std::unordered_map<std::string, luaex::Object> globals;
+        std::unordered_map<std::string, ofxLua::Object> globals;
 };
 
 int lua_setblock(struct lua_State* state);
