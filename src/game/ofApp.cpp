@@ -165,8 +165,8 @@ void ofApp::loadShader() {
 
 void ofApp::loadJson() {
 	auto cwd = ofFilePath::getCurrentExeDir();
-	auto texBuf = ofBufferFromFile(ofFilePath::join(cwd, "./textures.json"));
-	auto blockBuf = ofBufferFromFile(ofFilePath::join(cwd, "./blocks.json"));
+	auto texBuf = ofBufferFromFile("textures.json");
+	auto blockBuf = ofBufferFromFile("blocks.json");
 
 	TextureInfoCollection tic;
 	tic.deserialize(std::string(texBuf.getData()));
