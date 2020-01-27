@@ -36,6 +36,7 @@ class ScriptBiome : public BasicBiome {
 };
 
 int lua_setblock(struct lua_State* state);
+int lua_putblock(struct lua_State* state);
 int lua_getblock(struct lua_State* state);
 int lua_getxsize(struct lua_State* state);
 int lua_getysize(struct lua_State* state);
