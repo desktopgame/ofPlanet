@@ -15,6 +15,7 @@ public:
 	T getOrDefault(T defaultValue) const;
 	const T& getValue() const;
 	bool isEmpty() const;
+	bool hasValue() const;
 private:
 	T value;
 	bool empty;
@@ -55,6 +56,10 @@ inline const T & Optional<T>::getValue() const {
 template<typename T>
 inline bool Optional<T>::isEmpty() const {
 	return empty;
+}
+template<typename T>
+inline bool Optional<T>::hasValue() const {
+	return !isEmpty();
 }
 }
 #endif
