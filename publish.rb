@@ -36,8 +36,8 @@ puts exportDir
 
 # update enviroment
 publish_dir('./appdata/data', './bin/data')
-publish_file('./appdata/blocks.json', './bin/blocks.json')
-publish_file('./appdata/textures.json', './bin/textures.json')
+# publish_file('./appdata/blocks.json', './bin/blocks.json')
+# publish_file('./appdata/textures.json', './bin/textures.json')
 # create release dir
 publish_dir('./bin/data', File.join(exportRuntimeDir, 'data'))
 publish_file('./bin/ofPlanet.exe', File.join(exportRuntimeDir, 'ofPlanet.exe'))
