@@ -251,13 +251,11 @@ void ofApp::drawExporterWindow() {
 		if (ImGui::Button("Export")) {
 			ofDirectory::createDirectory(ofFilePath::join(ofFilePath::getCurrentExeDir(), exportDir.getString()));
 			if (exportMode == EXPORT_JSON) {
-				exportJson(ofFilePath::join(ofFilePath::getCurrentExeDir(), ofFilePath::join(exportDir.getString(), "data.json")));
-			}
-			else if (exportMode == EXPORT_OBJ) {
+				exportJson(ofFilePath::join(exportDir.getString(), "data.json"));
+			} else if (exportMode == EXPORT_OBJ) {
 				exportObj(exportDir.getString());
-			}
-			else if (exportMode == EXPORT_BMP) {
-				exportBmp(ofFilePath::join(ofFilePath::getCurrentExeDir(), ofFilePath::join(exportDir.getString(), "data.bmp")));
+			} else if (exportMode == EXPORT_BMP) {
+				exportBmp(ofFilePath::join(exportDir.getString(), "data.bmp"));
 			}
 		}
 	}
@@ -418,8 +416,6 @@ void ofApp::bridgeDebugMessage(GLenum source, GLenum type, GLuint eid,
 
 void ofApp::exportJson(const std::string& outputFile) {
         if (!isProcessing()) {
-				auto cwd = ofFilePath::getCurrentExeDir();
-				ofFile::removeFile(ofFilePath::join(cwd, outputFile));
                 this->asyncOp = WorldIO::toJson(outputFile, planet->getWorld());
         }
 }
@@ -441,8 +437,6 @@ void ofApp::exportObj(const std::string& outputDir) {
 
 void ofApp::exportBmp(const std::string& outputFile) {
         if (!isProcessing()) {
-				auto cwd = ofFilePath::getCurrentExeDir();
-				ofFile::removeFile(ofFilePath::join(cwd, outputFile));
                 this->asyncOp = WorldIO::toBmp(outputFile, planet);
         }
 }

@@ -30,12 +30,12 @@ using AsyncOperation = std::shared_ptr<ReadonlyProgress>;
 
 class WorldIO {
        public:
-        static AsyncOperation toJson(const std::string& outputPath,
+        static AsyncOperation toJson(const std::string& outputFile,
                                      const std::shared_ptr<World>& world);
         static AsyncOperation toObj(const std::string& outputDir,
                                     const std::shared_ptr<World>& world);
 		static AsyncOperation toObj(const std::string& outputDir, const std::shared_ptr<World>& world, int splitCount);
-        static AsyncOperation toBmp(const std::string& outputPath,
+        static AsyncOperation toBmp(const std::string& outputFile,
                                     const std::shared_ptr<Planet>& planet);
 
        private:

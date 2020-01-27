@@ -3,6 +3,7 @@
 #include <sstream>
 #include <thread>
 #include <ofxSOIL.h>
+#include <ofFileUtils.h>
 
 #include "../picojson/picojson.h"
 #include "Block.hpp"
@@ -23,14 +24,16 @@ void Progress::setValue(float value) {
 float Progress::getValue() const { return this->value; }
 bool Progress::isDone() const { return this->value >= 1.0f; }
 // WorldIO
-AsyncOperation WorldIO::toJson(const std::string& outputPath,
+AsyncOperation WorldIO::toJson(const std::string& outputFile,
                                const std::shared_ptr<World>& world) {
         auto ret = std::make_shared<Progress>();
         if (!world) {
                 ret->setValue(1.0f);
                 return ret;
         }
-        std::thread([outputPath, world, ret]() -> void {
+        std::thread([outputFile, world, ret]() -> void {
+				auto outputPath = ofFilePath::join(ofFilePath::getCurrentExeDir(), outputFile);
+				ofFile::removeFile(outputPath);
                 picojson::object rootO;
                 picojson::array blocksA;
                 picojson::object worldSizeO;
@@ -326,15 +329,17 @@ AsyncOperation WorldIO::toObj(const std::string & outputDir, const std::shared_p
 	return aAsync;
 }
 
-AsyncOperation WorldIO::toBmp(const std::string& outputPath,
+AsyncOperation WorldIO::toBmp(const std::string& outputFile,
                               const std::shared_ptr<Planet>& planet) {
         auto ret = std::make_shared<Progress>();
         auto w = planet->getWorld();
-        std::thread([outputPath, planet, w, ret]() -> void {
+        std::thread([outputFile, planet, w, ret]() -> void {
+				auto outputPath = ofFilePath::join(ofFilePath::getCurrentExeDir(), outputFile);
+				ofFile::removeFile(outputPath);
                 BlockTable blockTable = planet->getBlockTable();
                 Terrain terrain = blockTable.getTerrain();
                 std::vector<unsigned char> pixelVec = terrain.toPixelVec();
-                ofxSOIL::saveImage(outputPath,
+                ofxSOIL::saveImage(outputFile,
                                           ofxSOIL::TYPE_BMP, w->getXSize(),
                                           w->getZSize(), 4, pixelVec.data());
                 ret->setValue(1.0f);
