@@ -1,5 +1,7 @@
 # ofPlanetユーザーマニュアル
-ofPlanetは地形生成エディターです。
+ofPlanetは地形生成エディターです。  
+※画像はofPlanetで生成したモデルをUnityで表示した様子
+![Unityで生成したモデルのプレビュー](ss_unity.png)
 
 # 動作環境
 このアプリケーションはVisualStudio2017を用いて実装されました。  
@@ -7,11 +9,11 @@ ofPlanetは地形生成エディターです。
 
 ## 起動
 `Runtime/ofPlanet.exe`をダブルクリックして起動します。  
-Runtimeフォルダには `block.json` `textures.json` が必要です。  
-他にもブロックのための画像が必要ですが、これは任意の自由なディレクトリに配置できます。  
+Runtime/dataフォルダには `block.json` `textures.json` が必要です。  
+他にもブロックのための画像が必要ですが、これはdata配下の自由なディレクトリに配置できます。  
 ※ただし、サブディレクトリを作ることはできません。全て直下に配置します。
 
-このアプリには最初から `Runtime/blocks.json` `Runtime/textures.json` そしてテクスチャが `Runtime/data/block` に格納されているので、  
+このアプリには最初から `Runtime/data/blocks.json` `Runtime/data/textures.json` そしてテクスチャが `Runtime/data/block` に格納されているので、  
 何もしなくても起動することができるはずです。
 
 ## 画面
@@ -94,7 +96,7 @@ end
 textures.jsonは例えば以下のようなファイルです。
 ````
 {
-  "baseDirectory": "./data/image/block",
+  "baseDirectory": "image/block",
   "textures": [
     {
       "baseFileName": "DirtBlock",
@@ -180,6 +182,12 @@ JSON/OBJ/BMP に対応しています。
 ````
 your_dir/of_v0.10.1_vs2017_release/apps/myApps/ofPlanet
 ````
+
+また、アドオンとして
+* [ofxLua](https://github.com/desktopgame/ofxLua)
+* [ofxSOIL](https://github.com/desktopgame/ofxSOIL)
+が必要です。現在ではアドオンはWindowsにしか対応していないので
+このアプリもWindowsでしか動作しません。
 
 ## Luaスクリプト
 原則として、luaスクリプトは全て `Runtime/data/script` に配置します。  
@@ -336,12 +344,17 @@ Luaには実数型と整数型の区別がありません。
 * 回転モード: XYZオイラー角
 
 ## 外部プログラムとの連携
-様々なバックエンドで地形を利用可能にするため、  
-`ofPlanet`は特定のプラットフォームやフレームワークに依存した形式の出力を行いません。  
-代わりに、`ofPlanet`を利用するユーザは適切に出力をパースする必要があります。  
-現在のところ、`ofPlanet`に対応したバックエンドの一つとして、`uniPlanet`を提供しています。
+~~様々なバックエンドで地形を利用可能にするため、~~  
+~~`ofPlanet`は特定のプラットフォームやフレームワークに依存した形式の出力を行いません。~~  
+~~代わりに、`ofPlanet`を利用するユーザは適切に出力をパースする必要があります。~~  
+~~現在のところ、`ofPlanet`に対応したバックエンドの一つとして、`uniPlanet`を提供しています。~~
 
-[uniPlanet](https://github.com/desktopgame/uniPlanet)
+~~[uniPlanet](https://github.com/desktopgame/uniPlanet)~~
+
+uniPlanetは現状でも使用可能ですが、OBJをエクスポートして  
+それをUnityで読み込むほうが軽量です。  
+そのままだと当たり判定がつきませんが、[SAColliderBuilder](https://assetstore.unity.com/packages/tools/sacolliderbuilder-15058)を使えば当たり判定もつけられます。
+※SAColliderBuilderは私の制作したアセットではありません。
 
 # ライセンス
 このアプリケーションは以下のライブラリを使用して実装されました。
