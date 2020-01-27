@@ -6,7 +6,7 @@
 #include <unordered_map>
 #include <vector>
 
-#include "../shader/Texture.hpp"
+#include "Texture.hpp"
 #include "TextureInfoCollection.hpp"
 #include "TextureSet.hpp"
 

@@ -1,6 +1,6 @@
 #pragma once
-#ifndef SHADER_PLANE_HPP
-#define SHADER_PLANE_HPP
+#ifndef WORLD_PLANE_HPP
+#define WORLD_PLANE_HPP
 #include <ofVbo.h>
 #include <ofShader.h>
 

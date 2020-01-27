@@ -1,6 +1,6 @@
 #pragma once
-#ifndef SHADER_TEXTURE_HPP
-#define SHADER_TEXTURE_HPP
+#ifndef WORLD_TEXTURE_HPP
+#define WORLD_TEXTURE_HPP
 #include <ofTypes.h>
 
 #include <string>

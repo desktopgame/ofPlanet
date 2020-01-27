@@ -1,7 +1,7 @@
 #include "Block.hpp"
 
 #include "../common/GLM.hpp"
-#include "../shader/Texture.hpp"
+#include "Texture.hpp"
 #include "BlockRenderer.hpp"
 #include "TexturePack.hpp"
 #include "World.hpp"

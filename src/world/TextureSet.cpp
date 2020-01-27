@@ -1,6 +1,6 @@
 #include "TextureSet.hpp"
 
-#include "../shader/Texture.hpp"
+#include "Texture.hpp"
 #include "TexturePack.hpp"
 namespace planet {
 
