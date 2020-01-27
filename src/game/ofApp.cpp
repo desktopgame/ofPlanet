@@ -209,7 +209,7 @@ void ofApp::drawSettingsWindow() {
 			biomes.at(biomeNames.selectedIndex));
 	}
 	if (!processing && ImGui::Button("Reload")) {
-		loadShader();
+		// loadShader();
 		loadBiomes();
 		loadJson();
 	}
