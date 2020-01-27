@@ -164,7 +164,6 @@ void ofApp::loadShader() {
 }
 
 void ofApp::loadJson() {
-	auto cwd = ofFilePath::getCurrentExeDir();
 	auto texBuf = ofBufferFromFile("textures.json");
 	auto blockBuf = ofBufferFromFile("blocks.json");
 
