@@ -67,12 +67,6 @@ void SideRenderer::updatePlane() {
         this->isInvalid = false;
 }
 
-void SideRenderer::updateCamera(Camera & camera) {
-	for (auto& plane : planes) {
-		plane->rehash(camera);
-	}
-}
-
 void SideRenderer::render(GLuint texture) {
 		updatePlane();
         glBindTexture(GL_TEXTURE_2D, texture);

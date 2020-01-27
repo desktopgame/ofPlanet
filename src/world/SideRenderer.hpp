@@ -26,7 +26,6 @@ class SideRenderer {
         void putBottom(float x, float y, float z);
         void clear();
         void updatePlane();
-		void updateCamera(Camera& camera);
         void render(GLuint texture);
 
        private:

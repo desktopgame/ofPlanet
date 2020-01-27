@@ -21,7 +21,6 @@ class BlockRenderer {
         void putBottom(GLuint texture, float x, float y, float z);
         void clear();
         void updatePlane();
-		void updateCamera(Camera& camera);
         void render();
 
        private:

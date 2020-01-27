@@ -44,6 +44,8 @@ class ofApp : public ofBaseApp {
 		void loadBiomes();
 		void loadShader();
 		void loadJson();
+		void updateCamera();
+		void updateMaterial();
 		void drawSettingsWindow();
 		void drawParameterWindow();
 		void drawExporterWindow();

@@ -15,7 +15,7 @@ class Camera;
 
 class Planet {
        public:
-        explicit Planet(ofShader& shader, Camera& camera);
+        explicit Planet(ofShader& shader);
 
         void generate(glm::vec3 size, std::shared_ptr<Biome> biome);
 
@@ -28,7 +28,6 @@ class Planet {
 
        private:
 		ofShader& shader;
-		Camera& camera;
         BlockTable blockTable;
         std::shared_ptr<World> world;
 };

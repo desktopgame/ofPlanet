@@ -32,8 +32,8 @@ class Entity;
 class Block;
 class World : public std::enable_shared_from_this<World> {
        public:
-        static std::shared_ptr<World> create(ofShader& shader, Camera& camera, const glm::ivec3& size);
-        static std::shared_ptr<World> create(ofShader& shader, Camera& camera, int xSize,int ySize, int zSize);
+        static std::shared_ptr<World> create(ofShader& shader, const glm::ivec3& size);
+        static std::shared_ptr<World> create(ofShader& shader, int xSize,int ySize, int zSize);
         static int floatToInt(float f);
 
         void load(const BlockTable& table);
@@ -73,8 +73,8 @@ class World : public std::enable_shared_from_this<World> {
 
        private:
         void checkFBO();
-        explicit World(ofShader& shader, Camera& camera, const glm::ivec3& size);
-        explicit World(ofShader& shader, Camera& camera, int xSize, int ySize, int zSize);
+        explicit World(ofShader& shader, const glm::ivec3& size);
+        explicit World(ofShader& shader, int xSize, int ySize, int zSize);
         std::vector<std::vector<std::vector<std::shared_ptr<Block> > > >
             blocks;
         bool isInvalid;
@@ -83,7 +83,6 @@ class World : public std::enable_shared_from_this<World> {
         BlockRenderer renderer;
         ofFbo fbo;
 		ofShader& shader;
-		Camera& camera;
         bool bIsPlayMode;
 };
 

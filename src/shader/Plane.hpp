@@ -28,8 +28,6 @@ class Plane {
         void draw();
         void drawInstanced(int count);
 
-        void rehash(Camera & camera);
-
         ofVbo& getVAO();
         const ofVbo& getVAO() const;
 

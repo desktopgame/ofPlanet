@@ -45,12 +45,6 @@ void BlockRenderer::updatePlane() {
         }
 }
 
-void BlockRenderer::updateCamera(Camera & camera) {
-	for (auto& kv : map) {
-		kv.second->updateCamera(camera);
-	}
-}
-
 void BlockRenderer::render() {
         for (auto& kv : map) {
                 kv.second->render(kv.first);

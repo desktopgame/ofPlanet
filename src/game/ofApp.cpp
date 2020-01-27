@@ -18,7 +18,7 @@ ofApp::ofApp()
     :
 	  shader(),
 	  camera(),
-	  planet(std::make_shared<Planet>(shader, camera)),
+	  planet(std::make_shared<Planet>(shader)),
       rand(),
       cameraAngle(0),
       gui(),
@@ -54,10 +54,12 @@ void ofApp::setup() {
             reinterpret_cast<GLDEBUGPROC>(ofApp::bridgeDebugMessage), NULL);
         glEnable(GL_DEBUG_OUTPUT);
 #endif
+		camera.setScreenSize(glm::vec2(800, 600));
 		loadBiomes();
 		loadShader();
 		loadJson();
-		camera.setScreenSize(glm::vec2(800, 600));
+		updateCamera();
+		updateMaterial();
         // •`‰æÝ’è
         glEnable(GL_CULL_FACE);
         glCullFace(GL_BACK);
@@ -78,6 +80,7 @@ void ofApp::update() {
         } else {
 			cameraAuto();
         }
+		updateCamera();
 }
 
 //--------------------------------------------------------------
@@ -172,6 +175,23 @@ void ofApp::loadJson() {
 	BlockPack::load(bic)->select();
 	TexturePack::load(tic)->select();
 	TexturePack::getCurrent()->resolve();
+}
+
+void ofApp::updateCamera() {
+	camera.rehash();
+	shader.begin();
+	shader.setUniformMatrix4f("uMVPMatrix", (camera.getProjectionMatrix() * camera.getViewMatrix()));
+	shader.setUniformMatrix4f("uNormalMatrix", (camera.computeNormalMatrix(glm::mat4(1.0f))));
+	shader.end();
+}
+
+void ofApp::updateMaterial() {
+	shader.begin();
+	shader.setUniform4f("uAmbient", glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
+	shader.setUniform4f("uDiffuse", glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
+	shader.setUniform4f("uSpecular", glm::vec4(0.f, 0.f, 0.f, 1.0f));
+	shader.setUniform1f("uShininess", 50);
+	shader.end();
 }
 
 void ofApp::drawSettingsWindow() {
