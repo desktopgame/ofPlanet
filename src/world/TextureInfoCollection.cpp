@@ -2,6 +2,7 @@
 
 #include "../picojson/picojson.h"
 #include <ofFileUtils.h>
+#include <ofUtils.h>
 
 namespace planet {
 TextureInfoCollection::TextureInfoCollection(const std::string& baseDirectory)
@@ -130,6 +131,6 @@ std::string TextureInfoCollection::getBaseDirectory() const {
         return this->baseDirectory;
 }
 std::string TextureInfoCollection::getBasePath() const {
-	return ofFilePath::join(ofFilePath::getCurrentExeDir(), baseDirectory);
+	return ofToDataPath(baseDirectory);
 }
 }  // namespace planet

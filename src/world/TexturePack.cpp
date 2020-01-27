@@ -1,6 +1,7 @@
 #include "TexturePack.hpp"
 
 #include <algorithm>
+#include <ofUtils.h>
 
 #include "Block.hpp"
 #include "BlockPack.hpp"
@@ -157,7 +158,7 @@ void TexturePack::resolve() {
 std::string TexturePack::getBaseDirectory() const { return baseDirectory; }
 
 std::string TexturePack::getBasePath() const {
-	return ofFilePath::join(ofFilePath::getCurrentExeDir(), baseDirectory);
+	return ofToDataPath(baseDirectory);
 }
 
 // protected
