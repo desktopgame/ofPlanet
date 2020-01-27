@@ -351,7 +351,6 @@ Luaには実数型と整数型の区別がありません。
 * [lua](https://www.lua.org/) 
 * [thelink2012/any](https://github.com/thelink2012/any/blob/master/any.hpp)
 * [kazuho/picojson](https://github.com/kazuho/picojson)
-* [mapbox/variant](https://github.com/mapbox/variant)
 * [Reputeless/PerlinNoise](https://github.com/Reputeless/PerlinNoise)
 
 # アセット
