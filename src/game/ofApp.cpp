@@ -1,7 +1,6 @@
 #include "ofApp.h"
 #include "../common/GLM.hpp"
 #include "../common/glfw.hpp"
-#include "../io/File.hpp"
 #include "../io/Path.hpp"
 #include "../world/Planet.hpp"
 #include "../world/World.hpp"
@@ -163,10 +162,14 @@ void ofApp::loadShader() {
 }
 
 void ofApp::loadJson() {
+	auto cwd = ofFilePath::getCurrentExeDir();
+	auto texBuf = ofBufferFromFile(ofFilePath::join(cwd, "./textures.json"));
+	auto blockBuf = ofBufferFromFile(ofFilePath::join(cwd, "./blocks.json"));
+
 	TextureInfoCollection tic;
-	tic.deserialize(File::readAllText("./textures.json"));
+	tic.deserialize(std::string(texBuf.getData()));
 	BlockInfoCollection bic;
-	bic.deserialize(File::readAllText("./blocks.json"));
+	bic.deserialize(std::string(blockBuf.getData()));
 	BlockPack::load(bic)->select();
 	TexturePack::load(tic)->select();
 	TexturePack::getCurrent()->resolve();
@@ -398,7 +401,8 @@ void ofApp::bridgeDebugMessage(GLenum source, GLenum type, GLuint eid,
 
 void ofApp::exportJson(const std::string& outputFile) {
         if (!isProcessing()) {
-                File::remove(outputFile);
+				auto cwd = ofFilePath::getCurrentExeDir();
+				ofFile::removeFile(ofFilePath::join(cwd, outputFile));
                 this->asyncOp = WorldIO::toJson(outputFile, planet->getWorld());
         }
 }
@@ -410,8 +414,9 @@ void ofApp::exportObj(const std::string& outputDir) {
 		if (splitCount.value <= 1) {
 			auto outputFile = Path::build(
 				std::vector<std::string>{outputDir, "data.obj"});
-			File::remove(outputFile);
-			File::remove(outputFile + ".mtl");
+			auto cwd = ofFilePath::getCurrentExeDir();
+			ofFile::removeFile(ofFilePath::join(cwd, outputFile));
+			ofFile::removeFile(ofFilePath::join(cwd, outputFile + ".mtl"));
 			this->asyncOp = WorldIO::toObj(outputDir, planet->getWorld());
 		} else {
 			char buf[64];
@@ -428,8 +433,9 @@ void ofApp::exportObj(const std::string& outputDir) {
 				ofDirectory::createDirectory(ofFilePath::join(ofFilePath::getCurrentExeDir(), newOutputDir));
 				auto outputFile = Path::build(
 					std::vector<std::string>{newOutputDir, "data.obj"});
-				File::remove(outputFile);
-				File::remove(outputFile + ".mtl");
+				auto cwd = ofFilePath::getCurrentExeDir();
+				ofFile::removeFile(ofFilePath::join(cwd, outputFile));
+				ofFile::removeFile(ofFilePath::join(cwd, outputFile + ".mtl"));
 				asyncs.emplace_back(WorldIO::toObj(newOutputDir, wpart.world));
 			}
 			auto aAsync = std::make_shared<Progress>();
@@ -457,7 +463,8 @@ void ofApp::exportObj(const std::string& outputDir) {
 
 void ofApp::exportBmp(const std::string& outputFile) {
         if (!isProcessing()) {
-                File::remove(outputFile);
+				auto cwd = ofFilePath::getCurrentExeDir();
+				ofFile::removeFile(ofFilePath::join(cwd, outputFile));
                 this->asyncOp = WorldIO::toBmp(outputFile, planet);
         }
 }

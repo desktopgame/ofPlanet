@@ -4,7 +4,6 @@
 #include <thread>
 #include <ofxSOIL.h>
 
-#include "../io/File.hpp"
 #include "../io/Path.hpp"
 #include "../picojson/picojson.h"
 #include "Block.hpp"
@@ -112,7 +111,10 @@ AsyncOperation WorldIO::toJson(const std::string& outputPath,
                 rootO["cell"] = picojson::value(blocksA);
                 rootO["worldSize"] = picojson::value(worldSizeO);
                 ss << picojson::value(rootO) << std::endl;
-                File::writeAllText(outputPath, ss.str());
+				ofFile file;
+				file.open((ofFilePath::join(ofFilePath::getCurrentExeDir(), outputPath)), ofFile::WriteOnly);
+				file << ss.str();
+				file.close();
                 ret->setValue(1.0f);
         }).detach();
         return ret;
@@ -340,7 +342,8 @@ void WorldIO::genTopPlane(const std::string& outputDir,
         if (std::find(texVec.begin(), texVec.end(), texName) == texVec.end()) {
                 mb.newElement(texName).map_Kd(texFileName);
                 texVec.emplace_back(texName);
-                File::copy(texPath, copyFile);
+				auto cwd = ofFilePath::getCurrentExeDir();
+				ofFile::copyFromTo(ofFilePath::join(cwd, texPath), ofFilePath::join(cwd, copyFile));
         }
         aa.useMaterial(texName);
 
@@ -399,7 +402,8 @@ void WorldIO::genBottomPlane(const std::string& outputDir,
         if (std::find(texVec.begin(), texVec.end(), texName) == texVec.end()) {
                 mb.newElement(texName).map_Kd(texFileName);
                 texVec.emplace_back(texName);
-                File::copy(texPath, copyFile);
+				auto cwd = ofFilePath::getCurrentExeDir();
+				ofFile::copyFromTo(ofFilePath::join(cwd, texPath), ofFilePath::join(cwd, copyFile));
         }
         aa.useMaterial(texName);
 
@@ -458,7 +462,8 @@ void WorldIO::genLeftPlane(const std::string& outputDir,
         if (std::find(texVec.begin(), texVec.end(), texName) == texVec.end()) {
                 mb.newElement(texName).map_Kd(texFileName);
                 texVec.emplace_back(texName);
-                File::copy(texPath, copyFile);
+				auto cwd = ofFilePath::getCurrentExeDir();
+				ofFile::copyFromTo(ofFilePath::join(cwd, texPath), ofFilePath::join(cwd, copyFile));
         }
         aa.useMaterial(texName);
 
@@ -517,7 +522,8 @@ void WorldIO::genRightPlane(const std::string& outputDir,
         if (std::find(texVec.begin(), texVec.end(), texName) == texVec.end()) {
                 mb.newElement(texName).map_Kd(texFileName);
                 texVec.emplace_back(texName);
-                File::copy(texPath, copyFile);
+				auto cwd = ofFilePath::getCurrentExeDir();
+				ofFile::copyFromTo(ofFilePath::join(cwd, texPath), ofFilePath::join(cwd, copyFile));
         }
         aa.useMaterial(texName);
 
@@ -576,7 +582,8 @@ void WorldIO::genFrontPlane(const std::string& outputDir,
         if (std::find(texVec.begin(), texVec.end(), texName) == texVec.end()) {
                 mb.newElement(texName).map_Kd(texFileName);
                 texVec.emplace_back(texName);
-                File::copy(texPath, copyFile);
+				auto cwd = ofFilePath::getCurrentExeDir();
+				ofFile::copyFromTo(ofFilePath::join(cwd, texPath), ofFilePath::join(cwd, copyFile));
         }
         aa.useMaterial(texName);
 
@@ -635,7 +642,8 @@ void WorldIO::genBackPlane(const std::string& outputDir,
         if (std::find(texVec.begin(), texVec.end(), texName) == texVec.end()) {
                 mb.newElement(texName).map_Kd(texFileName);
                 texVec.emplace_back(texName);
-                File::copy(texPath, copyFile);
+				auto cwd = ofFilePath::getCurrentExeDir();
+				ofFile::copyFromTo(ofFilePath::join(cwd, texPath), ofFilePath::join(cwd, copyFile));
         }
         aa.useMaterial(texName);
 
