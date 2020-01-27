@@ -18,33 +18,33 @@ std::shared_ptr<TexturePack> TexturePack::load(
         for (int i = 0; i < textureInfoCollection.getTextureInfoCount(); i++) {
                 auto tinfo = textureInfoCollection.getTextureInfo(i);
                 TextureSet set(ret, tinfo.reference);
-                if (tinfo.mappingRule.all) {
+                if (tinfo.mappingRule.all.hasValue()) {
                         set.top = set.bottom = set.front = set.back = set.left =
                             set.right =
-                                (tinfo.baseFileName + *tinfo.mappingRule.all);
+                                (tinfo.baseFileName + tinfo.mappingRule.all.getValue());
                 }
-                if (tinfo.mappingRule.top) {
-                        set.top = (tinfo.baseFileName + *tinfo.mappingRule.top);
+                if (tinfo.mappingRule.top.hasValue()) {
+                        set.top = (tinfo.baseFileName + tinfo.mappingRule.top.getValue());
                 }
-                if (tinfo.mappingRule.bottom) {
+                if (tinfo.mappingRule.bottom.hasValue()) {
                         set.bottom =
-                            (tinfo.baseFileName + *tinfo.mappingRule.bottom);
+                            (tinfo.baseFileName + tinfo.mappingRule.bottom.getValue());
                 }
-                if (tinfo.mappingRule.front) {
+                if (tinfo.mappingRule.front.hasValue()) {
                         set.front =
-                            (tinfo.baseFileName + *tinfo.mappingRule.front);
+                            (tinfo.baseFileName + tinfo.mappingRule.front.getValue());
                 }
-                if (tinfo.mappingRule.back) {
+                if (tinfo.mappingRule.back.hasValue()) {
                         set.back =
-                            (tinfo.baseFileName + *tinfo.mappingRule.back);
+                            (tinfo.baseFileName + tinfo.mappingRule.back.getValue());
                 }
-                if (tinfo.mappingRule.left) {
+                if (tinfo.mappingRule.left.hasValue()) {
                         set.left =
-                            (tinfo.baseFileName + *tinfo.mappingRule.left);
+                            (tinfo.baseFileName + tinfo.mappingRule.left.getValue());
                 }
-                if (tinfo.mappingRule.right) {
+                if (tinfo.mappingRule.right.hasValue()) {
                         set.right =
-                            (tinfo.baseFileName + *tinfo.mappingRule.right);
+                            (tinfo.baseFileName + tinfo.mappingRule.right.getValue());
                 }
                 ret->addTextureSet(set);
         }

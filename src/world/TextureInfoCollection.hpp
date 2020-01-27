@@ -3,13 +3,12 @@
 #define WORLD_TEXTURECOLLECTIONINFO_HPP
 #include <string>
 #include <vector>
-
-#include "../mapbox/optional.hpp"
+#include "Optional.hpp"
 
 namespace planet {
 struct TextureMappingRule {
         explicit TextureMappingRule() = default;
-        mapbox::util::optional<std::string> all, top, bottom, left, right,
+		Optional<std::string> all, top, bottom, left, right,
             front, back;
 };
 

@@ -17,36 +17,36 @@ std::string TextureInfoCollection::serialize() const {
                 textureO["baseFileName"] =
                     picojson::value(texInfo.baseFileName);
                 textureO["reference"] = picojson::value(texInfo.reference);
-                if (texInfo.mappingRule.all) {
+                if (texInfo.mappingRule.all.hasValue()) {
                         mappingRuleO["all"] =
-                            picojson::value(*texInfo.mappingRule.all);
+                            picojson::value(texInfo.mappingRule.all.getValue());
                 }
                 // front, back
-                if (texInfo.mappingRule.front) {
+                if (texInfo.mappingRule.front.hasValue()) {
                         mappingRuleO["front"] =
-                            picojson::value(*texInfo.mappingRule.front);
+                            picojson::value(texInfo.mappingRule.front.getValue());
                 }
-                if (texInfo.mappingRule.back) {
+                if (texInfo.mappingRule.back.hasValue()) {
                         mappingRuleO["back"] =
-                            picojson::value(*texInfo.mappingRule.back);
+                            picojson::value(texInfo.mappingRule.back.getValue());
                 }
                 // left, right
-                if (texInfo.mappingRule.left) {
+                if (texInfo.mappingRule.left.hasValue()) {
                         mappingRuleO["left"] =
-                            picojson::value(*texInfo.mappingRule.left);
+                            picojson::value(texInfo.mappingRule.left.getValue());
                 }
-                if (texInfo.mappingRule.right) {
+                if (texInfo.mappingRule.right.hasValue()) {
                         mappingRuleO["right"] =
-                            picojson::value(*texInfo.mappingRule.right);
+                            picojson::value(texInfo.mappingRule.right.getValue());
                 }
                 // top, bottom
-                if (texInfo.mappingRule.top) {
+                if (texInfo.mappingRule.top.hasValue()) {
                         mappingRuleO["top"] =
-                            picojson::value(*texInfo.mappingRule.top);
+                            picojson::value(texInfo.mappingRule.top.getValue());
                 }
-                if (texInfo.mappingRule.bottom) {
+                if (texInfo.mappingRule.bottom.hasValue()) {
                         mappingRuleO["bottom"] =
-                            picojson::value(*texInfo.mappingRule.bottom);
+                            picojson::value(texInfo.mappingRule.bottom.getValue());
                 }
                 textureO["mappingRule"] = picojson::value(mappingRuleO);
                 texturesA.push_back(picojson::value(textureO));
@@ -85,19 +85,19 @@ void TextureInfoCollection::deserialize(const std::string& json) {
                         auto val = kv.second;
                         auto valS = val.get<std::string>();
                         if (key == "all") {
-                                info.mappingRule.all = valS;
+                                info.mappingRule.all.setValue(valS);
                         } else if (key == "top") {
-                                info.mappingRule.top = valS;
+								info.mappingRule.top.setValue(valS);
                         } else if (key == "bottom") {
-                                info.mappingRule.bottom = valS;
+                                info.mappingRule.bottom.setValue(valS);
                         } else if (key == "left") {
-                                info.mappingRule.left = valS;
+                                info.mappingRule.left.setValue(valS);
                         } else if (key == "right") {
-                                info.mappingRule.right = valS;
+                                info.mappingRule.right.setValue(valS);
                         } else if (key == "front") {
-                                info.mappingRule.front = valS;
+                                info.mappingRule.front.setValue(valS);
                         } else if (key == "back") {
-                                info.mappingRule.back = valS;
+                                info.mappingRule.back.setValue(valS);
                         }
                         ++mappingRuleIter;
                 }
