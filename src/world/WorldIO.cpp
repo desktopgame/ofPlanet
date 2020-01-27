@@ -4,7 +4,6 @@
 #include <thread>
 #include <ofxSOIL.h>
 
-#include "../io/Path.hpp"
 #include "../picojson/picojson.h"
 #include "Block.hpp"
 #include "BlockPack.hpp"
@@ -111,10 +110,9 @@ AsyncOperation WorldIO::toJson(const std::string& outputPath,
                 rootO["cell"] = picojson::value(blocksA);
                 rootO["worldSize"] = picojson::value(worldSizeO);
                 ss << picojson::value(rootO) << std::endl;
-				ofFile file;
-				file.open((ofFilePath::join(ofFilePath::getCurrentExeDir(), outputPath)), ofFile::WriteOnly);
-				file << ss.str();
-				file.close();
+				std::ofstream ofs(outputPath);
+				ofs << ss.str();
+				ofs.close();
                 ret->setValue(1.0f);
         }).detach();
         return ret;
@@ -122,8 +120,7 @@ AsyncOperation WorldIO::toJson(const std::string& outputPath,
 
 AsyncOperation WorldIO::toObj(const std::string& outputDir,
                               const std::shared_ptr<World>& world) {
-        auto outputPath =
-            Path::build(std::vector<std::string>{outputDir, "data.obj"});
+		auto outputPath = ofFilePath::join(ofFilePath::getCurrentExeDir(), ofFilePath::join(outputDir, "data.obj"));
         auto ret = std::make_shared<Progress>();
         auto w = world;
         using namespace objb;
@@ -309,10 +306,8 @@ void WorldIO::genTopPlane(const std::string& outputDir,
             world->getBlock(worldPos.x, worldPos.y, worldPos.z);
         auto texPath = block->getTextureSet().getTopImage()->getPath();
         auto texName = block->getTextureReference() + std::string("_Top");
-        auto texFileName = Path::getFileNameFromPath(
-            block->getTextureSet().getTopImage()->getPath());
-        auto copyFile =
-            Path::build(std::vector<std::string>{outputDir, texFileName});
+		auto texFileName = ofFilePath::getFileName(block->getTextureSet().getTopImage()->getPath());
+        auto copyFile = ofFilePath::join(outputDir, texFileName);
 
         ObjFace face;
 
@@ -343,7 +338,7 @@ void WorldIO::genTopPlane(const std::string& outputDir,
                 mb.newElement(texName).map_Kd(texFileName);
                 texVec.emplace_back(texName);
 				auto cwd = ofFilePath::getCurrentExeDir();
-				ofFile::copyFromTo(ofFilePath::join(cwd, texPath), ofFilePath::join(cwd, copyFile));
+				ofFile::copyFromTo(texPath, ofFilePath::join(cwd, copyFile));
         }
         aa.useMaterial(texName);
 
@@ -369,10 +364,8 @@ void WorldIO::genBottomPlane(const std::string& outputDir,
             world->getBlock(worldPos.x, worldPos.y, worldPos.z);
         auto texPath = block->getTextureSet().getBottomImage()->getPath();
         auto texName = block->getTextureReference() + std::string("_Bottom");
-        auto texFileName = Path::getFileNameFromPath(
-            block->getTextureSet().getBottomImage()->getPath());
-        auto copyFile =
-            Path::build(std::vector<std::string>{outputDir, texFileName});
+		auto texFileName = ofFilePath::getFileName(block->getTextureSet().getBottomImage()->getPath());
+		auto copyFile = ofFilePath::join(outputDir, texFileName);
 
         ObjFace face;
 
@@ -403,7 +396,7 @@ void WorldIO::genBottomPlane(const std::string& outputDir,
                 mb.newElement(texName).map_Kd(texFileName);
                 texVec.emplace_back(texName);
 				auto cwd = ofFilePath::getCurrentExeDir();
-				ofFile::copyFromTo(ofFilePath::join(cwd, texPath), ofFilePath::join(cwd, copyFile));
+				ofFile::copyFromTo(texPath, ofFilePath::join(cwd, copyFile));
         }
         aa.useMaterial(texName);
 
@@ -429,10 +422,8 @@ void WorldIO::genLeftPlane(const std::string& outputDir,
             world->getBlock(worldPos.x, worldPos.y, worldPos.z);
         auto texPath = block->getTextureSet().getLeftImage()->getPath();
         auto texName = block->getTextureReference() + std::string("_Left");
-        auto texFileName = Path::getFileNameFromPath(
-            block->getTextureSet().getLeftImage()->getPath());
-        auto copyFile =
-            Path::build(std::vector<std::string>{outputDir, texFileName});
+		auto texFileName = ofFilePath::getFileName(block->getTextureSet().getLeftImage()->getPath());
+		auto copyFile = ofFilePath::join(outputDir, texFileName);
 
         ObjFace face;
 
@@ -463,7 +454,7 @@ void WorldIO::genLeftPlane(const std::string& outputDir,
                 mb.newElement(texName).map_Kd(texFileName);
                 texVec.emplace_back(texName);
 				auto cwd = ofFilePath::getCurrentExeDir();
-				ofFile::copyFromTo(ofFilePath::join(cwd, texPath), ofFilePath::join(cwd, copyFile));
+				ofFile::copyFromTo(texPath, ofFilePath::join(cwd, copyFile));
         }
         aa.useMaterial(texName);
 
@@ -489,10 +480,8 @@ void WorldIO::genRightPlane(const std::string& outputDir,
             world->getBlock(worldPos.x, worldPos.y, worldPos.z);
         auto texPath = block->getTextureSet().getRightImage()->getPath();
         auto texName = block->getTextureReference() + std::string("_Right");
-        auto texFileName = Path::getFileNameFromPath(
-            block->getTextureSet().getRightImage()->getPath());
-        auto copyFile =
-            Path::build(std::vector<std::string>{outputDir, texFileName});
+		auto texFileName = ofFilePath::getFileName(block->getTextureSet().getRightImage()->getPath());
+		auto copyFile = ofFilePath::join(outputDir, texFileName);
 
         ObjFace face;
 
@@ -523,7 +512,7 @@ void WorldIO::genRightPlane(const std::string& outputDir,
                 mb.newElement(texName).map_Kd(texFileName);
                 texVec.emplace_back(texName);
 				auto cwd = ofFilePath::getCurrentExeDir();
-				ofFile::copyFromTo(ofFilePath::join(cwd, texPath), ofFilePath::join(cwd, copyFile));
+				ofFile::copyFromTo(texPath, ofFilePath::join(cwd, copyFile));
         }
         aa.useMaterial(texName);
 
@@ -549,10 +538,8 @@ void WorldIO::genFrontPlane(const std::string& outputDir,
             world->getBlock(worldPos.x, worldPos.y, worldPos.z);
         auto texPath = block->getTextureSet().getFrontImage()->getPath();
         auto texName = block->getTextureReference() + std::string("_Front");
-        auto texFileName = Path::getFileNameFromPath(
-            block->getTextureSet().getFrontImage()->getPath());
-        auto copyFile =
-            Path::build(std::vector<std::string>{outputDir, texFileName});
+		auto texFileName = ofFilePath::getFileName(block->getTextureSet().getFrontImage()->getPath());
+		auto copyFile = ofFilePath::join(outputDir, texFileName);
 
         ObjFace face;
 
@@ -583,7 +570,7 @@ void WorldIO::genFrontPlane(const std::string& outputDir,
                 mb.newElement(texName).map_Kd(texFileName);
                 texVec.emplace_back(texName);
 				auto cwd = ofFilePath::getCurrentExeDir();
-				ofFile::copyFromTo(ofFilePath::join(cwd, texPath), ofFilePath::join(cwd, copyFile));
+				ofFile::copyFromTo(texPath, ofFilePath::join(cwd, copyFile));
         }
         aa.useMaterial(texName);
 
@@ -609,10 +596,8 @@ void WorldIO::genBackPlane(const std::string& outputDir,
             world->getBlock(worldPos.x, worldPos.y, worldPos.z);
         auto texPath = block->getTextureSet().getBackImage()->getPath();
         auto texName = block->getTextureReference() + std::string("_Back");
-        auto texFileName = Path::getFileNameFromPath(
-            block->getTextureSet().getBackImage()->getPath());
-        auto copyFile =
-            Path::build(std::vector<std::string>{outputDir, texFileName});
+		auto texFileName = ofFilePath::getFileName(block->getTextureSet().getBackImage()->getPath());
+		auto copyFile = ofFilePath::join(outputDir, texFileName);
 
         ObjFace face;
 
@@ -643,7 +628,7 @@ void WorldIO::genBackPlane(const std::string& outputDir,
                 mb.newElement(texName).map_Kd(texFileName);
                 texVec.emplace_back(texName);
 				auto cwd = ofFilePath::getCurrentExeDir();
-				ofFile::copyFromTo(ofFilePath::join(cwd, texPath), ofFilePath::join(cwd, copyFile));
+				ofFile::copyFromTo(texPath, ofFilePath::join(cwd, copyFile));
         }
         aa.useMaterial(texName);
 

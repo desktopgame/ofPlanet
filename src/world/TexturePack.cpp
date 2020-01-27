@@ -2,7 +2,6 @@
 
 #include <algorithm>
 
-#include "../io/Path.hpp"
 #include "Block.hpp"
 #include "BlockPack.hpp"
 #include "Plane.hpp"
@@ -50,28 +49,22 @@ std::shared_ptr<TexturePack> TexturePack::load(
         }
         // load textures
         for (TextureSet set : ret->textureSets) {
-                auto topFile = Path::build(std::vector<std::string>{
-                    textureInfoCollection.getBaseDirectory(), set.top});
+				auto topFile = ofFilePath::join(ofFilePath::getCurrentExeDir(), ofFilePath::join(textureInfoCollection.getBaseDirectory(), set.top));
                 auto topTex = std::make_shared<Texture>();
                 topTex->load(topFile + ".png");
-                auto bottomFile = Path::build(std::vector<std::string>{
-                    textureInfoCollection.getBaseDirectory(), set.bottom});
+				auto bottomFile = ofFilePath::join(ofFilePath::getCurrentExeDir(), ofFilePath::join(textureInfoCollection.getBaseDirectory(), set.bottom));
                 auto bottomTex = std::make_shared<Texture>();
                 bottomTex->load(bottomFile + ".png");
-                auto leftFile = Path::build(std::vector<std::string>{
-                    textureInfoCollection.getBaseDirectory(), set.left});
+                auto leftFile = ofFilePath::join(ofFilePath::getCurrentExeDir(), ofFilePath::join(textureInfoCollection.getBaseDirectory(), set.left));
                 auto leftTex = std::make_shared<Texture>();
                 leftTex->load(leftFile + ".png");
-                auto rightFile = Path::build(std::vector<std::string>{
-                    textureInfoCollection.getBaseDirectory(), set.right});
+                auto rightFile = ofFilePath::join(ofFilePath::getCurrentExeDir(), ofFilePath::join(textureInfoCollection.getBaseDirectory(), set.right));
                 auto rightTex = std::make_shared<Texture>();
                 rightTex->load(rightFile + ".png");
-                auto frontFile = Path::build(std::vector<std::string>{
-                    textureInfoCollection.getBaseDirectory(), set.front});
+                auto frontFile = ofFilePath::join(ofFilePath::getCurrentExeDir(), ofFilePath::join(textureInfoCollection.getBaseDirectory(), set.front));
                 auto frontTex = std::make_shared<Texture>();
                 frontTex->load(frontFile + ".png");
-                auto backFile = Path::build(std::vector<std::string>{
-                    textureInfoCollection.getBaseDirectory(), set.back});
+                auto backFile = ofFilePath::join(ofFilePath::getCurrentExeDir(), ofFilePath::join(textureInfoCollection.getBaseDirectory(), set.back));
                 auto backTex = std::make_shared<Texture>();
                 backTex->load(backFile + ".png");
 

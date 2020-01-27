@@ -1,7 +1,6 @@
 #include "ofApp.h"
 #include "../common/GLM.hpp"
 #include "../common/glfw.hpp"
-#include "../io/Path.hpp"
 #include "../world/Planet.hpp"
 #include "../world/World.hpp"
 #include "../world/BlockPack.hpp"
@@ -232,15 +231,13 @@ void ofApp::drawExporterWindow() {
 		if (ImGui::Button("Export")) {
 			ofDirectory::createDirectory(ofFilePath::join(ofFilePath::getCurrentExeDir(), exportDir.getString()));
 			if (exportMode == EXPORT_JSON) {
-				exportJson(Path::build(std::vector<std::string>{
-					exportDir.getString(), "data.json"}));
+				exportJson(ofFilePath::join(ofFilePath::getCurrentExeDir(), ofFilePath::join(exportDir.getString(), "data.json")));
 			}
 			else if (exportMode == EXPORT_OBJ) {
 				exportObj(exportDir.getString());
 			}
 			else if (exportMode == EXPORT_BMP) {
-				exportBmp(Path::build(std::vector<std::string>{
-					exportDir.getString(), "data.bmp"}));
+				exportBmp(ofFilePath::join(ofFilePath::getCurrentExeDir(), ofFilePath::join(exportDir.getString(), "data.bmp")));
 			}
 		}
 	}
@@ -412,8 +409,7 @@ void ofApp::exportObj(const std::string& outputDir) {
 			return;
 		}
 		if (splitCount.value <= 1) {
-			auto outputFile = Path::build(
-				std::vector<std::string>{outputDir, "data.obj"});
+			auto outputFile = ofFilePath::join(ofFilePath::getCurrentExeDir(), ofFilePath::join(outputDir, "data.obj"));
 			auto cwd = ofFilePath::getCurrentExeDir();
 			ofFile::removeFile(ofFilePath::join(cwd, outputFile));
 			ofFile::removeFile(ofFilePath::join(cwd, outputFile + ".mtl"));
@@ -431,8 +427,7 @@ void ofApp::exportObj(const std::string& outputDir) {
 
 				auto newOutputDir = cpOutputDir + std::string(buf);
 				ofDirectory::createDirectory(ofFilePath::join(ofFilePath::getCurrentExeDir(), newOutputDir));
-				auto outputFile = Path::build(
-					std::vector<std::string>{newOutputDir, "data.obj"});
+				auto outputFile = ofFilePath::join(ofFilePath::getCurrentExeDir(), ofFilePath::join(newOutputDir, "data.obj"));
 				auto cwd = ofFilePath::getCurrentExeDir();
 				ofFile::removeFile(ofFilePath::join(cwd, outputFile));
 				ofFile::removeFile(ofFilePath::join(cwd, outputFile + ".mtl"));
