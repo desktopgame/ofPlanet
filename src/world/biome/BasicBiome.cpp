@@ -66,6 +66,9 @@ void BasicBiome::generate(BlockTable& blockTable) {
                         continue;
                 }
                 for (int i = y; i < baseY; i++) {
+						if (blockTable.get(xz.x, i, xz.y).id != -1) {
+							continue;
+						}
                         onGenerateWater(blockTable, xz.x, i, xz.y);
                 }
         }
