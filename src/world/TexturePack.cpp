@@ -2,7 +2,6 @@
 
 #include <algorithm>
 
-#include "../io/Directory.hpp"
 #include "../io/Path.hpp"
 #include "Block.hpp"
 #include "BlockPack.hpp"

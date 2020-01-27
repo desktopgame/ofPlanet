@@ -1,7 +1,6 @@
 #include "ofApp.h"
 #include "../common/GLM.hpp"
 #include "../common/glfw.hpp"
-#include "../io/Directory.hpp"
 #include "../io/File.hpp"
 #include "../io/Path.hpp"
 #include "../world/Planet.hpp"
@@ -145,12 +144,13 @@ void ofApp::dragEvent(ofDragInfo dragInfo) {}
 void ofApp::loadBiomes() {
 	biomeNames.items.clear();
 	biomes.clear();
-	auto files = Directory::files("./data/script", false);
-	for (int i = 0; i < static_cast<int>(files.size()); i++) {
-		auto file = files.at(i);
+	ofDirectory scriptDir("script");
+	scriptDir.allowExt("lua");
+	for (int i = 0; i < scriptDir.listDir(); i++) {
+		auto file = scriptDir.getFile(i);
 		biomes.emplace_back(
-			std::make_shared<planet::ScriptBiome>(file));
-		biomeNames.items.emplace_back(file);
+			std::make_shared<planet::ScriptBiome>(file.path()));
+		biomeNames.items.emplace_back(file.getFileName());
 	}
 	biomeNames.rehash();
 }
@@ -227,7 +227,7 @@ void ofApp::drawExporterWindow() {
 	else {
 		//‚»‚¤‚Å‚È‚¯‚ê‚Îƒ{ƒ^ƒ“‚ð•\Ž¦
 		if (ImGui::Button("Export")) {
-			Directory::create(exportDir.getString());
+			ofDirectory::createDirectory(ofFilePath::join(ofFilePath::getCurrentExeDir(), exportDir.getString()));
 			if (exportMode == EXPORT_JSON) {
 				exportJson(Path::build(std::vector<std::string>{
 					exportDir.getString(), "data.json"}));
@@ -425,7 +425,7 @@ void ofApp::exportObj(const std::string& outputDir) {
 				std::sprintf(buf, "_Split_x%dz%d", wpart.offset.x, wpart.offset.z);
 
 				auto newOutputDir = cpOutputDir + std::string(buf);
-				Directory::create(newOutputDir);
+				ofDirectory::createDirectory(ofFilePath::join(ofFilePath::getCurrentExeDir(), newOutputDir));
 				auto outputFile = Path::build(
 					std::vector<std::string>{newOutputDir, "data.obj"});
 				File::remove(outputFile);
