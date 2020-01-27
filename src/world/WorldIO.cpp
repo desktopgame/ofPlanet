@@ -125,6 +125,12 @@ AsyncOperation WorldIO::toObj(const std::string& outputDir,
         auto w = world;
         using namespace objb;
         std::thread([outputPath, w, ret, outputDir]() -> void {
+				// 先にファイルを消しておく
+				auto outputFile = ofFilePath::join(ofFilePath::getCurrentExeDir(), ofFilePath::join(outputDir, "data.obj"));
+				auto cwd = ofFilePath::getCurrentExeDir();
+				ofFile::removeFile(ofFilePath::join(cwd, outputFile));
+				ofFile::removeFile(ofFilePath::join(cwd, outputFile + ".mtl"));
+				// 共有される頂点情報を書き込んでおく
                 ObjBuilder ob;
                 MtlBuilder mb;
                 ob.globalTexcoord(glm::vec2(0, 0))
@@ -257,13 +263,13 @@ AsyncOperation WorldIO::toObj(const std::string& outputDir,
                                 }
                         }
                 }
-                // OBJ��ۑ�
+				// オブジェクトファイルを生成
                 std::ofstream objOFS(outputPath);
                 if (!objOFS.fail()) {
                         ob.write(objOFS);
                 }
                 objOFS.close();
-                // MTL��ۑ�
+				// マテリアルファイルを生成
                 std::ofstream mtlOFS(outputPath + ".mtl");
                 if (!mtlOFS.fail()) {
                         mtlOFS << mb.toString() << std::endl;
@@ -272,6 +278,52 @@ AsyncOperation WorldIO::toObj(const std::string& outputDir,
                 ret->setValue(1.0f);
         }).detach();
         return ret;
+}
+
+AsyncOperation WorldIO::toObj(const std::string & outputDir, const std::shared_ptr<World>& world, int splitCount) {
+	// ファイル名を作るためのバッファ初期化
+	char buf[64];
+	std::memset(buf, '\0', 64);
+	std::string cpOutputDir = outputDir;
+	// ワールドを指定の分割数で分割
+	auto worlds = world->split(splitCount);
+	auto asyncVec = std::vector<AsyncOperation>();
+	int splitCountN = static_cast<int>(worlds.size());
+	// 分割されたワールド全てに
+	for (int i = 0; i < splitCountN; i++) {
+		auto wpart = worlds.at(i);
+		// 分割されたワールドが、どれだけのオフセットを加えれば
+		// ただしい位置に表示されるかをファイル名に含める
+		std::sprintf(buf, "_Split_x%dz%d", wpart.offset.x, wpart.offset.z);
+		// ワールドを格納するためのディレクトリを作成
+		auto newOutputDir = cpOutputDir + std::string(buf);
+		ofDirectory::createDirectory(ofFilePath::join(ofFilePath::getCurrentExeDir(), newOutputDir));
+		// 既存のファイルを削除して、生成を開始
+		auto outputFile = ofFilePath::join(ofFilePath::getCurrentExeDir(), ofFilePath::join(newOutputDir, "data.obj"));
+		asyncVec.emplace_back(WorldIO::toObj(newOutputDir, wpart.world));
+	}
+	// 全てのワールド生成が終わるまで待機する
+	auto aAsync = std::make_shared<Progress>();
+	std::thread([aAsync, asyncVec, splitCountN]() -> void {
+		bool run = true;
+		int count = 0;
+		while (run) {
+			run = false;
+			count = 0;
+			// すべて終わるまで待機
+			for (auto aa : asyncVec) {
+				if (!aa->isDone()) {
+					run = true;
+				}
+				else {
+					count++;
+				}
+			}
+			aAsync->setValue(static_cast<float>(count) / static_cast<float>(splitCountN));
+		}
+		aAsync->setValue(1.0f);
+	}).detach();
+	return aAsync;
 }
 
 AsyncOperation WorldIO::toBmp(const std::string& outputPath,

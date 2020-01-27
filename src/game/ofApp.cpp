@@ -435,44 +435,7 @@ void ofApp::exportObj(const std::string& outputDir) {
 			ofFile::removeFile(ofFilePath::join(cwd, outputFile + ".mtl"));
 			this->asyncOp = WorldIO::toObj(outputDir, planet->getWorld());
 		} else {
-			char buf[64];
-			std::memset(buf, '\0', 64);
-			std::string cpOutputDir = outputDir;
-			auto worlds = planet->getWorld()->split(splitCount.value);
-			int splitCountN = static_cast<int>(worlds.size());
-			auto asyncs = std::vector<AsyncOperation>();
-			for (int i = 0; i < splitCountN; i++) {
-				auto wpart = worlds.at(i);
-				std::sprintf(buf, "_Split_x%dz%d", wpart.offset.x, wpart.offset.z);
-
-				auto newOutputDir = cpOutputDir + std::string(buf);
-				ofDirectory::createDirectory(ofFilePath::join(ofFilePath::getCurrentExeDir(), newOutputDir));
-				auto outputFile = ofFilePath::join(ofFilePath::getCurrentExeDir(), ofFilePath::join(newOutputDir, "data.obj"));
-				auto cwd = ofFilePath::getCurrentExeDir();
-				ofFile::removeFile(ofFilePath::join(cwd, outputFile));
-				ofFile::removeFile(ofFilePath::join(cwd, outputFile + ".mtl"));
-				asyncs.emplace_back(WorldIO::toObj(newOutputDir, wpart.world));
-			}
-			auto aAsync = std::make_shared<Progress>();
-			this->asyncOp = aAsync;
-			std::thread([aAsync, asyncs, splitCountN]() -> void {
-				bool run = true;
-				int count = 0;
-				while (run) {
-					run = false;
-					count = 0;
-					// ‚·‚×‚ÄI‚í‚é‚Ü‚Å‘Ò‹@
-					for (auto aa : asyncs) {
-						if (!aa->isDone()) {
-							run = true;
-						} else {
-							count++;
-						}
-					}
-					aAsync->setValue(static_cast<float>(count) / static_cast<float>(splitCountN));
-				}
-				aAsync->setValue(1.0f);
-			}).detach();
+			this->asyncOp = WorldIO::toObj(outputDir, planet->getWorld(), splitCount.value);
 		}
 }
 

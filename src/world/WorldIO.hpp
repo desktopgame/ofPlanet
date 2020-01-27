@@ -34,6 +34,7 @@ class WorldIO {
                                      const std::shared_ptr<World>& world);
         static AsyncOperation toObj(const std::string& outputDir,
                                     const std::shared_ptr<World>& world);
+		static AsyncOperation toObj(const std::string& outputDir, const std::shared_ptr<World>& world, int splitCount);
         static AsyncOperation toBmp(const std::string& outputPath,
                                     const std::shared_ptr<Planet>& planet);
 
