@@ -3,7 +3,7 @@
 #include "../common/GLM.hpp"
 namespace planet {
 
-#define Q_I (glm::mat4(1.0f))
+
 
 SideRenderer::SideRenderer(ofShader& shader)
     : shader(shader), isInvalid(true), planes(), posVec(), vbo() {
