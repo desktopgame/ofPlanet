@@ -416,7 +416,7 @@ void ofApp::bridgeDebugMessage(GLenum source, GLenum type, GLuint eid,
 
 void ofApp::exportJson(const std::string& outputFile) {
         if (!isProcessing()) {
-                this->asyncOp = WorldIO::toJson(outputFile, planet->getWorld());
+                this->asyncOp = WorldIO::saveJson(outputFile, planet->getWorld());
         }
 }
 
@@ -427,15 +427,15 @@ void ofApp::exportObj(const std::string& outputDir) {
 		if (splitCount.value <= 1) {
 			auto outputFile = ofFilePath::join(ofFilePath::getCurrentExeDir(), ofFilePath::join(outputDir, "data.obj"));
 			auto cwd = ofFilePath::getCurrentExeDir();
-			this->asyncOp = WorldIO::toObj(outputDir, planet->getWorld());
+			this->asyncOp = WorldIO::saveObj(outputDir, planet->getWorld());
 		} else {
-			this->asyncOp = WorldIO::toObj(outputDir, planet->getWorld(), splitCount.value);
+			this->asyncOp = WorldIO::saveObj(outputDir, planet->getWorld(), splitCount.value);
 		}
 }
 
 void ofApp::exportBmp(const std::string& outputFile) {
         if (!isProcessing()) {
-                this->asyncOp = WorldIO::toBmp(outputFile, planet);
+                this->asyncOp = WorldIO::saveBmp(outputFile, planet);
         }
 }
 

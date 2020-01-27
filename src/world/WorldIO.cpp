@@ -24,7 +24,7 @@ void Progress::setValue(float value) {
 float Progress::getValue() const { return this->value; }
 bool Progress::isDone() const { return this->value >= 1.0f; }
 // WorldIO
-AsyncOperation WorldIO::toJson(const std::string& outputFile,
+AsyncOperation WorldIO::saveJson(const std::string& outputFile,
                                const std::shared_ptr<World>& world) {
         auto ret = std::make_shared<Progress>();
         if (!world) {
@@ -121,7 +121,7 @@ AsyncOperation WorldIO::toJson(const std::string& outputFile,
         return ret;
 }
 
-AsyncOperation WorldIO::toObj(const std::string& outputDir,
+AsyncOperation WorldIO::saveObj(const std::string& outputDir,
                               const std::shared_ptr<World>& world) {
         auto ret = std::make_shared<Progress>();
         auto w = world;
@@ -281,7 +281,7 @@ AsyncOperation WorldIO::toObj(const std::string& outputDir,
         return ret;
 }
 
-AsyncOperation WorldIO::toObj(const std::string & outputDir, const std::shared_ptr<World>& world, int splitCount) {
+AsyncOperation WorldIO::saveObj(const std::string & outputDir, const std::shared_ptr<World>& world, int splitCount) {
 	// ファイル名を作るためのバッファ初期化
 	char buf[64];
 	std::memset(buf, '\0', 64);
@@ -301,7 +301,7 @@ AsyncOperation WorldIO::toObj(const std::string & outputDir, const std::shared_p
 		ofDirectory::createDirectory(ofFilePath::join(ofFilePath::getCurrentExeDir(), newOutputDir));
 		// 既存のファイルを削除して、生成を開始
 		auto outputFile = ofFilePath::join(ofFilePath::getCurrentExeDir(), ofFilePath::join(newOutputDir, "data.obj"));
-		asyncVec.emplace_back(WorldIO::toObj(newOutputDir, wpart.world));
+		asyncVec.emplace_back(WorldIO::saveObj(newOutputDir, wpart.world));
 	}
 	// 全てのワールド生成が終わるまで待機する
 	auto aAsync = std::make_shared<Progress>();
@@ -327,7 +327,7 @@ AsyncOperation WorldIO::toObj(const std::string & outputDir, const std::shared_p
 	return aAsync;
 }
 
-AsyncOperation WorldIO::toBmp(const std::string& outputFile,
+AsyncOperation WorldIO::saveBmp(const std::string& outputFile,
                               const std::shared_ptr<Planet>& planet) {
         auto ret = std::make_shared<Progress>();
         auto w = planet->getWorld();
