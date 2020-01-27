@@ -35,6 +35,7 @@ class TextureInfoCollection {
         int getTextureInfoCount() const;
 
         std::string getBaseDirectory() const;
+		std::string getBasePath() const;
 
        private:
         std::vector<TextureInfo> textureInfoVec;
