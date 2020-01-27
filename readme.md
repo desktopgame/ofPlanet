@@ -1,7 +1,7 @@
 # ofPlanetユーザーマニュアル
 ofPlanetは地形生成エディターです。  
 ※画像はofPlanetで生成したモデルをUnityで表示した様子
-![Unityで生成したモデルのプレビュー](ss_unity.png)
+![ofPlanetで生成したモデルのプレビュー](ss_unity.png)
 
 # 動作環境
 このアプリケーションはVisualStudio2017を用いて実装されました。  
