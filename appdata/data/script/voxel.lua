@@ -32,8 +32,8 @@ Leaf,Leaf,Leaf
 Leaf,Leaf,Leaf
 Leaf,Leaf,Leaf
 ]]) 
-    return "default"
--- return "ignore"
+-- return "default"
+    return "ignore"
 end
 
 function onFixHeight(y)
@@ -47,11 +47,11 @@ function onGenerateWater(x, y, z)
 end
 
 function onGenerateStructures()
-    expandstruct(posX, posY, posZ, "Model")
 end
 
 function onGenerateCave(x, y, z, noise)
 end
 
 function onPostGenerate()
+    expandstruct(posX, posY, posZ, "Model")
 end
