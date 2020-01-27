@@ -215,22 +215,30 @@ LuaでやるべきことはC++から受け取ったノイズ(実数型)を使用
 
 #### onFixHeight(y) -> y
 y: -1 ~ 1 で表される2Dノイズ  
+C++で内部的にノイズを生成したあとで呼び出されます。  
 パーリンノイズ2Dで生成されたy座標を必要ならフィルタできます。
 
 #### onGenerateTerrain(x, y, z) -> void
 x, y, z: 生成先の座標  
+onFixHeightによって地形(Terrain)を生成したあとで、  
+生成された地形の一番高い座標全てに対してこの関数が呼ばれます。
 地表にブロックを配置します。
 
 #### onGenerateWater(x, y, z) -> void
 x, y, z: 生成先の座標  
+onGenerateTerrainによってブロックを配置したあとで、  
+"ワールドのY方向のサイズ/2-5" より低い位置のなにもない全ての座標に対してこの関数が呼ばれます。  
 水を生成します。
 
 #### onGenerateStructures() -> void
+onGenerateWaterによって水を生成したあとで呼ばれます。  
 構造物を生成します。
 
 #### onGenerateCave(x, y, z, noise) -> void
 x, y, z: 生成先の座標  
 noise: -1 ~ 1 で表される3Dノイズ  
+onGenerateStructuresによって構造物を生成したあとで、  
+"ワールドのY方向のサイズ/2" より低い位置の全ての座標に対してこの関数が呼ばれます。
 洞窟を生成します。
 
 #### onPostGenerate -> void
