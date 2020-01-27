@@ -16,6 +16,9 @@ ScriptBiome::ScriptBiome(const std::string& filename)
         lua.define("setblock", lua_setblock);
 		lua.define("putblock", lua_putblock);
         lua.define("getblock", lua_getblock);
+		lua.define("setrange", lua_setrange);
+		lua.define("putrange", lua_putrange);
+		lua.define("replacerange", lua_replacerange);
         lua.define("getxsize", lua_getxsize);
         lua.define("getysize", lua_getysize);
         lua.define("getzsize", lua_getzsize);
@@ -189,6 +192,72 @@ int lua_getblock(lua_State* state) {
             state,
             blockpack->getBlock(table->get(x, y, z).id)->getName().c_str());
         return 1;
+}
+int lua_setrange(lua_State * state) {
+	auto blockpack = BlockPack::getCurrent();
+	auto table = Context::top()->get<std::shared_ptr<BlockTable> >("TABLE");
+	int minX = luaL_checkinteger(state, -7);
+	int minY = luaL_checkinteger(state, -6);
+	int minZ = luaL_checkinteger(state, -5);
+	int maxX = luaL_checkinteger(state, -4);
+	int maxY = luaL_checkinteger(state, -3);
+	int maxZ = luaL_checkinteger(state, -2);
+	std::string name = luaL_checkstring(state, -1);
+	int id = BlockPack::getCurrent()->getBlockIndexForName(name);
+	for (int x = minX; x <= maxX; x++) {
+		for (int y = minY; y <= maxY; y++) {
+			for (int z = minZ; z <= maxZ; z++) {
+				table->set(x, y, z, BlockPrefab(id, false));
+			}
+		}
+	}
+	return 0;
+}
+int lua_putrange(lua_State * state) {
+	auto blockpack = BlockPack::getCurrent();
+	auto table = Context::top()->get<std::shared_ptr<BlockTable> >("TABLE");
+	int minX = luaL_checkinteger(state, -7);
+	int minY = luaL_checkinteger(state, -6);
+	int minZ = luaL_checkinteger(state, -5);
+	int maxX = luaL_checkinteger(state, -4);
+	int maxY = luaL_checkinteger(state, -3);
+	int maxZ = luaL_checkinteger(state, -2);
+	std::string name = luaL_checkstring(state, -1);
+	int id = BlockPack::getCurrent()->getBlockIndexForName(name);
+	for (int x = minX; x <= maxX; x++) {
+		for (int y = minY; y <= maxY; y++) {
+			for (int z = minZ; z <= maxZ; z++) {
+				if (table->get(x, y, z).id == -1) {
+					table->set(x, y, z, BlockPrefab(id, false));
+				}
+			}
+		}
+	}
+	return 0;
+}
+int lua_replacerange(lua_State * state) {
+	auto blockpack = BlockPack::getCurrent();
+	auto table = Context::top()->get<std::shared_ptr<BlockTable> >("TABLE");
+	int minX = luaL_checkinteger(state, -8);
+	int minY = luaL_checkinteger(state, -7);
+	int minZ = luaL_checkinteger(state, -6);
+	int maxX = luaL_checkinteger(state, -5);
+	int maxY = luaL_checkinteger(state, -4);
+	int maxZ = luaL_checkinteger(state, -3);
+	std::string oldName = luaL_checkstring(state, -2);
+	std::string newName = luaL_checkstring(state, -1);
+	int oldId = BlockPack::getCurrent()->getBlockIndexForName(oldName);
+	int newId = BlockPack::getCurrent()->getBlockIndexForName(newName);
+	for (int x = minX; x <= maxX; x++) {
+		for (int y = minY; y <= maxY; y++) {
+			for (int z = minZ; z <= maxZ; z++) {
+				if (table->get(x, y, z).id == oldId) {
+					table->set(x, y, z, BlockPrefab(newId, false));
+				}
+			}
+		}
+	}
+	return 0;
 }
 int lua_getxsize(lua_State* state) {
 		auto table = Context::top()->get<std::shared_ptr<BlockTable> >("TABLE");
