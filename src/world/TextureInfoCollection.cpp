@@ -112,17 +112,20 @@ void TextureInfoCollection::addTextureInfo(const TextureInfo& textureInfo) {
 TextureInfo TextureInfoCollection::getTextureInfo(int index) const {
         return textureInfoVec.at(index);
 }
-mapbox::util::optional<TextureInfo> TextureInfoCollection::getTextureInfo(
-    const std::string& reference) const {
-        auto iter = textureInfoVec.begin();
-        while (iter != textureInfoVec.end()) {
-                auto v = *iter;
-                if (v.reference == reference) {
-                        return v;
-                }
-                ++iter;
-        }
-        return mapbox::util::optional<TextureInfo>();
+bool TextureInfoCollection::tryGetTextureInfo(const std::string & reference, TextureInfo & outTextureInfo)
+{
+	auto iter = textureInfoVec.begin();
+	while (iter != textureInfoVec.end()) {
+		auto v = *iter;
+		if (v.reference == reference) {
+			outTextureInfo.baseFileName = v.baseFileName;
+			outTextureInfo.mappingRule = v.mappingRule;
+			outTextureInfo.reference = v.reference;
+			return false;
+		}
+		++iter;
+	}
+	return true;
 }
 int TextureInfoCollection::getTextureInfoCount() const {
         return static_cast<int>(textureInfoVec.size());

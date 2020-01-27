@@ -4,8 +4,6 @@
 #include <string>
 #include <vector>
 
-#include "../mapbox/optional.hpp"
-
 namespace planet {
 struct BlockInfo {
         explicit BlockInfo() = default;
@@ -21,8 +19,7 @@ class BlockInfoCollection {
 
         void addBlockInfo(const BlockInfo& blockInfo);
         BlockInfo getBlockInfo(int index) const;
-        mapbox::util::optional<BlockInfo> getBlockInfo(
-            const std::string& reference) const;
+		bool tryGetBlockInfo(const std::string& reference, BlockInfo& outBlockInfo);
         int getBlockInfoCount() const;
 
        private:

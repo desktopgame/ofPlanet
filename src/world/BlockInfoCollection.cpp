@@ -45,17 +45,19 @@ void BlockInfoCollection::addBlockInfo(const BlockInfo& blockInfo) {
 BlockInfo BlockInfoCollection::getBlockInfo(int index) const {
         return blockInfoVec.at(index);
 }
-mapbox::util::optional<BlockInfo> BlockInfoCollection::getBlockInfo(
-    const std::string& reference) const {
-        auto iter = blockInfoVec.begin();
-        while (iter != blockInfoVec.end()) {
-                auto v = *iter;
-                if (v.reference == reference) {
-                        return v;
-                }
-                ++iter;
-        }
-        return mapbox::util::optional<BlockInfo>();
+bool BlockInfoCollection::tryGetBlockInfo(const std::string & reference, BlockInfo & outBlockInfo)
+{
+	auto iter = blockInfoVec.begin();
+	while (iter != blockInfoVec.end()) {
+		auto v = *iter;
+		if (v.reference == reference) {
+			outBlockInfo.reference = v.reference;
+			outBlockInfo.textue = v.textue;
+			return true;
+		}
+		++iter;
+	}
+	return false;
 }
 int BlockInfoCollection::getBlockInfoCount() const {
         return static_cast<int>(blockInfoVec.size());

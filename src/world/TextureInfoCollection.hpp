@@ -30,8 +30,7 @@ class TextureInfoCollection {
 
         void addTextureInfo(const TextureInfo& textureInfo);
         TextureInfo getTextureInfo(int index) const;
-        mapbox::util::optional<TextureInfo> getTextureInfo(
-            const std::string& reference) const;
+		bool tryGetTextureInfo(const std::string& reference, TextureInfo& outTextureInfo);
         int getTextureInfoCount() const;
 
         std::string getBaseDirectory() const;
