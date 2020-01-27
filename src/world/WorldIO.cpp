@@ -123,16 +123,14 @@ AsyncOperation WorldIO::toJson(const std::string& outputFile,
 
 AsyncOperation WorldIO::toObj(const std::string& outputDir,
                               const std::shared_ptr<World>& world) {
-		auto outputPath = ofFilePath::join(ofFilePath::getCurrentExeDir(), ofFilePath::join(outputDir, "data.obj"));
         auto ret = std::make_shared<Progress>();
         auto w = world;
         using namespace objb;
-        std::thread([outputPath, w, ret, outputDir]() -> void {
+        std::thread([w, ret, outputDir]() -> void {
 				// 先にファイルを消しておく
-				auto outputFile = ofFilePath::join(ofFilePath::getCurrentExeDir(), ofFilePath::join(outputDir, "data.obj"));
-				auto cwd = ofFilePath::getCurrentExeDir();
-				ofFile::removeFile(ofFilePath::join(cwd, outputFile));
-				ofFile::removeFile(ofFilePath::join(cwd, outputFile + ".mtl"));
+				auto outputPath = ofFilePath::join(ofFilePath::getCurrentExeDir(), ofFilePath::join(outputDir, "data.obj"));
+				ofFile::removeFile(outputPath);
+				ofFile::removeFile(outputPath + ".mtl");
 				// 共有される頂点情報を書き込んでおく
                 ObjBuilder ob;
                 MtlBuilder mb;

@@ -427,8 +427,6 @@ void ofApp::exportObj(const std::string& outputDir) {
 		if (splitCount.value <= 1) {
 			auto outputFile = ofFilePath::join(ofFilePath::getCurrentExeDir(), ofFilePath::join(outputDir, "data.obj"));
 			auto cwd = ofFilePath::getCurrentExeDir();
-			ofFile::removeFile(ofFilePath::join(cwd, outputFile));
-			ofFile::removeFile(ofFilePath::join(cwd, outputFile + ".mtl"));
 			this->asyncOp = WorldIO::toObj(outputDir, planet->getWorld());
 		} else {
 			this->asyncOp = WorldIO::toObj(outputDir, planet->getWorld(), splitCount.value);
