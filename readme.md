@@ -352,9 +352,8 @@ Luaには実数型と整数型の区別がありません。
 
 ~~[uniPlanet](https://github.com/desktopgame/uniPlanet)~~
 
-uniPlanetは現状でも使用可能ですが、OBJをエクスポートして  
-それをUnityで読み込むほうが軽量です。  
-そのままだと当たり判定がつきませんが、[SAColliderBuilder](https://assetstore.unity.com/packages/tools/sacolliderbuilder-15058)を使えば当たり判定もつけられます。
+uniPlanetは現状でも使用可能ですが、OBJをエクスポートして  それをUnityで読み込むほうが軽量です。  
+そのままだと当たり判定がつきませんが、[SAColliderBuilder](https://assetstore.unity.com/packages/tools/sacolliderbuilder-15058)を使えば当たり判定もつけられます。  
 ※SAColliderBuilderは私の制作したアセットではありません。
 
 # ライセンス
