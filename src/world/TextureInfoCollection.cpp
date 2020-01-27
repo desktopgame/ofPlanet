@@ -121,11 +121,11 @@ bool TextureInfoCollection::tryGetTextureInfo(const std::string & reference, Tex
 			outTextureInfo.baseFileName = v.baseFileName;
 			outTextureInfo.mappingRule = v.mappingRule;
 			outTextureInfo.reference = v.reference;
-			return false;
+			return true;
 		}
 		++iter;
 	}
-	return true;
+	return false;
 }
 int TextureInfoCollection::getTextureInfoCount() const {
         return static_cast<int>(textureInfoVec.size());
