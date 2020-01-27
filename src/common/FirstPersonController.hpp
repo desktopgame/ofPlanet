@@ -3,7 +3,7 @@
 #define COMMON_FIRSTPERSONCONTROLLER_HPP
 #include <string>
 
-#include "../shader/Transform.hpp"
+#include "Transform.hpp"
 #include "MouseScroll.hpp"
 #include "WASDMove.hpp"
 namespace planet {

@@ -9,7 +9,6 @@
 #include <string>
 
 #include "../game/ofApp.h"
-#include "../shader/Camera.hpp"
 #include "Block.hpp"
 #include "BlockPack.hpp"
 #include "BlockRenderer.hpp"

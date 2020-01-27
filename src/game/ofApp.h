@@ -7,6 +7,7 @@
 #include "../common/FirstPersonController.hpp"
 #include "../common/Random.hpp"
 #include "../common/StateValue.hpp"
+#include "../common/Camera.hpp"
 #include "../imguiex/CheckBox.hpp"
 #include "../imguiex/Integer.hpp"
 #include "../imguiex/Float.hpp"
@@ -14,7 +15,6 @@
 #include "../imguiex/InputField.hpp"
 #include "../imguiex/ListBox.hpp"
 #include "../imguiex/RadioButtonGroup.hpp"
-#include "../shader/Camera.hpp"
 #include "../world/WorldIO.hpp"
 
 namespace planet {

@@ -1,7 +1,6 @@
 #include "SideRenderer.hpp"
 
 #include "../common/GLM.hpp"
-#include "../shader/Camera.hpp"
 namespace planet {
 
 #define Q_I (glm::mat4(1.0f))
