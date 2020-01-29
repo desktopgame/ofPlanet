@@ -363,9 +363,6 @@ int lua_genstruct(lua_State* state) {
 			}
 			expandPosVec.emplace_back(point);
 		}
-		//割合で配置量を決める
-		int allCount = static_cast<int>(expandPosVec.size());
-		int placeCount = 0;
 		// シャッフルしてから適当につっこむ
 		std::random_device seed_gen;
 		std::mt19937 engine(seed_gen());
@@ -392,28 +389,8 @@ int lua_genstruct(lua_State* state) {
 			expandCenter.x += mbSize.x / 2;
 			expandCenter.y += mbSize.y / 2;
 			expandCenter.z += mbSize.z / 2;
+			// 中心から重み付けを加算する
 			wtable->addWeight(expandCenter.x, expandCenter.y, expandCenter.z, maxWeight);
-			/*
-			// 重み付けの加算
-			for (auto& expandBlock : expandVec) {
-				glm::ivec3 expandPos = std::get<0>(expandBlock);
-				int expandID = std::get<1>(expandBlock);
-				// 空気ブロックの場合は重み付けを加算しない
-				if (expandID < 0) {
-					continue;
-				}
-				// 中心に近いほど重み付けがつよい
-				int dist = static_cast<int>(glm::distance(glm::vec3(expandPos), glm::vec3(expandCenter)));
-				int addWeight = std::max(minWeight, maxWeight - dist);
-				int curWeight = wtable->getWeight(expandPos.x, expandPos.y, expandPos.z);
-				wtable->setWeight(expandPos.x, expandPos.y, expandPos.z, curWeight + addWeight);
-			}
-			*/
-			placeCount++;
-			//float t = static_cast<float>(placeCount) / static_cast<float>(allCount);
-			//if (t >= parcent) {
-			//	break;
-			//}
 		}
 	}
 	return 0;
