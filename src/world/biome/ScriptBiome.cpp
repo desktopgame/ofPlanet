@@ -349,15 +349,6 @@ int lua_genstruct(lua_State* state) {
 			auto point = blockArea.getPoint(i);
 			auto expandVec = table->expandTargets(point.x, point.y, point.z, mb);
 			bool canPlace = true;
-			// 重み付けによって判定する
-			for (auto& expandBlock : expandVec) {
-				glm::ivec3 expandPos = std::get<0>(expandBlock);
-				int weight = wtable->getWeight(expandPos.x, expandPos.y, expandPos.z);
-				if (limitWeight <= weight) {
-					canPlace = false;
-					break;
-				}
-			}
 			if (!canPlace) {
 				continue;
 			}
