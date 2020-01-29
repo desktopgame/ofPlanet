@@ -19,6 +19,9 @@ SideRenderer::SideRenderer(ofShader& shader)
 SideRenderer::~SideRenderer() {}
 
 void SideRenderer::put(PlaneType type, float x, float y, float z) {
+		x *= 2;
+		y *= 2;
+		z *= 2;
         getPosVec(type).emplace_back(x);
         getPosVec(type).emplace_back(y);
         getPosVec(type).emplace_back(z);
