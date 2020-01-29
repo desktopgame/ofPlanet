@@ -4,7 +4,7 @@ fillBlockShallow = "Dirt"
 iBaseline = 0
 
 function start()
-    newstruct("AAA",[[
+    newstruct("Tree",[[
 ,,
 ,Wood,
 ,,
@@ -32,7 +32,7 @@ Leaf,Leaf,Leaf
 Leaf,Leaf,Leaf
 Leaf,Leaf,Leaf
 Leaf,Leaf,Leaf
-]]) 
+]])
     return "default"
 -- return "ignore"
 end
@@ -54,11 +54,16 @@ function onGenerateTerrain(x, y, z)
         else
             setblock(x, y, z, fillBlockShallow)
         end
-    end   
+    end
 end
 
 function onGenerateStructures()
-    genstruct("AAA")
+    genstruct(
+        12,
+        1,
+        0.3,
+        "Tree"
+    )
 end
 
 function onGenerateCave(x, y, z, noise)
