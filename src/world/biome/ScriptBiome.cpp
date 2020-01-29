@@ -323,7 +323,7 @@ int lua_genstruct(lua_State* state) {
 
 	int maxWeight = luaL_checkinteger(state, -4);
 	int limitWeight = luaL_checkinteger(state, -3);
-	float parcent = static_cast<float>(luaL_checknumber(state, -2));
+	float _ = static_cast<float>(luaL_checknumber(state, -2));
 	std::string name = luaL_checkstring(state, -1);
 	auto& mb = mbmap->at(name);
 	// 構造物のだいたいの大きさを取得する
@@ -410,10 +410,10 @@ int lua_genstruct(lua_State* state) {
 			}
 			*/
 			placeCount++;
-			float t = static_cast<float>(placeCount) / static_cast<float>(allCount);
-			if (t >= parcent) {
-				break;
-			}
+			//float t = static_cast<float>(placeCount) / static_cast<float>(allCount);
+			//if (t >= parcent) {
+			//	break;
+			//}
 		}
 	}
 	return 0;
