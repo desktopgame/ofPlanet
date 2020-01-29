@@ -172,8 +172,8 @@ void BlockTable::getAllBlockAreaForTopImpl(glm::ivec3 pos, std::set<glm::ivec3, 
 	glm::ivec3 zn = pos - glm::ivec3(0, 0, 1);
 	addPos(pos, xp, set, area);
 	addPos(pos, xn, set, area);
-	addPos(pos, yp, set, area);
-	addPos(pos, yn, set, area);
+	//addPos(pos, yp, set, area);
+	//addPos(pos, yn, set, area);
 	addPos(pos, zp, set, area);
 	addPos(pos, zn, set, area);
 }

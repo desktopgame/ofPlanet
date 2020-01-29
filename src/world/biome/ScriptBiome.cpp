@@ -12,7 +12,7 @@
 using namespace ofxLua;
 namespace planet {
 ScriptBiome::ScriptBiome(const std::string& filename)
-    : lua(), ctx(nullptr), table(nullptr), multiBlockMap() {
+    : lua(), ctx(nullptr), table(nullptr), multiBlockMap(), weightTable() {
         lua.define("setblock", lua_setblock);
 		lua.define("putblock", lua_putblock);
         lua.define("getblock", lua_getblock);
@@ -83,9 +83,11 @@ void ScriptBiome::onBeginGenerateWorld(BlockTable& blockTable) {
                                                    blockTable.getYSize(),
                                                    blockTable.getZSize());
 		this->multiBlockMap = std::make_shared<MultiBlockMap>();
+		this->weightTable = std::make_shared<WeightTable>(blockTable.getXSize(),blockTable.getYSize(),blockTable.getZSize());
         ctx->set("TABLE", table);
 		ctx->set("MB", multiBlockMap);
 		ctx->set("HM", heightMap);
+		ctx->set("WT", weightTable);
         // コールバックモードを決める
         std::vector<Variant> modeV = lua.call("start", std::vector<Object>{},
                  std::vector<Type>{T_STRING}).get();
@@ -307,48 +309,75 @@ int lua_genstruct(lua_State* state) {
 	auto table = Context::top()->get<std::shared_ptr<BlockTable> >("TABLE");
 	auto mbmap = Context::top()->get<std::shared_ptr<MultiBlockMap> >("MB");
 	auto hmap = Context::top()->get<HeightMapT >("HM");
-	auto terrain = table->getTerrain();
-	// 構造名を取得する
+	auto wtable = Context::top()->get<std::shared_ptr<WeightTable> >("WT");
+
+	int minWeight = luaL_checkinteger(state, -5);
+	int maxWeight = luaL_checkinteger(state, -4);
+	int limitWeight = luaL_checkinteger(state, -3);
+	float parcent = static_cast<float>(luaL_checknumber(state, -2));
 	std::string name = luaL_checkstring(state, -1);
 	auto& mb = mbmap->at(name);
+	// 構造物のだいたいの大きさを取得する
 	glm::ivec3 mbSize;
 	multiBlock3DSize(mb, mbSize);
-
-	int genLimit = 5;
-	int testCount = 30000;
-	Random random;
-
-	int success = 0;
-	for (int n = 0; n < testCount; n++) {
-		int x = static_cast<int>(
-			random.generate(0, table->getXSize() - 1));
-		int z = static_cast<int>(
-			random.generate(0, table->getZSize() - 1));
-		int y = hmap[glm::ivec2(x, z)];
-		bool fail = false;
-		for (int l = 0; l < mbSize.x; l++) {
-			for (int p = 0; p < mbSize.z; p++) {
-				glm::ivec2 key((x + p, z + l));
-				if (!hmap.count(key) ||
-					y != hmap[key]) {
-					fail = true;
+	// 全てのエリアに対して
+	auto blockAreaVec = table->getAllBlockAreaForTop();
+	for (auto& blockArea : blockAreaVec) {
+		auto areaSize = blockArea.compute2DSize();
+		// 高さが足りないので次へ
+		int stackHeight = table->getStackableHeight(blockArea);
+		if (stackHeight < mbSize.y) {
+			continue;
+		}
+		areaSize.y = stackHeight;
+		// 幅がたりないので次へ
+		if (areaSize.x < mbSize.x || areaSize.z < mbSize.z) {
+			continue;
+		}
+		int emptyBlockCount = (areaSize.x * areaSize.z) * mbSize.y;
+		int structBlockCount = (mbSize.x * mbSize.y * mbSize.z);
+		int placedBlockCount = 0;
+		// 一ますごとに配置可能か検証する
+		for (int i = 0; i < blockArea.getPointCount(); i++) {
+			auto point = blockArea.getPoint(i);
+			auto expandVec = table->expandTargets(point.x, point.y, point.z, mb);
+			bool canPlace = true;
+			// 重み付けによって判定する
+			for (auto& expandBlock : expandVec) {
+				glm::ivec3 expandPos = std::get<0>(expandBlock);
+				int weight = wtable->getWeight(expandPos.x, expandPos.y, expandPos.z);
+				if (limitWeight <= weight) {
+					canPlace = false;
 					break;
 				}
 			}
-			if (fail) {
+			if (!canPlace) {
+				continue;
+			}
+			table->expand(point.x, point.y, point.z, mb);
+			auto expandCenter = point;
+			expandCenter.x += mbSize.x / 2;
+			expandCenter.y += mbSize.y / 2;
+			expandCenter.z += mbSize.z / 2;
+			for (auto& expandBlock : expandVec) {
+				glm::ivec3 expandPos = std::get<0>(expandBlock);
+				int expandID = std::get<1>(expandBlock);
+				// 空気ブロックの場合は重み付けを加算しない
+				if (expandID < 0) {
+					continue;
+				}
+				// 中心に近いほど重み付けがつよい
+				int dist = static_cast<int>(glm::distance(glm::vec3(expandPos), glm::vec3(expandCenter)));
+				int addWeight = std::max(minWeight, maxWeight - dist);
+				int curWeight = wtable->getWeight(expandPos.x, expandPos.y, expandPos.z);
+				wtable->setWeight(expandPos.x, expandPos.y, expandPos.z, curWeight + addWeight);
+			}
+			placedBlockCount += structBlockCount;
+			if (static_cast<float>(placedBlockCount) / static_cast<float>(emptyBlockCount) >= parcent) {
 				break;
 			}
 		}
-		if (!fail) {
-			success++;
-			table->expand(x + 1, y + 1, z + 1, mb);
-		}
-		if (success >= genLimit) {
-			break;
-		}
 	}
-
-//	table->expand(mb);
 	return 0;
 }
 
