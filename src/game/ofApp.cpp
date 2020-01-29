@@ -274,8 +274,8 @@ void ofApp::cameraAuto() {
 	// プレイモードではないので、オブジェクトの周りを周回します。
 	auto cx = std::cos(cameraAngle);
 	auto cz = std::sin(cameraAngle);
-	camera.setPosition(glm::vec3(hfwsx + (hfwsx * cx), wsy, hfwsz + (hfwsz * cz)));
-	camera.setLookAt(glm::vec3(wsx / 2, 0, wsz / 2));
+	camera.setPosition(glm::vec3(hfwsx + (hfwsx * cx), wsy, hfwsz + (hfwsz * cz)) * 2);
+	camera.setLookAt(glm::vec3(wsx / 2, 0, wsz / 2) * 2);
 	camera.rehash();
 	this->cameraAngle += cameraSpeed.value;
 }
