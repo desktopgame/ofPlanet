@@ -3,6 +3,7 @@
 #define WORLD_BLOCKTABLE_HPP
 #include <vector>
 #include <set>
+#include <tuple>
 
 #include "engine/Terrain.hpp"
 #include "MultiBlock.hpp"
@@ -29,6 +30,8 @@ public:
 	glm::ivec3 getPoint(int i) const;
 	int getPointCount() const;
 	std::vector<glm::ivec3> getPoints() const;
+
+	glm::ivec3 compute2DSize() const;
 private:
 	std::vector<glm::ivec3> points;
 };
@@ -42,6 +45,7 @@ class BlockTable {
         BlockPrefab& get(int x, int y, int z);
         const BlockPrefab& get(int x, int y, int z) const;
 
+		std::vector<std::tuple<glm::ivec3, int> > expandTargets(int baseX, int baseY, int baseZ, const MultiBlock& mb);
         void expand(int baseX, int baseY, int baseZ, const MultiBlock& mb);
 
 		/**

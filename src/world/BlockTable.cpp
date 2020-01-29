@@ -1,6 +1,7 @@
 #include "BlockTable.hpp"
 
 #include <cassert>
+#include <algorithm>
 
 #include "MultiBlock.hpp"
 #include "BlockPack.hpp"
@@ -30,6 +31,17 @@ int BlockArea::getPointCount() const {
 std::vector<glm::ivec3> BlockArea::getPoints() const {
 	return points;
 }
+glm::ivec3 BlockArea::compute2DSize() const {
+	glm::ivec3 max(-32768, 0, -32768);
+	glm::ivec3 min(32768, 0, 32768);
+	for (auto& point : points) {
+		min.x = std::min(min.x, point.x);
+		min.z = std::min(min.z, point.z);
+		max.x = std::max(max.x, point.x);
+		max.z = std::max(max.z, point.z);
+	}
+	return max - min;
+}
 // BlockTable
 BlockTable::BlockTable(int xSize, int ySize, int zSize)
     : xSize(xSize), ySize(ySize), zSize(zSize), terrain() {
@@ -58,22 +70,33 @@ const BlockPrefab& BlockTable::get(int x, int y, int z) const {
         return vec.at(x).at(y).at(z);
 }
 
+std::vector<std::tuple<glm::ivec3, int> > BlockTable::expandTargets(int baseX, int baseY, int baseZ, const MultiBlock & mb) {
+	std::vector<std::tuple<glm::ivec3, int>> points;
+	auto data = toCellVec(mb);
+	for (auto e : data) {
+		int x = baseX + e.point.x;
+		int y = baseY + e.point.y;
+		int z = baseZ + e.point.z;
+		int id = e.blockId;
+		if (x >= xSize || y >= ySize || z >= zSize) {
+			continue;
+		}
+		points.emplace_back(std::tuple<glm::ivec3, int>(glm::ivec3(x, y, z), id));
+	}
+	return points;
+}
+
 void BlockTable::expand(int baseX, int baseY, int baseZ, const MultiBlock& mb) {
-		auto data = toCellVec(mb);
-        for (auto e : data) {
-                int x = baseX + e.point.x;
-                int y = baseY + e.point.y;
-                int z = baseZ + e.point.z;
-				int id = e.blockId;
-                if (x >= xSize || y >= ySize || z >= zSize) {
-                        continue;
-                }
-                if (id < 0) {
-                        set(x, y, z, BlockPrefab(-1, false));
-                } else {
-                        set(x, y, z, BlockPrefab(id, false));
-                }
-        }
+	auto points = expandTargets(baseX, baseY, baseZ, mb);
+	for (auto& point : points) {
+		glm::ivec3 pos = std::get<0>(point);
+		int id = std::get<1>(point);
+		if (id < 0) {
+			set(pos.x, pos.y, pos.z, BlockPrefab(-1, false));
+		} else {
+			set(pos.x, pos.y, pos.z, BlockPrefab(id, false));
+		}
+	}
 }
 
 bool BlockTable::contains(int x, int y, int z) const {
