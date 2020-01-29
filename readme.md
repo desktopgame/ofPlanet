@@ -224,14 +224,8 @@ onFixHeightによって地形(Terrain)を生成したあとで、
 生成された地形の一番高い座標全てに対してこの関数が呼ばれます。
 地表にブロックを配置します。
 
-#### onGenerateWater(x, y, z) -> void
-x, y, z: 生成先の座標  
-onGenerateTerrainによってブロックを配置したあとで、  
-"ワールドのY方向のサイズ/2-5" より低い位置のなにもない全ての座標に対してこの関数が呼ばれます。  
-水を生成します。
-
 #### onGenerateStructures() -> void
-onGenerateWaterによって水を生成したあとで呼ばれます。  
+onGenerateTerrainによってブロックを生成したあとで呼ばれます。  
 構造物を生成します。
 
 #### onGenerateCave(x, y, z, noise) -> void
