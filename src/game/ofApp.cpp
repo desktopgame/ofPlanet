@@ -288,7 +288,7 @@ void ofApp::cameraUser() {
 	// WASD, –îˆóƒL[‚É‚æ‚éˆÚ“®‚Æ‰ñ“]
 	fpsCon.update();
 	if (playMode.testIsChanged()) {
-		camera.setPosition(glm::vec3(wsx / 2, wsy / 2, wsz / 2));
+		camera.setPosition(glm::vec3(wsx / 2, wsy / 2, wsz / 2) * 2);
 	}
 	else {
 		camera.setPosition(camera.getPosition() + fpsCon.getVelocity());
