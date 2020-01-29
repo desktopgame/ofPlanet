@@ -42,8 +42,6 @@ class BasicBiome : public Biome {
                                        int z);
 		virtual void onEndGenerateTerrain();
 
-        virtual void onGenerateWater(BlockTable& blockTable, int x, int y,
-                                     int z);
         virtual void onGenerateStructures(BlockTable& blockTable);
         virtual void onGenerateCave(BlockTable& blockTable, int x, int y, int z,
                                     float noise);

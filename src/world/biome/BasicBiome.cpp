@@ -57,21 +57,6 @@ void BasicBiome::generate(BlockTable& blockTable) {
                 onGenerateTerrain(blockTable, cell.x, y, cell.z);
         }
 		onEndGenerateTerrain();
-        // generate water
-        for (auto p : heightMap) {
-                auto xz = p.first;
-                auto y = p.second;
-                int baseY = YSIZE_H - 5;
-                if (y > baseY) {
-                        continue;
-                }
-                for (int i = y; i < baseY; i++) {
-						if (blockTable.get(xz.x, i, xz.y).id != -1) {
-							continue;
-						}
-                        onGenerateWater(blockTable, xz.x, i, xz.y);
-                }
-        }
         // generate structure
         onGenerateStructures(blockTable);
         // generate cave
@@ -108,10 +93,6 @@ void BasicBiome::onGenerateTerrain(BlockTable& blockTable, int x, int y,
 }
 
 void BasicBiome::onEndGenerateTerrain() {
-}
-
-void BasicBiome::onGenerateWater(BlockTable& blockTable, int x, int y, int z) {
-        blockTable.set(x, y, z, createWaterBlock(blockTable, x, y, z));
 }
 
 void BasicBiome::onGenerateStructures(BlockTable& blockTable) {}

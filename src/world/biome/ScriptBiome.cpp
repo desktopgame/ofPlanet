@@ -130,12 +130,6 @@ void ScriptBiome::onGenerateTerrain(BlockTable& blockTable, int x, int y,
                  std::vector<Type>{}).get();
 }
 
-void ScriptBiome::onGenerateWater(BlockTable& blockTable, int x, int y, int z) {
-        std::vector<Variant> r = lua.call("onGenerateWater",
-                 std::vector<Object>{create(x), create(y), create(z)},
-                 std::vector<Type>{}).get();
-}
-
 void ScriptBiome::onGenerateStructures(BlockTable& blockTable) {
         std::vector<Variant> r = lua.call("onGenerateStructures", std::vector<Object>{},
                  std::vector<Type>{}).get();

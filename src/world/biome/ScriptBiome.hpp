@@ -21,8 +21,6 @@ class ScriptBiome : public BasicBiome {
         virtual float onFixHeight(float y) override;
         virtual void onGenerateTerrain(BlockTable& blockTable, int x, int y,
                                        int z) override;
-        virtual void onGenerateWater(BlockTable& blockTable, int x, int y,
-                                     int z) override;
         virtual void onGenerateStructures(BlockTable& blockTable) override;
         virtual void onGenerateCave(BlockTable& blockTable, int x, int y, int z,
                                     float noise) override;
