@@ -3,6 +3,7 @@
 #include <cassert>
 #include <sstream>
 #include <stdexcept>
+#include <algorithm>
 
 #include "../text/Strings.hpp"
 #include "Block.hpp"
@@ -11,40 +12,37 @@
 namespace planet {
 MultiBlockCell::MultiBlockCell(const glm::ivec3 & point, int blockId) : point(point), blockId(blockId) {
 }
-bool multiBlock2DSize(const MultiBlockLayer & layer, glm::ivec3& destSize) {
+void multiBlock2DSize(const MultiBlockLayer & layer, glm::ivec3& destSize) {
 	int xSize = -1;
 	for (auto& line : layer) {
 		int lineSize = static_cast<int>(line.size());
 		if (xSize == -1) {
 			xSize = lineSize;
-		} else if (xSize != lineSize) {
-			return false;
+		} else if (xSize < lineSize) {
+			xSize = lineSize;
 		}
 	}
 	int zSize = static_cast<int>(layer.size());
 	destSize.x = xSize;
 	destSize.z = zSize;
-	return true;
 }
 
-bool multiBlock3DSize(const MultiBlock & multiBlock, glm::ivec3 & destSize) {
+void multiBlock3DSize(const MultiBlock & multiBlock, glm::ivec3 & destSize) {
 	int ySize = static_cast<int>(multiBlock.size());
 	glm::ivec3 size;
 	bool first = true;
 	for (auto& layer : multiBlock) {
 		glm::ivec3 temp;
-		if (!multiBlock2DSize(layer, temp)) {
-			return false;
-		}
+		multiBlock2DSize(layer, temp);
 		if (first) {
 			size = temp;
 		} else if (size != temp) {
-			return false;
+			size.x = std::max(size.x, temp.x);
+			size.z = std::max(size.z, temp.z);
 		}
 	}
 	size.y = ySize;
 	destSize = size;
-	return true;
 }
 std::vector<MultiBlockCell> toCellVec(const MultiBlock & block) {
 	std::vector<MultiBlockCell> ret;

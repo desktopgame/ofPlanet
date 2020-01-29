@@ -19,8 +19,8 @@ using MultiBlockLine = std::vector<std::string>;
 using MultiBlockLayer = std::vector<MultiBlockLine>;
 using MultiBlock = std::vector<MultiBlockLayer>;
 
-bool multiBlock2DSize(const MultiBlockLayer& layer, glm::ivec3& destSize);
-bool multiBlock3DSize(const MultiBlock& multiBlock, glm::ivec3& destSize);
+void multiBlock2DSize(const MultiBlockLayer& layer, glm::ivec3& destSize);
+void multiBlock3DSize(const MultiBlock& multiBlock, glm::ivec3& destSize);
 std::vector<MultiBlockCell> toCellVec(const MultiBlock& block);
 }  // namespace planet
 #endif
