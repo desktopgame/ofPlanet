@@ -25,11 +25,8 @@ function onGenerateTerrain(x, y, z)
     end
 end
 
-function onGenerateWater(x, y, z)
-    setblock(x, y, z, "Water");
-end
-
 function onGenerateStructures()
+    putrange(0, 0, 0, getxsize(), (getysize() / 2) - 5, getzsize(), "Water");
 end
 
 function onGenerateCave(x, y, z, noise)

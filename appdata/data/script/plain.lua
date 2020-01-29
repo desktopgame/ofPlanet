@@ -28,10 +28,6 @@ function onGenerateTerrain(x, y, z)
     end
 end
 
-function onGenerateWater(x, y, z)
-    setblock(x, y, z, "Water");
-end
-
 function onGenerateStructures()
 end
 

@@ -43,9 +43,6 @@ end
 function onGenerateTerrain(x, y, z)
 end
 
-function onGenerateWater(x, y, z)
-end
-
 function onGenerateStructures()
 end
 

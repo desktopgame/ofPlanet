@@ -3,6 +3,35 @@ fillBlockDeep = "Stone"
 fillBlockShallow = "Dirt"
 
 function start()
+    newstruct("Tree",[[
+,,
+,Wood,
+,,
+
+,,
+,Wood,
+,,
+
+,,
+,Wood,
+,,
+
+,,
+,Wood,
+,,
+
+Leaf,Leaf,Leaf
+Leaf,Leaf,Leaf
+Leaf,Leaf,Leaf
+
+Leaf,Leaf,Leaf
+Leaf,Leaf,Leaf
+Leaf,Leaf,Leaf
+
+Leaf,Leaf,Leaf
+Leaf,Leaf,Leaf
+Leaf,Leaf,Leaf
+]]) 
     return "default"
 -- return "ignore"
 end
@@ -43,11 +72,13 @@ function onGenerateTerrain(x, y, z)
     end
 end
 
-function onGenerateWater(x, y, z)
-    -- setblock(x, y, z, "Water");
-end
-
 function onGenerateStructures()
+    genstruct(
+        12,
+        1,
+        0.3,
+        "Tree"
+    )
 end
 
 function onGenerateCave(x, y, z, noise)
