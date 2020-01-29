@@ -6,10 +6,6 @@
 #include "MultiBlock.hpp"
 #include "BlockPack.hpp"
 namespace planet {
-// KeyCompare
-bool KeyCompare::operator()(const glm::ivec3 & a, const glm::ivec3 & b) const {
-	return a.x < b.x || (a.x == b.x && a.y < b.y) || (a.x == b.x && a.y == b.y && a.z < b.z);
-}
 // BlockPrefab
 BlockPrefab::BlockPrefab(int id, bool instanced)
     : id(id), instanced(instanced) {}

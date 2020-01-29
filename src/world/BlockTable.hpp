@@ -7,11 +7,9 @@
 
 #include "engine/Terrain.hpp"
 #include "MultiBlock.hpp"
+#include "IntVec3Compare.hpp"
 
 namespace planet {
-struct KeyCompare {
-	bool operator()(const glm::ivec3& a, const glm::ivec3& b) const;
-};
 struct BlockPrefab {
         explicit BlockPrefab(int id, bool instanced);
         explicit BlockPrefab();
