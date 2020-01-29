@@ -164,6 +164,7 @@ int lua_setblock(lua_State* state) {
         table->set(x, y, z, BlockPrefab(id, false));
         return 0;
 }
+
 int lua_putblock(lua_State * state) {
 	auto blockpack = BlockPack::getCurrent();
 	auto table =
@@ -181,6 +182,7 @@ int lua_putblock(lua_State * state) {
 	}
 	return 0;
 }
+
 int lua_getblock(lua_State* state) {
         auto blockpack = BlockPack::getCurrent();
         auto table = Context::top()->get<std::shared_ptr<BlockTable> >("TABLE");
@@ -195,6 +197,7 @@ int lua_getblock(lua_State* state) {
             blockpack->getBlock(table->get(x, y, z).id)->getName().c_str());
         return 1;
 }
+
 int lua_setrange(lua_State * state) {
 	auto blockpack = BlockPack::getCurrent();
 	auto table = Context::top()->get<std::shared_ptr<BlockTable> >("TABLE");
@@ -215,6 +218,7 @@ int lua_setrange(lua_State * state) {
 	}
 	return 0;
 }
+
 int lua_putrange(lua_State * state) {
 	auto blockpack = BlockPack::getCurrent();
 	auto table = Context::top()->get<std::shared_ptr<BlockTable> >("TABLE");
@@ -237,6 +241,7 @@ int lua_putrange(lua_State * state) {
 	}
 	return 0;
 }
+
 int lua_replacerange(lua_State * state) {
 	auto blockpack = BlockPack::getCurrent();
 	auto table = Context::top()->get<std::shared_ptr<BlockTable> >("TABLE");
@@ -261,21 +266,25 @@ int lua_replacerange(lua_State * state) {
 	}
 	return 0;
 }
+
 int lua_getxsize(lua_State* state) {
 		auto table = Context::top()->get<std::shared_ptr<BlockTable> >("TABLE");
         lua_pushinteger(state, table->getXSize());
         return 1;
 }
+
 int lua_getysize(lua_State* state) {
 		auto table = Context::top()->get<std::shared_ptr<BlockTable> >("TABLE");
         lua_pushinteger(state, table->getYSize());
         return 1;
 }
+
 int lua_getzsize(lua_State* state) {
 		auto table = Context::top()->get<std::shared_ptr<BlockTable> >("TABLE");
         lua_pushinteger(state, table->getZSize());
         return 1;
 }
+
 int lua_newstruct(lua_State* state) {
 	auto blockpack = BlockPack::getCurrent();
 	std::string name = luaL_checkstring(state, -2);
@@ -304,6 +313,7 @@ int lua_newstruct(lua_State* state) {
 	mbmap->insert_or_assign(name, mb);
 	return 0;
 }
+
 int lua_genstruct(lua_State* state) {
 	using HeightMapT = std::unordered_map<glm::ivec2, int, hidden::Vec2HashFunc, hidden::Vec2HashFunc>;
 	auto table = Context::top()->get<std::shared_ptr<BlockTable> >("TABLE");
@@ -311,7 +321,6 @@ int lua_genstruct(lua_State* state) {
 	auto hmap = Context::top()->get<HeightMapT >("HM");
 	auto wtable = Context::top()->get<std::shared_ptr<WeightTable> >("WT");
 
-	int minWeight = luaL_checkinteger(state, -5);
 	int maxWeight = luaL_checkinteger(state, -4);
 	int limitWeight = luaL_checkinteger(state, -3);
 	float parcent = static_cast<float>(luaL_checknumber(state, -2));
@@ -334,9 +343,7 @@ int lua_genstruct(lua_State* state) {
 		if (areaSize.x < mbSize.x || areaSize.z < mbSize.z) {
 			continue;
 		}
-		int emptyBlockCount = (areaSize.x * areaSize.z) * mbSize.y;
-		int structBlockCount = (mbSize.x * mbSize.y * mbSize.z);
-		int placedBlockCount = 0;
+		std::vector<glm::ivec3> expandPosVec;
 		// 一ますごとに配置可能か検証する
 		for (int i = 0; i < blockArea.getPointCount(); i++) {
 			auto point = blockArea.getPoint(i);
@@ -354,11 +361,40 @@ int lua_genstruct(lua_State* state) {
 			if (!canPlace) {
 				continue;
 			}
+			expandPosVec.emplace_back(point);
+		}
+		//割合で配置量を決める
+		int allCount = static_cast<int>(expandPosVec.size());
+		int placeCount = 0;
+		// シャッフルしてから適当につっこむ
+		std::random_device seed_gen;
+		std::mt19937 engine(seed_gen());
+		std::shuffle(expandPosVec.begin(), expandPosVec.end(), engine);
+		for (auto point : expandPosVec) {
+			auto expandVec = table->expandTargets(point.x, point.y, point.z, mb);
+			bool canPlace = true;
+			// 重み付けによって判定する
+			for (auto& expandBlock : expandVec) {
+				glm::ivec3 expandPos = std::get<0>(expandBlock);
+				int weight = wtable->getWeight(expandPos.x, expandPos.y, expandPos.z);
+				if (limitWeight <= weight) {
+					canPlace = false;
+					break;
+				}
+			}
+			if (!canPlace) {
+				continue;
+			}
+			// 展開する
 			table->expand(point.x, point.y, point.z, mb);
+			// 中心の位置を取得
 			auto expandCenter = point;
 			expandCenter.x += mbSize.x / 2;
 			expandCenter.y += mbSize.y / 2;
 			expandCenter.z += mbSize.z / 2;
+			wtable->addWeight(expandCenter.x, expandCenter.y, expandCenter.z, maxWeight);
+			/*
+			// 重み付けの加算
 			for (auto& expandBlock : expandVec) {
 				glm::ivec3 expandPos = std::get<0>(expandBlock);
 				int expandID = std::get<1>(expandBlock);
@@ -372,8 +408,10 @@ int lua_genstruct(lua_State* state) {
 				int curWeight = wtable->getWeight(expandPos.x, expandPos.y, expandPos.z);
 				wtable->setWeight(expandPos.x, expandPos.y, expandPos.z, curWeight + addWeight);
 			}
-			placedBlockCount += structBlockCount;
-			if (static_cast<float>(placedBlockCount) / static_cast<float>(emptyBlockCount) >= parcent) {
+			*/
+			placeCount++;
+			float t = static_cast<float>(placeCount) / static_cast<float>(allCount);
+			if (t >= parcent) {
 				break;
 			}
 		}
