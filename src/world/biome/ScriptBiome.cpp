@@ -347,12 +347,10 @@ int lua_genstruct(lua_State* state) {
 		// 一ますごとに配置可能か検証する
 		for (int i = 0; i < blockArea.getPointCount(); i++) {
 			auto point = blockArea.getPoint(i);
-			auto expandVec = table->expandTargets(point.x, point.y, point.z, mb);
-			bool canPlace = true;
-			if (!canPlace) {
-				continue;
+			bool canPlace = table->canExpand(point.x, point.y, point.z, mb);
+			if(canPlace) {
+				expandPosVec.emplace_back(point);
 			}
-			expandPosVec.emplace_back(point);
 		}
 		// シャッフルしてから適当につっこむ
 		std::random_device seed_gen;

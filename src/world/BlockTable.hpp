@@ -43,8 +43,9 @@ class BlockTable {
         BlockPrefab& get(int x, int y, int z);
         const BlockPrefab& get(int x, int y, int z) const;
 
-		std::vector<std::tuple<glm::ivec3, int> > expandTargets(int baseX, int baseY, int baseZ, const MultiBlock& mb);
+		std::vector<std::tuple<glm::ivec3, int> > expandTargets(int baseX, int baseY, int baseZ, const MultiBlock& mb) const;
         void expand(int baseX, int baseY, int baseZ, const MultiBlock& mb);
+		bool canExpand(int baseX, int baseY, int baseZ, const MultiBlock& mb) const;
 
 		/**
 		 * w’è‚ÌÀ•W‚ª”ÍˆÍ‚È‚çtrue.

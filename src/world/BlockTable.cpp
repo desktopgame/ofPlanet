@@ -66,7 +66,7 @@ const BlockPrefab& BlockTable::get(int x, int y, int z) const {
         return vec.at(x).at(y).at(z);
 }
 
-std::vector<std::tuple<glm::ivec3, int> > BlockTable::expandTargets(int baseX, int baseY, int baseZ, const MultiBlock & mb) {
+std::vector<std::tuple<glm::ivec3, int> > BlockTable::expandTargets(int baseX, int baseY, int baseZ, const MultiBlock & mb) const {
 	std::vector<std::tuple<glm::ivec3, int>> points;
 	auto data = toCellVec(mb);
 	for (auto e : data) {
@@ -74,9 +74,6 @@ std::vector<std::tuple<glm::ivec3, int> > BlockTable::expandTargets(int baseX, i
 		int y = baseY + e.point.y;
 		int z = baseZ + e.point.z;
 		int id = e.blockId;
-		if (x >= xSize || y >= ySize || z >= zSize) {
-			continue;
-		}
 		points.emplace_back(std::tuple<glm::ivec3, int>(glm::ivec3(x, y, z), id));
 	}
 	return points;
@@ -86,6 +83,9 @@ void BlockTable::expand(int baseX, int baseY, int baseZ, const MultiBlock& mb) {
 	auto points = expandTargets(baseX, baseY, baseZ, mb);
 	for (auto& point : points) {
 		glm::ivec3 pos = std::get<0>(point);
+		if (!contains(pos.x, pos.y, pos.z)) {
+			throw std::logic_error("position is out of bounds from table");
+		}
 		int id = std::get<1>(point);
 		if (id < 0) {
 			set(pos.x, pos.y, pos.z, BlockPrefab(-1, false));
@@ -93,6 +93,26 @@ void BlockTable::expand(int baseX, int baseY, int baseZ, const MultiBlock& mb) {
 			set(pos.x, pos.y, pos.z, BlockPrefab(id, false));
 		}
 	}
+}
+
+bool BlockTable::canExpand(int baseX, int baseY, int baseZ, const MultiBlock & mb) const {
+	auto points = expandTargets(baseX, baseY, baseZ, mb);
+	for (auto& point : points) {
+		glm::ivec3 pos = std::get<0>(point);
+		if (!contains(pos.x, pos.y, pos.z)) {
+			return false;
+		}
+		int oldId = get(pos.x, pos.y, pos.z).id;
+		int newId = std::get<1>(point);
+		if (newId < 0) {
+			continue;
+		}
+		//Šù‚ÉƒuƒƒbƒN‚ª‚ ‚é
+		if (oldId >= 0) {
+			return false;
+		}
+	}
+	return true;
 }
 
 bool BlockTable::contains(int x, int y, int z) const {
