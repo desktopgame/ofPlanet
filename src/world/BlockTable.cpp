@@ -5,14 +5,29 @@
 #include "MultiBlock.hpp"
 #include "BlockPack.hpp"
 namespace planet {
-
+// KeyCompare
+bool KeyCompare::operator()(const glm::ivec3 & a, const glm::ivec3 & b) const {
+	return a.x < b.x || (a.x == b.x && a.y < b.y) || (a.x == b.x && a.y == b.y && a.z < b.z);
+}
 // BlockPrefab
 BlockPrefab::BlockPrefab(int id, bool instanced)
     : id(id), instanced(instanced) {}
 
 BlockPrefab::BlockPrefab() : id(-1), instanced(false) {}
-// BlockTable
 
+// BlockArea
+BlockArea::BlockArea() : points() {
+}
+void BlockArea::addPoint(glm::ivec3 point) {
+	points.emplace_back(point);
+}
+glm::ivec3 BlockArea::getPoint(int i) const {
+	return points.at(i);
+}
+int BlockArea::getPointCount() const {
+	return static_cast<int>(points.size());
+}
+// BlockTable
 BlockTable::BlockTable(int xSize, int ySize, int zSize)
     : xSize(xSize), ySize(ySize), zSize(zSize), terrain() {
         for (int x = 0; x < xSize; x++) {
@@ -58,6 +73,39 @@ void BlockTable::expand(int baseX, int baseY, int baseZ, const MultiBlock& mb) {
         }
 }
 
+bool BlockTable::contains(int x, int y, int z) const {
+	if (x < 0 || y < 0 || z < 0) return false;
+	if (x >= xSize || y >= ySize || z >= zSize) return false;
+	return true;
+}
+
+int BlockTable::getTopYForXZ(int x, int z) const {
+	for (int i = ySize - 1; i >= 0; i--) {
+		if (get(x, i, z).id != -1) {
+			return i;
+		}
+	}
+	return ySize-1;
+}
+
+std::vector<BlockArea> BlockTable::getAllBlockAreaForTop() const {
+	std::vector<BlockArea> ret;
+	std::set<glm::ivec3, KeyCompare> set;
+	for (int x = 0; x < xSize; x++) {
+		for (int z = 0; z < zSize; z++) {
+			int topY = getTopYForXZ(x, z);
+			glm::ivec3 pos(x, topY, z);
+			if (set.count(pos)) {
+				continue;
+			}
+			BlockArea area;
+			getAllBlockAreaForTopImpl(pos, set, area);
+			ret.emplace_back(area);
+		}
+	}
+	return ret;
+}
+
 int BlockTable::getXSize() const { return xSize; }
 
 int BlockTable::getYSize() const { return ySize; }
@@ -65,4 +113,30 @@ int BlockTable::getYSize() const { return ySize; }
 int BlockTable::getZSize() const { return zSize; }
 void BlockTable::setTerrain(const Terrain terrain) { this->terrain = terrain; }
 Terrain BlockTable::getTerrain() const { return terrain; }
+// private
+void BlockTable::getAllBlockAreaForTopImpl(glm::ivec3 pos, std::set<glm::ivec3, KeyCompare>& set, BlockArea & area) const {
+	set.insert(pos);
+	area.addPoint(pos);
+
+	glm::ivec3 xp = pos + glm::ivec3(1, 0, 0);
+	glm::ivec3 xn = pos - glm::ivec3(1, 0, 0);
+	glm::ivec3 yp = pos + glm::ivec3(0, 1, 0);
+	glm::ivec3 yn = pos - glm::ivec3(0, 1, 0);
+	glm::ivec3 zp = pos + glm::ivec3(0, 0, 1);
+	glm::ivec3 zn = pos - glm::ivec3(0, 0, 1);
+	addPos(pos, xp, set, area);
+	addPos(pos, xn, set, area);
+	addPos(pos, yp, set, area);
+	addPos(pos, yn, set, area);
+	addPos(pos, zp, set, area);
+	addPos(pos, zn, set, area);
+}
+void BlockTable::addPos(glm::ivec3 pos, glm::ivec3 newPos, std::set<glm::ivec3, KeyCompare>& set, BlockArea & area) const {
+	if (!set.count(newPos) && contains(newPos.x, newPos.y, newPos.z)) {
+		int y = getTopYForXZ(newPos.x, newPos.z);
+		if (y == pos.y) {
+			getAllBlockAreaForTopImpl(newPos, set, area);
+		}
+	}
+}
 }  // namespace planet
