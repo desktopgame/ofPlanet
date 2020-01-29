@@ -28,6 +28,7 @@ public:
 	void addPoint(glm::ivec3 point);
 	glm::ivec3 getPoint(int i) const;
 	int getPointCount() const;
+	std::vector<glm::ivec3> getPoints() const;
 private:
 	std::vector<glm::ivec3> points;
 };
@@ -63,6 +64,13 @@ class BlockTable {
 		 * @return
 		 */
 		std::vector<BlockArea> getAllBlockAreaForTop() const;
+
+		/**
+		 * w’è‚Ì—Ìˆæ‚ğã•ûŒü‚É‚Ç‚ê‚¾‚¯Ï‚İd‚Ë‚é‚±‚Æ‚ª‚Å‚«‚é‚©‚ğ•Ô‚µ‚Ü‚·B
+		 * @param blockArea
+		 * @return
+		 */
+		int getStackableHeight(const BlockArea& blockArea) const;
 
         int getXSize() const;
         int getYSize() const;

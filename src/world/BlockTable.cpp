@@ -27,6 +27,9 @@ glm::ivec3 BlockArea::getPoint(int i) const {
 int BlockArea::getPointCount() const {
 	return static_cast<int>(points.size());
 }
+std::vector<glm::ivec3> BlockArea::getPoints() const {
+	return points;
+}
 // BlockTable
 BlockTable::BlockTable(int xSize, int ySize, int zSize)
     : xSize(xSize), ySize(ySize), zSize(zSize), terrain() {
@@ -104,6 +107,26 @@ std::vector<BlockArea> BlockTable::getAllBlockAreaForTop() const {
 		}
 	}
 	return ret;
+}
+
+int BlockTable::getStackableHeight(const BlockArea & blockArea) const {
+	auto points = blockArea.getPoints();
+	int stack = 0;
+	bool exit = false;
+	while (!exit) {
+		stack++;
+		auto iter = points.begin();
+		while (iter != points.end()) {
+			auto pos = *iter;
+			pos.y += stack;
+			if (pos.y >= getYSize() || get(pos.x, pos.y, pos.z).id != -1) {
+				exit = true;
+				break;
+			}
+			++iter;
+		}
+	}
+	return stack;
 }
 
 int BlockTable::getXSize() const { return xSize; }
