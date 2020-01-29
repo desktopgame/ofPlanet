@@ -341,6 +341,7 @@ int lua_genstruct(lua_State* state) {
 		// 一ますごとに配置可能か検証する
 		for (int i = 0; i < blockArea.getPointCount(); i++) {
 			auto point = blockArea.getPoint(i);
+			point += glm::ivec3(0, 1, 0);
 			bool canPlace = table->canExpand(point.x, point.y, point.z, mb);
 			if(canPlace) {
 				expandPosVec.emplace_back(point);
