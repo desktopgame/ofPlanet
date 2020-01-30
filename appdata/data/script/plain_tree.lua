@@ -67,9 +67,6 @@ function onGenerateStructures()
 end
 
 function onGenerateCave(x, y, z, noise)
-    if(noise > 0.1) then
-        setblock(x, y, z, "");
-    end
 end
 
 function onPostGenerate()
