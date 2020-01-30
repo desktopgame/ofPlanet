@@ -25,6 +25,9 @@ ScriptBiome::ScriptBiome(const std::string& filename)
 		lua.define("newstruct", lua_newstruct);
 		lua.define("genstruct", lua_genstruct);
 		lua.define("expandstruct", lua_expandstruct);
+		lua.define("setweight", lua_setweight);
+		lua.define("getweight", lua_getweight);
+		lua.define("setweightrange", lua_setweightrange);
         lua.loadFile(filename);
         this->globals = lua.getAllVariables().get();
 }
@@ -398,6 +401,74 @@ int lua_expandstruct(lua_State * state) {
 	std::string name = luaL_checkstring(state, -1);
 	auto& mb = mbmap->at(name);
 	table->expand(x, y, z, mb);
+	return 0;
+}
+int lua_setweight(lua_State * state) {
+	auto table = Context::top()->get<std::shared_ptr<BlockTable> >("TABLE");
+	auto mbmap = Context::top()->get<std::shared_ptr<MultiBlockMap> >("MB");
+	auto wtableMap = Context::top()->get<std::shared_ptr<std::unordered_map<std::string, WeightTable> > >("WT");
+	int x = luaL_checkinteger(state, -5);
+	int y = luaL_checkinteger(state, -4);
+	int z = luaL_checkinteger(state, -3);
+	int weight = luaL_checkinteger(state, -2);
+	x = std::max(0, std::min(x, table->getXSize() - 1));
+	y = std::max(0, std::min(y, table->getYSize() - 1));
+	z = std::max(0, std::min(z, table->getZSize() - 1));
+	std::string name = luaL_checkstring(state, -1);
+	//構造物ごとに重み付けを記録する
+	if (!wtableMap->count(name)) {
+		WeightTable wt(table->getXSize(), table->getYSize(), table->getZSize());
+		wtableMap->insert_or_assign(name, wt);
+	}
+	auto& wtable = wtableMap->at(name);
+	wtable.setWeight(x, y, z, weight);
+	return 0;
+}
+int lua_getweight(lua_State * state) {
+	auto table = Context::top()->get<std::shared_ptr<BlockTable> >("TABLE");
+	auto mbmap = Context::top()->get<std::shared_ptr<MultiBlockMap> >("MB");
+	auto wtableMap = Context::top()->get<std::shared_ptr<std::unordered_map<std::string, WeightTable> > >("WT");
+	int x = luaL_checkinteger(state, -4);
+	int y = luaL_checkinteger(state, -3);
+	int z = luaL_checkinteger(state, -2);
+	x = std::max(0, std::min(x, table->getXSize() - 1));
+	y = std::max(0, std::min(y, table->getYSize() - 1));
+	z = std::max(0, std::min(z, table->getZSize() - 1));
+	std::string name = luaL_checkstring(state, -1);
+	//構造物ごとに重み付けを記録する
+	if (!wtableMap->count(name)) {
+		WeightTable wt(table->getXSize(), table->getYSize(), table->getZSize());
+		wtableMap->insert_or_assign(name, wt);
+	}
+	auto& wtable = wtableMap->at(name);
+	lua_pushinteger(state, wtable.getWeight(x, y, z));
+	return 1;
+}
+int lua_setweightrange(lua_State * state) {
+	auto blockpack = BlockPack::getCurrent();
+	auto table = Context::top()->get<std::shared_ptr<BlockTable> >("TABLE");
+	auto wtableMap = Context::top()->get<std::shared_ptr<std::unordered_map<std::string, WeightTable> > >("WT");
+	int minX = luaL_checkinteger(state, -8);
+	int minY = luaL_checkinteger(state, -7);
+	int minZ = luaL_checkinteger(state, -6);
+	int maxX = luaL_checkinteger(state, -5);
+	int maxY = luaL_checkinteger(state, -4);
+	int maxZ = luaL_checkinteger(state, -3);
+	int weight = luaL_checkinteger(state, -2);
+	std::string name = luaL_checkstring(state, -1);
+	//構造物ごとに重み付けを記録する
+	if (!wtableMap->count(name)) {
+		WeightTable wt(table->getXSize(), table->getYSize(), table->getZSize());
+		wtableMap->insert_or_assign(name, wt);
+	}
+	auto& wtable = wtableMap->at(name);
+	for (int x = minX; x <= maxX; x++) {
+		for (int y = minY; y <= maxY; y++) {
+			for (int z = minZ; z <= maxZ; z++) {
+				wtable.setWeight(x, y, z, weight);
+			}
+		}
+	}
 	return 0;
 }
 }  // namespace planet
