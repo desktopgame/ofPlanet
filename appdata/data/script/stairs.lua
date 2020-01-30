@@ -73,6 +73,7 @@ function onGenerateTerrain(x, y, z)
 end
 
 function onGenerateStructures()
+    setweightrange(0, getysize()-20, 0, getxsize()-1, getysize()-1, getzsize()-1, 10, "Tree");
     genstruct(
         12,
         1,
