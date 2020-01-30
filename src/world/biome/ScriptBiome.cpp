@@ -16,9 +16,9 @@ ScriptBiome::ScriptBiome(const std::string& filename)
         lua.define("setblock", lua_setblock);
 		lua.define("putblock", lua_putblock);
         lua.define("getblock", lua_getblock);
-		lua.define("setrange", lua_setrange);
-		lua.define("putrange", lua_putrange);
-		lua.define("replacerange", lua_replacerange);
+		lua.define("setblockrange", lua_setblockrange);
+		lua.define("putblockrange", lua_putblockrange);
+		lua.define("replaceblockrange", lua_replaceblockrange);
         lua.define("getxsize", lua_getxsize);
         lua.define("getysize", lua_getysize);
         lua.define("getzsize", lua_getzsize);
@@ -192,7 +192,7 @@ int lua_getblock(lua_State* state) {
         return 1;
 }
 
-int lua_setrange(lua_State * state) {
+int lua_setblockrange(lua_State * state) {
 	auto blockpack = BlockPack::getCurrent();
 	auto table = Context::top()->get<std::shared_ptr<BlockTable> >("TABLE");
 	int minX = luaL_checkinteger(state, -7);
@@ -213,7 +213,7 @@ int lua_setrange(lua_State * state) {
 	return 0;
 }
 
-int lua_putrange(lua_State * state) {
+int lua_putblockrange(lua_State * state) {
 	auto blockpack = BlockPack::getCurrent();
 	auto table = Context::top()->get<std::shared_ptr<BlockTable> >("TABLE");
 	int minX = luaL_checkinteger(state, -7);
@@ -236,7 +236,7 @@ int lua_putrange(lua_State * state) {
 	return 0;
 }
 
-int lua_replacerange(lua_State * state) {
+int lua_replaceblockrange(lua_State * state) {
 	auto blockpack = BlockPack::getCurrent();
 	auto table = Context::top()->get<std::shared_ptr<BlockTable> >("TABLE");
 	int minX = luaL_checkinteger(state, -8);

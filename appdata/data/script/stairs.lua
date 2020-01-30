@@ -87,5 +87,5 @@ function onGenerateCave(x, y, z, noise)
 end
 
 function onPostGenerate()
-    putrange(0, 0, 0, getxsize()-1, math.floor(getysize() / 3) - 5, getzsize()-1, "Water")
+    putblockrange(0, 0, 0, getxsize()-1, math.floor(getysize() / 3) - 5, getzsize()-1, "Water")
 end

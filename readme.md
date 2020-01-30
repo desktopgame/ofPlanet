@@ -250,14 +250,14 @@ nameが空文字列""のとき、指定位置のブロックを削除します
 #### getblock(x, y, z) -> name
 指定座標のブロックを返します
 
-#### setrange(minX, minY, minZ, maxX, maxY, maxZ, name)
+#### setblockrange(minX, minY, minZ, maxX, maxY, maxZ, name)
 指定の範囲のブロックを全て埋めます。
 
-#### putrange(minX, minY, minZ, maxX, maxY, maxZ, name)
+#### putblockrange(minX, minY, minZ, maxX, maxY, maxZ, name)
 指定の範囲のブロックを全て埋めます。
 また、既に何か配置されている座標はスキップします。
 
-#### replacerange(minX, minY, minZ, maxX, maxY, maxZ, oldName, newName)
+#### replaceblockrange(minX, minY, minZ, maxX, maxY, maxZ, oldName, newName)
 指定の範囲のブロックを全て置き換えます。
 
 #### getxsize() -> xsize
