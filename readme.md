@@ -315,9 +315,9 @@ end
 また、指定されるブロック名は `blocks.json` の `reference` と同じ名前である必要があります。  
 なにもない場合は `,,` のように隙間をあけずにカンマを打てばOKです。
 
-#### genstruct(name)
-まだ実験段階です。  
-地上に指定の名前の構造物を生成します。
+#### genstruct(addWeight, limitWeight, name)
+重み付けを使用して構造物を複数配置します。  
+重み付けが強ければ強いほど配置数は少なくなります。
 
 #### expandstruct(x, y, z, name)
 指定の座標に構造物を配置します。
