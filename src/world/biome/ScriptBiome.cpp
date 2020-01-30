@@ -12,7 +12,7 @@
 using namespace ofxLua;
 namespace planet {
 ScriptBiome::ScriptBiome(const std::string& filename)
-    : lua(), ctx(nullptr), table(nullptr), multiBlockMap(), weightTable() {
+    : lua(), ctx(nullptr), table(nullptr), multiBlockMap(), weightTableMap() {
         lua.define("setblock", lua_setblock);
 		lua.define("putblock", lua_putblock);
         lua.define("getblock", lua_getblock);
@@ -83,11 +83,11 @@ void ScriptBiome::onBeginGenerateWorld(BlockTable& blockTable) {
                                                    blockTable.getYSize(),
                                                    blockTable.getZSize());
 		this->multiBlockMap = std::make_shared<MultiBlockMap>();
-		this->weightTable = std::make_shared<WeightTable>(blockTable.getXSize(),blockTable.getYSize(),blockTable.getZSize());
+		this->weightTableMap = std::make_shared<std::unordered_map<std::string, WeightTable> >();
         ctx->set("TABLE", table);
 		ctx->set("MB", multiBlockMap);
 		ctx->set("HM", heightMap);
-		ctx->set("WT", weightTable);
+		ctx->set("WT", weightTableMap);
         // コールバックモードを決める
         std::vector<Variant> modeV = lua.call("start", std::vector<Object>{},
                  std::vector<Type>{T_STRING}).get();
@@ -309,15 +309,22 @@ int lua_newstruct(lua_State* state) {
 }
 
 int lua_genstruct(lua_State* state) {
+	int maxWeight = luaL_checkinteger(state, -3);
+	int limitWeight = luaL_checkinteger(state, -2);
+	std::string name = luaL_checkstring(state, -1);
+
 	using HeightMapT = std::unordered_map<glm::ivec2, int, hidden::Vec2HashFunc, hidden::Vec2HashFunc>;
 	auto table = Context::top()->get<std::shared_ptr<BlockTable> >("TABLE");
 	auto mbmap = Context::top()->get<std::shared_ptr<MultiBlockMap> >("MB");
 	auto hmap = Context::top()->get<HeightMapT >("HM");
-	auto wtable = Context::top()->get<std::shared_ptr<WeightTable> >("WT");
+	auto wtableMap = Context::top()->get<std::shared_ptr<std::unordered_map<std::string, WeightTable> > >("WT");
+	//構造物ごとに重み付けを記録する
+	if (!wtableMap->count(name)) {
+		WeightTable wt(table->getXSize(), table->getYSize(), table->getZSize());
+		wtableMap->insert_or_assign(name, wt);
+	}
+	auto& wtable = wtableMap->at(name);
 
-	int maxWeight = luaL_checkinteger(state, -3);
-	int limitWeight = luaL_checkinteger(state, -2);
-	std::string name = luaL_checkstring(state, -1);
 	auto& mb = mbmap->at(name);
 	// 構造物のだいたいの大きさを取得する
 	glm::ivec3 mbSize;
@@ -356,7 +363,7 @@ int lua_genstruct(lua_State* state) {
 			// 重み付けによって判定する
 			for (auto& expandBlock : expandVec) {
 				glm::ivec3 expandPos = std::get<0>(expandBlock);
-				int weight = wtable->getWeight(expandPos.x, expandPos.y, expandPos.z);
+				int weight = wtable.getWeight(expandPos.x, expandPos.y, expandPos.z);
 				if (limitWeight <= weight) {
 					canPlace = false;
 					break;
@@ -373,7 +380,7 @@ int lua_genstruct(lua_State* state) {
 			expandCenter.y += mbSize.y / 2;
 			expandCenter.z += mbSize.z / 2;
 			// 中心から重み付けを加算する
-			wtable->addWeight(expandCenter.x, expandCenter.y, expandCenter.z, maxWeight);
+			wtable.addWeight(expandCenter.x, expandCenter.y, expandCenter.z, maxWeight);
 		}
 	}
 	return 0;

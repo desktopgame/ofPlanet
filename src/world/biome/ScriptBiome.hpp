@@ -31,7 +31,7 @@ class ScriptBiome : public BasicBiome {
         ofxLua::Context::Instance ctx;
         std::shared_ptr<BlockTable> table;
 		std::shared_ptr<MultiBlockMap> multiBlockMap;
-		std::shared_ptr<WeightTable> weightTable;
+		std::shared_ptr<std::unordered_map<std::string, WeightTable> > weightTableMap;
         std::unordered_map<std::string, ofxLua::Object> globals;
 };
 
