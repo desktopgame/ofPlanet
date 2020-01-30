@@ -315,9 +315,8 @@ int lua_genstruct(lua_State* state) {
 	auto hmap = Context::top()->get<HeightMapT >("HM");
 	auto wtable = Context::top()->get<std::shared_ptr<WeightTable> >("WT");
 
-	int maxWeight = luaL_checkinteger(state, -4);
-	int limitWeight = luaL_checkinteger(state, -3);
-	float _ = static_cast<float>(luaL_checknumber(state, -2));
+	int maxWeight = luaL_checkinteger(state, -3);
+	int limitWeight = luaL_checkinteger(state, -2);
 	std::string name = luaL_checkstring(state, -1);
 	auto& mb = mbmap->at(name);
 	// 構造物のだいたいの大きさを取得する

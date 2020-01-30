@@ -61,7 +61,6 @@ function onGenerateStructures()
     genstruct(
         12,
         1,
-        0.3,
         "Tree"
     )
 end
