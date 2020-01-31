@@ -15,27 +15,27 @@ void Block::batch(std::shared_ptr<World> world, BlockRenderer& renderer, int x,
         const float size = 2.0f;
         //
         if (world->isEmpty(x - 1, y, z)) {
-                renderer.putLeft(set.getLeftImage()->getName(), x, y, z);
+                renderer.getCubeRenderer().putLeft(set.getLeftImage()->getName(), x, y, z);
         }
         //
         if (world->isEmpty(x + 1, y, z)) {
-                renderer.putRight(set.getRightImage()->getName(), x, y, z);
+                renderer.getCubeRenderer().putRight(set.getRightImage()->getName(), x, y, z);
         }
         //
         if (world->isEmpty(x, y, z - 1)) {
-                renderer.putBack(set.getBackImage()->getName(), x, y, z);
+                renderer.getCubeRenderer().putBack(set.getBackImage()->getName(), x, y, z);
         }
         //
         if (world->isEmpty(x, y, z + 1)) {
-                renderer.putFront(set.getFrontImage()->getName(), x, y, z);
+                renderer.getCubeRenderer().putFront(set.getFrontImage()->getName(), x, y, z);
         }
         //
         if (world->isEmpty(x, y + 1, z)) {
-                renderer.putTop(set.getTopImage()->getName(), x, y, z);
+                renderer.getCubeRenderer().putTop(set.getTopImage()->getName(), x, y, z);
         }
         //
         if (world->isEmpty(x, y - 1, z)) {
-                renderer.putBottom(set.getBottomImage()->getName(), x, y, z);
+                renderer.getCubeRenderer().putBottom(set.getBottomImage()->getName(), x, y, z);
         }
 }
 

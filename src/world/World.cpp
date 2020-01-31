@@ -125,7 +125,7 @@ void World::rehash() {
                         }
                 }
         }
-        renderer.updatePlane();
+        renderer.update();
 }
 
 void World::setBlock(glm::vec3 pos,
