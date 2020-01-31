@@ -53,6 +53,7 @@ class World : public std::enable_shared_from_this<World> {
         bool isContains(const glm::ivec3& v) const;
         bool isContains(const glm::vec3& v) const;
         bool isEmpty(int x, int y, int z) const;
+		bool isFilled(int x, int y, int z) const;
         int getGroundY(int x, int z) const;
 
 		glm::vec3 getPhysicalPosition(int x, int y, int z) const;

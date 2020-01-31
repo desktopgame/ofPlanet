@@ -18,22 +18,22 @@ void Block::batch(std::shared_ptr<World> world, BlockRenderer& renderer, int x,
 		} else if (this->shape == BlockShape::VerticalSlab) {
 			target = renderer.getVerticalSlabRenderer();
 		}
-        if (world->isEmpty(x - 1, y, z)) {
+        if (!world->isFilled(x - 1, y, z)) {
 				target.get().putLeft(set.getLeftImage()->getName(), x, y, z);
         }
-        if (world->isEmpty(x + 1, y, z)) {
+        if (!world->isFilled(x + 1, y, z)) {
 				target.get().putRight(set.getRightImage()->getName(), x, y, z);
         }
-        if (world->isEmpty(x, y, z - 1)) {
+        if (!world->isFilled(x, y, z - 1)) {
 				target.get().putBack(set.getBackImage()->getName(), x, y, z);
         }
-        if (world->isEmpty(x, y, z + 1)) {
+        if (!world->isFilled(x, y, z + 1)) {
 				target.get().putFront(set.getFrontImage()->getName(), x, y, z);
         }
-        if (world->isEmpty(x, y + 1, z)) {
+        if (!world->isFilled(x, y + 1, z)) {
 				target.get().putTop(set.getTopImage()->getName(), x, y, z);
         }
-        if (world->isEmpty(x, y - 1, z)) {
+        if (!world->isFilled(x, y - 1, z)) {
 				target.get().putBottom(set.getBottomImage()->getName(), x, y, z);
         }
 }

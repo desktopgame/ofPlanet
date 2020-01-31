@@ -196,6 +196,12 @@ bool World::isEmpty(int x, int y, int z) const {
         auto block = getBlock(x, y, z);
         return block == nullptr;
 }
+bool World::isFilled(int x, int y, int z) const  {
+	if (isEmpty(x, y, z)) {
+		return false;
+	}
+	return getBlock(x,y,z)->getShape() == BlockShape::Block;
+}
 int World::getGroundY(int x, int z) const {
         for (int i = 0; i < ySize; i++) {
                 if (!getBlock(x, i, z)) {
