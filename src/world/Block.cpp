@@ -13,10 +13,18 @@ void Block::batch(std::shared_ptr<World> world, BlockRenderer& renderer, int x,
                   int y, int z) {
         TextureSet set = getTextureSet();
 		std::reference_wrapper<GraphicsRenderer> target = renderer.getCubeRenderer();
-		if (this->shape == BlockShape::HorizontalSlab) {
-			target = renderer.getHorizontalSlabRenderer();
-		} else if (this->shape == BlockShape::VerticalSlab) {
-			target = renderer.getVerticalSlabRenderer();
+		if (this->shape == BlockShape::LeftSlab) {
+			target = renderer.getLeftSlabRenderer();
+		} else if (this->shape == BlockShape::RightSlab) {
+			target = renderer.getRightSlabRenderer();
+		} else if (this->shape == BlockShape::FrontSlab) {
+			target = renderer.getFrontSlabRenderer();
+		} else if (this->shape == BlockShape::BackSlab) {
+			target = renderer.getBackSlabRenderer();
+		} else if (this->shape == BlockShape::TopSlab) {
+			target = renderer.getTopSlabRenderer();
+		} else if (this->shape == BlockShape::BottomSlab) {
+			target = renderer.getBottomSlabRenderer();
 		}
         if (!world->isFilled(x - 1, y, z)) {
 				target.get().putLeft(set.getLeftImage()->getName(), x, y, z);
@@ -67,11 +75,11 @@ int Block::getID() const { return id; }
 glm::vec3 sizeFromShape(BlockShape shape) {
 	if (shape == BlockShape::Block) {
 		return glm::vec3(2, 2, 2);
-	}
-	else if (shape == BlockShape::HorizontalSlab) {
+	} else if (shape == BlockShape::LeftSlab || shape == BlockShape::RightSlab) {
+		return glm::vec3(1, 2, 2);
+	} else if (shape == BlockShape::FrontSlab || shape == BlockShape::BackSlab) {
 		return glm::vec3(2, 2, 1);
-	}
-	else if (shape == BlockShape::VerticalSlab) {
+	} else if (shape == BlockShape::TopSlab || shape == BlockShape::BottomSlab) {
 		return glm::vec3(2, 1, 2);
 	}
 	return glm::vec3(2, 2, 2);
@@ -81,11 +89,23 @@ BlockShape stringToBlockShape(const std::string & str) {
 	if (str == "Block" || str == "BLOCK") {
 		return BlockShape::Block;
 	}
-	if (str == "HorizontalSlab" || str == "HORIZONTALSLAB") {
-		return BlockShape::HorizontalSlab;
+	if (str == "LeftSlab" || str == "LEFTSLAB") {
+		return BlockShape::LeftSlab;
 	}
-	if (str == "VerticalSlab" || str == "VERTICALSLAB") {
-		return BlockShape::VerticalSlab;
+	if (str == "RightSlab" || str == "RIGHTSLAB") {
+		return BlockShape::RightSlab;
+	}
+	if (str == "FrontSlab" || str == "FRONTSLAB") {
+		return BlockShape::FrontSlab;
+	}
+	if (str == "BackSlab" || str == "BACKSLAB") {
+		return BlockShape::BackSlab;
+	}
+	if (str == "TopSlab" || str == "TOPSLAB") {
+		return BlockShape::TopSlab;
+	}
+	if (str == "BottomSlab" || str == "BottomSLAB") {
+		return BlockShape::BottomSlab;
 	}
 	return BlockShape::Block;
 }

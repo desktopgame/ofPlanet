@@ -15,12 +15,20 @@ public:
 	void render();
 
 	CubeRenderer& getCubeRenderer();
-	CubeRenderer& getHorizontalSlabRenderer();
-	CubeRenderer& getVerticalSlabRenderer();
+	CubeRenderer& getLeftSlabRenderer();
+	CubeRenderer& getRightSlabRenderer();
+	CubeRenderer& getFrontSlabRenderer();
+	CubeRenderer& getBackSlabRenderer();
+	CubeRenderer& getTopSlabRenderer();
+	CubeRenderer& getBottomSlabRenderer();
 private:
 	CubeRenderer cubeRenderer;
-	CubeRenderer horizontalSlabRenderer;
-	CubeRenderer verticalSlabRenderer;
+	CubeRenderer leftSlabRenderer;
+	CubeRenderer rightSlabRenderer;
+	CubeRenderer frontSlabRenderer;
+	CubeRenderer backSlabRenderer;
+	CubeRenderer topSlabRenderer;
+	CubeRenderer bottomSlabRenderer;
 };
 }
 #endif

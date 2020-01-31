@@ -12,8 +12,12 @@ class World;
 class BlockRenderer;
 enum class BlockShape {
 	Block,
-	HorizontalSlab,
-	VerticalSlab,
+	LeftSlab,
+	RightSlab,
+	FrontSlab,
+	BackSlab,
+	TopSlab,
+	BottomSlab,
 };
 glm::vec3 sizeFromShape(BlockShape shape);
 BlockShape stringToBlockShape(const std::string& str);

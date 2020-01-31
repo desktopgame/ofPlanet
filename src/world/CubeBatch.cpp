@@ -1,12 +1,13 @@
 #include "CubeBatch.hpp"
 
 #include "../common/GLM.hpp"
+#include "Block.hpp"
 namespace planet {
 
 
 
-CubeBatch::CubeBatch(const World& world, ofShader& shader, const glm::vec3& size)
-    : GraphicsBatch(world, shader), isInvalid(true), planes(), posVec(), vbo() {
+CubeBatch::CubeBatch(const World& world, ofShader& shader, const glm::vec3& size, int direction)
+    : GraphicsBatch(world, shader), isInvalid(true),size(size),direction(direction), planes(), posVec(), vbo() {
         for (int i = 0; i < static_cast<int>(PlaneType::Count); i++) {
                 std::vector<float> v;
                 planes[i] = std::make_shared<Plane>(shader, static_cast<PlaneType>(i),
@@ -72,6 +73,9 @@ void CubeBatch::render(GLuint texture) {
 
 void CubeBatch::put(PlaneType type, int x, int y, int z) {
 	glm::vec3 pos = getPhysicalPosition(x, y, z);
+	glm::vec3 baseSize = sizeFromShape(BlockShape::Block);
+	glm::vec3 offset = ((baseSize - (this->size * 2.0f)) / 2.0f) * static_cast<float>(direction);
+	pos += offset;
 	getPosVec(type).emplace_back(pos.x);
 	getPosVec(type).emplace_back(pos.y);
 	getPosVec(type).emplace_back(pos.z);

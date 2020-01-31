@@ -14,7 +14,7 @@ class World;
 class Camera;
 class CubeBatch : public GraphicsBatch {
        public:
-        explicit CubeBatch(const World& world, ofShader& shader, const glm::vec3& size);
+        explicit CubeBatch(const World& world, ofShader& shader, const glm::vec3& size, int direction);
         ~CubeBatch();
 
 		void putFront(int x, int y, int z) override;
@@ -31,6 +31,8 @@ class CubeBatch : public GraphicsBatch {
 		void put(PlaneType type, int x, int y, int z);
         void updatePlane(PlaneType type);
         std::vector<float>& getPosVec(PlaneType type);
+		glm::vec3 size;
+		int direction;
 
         bool isInvalid;
         std::array<std::shared_ptr<Plane>, static_cast<int>(PlaneType::Count)>
