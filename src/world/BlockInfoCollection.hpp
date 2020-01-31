@@ -9,6 +9,7 @@ struct BlockInfo {
         explicit BlockInfo() = default;
         std::string textue;
         std::string reference;
+		std::string shape;
 };
 
 class BlockInfoCollection {

@@ -6,36 +6,35 @@
 #include "TexturePack.hpp"
 #include "World.hpp"
 namespace planet {
-Block::Block(const std::string& name, const std::string& textureReference,
+Block::Block(BlockShape shape, const std::string& name, const std::string& textureReference,
              int id)
-    : name(name), textureReference(textureReference), id(id) {}
+    : shape(shape), name(name), textureReference(textureReference), id(id) {}
 void Block::batch(std::shared_ptr<World> world, BlockRenderer& renderer, int x,
                   int y, int z) {
         TextureSet set = getTextureSet();
-        const float size = 2.0f;
-        //
+		std::reference_wrapper<GraphicsRenderer> target = renderer.getCubeRenderer();
+		if (this->shape == BlockShape::HorizontalSlab) {
+			target = renderer.getHorizontalSlabRenderer();
+		} else if (this->shape == BlockShape::VerticalSlab) {
+			target = renderer.getVerticalSlabRenderer();
+		}
         if (world->isEmpty(x - 1, y, z)) {
-                renderer.getCubeRenderer().putLeft(set.getLeftImage()->getName(), x, y, z);
+				target.get().putLeft(set.getLeftImage()->getName(), x, y, z);
         }
-        //
         if (world->isEmpty(x + 1, y, z)) {
-                renderer.getCubeRenderer().putRight(set.getRightImage()->getName(), x, y, z);
+				target.get().putRight(set.getRightImage()->getName(), x, y, z);
         }
-        //
         if (world->isEmpty(x, y, z - 1)) {
-                renderer.getCubeRenderer().putBack(set.getBackImage()->getName(), x, y, z);
+				target.get().putBack(set.getBackImage()->getName(), x, y, z);
         }
-        //
         if (world->isEmpty(x, y, z + 1)) {
-                renderer.getCubeRenderer().putFront(set.getFrontImage()->getName(), x, y, z);
+				target.get().putFront(set.getFrontImage()->getName(), x, y, z);
         }
-        //
         if (world->isEmpty(x, y + 1, z)) {
-                renderer.getCubeRenderer().putTop(set.getTopImage()->getName(), x, y, z);
+				target.get().putTop(set.getTopImage()->getName(), x, y, z);
         }
-        //
         if (world->isEmpty(x, y - 1, z)) {
-                renderer.getCubeRenderer().putBottom(set.getBottomImage()->getName(), x, y, z);
+				target.get().putBottom(set.getBottomImage()->getName(), x, y, z);
         }
 }
 
@@ -57,4 +56,16 @@ std::string Block::getName() const { return name; }
 
 int Block::getID() const { return id; }
 
+BlockShape stringToBlockShape(const std::string & str) {
+	if (str == "Block" || str == "BLOCK") {
+		return BlockShape::Block;
+	}
+	if (str == "HorizontalSlab" || str == "HORIZONTALSLAB") {
+		return BlockShape::HorizontalSlab;
+	}
+	if (str == "VerticalSlab" || str == "VERTICALSLAB") {
+		return BlockShape::VerticalSlab;
+	}
+	return BlockShape::Block;
+}
 }  // namespace planet

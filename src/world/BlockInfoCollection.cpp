@@ -11,6 +11,7 @@ std::string BlockInfoCollection::serialize() const {
                 picojson::object blockO;
                 blockO["texture"] = picojson::value(blockInfo.textue);
                 blockO["reference"] = picojson::value(blockInfo.reference);
+				blockO["shape"] = picojson::value(blockInfo.shape);
                 blocksA.push_back(picojson::value(blockO));
         }
         rootO["blocks"] = picojson::value(blocksA);
@@ -33,8 +34,14 @@ void BlockInfoCollection::deserialize(const std::string& json) {
                 auto blockO = blockV.get<picojson::object>();
                 auto textureV = blockO["texture"];
                 auto referenceV = blockO["reference"];
+				//Shape属性は必須ではないのでデフォルト値がある
+				std::string shape("Block");
+				if (blockO.count("Shape")) {
+					shape = blockO["Shape"].get<std::string>();
+				}
                 bi.textue = textureV.get<std::string>();
                 bi.reference = referenceV.get<std::string>();
+				bi.shape = shape;
                 blockInfoVec.emplace_back(bi);
                 ++blocksIter;
         }

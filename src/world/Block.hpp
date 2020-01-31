@@ -9,9 +9,16 @@ namespace planet {
 
 class World;
 class BlockRenderer;
+enum class BlockShape {
+	Block,
+	HorizontalSlab,
+	VerticalSlab,
+};
+BlockShape stringToBlockShape(const std::string& str);
+
 class Block {
        public:
-        explicit Block(const std::string& name,
+        explicit Block(BlockShape shape, const std::string& name,
                        const std::string& textureReference, int id);
         virtual ~Block() = default;
 
@@ -30,6 +37,7 @@ class Block {
 
        protected:
        private:
+		BlockShape shape;
         std::string textureReference;
         std::string name;
         int id;
