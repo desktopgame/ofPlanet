@@ -14,7 +14,7 @@ namespace planet {
 class Camera;
 class CubeBatch : public GraphicsBatch {
        public:
-        explicit CubeBatch(ofShader& shader);
+        explicit CubeBatch(ofShader& shader, const glm::vec3& size);
         ~CubeBatch();
 
 		void putFront(float x, float y, float z) override;
