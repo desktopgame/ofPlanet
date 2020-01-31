@@ -1,6 +1,22 @@
 {
   "blocks": [
     {
+      "reference": "LDoorTop",
+      "texture": "LDoorTopBlock"
+    },
+    {
+      "reference": "LDoorBottom",
+      "texture": "LDoorBottomBlock"
+    },
+    {
+      "reference": "RDoorTop",
+      "texture": "RDoorTopBlock"
+    },
+    {
+      "reference": "RDoorBottom",
+      "texture": "RDoorBottomBlock"
+    },
+    {
       "reference": "Dirt",
       "texture": "DirtBlock"
     },

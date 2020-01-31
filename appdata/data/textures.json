@@ -2,6 +2,42 @@
   "baseDirectory": "image/block",
   "textures": [
     {
+      "baseFileName": "DoorTopBlock",
+      "mappingRule": {
+        "all": "Side",
+        "front": "Front",
+        "back": "Back"
+      },
+      "reference": "LDoorTopBlock"
+    },
+    {
+      "baseFileName": "DoorBottomBlock",
+      "mappingRule": {
+        "all": "Side",
+        "front": "Front",
+        "back": "Front"
+      },
+      "reference": "LDoorBottomBlock"
+    },
+    {
+      "baseFileName": "DoorTopBlock",
+      "mappingRule": {
+        "all": "Side",
+        "front": "Back",
+        "back": "Front"
+      },
+      "reference": "RDoorTopBlock"
+    },
+    {
+      "baseFileName": "DoorBottomBlock",
+      "mappingRule": {
+        "all": "Side",
+        "front": "Front",
+        "back": "Front"
+      },
+      "reference": "RDoorBottomBlock"
+    },
+    {
       "baseFileName": "DirtBlock",
       "mappingRule": {
         "all": "Side"
