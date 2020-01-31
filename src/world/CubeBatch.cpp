@@ -59,7 +59,7 @@ void CubeBatch::clear() {
         this->isInvalid = true;
 }
 
-void CubeBatch::updatePlane() {
+void CubeBatch::update() {
         if (!isInvalid) {
                 return;
         }
@@ -70,7 +70,7 @@ void CubeBatch::updatePlane() {
 }
 
 void CubeBatch::render(GLuint texture) {
-		updatePlane();
+		update();
         glBindTexture(GL_TEXTURE_2D, texture);
 
         for (int i = 0; i < static_cast<int>(PlaneType::Count); i++) {

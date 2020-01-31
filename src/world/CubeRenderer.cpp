@@ -39,9 +39,9 @@ void CubeRenderer::clear() {
         }
 }
 
-void CubeRenderer::updatePlane() {
+void CubeRenderer::update() {
         for (auto& kv : map) {
-                kv.second->updatePlane();
+                kv.second->update();
         }
 }
 

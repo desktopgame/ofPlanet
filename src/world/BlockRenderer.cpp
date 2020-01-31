@@ -7,7 +7,7 @@ void BlockRenderer::clear() {
 	cubeRenderer.clear();
 }
 void BlockRenderer::update() {
-	cubeRenderer.updatePlane();
+	cubeRenderer.update();
 }
 void BlockRenderer::render() {
 	cubeRenderer.render();

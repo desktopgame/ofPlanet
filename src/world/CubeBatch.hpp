@@ -25,7 +25,7 @@ class CubeBatch {
         void putTop(float x, float y, float z);
         void putBottom(float x, float y, float z);
         void clear();
-        void updatePlane();
+        void update();
         void render(GLuint texture);
 
        private:
