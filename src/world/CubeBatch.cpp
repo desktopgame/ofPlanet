@@ -1,11 +1,11 @@
-#include "SideRenderer.hpp"
+#include "CubeBatch.hpp"
 
 #include "../common/GLM.hpp"
 namespace planet {
 
 
 
-SideRenderer::SideRenderer(ofShader& shader)
+CubeBatch::CubeBatch(ofShader& shader)
     : shader(shader), isInvalid(true), planes(), posVec(), vbo() {
         for (int i = 0; i < static_cast<int>(PlaneType::Count); i++) {
                 std::vector<float> v;
@@ -16,9 +16,9 @@ SideRenderer::SideRenderer(ofShader& shader)
         }
 }
 
-SideRenderer::~SideRenderer() {}
+CubeBatch::~CubeBatch() {}
 
-void SideRenderer::put(PlaneType type, float x, float y, float z) {
+void CubeBatch::put(PlaneType type, float x, float y, float z) {
 		x *= 2;
 		y *= 2;
 		z *= 2;
@@ -28,38 +28,38 @@ void SideRenderer::put(PlaneType type, float x, float y, float z) {
         this->isInvalid = true;
 }
 
-void SideRenderer::putFront(float x, float y, float z) {
+void CubeBatch::putFront(float x, float y, float z) {
         put(PlaneType::Front, x, y, z);
 }
 
-void SideRenderer::putBack(float x, float y, float z) {
+void CubeBatch::putBack(float x, float y, float z) {
         put(PlaneType::Back, x, y, z);
 }
 
-void SideRenderer::putLeft(float x, float y, float z) {
+void CubeBatch::putLeft(float x, float y, float z) {
         put(PlaneType::Left, x, y, z);
 }
 
-void SideRenderer::putRight(float x, float y, float z) {
+void CubeBatch::putRight(float x, float y, float z) {
         put(PlaneType::Right, x, y, z);
 }
 
-void SideRenderer::putTop(float x, float y, float z) {
+void CubeBatch::putTop(float x, float y, float z) {
         put(PlaneType::Top, x, y, z);
 }
 
-void SideRenderer::putBottom(float x, float y, float z) {
+void CubeBatch::putBottom(float x, float y, float z) {
         put(PlaneType::Bottom, x, y, z);
 }
 
-void SideRenderer::clear() {
+void CubeBatch::clear() {
         for (int i = 0; i < static_cast<int>(PlaneType::Count); i++) {
                 posVec.at(i).clear();
         }
         this->isInvalid = true;
 }
 
-void SideRenderer::updatePlane() {
+void CubeBatch::updatePlane() {
         if (!isInvalid) {
                 return;
         }
@@ -69,7 +69,7 @@ void SideRenderer::updatePlane() {
         this->isInvalid = false;
 }
 
-void SideRenderer::render(GLuint texture) {
+void CubeBatch::render(GLuint texture) {
 		updatePlane();
         glBindTexture(GL_TEXTURE_2D, texture);
 
@@ -79,7 +79,7 @@ void SideRenderer::render(GLuint texture) {
         }
 }
 
-void SideRenderer::updatePlane(PlaneType type) {
+void CubeBatch::updatePlane(PlaneType type) {
         int index = static_cast<int>(type);
         std::vector<float>& posVec = getPosVec(type);
         if (posVec.empty()) {
@@ -105,7 +105,7 @@ void SideRenderer::updatePlane(PlaneType type) {
 		shader.end();
 }
 
-std::vector<float>& SideRenderer::getPosVec(PlaneType type) {
+std::vector<float>& CubeBatch::getPosVec(PlaneType type) {
         int i = static_cast<int>(type);
         assert(i >= 0 && i < static_cast<int>(PlaneType::Count));
         return posVec.at(i);

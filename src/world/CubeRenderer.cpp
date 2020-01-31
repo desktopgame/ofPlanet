@@ -52,11 +52,11 @@ void CubeRenderer::render() {
 }
 
 // private
-std::shared_ptr<SideRenderer> CubeRenderer::ref(GLuint texture) {
+std::shared_ptr<CubeBatch> CubeRenderer::ref(GLuint texture) {
         if (map.count(texture)) {
                 return map.at(texture);
         }
-        auto r = std::make_shared<SideRenderer>(shader);
+        auto r = std::make_shared<CubeBatch>(shader);
         map.insert_or_assign(texture, r);
         return r;
 }

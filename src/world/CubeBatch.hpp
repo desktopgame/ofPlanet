@@ -1,6 +1,6 @@
 #pragma once
-#ifndef WORLD_SIDERENDERER_HPP
-#define WORLD_SIDERENDERER_HPP
+#ifndef WORLD_CUBEBATCH_HPP
+#define WORLD_CUBEBATCH_HPP
 #include <ofMatrix4x4.h>
 #include <ofShader.h>
 
@@ -12,10 +12,10 @@
 namespace planet {
 
 class Camera;
-class SideRenderer {
+class CubeBatch {
        public:
-        explicit SideRenderer(ofShader& shader);
-        ~SideRenderer();
+        explicit CubeBatch(ofShader& shader);
+        ~CubeBatch();
 
         void put(PlaneType type, float x, float y, float z);
         void putFront(float x, float y, float z);

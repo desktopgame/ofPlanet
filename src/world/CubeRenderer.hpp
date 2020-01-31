@@ -4,7 +4,7 @@
 #include <unordered_map>
 #include <ofShader.h>
 
-#include "SideRenderer.hpp"
+#include "CubeBatch.hpp"
 namespace planet {
 
 class Camera;
@@ -24,8 +24,8 @@ class CubeRenderer {
         void render();
 
        private:
-        std::shared_ptr<SideRenderer> ref(GLuint texture);
-        std::unordered_map<GLuint, std::shared_ptr<SideRenderer> > map;
+        std::shared_ptr<CubeBatch> ref(GLuint texture);
+        std::unordered_map<GLuint, std::shared_ptr<CubeBatch> > map;
 		ofShader& shader;
 };
 }  // namespace planet
