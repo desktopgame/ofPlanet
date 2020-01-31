@@ -17,6 +17,13 @@
       "reference": "WaterBlock"
     },
     {
+      "baseFileName": "GlassBlock",
+      "mappingRule": {
+        "all": "Side"
+      },
+      "reference": "GlassBlock"
+    },
+    {
       "baseFileName": "WoodBlock",
       "mappingRule": {
         "all": "Side"

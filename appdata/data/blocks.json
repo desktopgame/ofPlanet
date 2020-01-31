@@ -9,6 +9,10 @@
       "texture": "WaterBlock"
     },
     {
+      "reference": "Glass",
+      "texture": "GlassBlock"
+    },
+    {
       "reference": "Wood",
       "texture": "WoodBlock"
     },
