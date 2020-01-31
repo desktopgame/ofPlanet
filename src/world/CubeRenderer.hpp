@@ -11,10 +11,11 @@ namespace planet {
 class Camera;
 class CubeRenderer : public GraphicsRenderer {
        public:
-        explicit CubeRenderer(ofShader& shader);
+        explicit CubeRenderer(ofShader& shader, const glm::vec3& size);
        protected:
 		std::shared_ptr<GraphicsBatch> createBatch(ofShader& shader) override;
        private:
+		glm::vec3 size;
 };
 }  // namespace planet
 #endif
