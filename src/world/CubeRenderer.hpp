@@ -12,7 +12,6 @@ class CubeRenderer {
        public:
         explicit CubeRenderer(ofShader& shader);
 
-        void put(GLuint texture, PlaneType type, float x, float y, float z);
         void putFront(GLuint texture, float x, float y, float z);
         void putBack(GLuint texture, float x, float y, float z);
         void putLeft(GLuint texture, float x, float y, float z);
@@ -24,6 +23,7 @@ class CubeRenderer {
         void render();
 
        private:
+		//void put(GLuint texture, PlaneType type, float x, float y, float z);
         std::shared_ptr<CubeBatch> ref(GLuint texture);
         std::unordered_map<GLuint, std::shared_ptr<CubeBatch> > map;
 		ofShader& shader;

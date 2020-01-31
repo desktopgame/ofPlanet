@@ -18,16 +18,6 @@ CubeBatch::CubeBatch(ofShader& shader)
 
 CubeBatch::~CubeBatch() {}
 
-void CubeBatch::put(PlaneType type, float x, float y, float z) {
-		x *= 2;
-		y *= 2;
-		z *= 2;
-        getPosVec(type).emplace_back(x);
-        getPosVec(type).emplace_back(y);
-        getPosVec(type).emplace_back(z);
-        this->isInvalid = true;
-}
-
 void CubeBatch::putFront(float x, float y, float z) {
         put(PlaneType::Front, x, y, z);
 }
@@ -77,6 +67,17 @@ void CubeBatch::render(GLuint texture) {
                 planes[i]->drawInstanced(
                     getPosVec(static_cast<PlaneType>(i)).size());
         }
+}
+// private
+
+void CubeBatch::put(PlaneType type, float x, float y, float z) {
+	x *= 2;
+	y *= 2;
+	z *= 2;
+	getPosVec(type).emplace_back(x);
+	getPosVec(type).emplace_back(y);
+	getPosVec(type).emplace_back(z);
+	this->isInvalid = true;
 }
 
 void CubeBatch::updatePlane(PlaneType type) {

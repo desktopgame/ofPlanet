@@ -4,11 +4,6 @@ namespace planet {
 CubeRenderer::CubeRenderer(ofShader& shader)
     : shader(shader), map() {}
 
-void CubeRenderer::put(GLuint texture, PlaneType type, float x, float y,
-                        float z) {
-        ref(texture)->put(type, x, y, z);
-}
-
 void CubeRenderer::putFront(GLuint texture, float x, float y, float z) {
         ref(texture)->putFront(x, y, z);
 }
@@ -52,6 +47,13 @@ void CubeRenderer::render() {
 }
 
 // private
+
+//void CubeRenderer::put(GLuint texture, PlaneType type, float x, float y,
+//	float z) {
+//	ref(texture)->put(type, x, y, z);
+//}
+
+
 std::shared_ptr<CubeBatch> CubeRenderer::ref(GLuint texture) {
         if (map.count(texture)) {
                 return map.at(texture);

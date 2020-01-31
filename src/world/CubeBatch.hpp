@@ -17,7 +17,6 @@ class CubeBatch {
         explicit CubeBatch(ofShader& shader);
         ~CubeBatch();
 
-        void put(PlaneType type, float x, float y, float z);
         void putFront(float x, float y, float z);
         void putBack(float x, float y, float z);
         void putLeft(float x, float y, float z);
@@ -29,6 +28,7 @@ class CubeBatch {
         void render(GLuint texture);
 
        private:
+		void put(PlaneType type, float x, float y, float z);
         void updatePlane(PlaneType type);
         std::vector<float>& getPosVec(PlaneType type);
 
