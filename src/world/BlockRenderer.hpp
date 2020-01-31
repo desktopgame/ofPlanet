@@ -12,9 +12,14 @@ public:
 	void clear();
 	void update();
 	void render();
+
 	CubeRenderer& getCubeRenderer();
+	CubeRenderer& getHorizontalSlabRenderer();
+	CubeRenderer& getVerticalSlabRenderer();
 private:
 	CubeRenderer cubeRenderer;
+	CubeRenderer horizontalSlabRenderer;
+	CubeRenderer verticalSlabRenderer;
 };
 }
 #endif
