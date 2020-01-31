@@ -17,6 +17,36 @@
       "texture": "WoodBlock"
     },
     {
+      "reference": "StoneTopSlab",
+      "texture": "StoneBlock",
+      "shape": "TopSlab"
+    },
+    {
+      "reference": "StoneBottomSlab",
+      "texture": "StoneBlock",
+      "shape": "BottomSlab"
+    },
+    {
+      "reference": "StoneLeftSlab",
+      "texture": "StoneBlock",
+      "shape": "LeftSlab"
+    },
+    {
+      "reference": "StoneRightSlab",
+      "texture": "StoneBlock",
+      "shape": "RightSlab"
+    },
+    {
+      "reference": "StoneFrontSlab",
+      "texture": "StoneBlock",
+      "shape": "FrontSlab"
+    },
+    {
+      "reference": "StoneBackSlab",
+      "texture": "StoneBlock",
+      "shape": "BackSlab"
+    },
+    {
       "reference": "SmoothWood",
       "texture": "SmoothWoodBlock"
     },

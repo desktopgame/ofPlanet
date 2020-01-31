@@ -13,6 +13,7 @@ Stone,Stone,Stone,Stone,Stone,Stone,Stone,Stone,Stone,Stone,Stone
 Stone,Stone,Stone,Stone,Stone,Stone,Stone,Stone,Stone,Stone,Stone
 Stone,Stone,Stone,Stone,Stone,Stone,Stone,Stone,Stone,Stone,Stone
 Stone,Stone,Stone,Stone,Stone,Stone,Stone,Stone,Stone,Stone,Stone
+,StoneBottomSlab,StoneBottomSlab,StoneBottomSlab,StoneBottomSlab,,,,,,
 
 Wood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,Wood
 SmoothWood,,,,,,,,,,SmoothWood
@@ -22,6 +23,7 @@ SmoothWood,,,,,,,,,,SmoothWood
 SmoothWood,,,,,,,,,,SmoothWood
 SmoothWood,,,,,,,,,,SmoothWood
 Wood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,Wood
+,,,,,,,,,,
 
 Wood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,Wood
 SmoothWood,,,,,,,,,,SmoothWood
@@ -31,6 +33,7 @@ SmoothWood,,,,,,,,,,SmoothWood
 SmoothWood,,,,,,,,,,SmoothWood
 SmoothWood,,,,,,,,,,SmoothWood
 Wood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,Glass,Glass,Glass,SmoothWood,Wood
+,,,,,,,,,,
 
 Wood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,Wood
 SmoothWood,,,,,,,,,,SmoothWood
@@ -40,6 +43,7 @@ SmoothWood,,,,,,,,,,SmoothWood
 SmoothWood,,,,,,,,,,SmoothWood
 SmoothWood,,,,,,,,,,SmoothWood
 Wood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,Glass,Glass,Glass,SmoothWood,Wood
+,,,,,,,,,,
 
 Wood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,Wood
 SmoothWood,,,,,,,,,,SmoothWood
@@ -49,6 +53,7 @@ SmoothWood,,,,,,,,,,SmoothWood
 SmoothWood,,,,,,,,,,SmoothWood
 SmoothWood,,,,,,,,,,SmoothWood
 Wood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,Wood
+,,,,,,,,,,
 
 Stone,Stone,Stone,Stone,Stone,Stone,Stone,Stone,Stone,Stone,Stone
 Stone,Stone,Stone,Stone,Stone,Stone,Stone,Stone,Stone,Stone,Stone
@@ -58,6 +63,17 @@ Stone,Stone,Stone,Stone,Stone,Stone,Stone,Stone,Stone,Stone,Stone
 Stone,Stone,Stone,Stone,Stone,Stone,Stone,Stone,Stone,Stone,Stone
 Stone,Stone,Stone,Stone,Stone,Stone,Stone,Stone,Stone,Stone,Stone
 Stone,Stone,Stone,Stone,Stone,Stone,Stone,Stone,Stone,Stone,Stone
+,,,,,,,,,,
+
+Stone,StoneBackSlab,StoneBackSlab,StoneBackSlab,StoneBackSlab,StoneBackSlab,StoneBackSlab,StoneBackSlab,StoneBackSlab,StoneBackSlab,Stone
+StoneRightSlab,Stone,Stone,Stone,Stone,Stone,Stone,Stone,Stone,Stone,StoneLeftSlab
+StoneRightSlab,Stone,Stone,Stone,Stone,Stone,Stone,Stone,Stone,Stone,StoneLeftSlab
+StoneRightSlab,Stone,Stone,Stone,Stone,Stone,Stone,Stone,Stone,Stone,StoneLeftSlab
+StoneRightSlab,Stone,Stone,Stone,Stone,Stone,Stone,Stone,Stone,Stone,StoneLeftSlab
+StoneRightSlab,Stone,Stone,Stone,Stone,Stone,Stone,Stone,Stone,Stone,StoneLeftSlab
+StoneRightSlab,Stone,Stone,Stone,Stone,Stone,Stone,Stone,Stone,Stone,StoneLeftSlab
+Stone,StoneFrontSlab,StoneFrontSlab,StoneFrontSlab,StoneFrontSlab,StoneFrontSlab,StoneFrontSlab,StoneFrontSlab,StoneFrontSlab,StoneFrontSlab,Stone
+,,,,,,,,,,
 ]])
     return "default"
 -- return "ignore"
