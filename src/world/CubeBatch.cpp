@@ -6,7 +6,7 @@ namespace planet {
 
 
 CubeBatch::CubeBatch(ofShader& shader)
-    : shader(shader), isInvalid(true), planes(), posVec(), vbo() {
+    : GraphicsBatch(shader), isInvalid(true), planes(), posVec(), vbo() {
         for (int i = 0; i < static_cast<int>(PlaneType::Count); i++) {
                 std::vector<float> v;
                 planes[i] = std::make_shared<Plane>(shader, static_cast<PlaneType>(i),

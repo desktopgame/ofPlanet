@@ -5,28 +5,16 @@
 #include <ofShader.h>
 
 #include "CubeBatch.hpp"
+#include "GraphicsRenderer.hpp"
 namespace planet {
 
 class Camera;
-class CubeRenderer {
+class CubeRenderer : public GraphicsRenderer {
        public:
         explicit CubeRenderer(ofShader& shader);
-
-        void putFront(GLuint texture, float x, float y, float z);
-        void putBack(GLuint texture, float x, float y, float z);
-        void putLeft(GLuint texture, float x, float y, float z);
-        void putRight(GLuint texture, float x, float y, float z);
-        void putTop(GLuint texture, float x, float y, float z);
-        void putBottom(GLuint texture, float x, float y, float z);
-        void clear();
-        void update();
-        void render();
-
+       protected:
+		std::shared_ptr<GraphicsBatch> createBatch(ofShader& shader) override;
        private:
-		//void put(GLuint texture, PlaneType type, float x, float y, float z);
-        std::shared_ptr<CubeBatch> ref(GLuint texture);
-        std::unordered_map<GLuint, std::shared_ptr<CubeBatch> > map;
-		ofShader& shader;
 };
 }  // namespace planet
 #endif

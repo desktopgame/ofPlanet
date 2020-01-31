@@ -7,25 +7,25 @@
 #include <array>
 #include <memory>
 #include <vector>
-
 #include "Plane.hpp"
+#include "GraphicsBatch.hpp"
 namespace planet {
 
 class Camera;
-class CubeBatch {
+class CubeBatch : public GraphicsBatch {
        public:
         explicit CubeBatch(ofShader& shader);
         ~CubeBatch();
 
-        void putFront(float x, float y, float z);
-        void putBack(float x, float y, float z);
-        void putLeft(float x, float y, float z);
-        void putRight(float x, float y, float z);
-        void putTop(float x, float y, float z);
-        void putBottom(float x, float y, float z);
-        void clear();
-        void update();
-        void render(GLuint texture);
+		void putFront(float x, float y, float z) override;
+        void putBack(float x, float y, float z) override;
+        void putLeft(float x, float y, float z) override;
+        void putRight(float x, float y, float z) override;
+        void putTop(float x, float y, float z) override;
+        void putBottom(float x, float y, float z) override;
+        void clear() override;
+        void update() override;
+        void render(GLuint texture) override;
 
        private:
 		void put(PlaneType type, float x, float y, float z);
@@ -38,7 +38,7 @@ class CubeBatch {
         std::array<std::vector<float>, static_cast<int>(PlaneType::Count)>
             posVec;
         ofBufferObject vbo[static_cast<int>(PlaneType::Count)];
-		ofShader& shader;
+		// ofShader& shader;
 };
 }  // namespace planet
 #endif
