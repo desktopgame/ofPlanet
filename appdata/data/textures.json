@@ -24,6 +24,13 @@
       "reference": "WoodBlock"
     },
     {
+      "baseFileName": "SmoothWoodBlock",
+      "mappingRule": {
+        "all": "Side"
+      },
+      "reference": "SmoothWoodBlock"
+    },
+    {
       "baseFileName": "LeafBlock",
       "mappingRule": {
         "all": "Side"
