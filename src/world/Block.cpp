@@ -55,14 +55,7 @@ std::string Block::getTextureReference() const {
 std::string Block::getName() const { return name; }
 
 glm::vec3 Block::getSize() const {
-	if (this->shape == BlockShape::Block) {
-		return glm::vec3(2, 2, 2);
-	} else if (this->shape == BlockShape::HorizontalSlab) {
-		return glm::vec3(2, 2, 1);
-	} else if (this->shape == BlockShape::VerticalSlab) {
-		return glm::vec3(2, 1, 2);
-	}
-	return glm::vec3(2, 2, 2);
+	return sizeFromShape(shape);
 }
 
 BlockShape Block::getShape() const {
@@ -70,6 +63,19 @@ BlockShape Block::getShape() const {
 }
 
 int Block::getID() const { return id; }
+
+glm::vec3 sizeFromShape(BlockShape shape) {
+	if (shape == BlockShape::Block) {
+		return glm::vec3(2, 2, 2);
+	}
+	else if (shape == BlockShape::HorizontalSlab) {
+		return glm::vec3(2, 2, 1);
+	}
+	else if (shape == BlockShape::VerticalSlab) {
+		return glm::vec3(2, 1, 2);
+	}
+	return glm::vec3(2, 2, 2);
+}
 
 BlockShape stringToBlockShape(const std::string & str) {
 	if (str == "Block" || str == "BLOCK") {

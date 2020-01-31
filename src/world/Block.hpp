@@ -15,6 +15,7 @@ enum class BlockShape {
 	HorizontalSlab,
 	VerticalSlab,
 };
+glm::vec3 sizeFromShape(BlockShape shape);
 BlockShape stringToBlockShape(const std::string& str);
 
 class Block {
