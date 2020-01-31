@@ -5,22 +5,22 @@ namespace planet {
 GraphicsRenderer::GraphicsRenderer(const World& world, ofShader & shader)
  : world(world), shader(shader), map() {
 }
-void GraphicsRenderer::putFront(GLuint texture, float x, float y, float z) {
+void GraphicsRenderer::putFront(GLuint texture, int x, int y, int z) {
 	ref(texture)->putFront(x, y, z);
 }
-void GraphicsRenderer::putBack(GLuint texture, float x, float y, float z) {
+void GraphicsRenderer::putBack(GLuint texture, int x, int y, int z) {
 	ref(texture)->putBack(x, y, z);
 }
-void GraphicsRenderer::putLeft(GLuint texture, float x, float y, float z) {
+void GraphicsRenderer::putLeft(GLuint texture, int x, int y, int z) {
 	ref(texture)->putLeft(x, y, z);
 }
-void GraphicsRenderer::putRight(GLuint texture, float x, float y, float z) {
+void GraphicsRenderer::putRight(GLuint texture, int x, int y, int z) {
 	ref(texture)->putRight(x, y, z);
 }
-void GraphicsRenderer::putTop(GLuint texture, float x, float y, float z) {
+void GraphicsRenderer::putTop(GLuint texture, int x, int y, int z) {
 	ref(texture)->putTop(x, y, z);
 }
-void GraphicsRenderer::putBottom(GLuint texture, float x, float y, float z) {
+void GraphicsRenderer::putBottom(GLuint texture, int x, int y, int z) {
 	ref(texture)->putBottom(x, y, z);
 }
 void GraphicsRenderer::clear() {

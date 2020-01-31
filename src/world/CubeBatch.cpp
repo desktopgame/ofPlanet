@@ -18,27 +18,27 @@ CubeBatch::CubeBatch(const World& world, ofShader& shader, const glm::vec3& size
 
 CubeBatch::~CubeBatch() {}
 
-void CubeBatch::putFront(float x, float y, float z) {
+void CubeBatch::putFront(int x, int y, int z) {
         put(PlaneType::Front, x, y, z);
 }
 
-void CubeBatch::putBack(float x, float y, float z) {
+void CubeBatch::putBack(int x, int y, int z) {
         put(PlaneType::Back, x, y, z);
 }
 
-void CubeBatch::putLeft(float x, float y, float z) {
+void CubeBatch::putLeft(int x, int y, int z) {
         put(PlaneType::Left, x, y, z);
 }
 
-void CubeBatch::putRight(float x, float y, float z) {
+void CubeBatch::putRight(int x, int y, int z) {
         put(PlaneType::Right, x, y, z);
 }
 
-void CubeBatch::putTop(float x, float y, float z) {
+void CubeBatch::putTop(int x, int y, int z) {
         put(PlaneType::Top, x, y, z);
 }
 
-void CubeBatch::putBottom(float x, float y, float z) {
+void CubeBatch::putBottom(int x, int y, int z) {
         put(PlaneType::Bottom, x, y, z);
 }
 
@@ -70,7 +70,7 @@ void CubeBatch::render(GLuint texture) {
 }
 // private
 
-void CubeBatch::put(PlaneType type, float x, float y, float z) {
+void CubeBatch::put(PlaneType type, int x, int y, int z) {
 	x *= 2;
 	y *= 2;
 	z *= 2;

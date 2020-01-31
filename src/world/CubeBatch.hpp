@@ -17,18 +17,18 @@ class CubeBatch : public GraphicsBatch {
         explicit CubeBatch(const World& world, ofShader& shader, const glm::vec3& size);
         ~CubeBatch();
 
-		void putFront(float x, float y, float z) override;
-        void putBack(float x, float y, float z) override;
-        void putLeft(float x, float y, float z) override;
-        void putRight(float x, float y, float z) override;
-        void putTop(float x, float y, float z) override;
-        void putBottom(float x, float y, float z) override;
+		void putFront(int x, int y, int z) override;
+        void putBack(int x, int y, int z) override;
+        void putLeft(int x, int y, int z) override;
+        void putRight(int x, int y, int z) override;
+        void putTop(int x, int y, int z) override;
+        void putBottom(int x, int y, int z) override;
         void clear() override;
         void update() override;
         void render(GLuint texture) override;
 
        private:
-		void put(PlaneType type, float x, float y, float z);
+		void put(PlaneType type, int x, int y, int z);
         void updatePlane(PlaneType type);
         std::vector<float>& getPosVec(PlaneType type);
 

@@ -13,12 +13,12 @@ class GraphicsRenderer {
 public:
 	GraphicsRenderer(const World& world, ofShader& shader);
 
-	void putFront(GLuint texture, float x, float y, float z);
-	void putBack(GLuint texture, float x, float y, float z);
-	void putLeft(GLuint texture, float x, float y, float z);
-	void putRight(GLuint texture, float x, float y, float z);
-	void putTop(GLuint texture, float x, float y, float z);
-	void putBottom(GLuint texture, float x, float y, float z);
+	void putFront(GLuint texture, int x, int y, int z);
+	void putBack(GLuint texture, int x, int y, int z);
+	void putLeft(GLuint texture, int x, int y, int z);
+	void putRight(GLuint texture, int x, int y, int z);
+	void putTop(GLuint texture, int x, int y, int z);
+	void putBottom(GLuint texture, int x, int y, int z);
 	void clear();
 	void update();
 	void render();

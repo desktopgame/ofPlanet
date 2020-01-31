@@ -10,12 +10,12 @@ public:
 	GraphicsBatch(const World& world, ofShader& shader);
 	virtual ~GraphicsBatch(){}
 
-	virtual void putFront(float x, float y, float z) = 0;
-	virtual void putBack(float x, float y, float z) = 0;
-	virtual void putLeft(float x, float y, float z) = 0;
-	virtual void putRight(float x, float y, float z) = 0;
-	virtual void putTop(float x, float y, float z) = 0;
-	virtual void putBottom(float x, float y, float z) = 0;
+	virtual void putFront(int x, int y, int z) = 0;
+	virtual void putBack(int x, int y, int z) = 0;
+	virtual void putLeft(int x, int y, int z) = 0;
+	virtual void putRight(int x, int y, int z) = 0;
+	virtual void putTop(int x, int y, int z) = 0;
+	virtual void putBottom(int x, int y, int z) = 0;
 	virtual void clear() = 0;
 	virtual void update() = 0;
 	virtual void render(GLuint texture) = 0;
