@@ -36,8 +36,8 @@ void BlockInfoCollection::deserialize(const std::string& json) {
                 auto referenceV = blockO["reference"];
 				//Shape属性は必須ではないのでデフォルト値がある
 				std::string shape("Block");
-				if (blockO.count("Shape")) {
-					shape = blockO["Shape"].get<std::string>();
+				if (blockO.count("shape")) {
+					shape = blockO["shape"].get<std::string>();
 				}
                 bi.textue = textureV.get<std::string>();
                 bi.reference = referenceV.get<std::string>();
