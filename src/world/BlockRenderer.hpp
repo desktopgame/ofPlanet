@@ -5,9 +5,10 @@
 
 
 namespace planet {
+class World;
 class BlockRenderer {
 public:
-	explicit BlockRenderer(ofShader& shader);
+	explicit BlockRenderer(const World& world, ofShader& shader);
 
 	void clear();
 	void update();

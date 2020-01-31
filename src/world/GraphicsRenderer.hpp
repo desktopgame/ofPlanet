@@ -7,10 +7,11 @@
 
 
 namespace planet {
+class World;
 class GraphicsBatch;
 class GraphicsRenderer {
 public:
-	GraphicsRenderer(ofShader& shader);
+	GraphicsRenderer(const World& world, ofShader& shader);
 
 	void putFront(GLuint texture, float x, float y, float z);
 	void putBack(GLuint texture, float x, float y, float z);
@@ -22,8 +23,9 @@ public:
 	void update();
 	void render();
 protected:
-	virtual std::shared_ptr<GraphicsBatch> createBatch(ofShader& shader) = 0;
+	virtual std::shared_ptr<GraphicsBatch> createBatch(const World& world, ofShader& shader) = 0;
 private:
+	const World& world;
 	ofShader& shader;
 	std::unordered_map<GLuint, std::shared_ptr<GraphicsBatch> > map;
 	std::shared_ptr<GraphicsBatch> ref(GLuint texture);

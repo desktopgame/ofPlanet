@@ -10,11 +10,11 @@
 #include "Plane.hpp"
 #include "GraphicsBatch.hpp"
 namespace planet {
-
+class World;
 class Camera;
 class CubeBatch : public GraphicsBatch {
        public:
-        explicit CubeBatch(ofShader& shader, const glm::vec3& size);
+        explicit CubeBatch(const World& world, ofShader& shader, const glm::vec3& size);
         ~CubeBatch();
 
 		void putFront(float x, float y, float z) override;

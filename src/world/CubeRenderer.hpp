@@ -11,9 +11,9 @@ namespace planet {
 class Camera;
 class CubeRenderer : public GraphicsRenderer {
        public:
-        explicit CubeRenderer(ofShader& shader, const glm::vec3& size);
+        explicit CubeRenderer(const World& world, ofShader& shader, const glm::vec3& size);
        protected:
-		std::shared_ptr<GraphicsBatch> createBatch(ofShader& shader) override;
+		std::shared_ptr<GraphicsBatch> createBatch(const World& world, ofShader& shader) override;
        private:
 		glm::vec3 size;
 };

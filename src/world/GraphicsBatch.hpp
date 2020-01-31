@@ -4,9 +4,10 @@
 #include <ofShader.h>
 
 namespace planet {
+class World;
 class GraphicsBatch {
 public:
-	GraphicsBatch(ofShader& shader);
+	GraphicsBatch(const World& world, ofShader& shader);
 	virtual ~GraphicsBatch(){}
 
 	virtual void putFront(float x, float y, float z) = 0;
@@ -20,6 +21,7 @@ public:
 	virtual void render(GLuint texture) = 0;
 
 protected:
+	const World& world;
 	ofShader& shader;
 };
 }

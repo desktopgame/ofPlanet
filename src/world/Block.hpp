@@ -3,6 +3,7 @@
 #define WORLD_BLOCK_HPP
 #include <memory>
 #include <unordered_map>
+#include <glm/glm.hpp>
 
 #include "TextureSet.hpp"
 namespace planet {
@@ -33,6 +34,7 @@ class Block {
 
         std::string getTextureReference() const;
         std::string getName() const;
+		glm::vec3 getSize() const;
         int getID() const;
 
        protected:

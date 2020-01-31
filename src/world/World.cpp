@@ -193,6 +193,18 @@ int World::getGroundY(int x, int z) const {
         }
         return ySize;
 }
+glm::vec3 World::getPhysicalPosition(int x, int y, int z) const {
+	glm::vec3 pos(0, 0, 0);
+	for (int i = 0; i < x; i++) {
+		for (int j = 0; j < y; j++) {
+			for (int k = 0; k < z; k++) {
+				auto block = getBlock(i, j, k);
+				pos += block->getSize();
+			}
+		}
+	}
+	return pos;
+}
 int World::getXSize() const { return xSize; }
 int World::getYSize() const { return ySize; }
 int World::getZSize() const { return zSize; }
@@ -243,7 +255,7 @@ World::World(ofShader& shader, int xSize, int ySize, int zSize)
       xSize(xSize),
       ySize(ySize),
       zSize(zSize),
-      renderer(shader),
+      renderer(*this, shader),
       isInvalid(true),
       bIsPlayMode(false),
       fbo(),
