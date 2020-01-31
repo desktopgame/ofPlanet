@@ -154,7 +154,7 @@ void World::setBlock(int x, int y, int z,
 		});
 		notBlockPositionsVec.erase(iter, notBlockPositionsVec.end());
 		//ブロックのサイズがデフォルトでないなら記録する
-		if (block->getShape() != BlockShape::Block) {
+		if (block && block->getShape() != BlockShape::Block) {
 			notBlockPositionsVec.emplace_back(pos);
 		}
         blocks[x][y][z] = block;
