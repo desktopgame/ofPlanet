@@ -35,6 +35,7 @@ class Block {
         std::string getTextureReference() const;
         std::string getName() const;
 		glm::vec3 getSize() const;
+		BlockShape getShape() const;
         int getID() const;
 
        protected:

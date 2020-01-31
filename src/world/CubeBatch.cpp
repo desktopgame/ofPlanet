@@ -71,12 +71,10 @@ void CubeBatch::render(GLuint texture) {
 // private
 
 void CubeBatch::put(PlaneType type, int x, int y, int z) {
-	x *= 2;
-	y *= 2;
-	z *= 2;
-	getPosVec(type).emplace_back(x);
-	getPosVec(type).emplace_back(y);
-	getPosVec(type).emplace_back(z);
+	glm::vec3 pos = getPhysicalPosition(x, y, z);
+	getPosVec(type).emplace_back(pos.x);
+	getPosVec(type).emplace_back(pos.y);
+	getPosVec(type).emplace_back(pos.z);
 	this->isInvalid = true;
 }
 

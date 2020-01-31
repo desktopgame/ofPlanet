@@ -13,6 +13,8 @@ void BlockRenderer::update() {
 }
 void BlockRenderer::render() {
 	cubeRenderer.render();
+	horizontalSlabRenderer.render();
+	verticalSlabRenderer.render();
 }
 CubeRenderer & BlockRenderer::getCubeRenderer() {
 	return cubeRenderer;

@@ -65,6 +65,10 @@ glm::vec3 Block::getSize() const {
 	return glm::vec3(2, 2, 2);
 }
 
+BlockShape Block::getShape() const {
+	return shape;
+}
+
 int Block::getID() const { return id; }
 
 BlockShape stringToBlockShape(const std::string & str) {

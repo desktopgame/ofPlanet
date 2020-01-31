@@ -22,12 +22,6 @@ public:
 	glm::ivec3 offset;
 };
 
-struct Area {
-	int xSize, zSize;
-	glm::ivec3 min;
-	glm::ivec3 max;
-};
-
 class Entity;
 class Block;
 class World : public std::enable_shared_from_this<World> {
@@ -79,6 +73,7 @@ class World : public std::enable_shared_from_this<World> {
         explicit World(ofShader& shader, int xSize, int ySize, int zSize);
         std::vector<std::vector<std::vector<std::shared_ptr<Block> > > >
             blocks;
+		std::vector<glm::ivec3> notBlockPositionsVec;
         bool isInvalid;
         int xSize, ySize, zSize;
         int fboW, fboH;

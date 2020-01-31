@@ -6,6 +6,7 @@
 #include <ofLight.h>
 #include <ofVec3f.h>
 
+#include <algorithm>
 #include <string>
 
 #include "../game/ofApp.h"
@@ -146,6 +147,16 @@ void World::setBlock(float x, float y, float z,
 
 void World::setBlock(int x, int y, int z,
                              std::shared_ptr<Block> block) {
+		// 以前同じ座標にブロックが置かれていたなら削除
+		glm::ivec3 pos(x, y, z);
+		auto iter = std::remove_if(notBlockPositionsVec.begin(), notBlockPositionsVec.end(), [pos](glm::ivec3 e) -> bool {
+			return e == pos;
+		});
+		notBlockPositionsVec.erase(iter, notBlockPositionsVec.end());
+		//ブロックのサイズがデフォルトでないなら記録する
+		if (block->getShape() != BlockShape::Block) {
+			notBlockPositionsVec.emplace_back(pos);
+		}
         blocks[x][y][z] = block;
         this->isInvalid = true;
 }
@@ -194,15 +205,17 @@ int World::getGroundY(int x, int z) const {
         return ySize;
 }
 glm::vec3 World::getPhysicalPosition(int x, int y, int z) const {
-	glm::vec3 pos(0, 0, 0);
-	for (int i = 0; i < x; i++) {
-		for (int j = 0; j < y; j++) {
-			for (int k = 0; k < z; k++) {
-				auto block = getBlock(i, j, k);
-				pos += block->getSize();
-			}
+	// まずは全てのブロックが通常ブロックである前提で計算する
+	glm::vec3 pos(x*2, y*2, z*2);
+	/*
+	for (auto e : notBlockPositionsVec) {
+		glm::vec3 size = glm::vec3(2, 2, 2) - getBlock(e.x, e.y, e.z)->getSize();
+		if (e.x <= x && e.y <= y && e.z <= z) {
+			pos.x -= size.x;
+			pos.y -= size.y;
+			pos.z -= size.z;
 		}
-	}
+	}*/
 	return pos;
 }
 int World::getXSize() const { return xSize; }
@@ -251,7 +264,8 @@ World::World(ofShader& shader, const glm::ivec3& size)
     : World(shader, size.x, size.y, size.z) {}
 
 World::World(ofShader& shader, int xSize, int ySize, int zSize)
-    : blocks(),
+    : notBlockPositionsVec(),
+	  blocks(),
       xSize(xSize),
       ySize(ySize),
       zSize(zSize),
