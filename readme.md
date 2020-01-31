@@ -322,6 +322,15 @@ end
 #### expandstruct(x, y, z, name)
 指定の座標に構造物を配置します。
 
+#### setweight(x, y, z, weight, name)
+指定の構造物を配置するための重み付けテーブルの指定の座標の重み付けを上書きします。
+
+#### getweight(x, y, z, name)
+指定の構造物を配置するための重み付けテーブルの指定の座標の重み付けを返します。
+
+#### setweightrange(minX, minY, minZ, maxX, maxY, maxZ, weight, name)
+指定の構造物を配置するための重み付けテーブルの指定の座標の重み付けを範囲ごと上書きします。
+
 ### その他
 
 #### ブロックを指定する方法
