@@ -30,7 +30,7 @@ SmoothWood,,,,,,,,,,SmoothWood
 SmoothWood,,,,,,,,,,SmoothWood
 SmoothWood,,,,,,,,,,SmoothWood
 SmoothWood,,,,,,,,,,SmoothWood
-Wood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,Wood
+Wood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,Glass,Glass,Glass,SmoothWood,Wood
 
 Wood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,Wood
 SmoothWood,,,,,,,,,,SmoothWood
@@ -39,7 +39,7 @@ SmoothWood,,,,,,,,,,SmoothWood
 SmoothWood,,,,,,,,,,SmoothWood
 SmoothWood,,,,,,,,,,SmoothWood
 SmoothWood,,,,,,,,,,SmoothWood
-Wood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,Wood
+Wood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,Glass,Glass,Glass,SmoothWood,Wood
 
 Wood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,SmoothWood,Wood
 SmoothWood,,,,,,,,,,SmoothWood
