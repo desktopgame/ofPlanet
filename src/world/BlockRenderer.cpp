@@ -4,8 +4,8 @@ BlockRenderer::BlockRenderer(const World& world, ofShader & shader)
  : cubeRenderer(world, shader, glm::vec3(1,1,1), 1),
    leftSlabRenderer(world, shader, glm::vec3(0.5f,1,1), -1),
    rightSlabRenderer(world, shader, glm::vec3(0.5f, 1, 1), 1),
-   frontSlabRenderer(world, shader, glm::vec3(1, 1, 0.5f), 1),
-   backSlabRenderer(world, shader, glm::vec3(1, 1, 0.5f), -1),
+   frontSlabRenderer(world, shader, glm::vec3(1, 1, 0.5f), -1),
+   backSlabRenderer(world, shader, glm::vec3(1, 1, 0.5f), 1),
    topSlabRenderer(world, shader, glm::vec3(1,0.5f,1), 1),
    bottomSlabRenderer(world, shader, glm::vec3(1, 0.5f, 1), -1) {
 }
