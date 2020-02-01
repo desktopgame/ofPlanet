@@ -223,7 +223,7 @@ void WorldIO::saveObjAsync(std::shared_ptr<Progress> progress, const std::string
 	int ysize = world->getYSize();
 	int zsize = world->getZSize();
 	float all = static_cast<float>(xsize * ysize * zsize);
-	glm::vec3 size(1, 1, 1);
+	//glm::vec3 size(1, 1, 1);
 	ob.reserveModels(xsize * ysize * zsize);
 	std::vector<std::string> texVec;
 	for (int x = 0; x < xsize; x++) {
@@ -243,36 +243,12 @@ void WorldIO::saveObjAsync(std::shared_ptr<Progress> progress, const std::string
 				bool overYN = y - 1 < 0;
 				bool overZN = z - 1 < 0;
 
-				bool hasBlockXP =
-					overXP
-					? false
-					: world->getBlock(
-						x + 1, y, z) != nullptr;
-				bool hasBlockYP =
-					overYP
-					? false
-					: world->getBlock(
-						x, y + 1, z) != nullptr;
-				bool hasBlockZP =
-					overZP
-					? false
-					: world->getBlock(
-						x, y, z + 1) != nullptr;
-				bool hasBlockXN =
-					overXN
-					? false
-					: world->getBlock(
-						x - 1, y, z) != nullptr;
-				bool hasBlockYN =
-					overYN
-					? false
-					: world->getBlock(
-						x, y - 1, z) != nullptr;
-				bool hasBlockZN =
-					overZN
-					? false
-					: world->getBlock(
-						x, y, z - 1) != nullptr;
+				bool hasBlockXP = world->isFilled(x + 1, y, z);
+				bool hasBlockYP = world->isFilled(x, y + 1, z);
+				bool hasBlockZP = world->isFilled(x, y, z + 1);
+				bool hasBlockXN = world->isFilled(x - 1, y, z);
+				bool hasBlockYN = world->isFilled(x, y - 1, z);
+				bool hasBlockZN = world->isFilled(x, y, z - 1);
 				bool hiddenBlock =
 					hasBlockXP && hasBlockYP &&
 					hasBlockZP && hasBlockXN &&
@@ -282,6 +258,10 @@ void WorldIO::saveObjAsync(std::shared_ptr<Progress> progress, const std::string
 						all);
 					continue;
 				}
+				glm::vec3 blockSize = sizeFromShape(BlockShape::Block);
+				glm::vec3 diffSize = blockSize - block->getSize();
+				glm::vec3 size = (blockSize - (blockSize - block->getSize())) / 2.0f;
+				size -= (diffSize / 2.0f);
 				if (!hasBlockYP) {
 					genTopPlane(
 						outputDir, texVec, ob, mb,
@@ -378,16 +358,16 @@ void WorldIO::genTopPlane(const std::string& outputDir,
                          ObjIndex(1, IndexMode::Global));
 
         auto& aa = ob.newModel(buf)
-                       .sharedVertex(glm::vec3(-size.x, 0, size.z) +
+                       .sharedVertex(glm::vec3(-size.x, size.y, size.z) +
                                          asVec3(objPos.x, objPos.y, objPos.z),
                                      polyA)
-                       .sharedVertex(glm::vec3(size.x, 0, size.z) +
+                       .sharedVertex(glm::vec3(size.x, size.y, size.z) +
                                          asVec3(objPos.x, objPos.y, objPos.z),
                                      polyB)
-                       .sharedVertex(glm::vec3(-size.x, 0, -size.z) +
+                       .sharedVertex(glm::vec3(-size.x, size.y, -size.z) +
                                          asVec3(objPos.x, objPos.y, objPos.z),
                                      polyC)
-                       .sharedVertex(glm::vec3(size.x, 0, -size.z) +
+                       .sharedVertex(glm::vec3(size.x, size.y, -size.z) +
                                          asVec3(objPos.x, objPos.y, objPos.z),
                                      polyD);
 
@@ -436,16 +416,16 @@ void WorldIO::genBottomPlane(const std::string& outputDir,
                          ObjIndex(2, IndexMode::Global));
 
         auto& aa = ob.newModel(buf)
-                       .sharedVertex(glm::vec3(size.x, -2, size.z) +
+                       .sharedVertex(glm::vec3(size.x, -size.y, size.z) +
                                          asVec3(objPos.x, objPos.y, objPos.z),
                                      polyA)
-                       .sharedVertex(glm::vec3(-size.x, -2, size.z) +
+                       .sharedVertex(glm::vec3(-size.x, -size.y, size.z) +
                                          asVec3(objPos.x, objPos.y, objPos.z),
                                      polyB)
-                       .sharedVertex(glm::vec3(size.x, -2, -size.z) +
+                       .sharedVertex(glm::vec3(size.x, -size.y, -size.z) +
                                          asVec3(objPos.x, objPos.y, objPos.z),
                                      polyC)
-                       .sharedVertex(glm::vec3(-size.x, -2, -size.z) +
+                       .sharedVertex(glm::vec3(-size.x, -size.y, -size.z) +
                                          asVec3(objPos.x, objPos.y, objPos.z),
                                      polyD);
 
@@ -494,16 +474,16 @@ void WorldIO::genLeftPlane(const std::string& outputDir,
                          ObjIndex(3, IndexMode::Global));
 
         auto& aa = ob.newModel(buf)
-                       .sharedVertex(glm::vec3(-size.x, 0, -size.z) +
+                       .sharedVertex(glm::vec3(-size.x, size.y, -size.z) +
                                          asVec3(objPos.x, objPos.y, objPos.z),
                                      polyA)
-                       .sharedVertex(glm::vec3(-size.x, -2, -size.z) +
+                       .sharedVertex(glm::vec3(-size.x, -size.y, -size.z) +
                                          asVec3(objPos.x, objPos.y, objPos.z),
                                      polyB)
-                       .sharedVertex(glm::vec3(-size.x, 0, size.z) +
+                       .sharedVertex(glm::vec3(-size.x, size.y, size.z) +
                                          asVec3(objPos.x, objPos.y, objPos.z),
                                      polyC)
-                       .sharedVertex(glm::vec3(-size.x, -2, size.z) +
+                       .sharedVertex(glm::vec3(-size.x, -size.y, size.z) +
                                          asVec3(objPos.x, objPos.y, objPos.z),
                                      polyD);
 
@@ -552,16 +532,16 @@ void WorldIO::genRightPlane(const std::string& outputDir,
                          ObjIndex(4, IndexMode::Global));
 
         auto& aa = ob.newModel(buf)
-                       .sharedVertex(glm::vec3(size.x, 0, size.z) +
+                       .sharedVertex(glm::vec3(size.x, size.y, size.z) +
                                          asVec3(objPos.x, objPos.y, objPos.z),
                                      polyA)
-                       .sharedVertex(glm::vec3(size.x, -2, size.z) +
+                       .sharedVertex(glm::vec3(size.x, -size.y, size.z) +
                                          asVec3(objPos.x, objPos.y, objPos.z),
                                      polyB)
-                       .sharedVertex(glm::vec3(size.x, 0, -size.z) +
+                       .sharedVertex(glm::vec3(size.x, size.y, -size.z) +
                                          asVec3(objPos.x, objPos.y, objPos.z),
                                      polyC)
-                       .sharedVertex(glm::vec3(size.x, -2, -size.z) +
+                       .sharedVertex(glm::vec3(size.x, -size.y, -size.z) +
                                          asVec3(objPos.x, objPos.y, objPos.z),
                                      polyD);
 
@@ -610,16 +590,16 @@ void WorldIO::genFrontPlane(const std::string& outputDir,
                          ObjIndex(6, IndexMode::Global));
 
         auto& aa = ob.newModel(buf)
-                       .sharedVertex(glm::vec3(-size.x, 0, size.z) +
+                       .sharedVertex(glm::vec3(-size.x, size.y, size.z) +
                                          asVec3(objPos.x, objPos.y, objPos.z),
                                      polyA)
-                       .sharedVertex(glm::vec3(-size.x, -2, size.z) +
+                       .sharedVertex(glm::vec3(-size.x, -size.y, size.z) +
                                          asVec3(objPos.x, objPos.y, objPos.z),
                                      polyB)
-                       .sharedVertex(glm::vec3(size.x, 0, size.z) +
+                       .sharedVertex(glm::vec3(size.x, size.y, size.z) +
                                          asVec3(objPos.x, objPos.y, objPos.z),
                                      polyC)
-                       .sharedVertex(glm::vec3(size.x, -2, size.z) +
+                       .sharedVertex(glm::vec3(size.x, -size.y, size.z) +
                                          asVec3(objPos.x, objPos.y, objPos.z),
                                      polyD);
 
@@ -668,16 +648,16 @@ void WorldIO::genBackPlane(const std::string& outputDir,
                          ObjIndex(5, IndexMode::Global));
 
         auto& aa = ob.newModel(buf)
-                       .sharedVertex(glm::vec3(size.x, 0, -size.z) +
+                       .sharedVertex(glm::vec3(size.x, size.y, -size.z) +
                                          asVec3(objPos.x, objPos.y, objPos.z),
                                      polyA)
-                       .sharedVertex(glm::vec3(size.x, -2, -size.z) +
+                       .sharedVertex(glm::vec3(size.x, -size.y, -size.z) +
                                          asVec3(objPos.x, objPos.y, objPos.z),
                                      polyB)
-                       .sharedVertex(glm::vec3(-size.x, 0, -size.z) +
+                       .sharedVertex(glm::vec3(-size.x, size.y, -size.z) +
                                          asVec3(objPos.x, objPos.y, objPos.z),
                                      polyC)
-                       .sharedVertex(glm::vec3(-size.x, -2, -size.z) +
+                       .sharedVertex(glm::vec3(-size.x, -size.y, -size.z) +
                                          asVec3(objPos.x, objPos.y, objPos.z),
                                      polyD);
 
