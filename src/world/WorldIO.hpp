@@ -61,6 +61,9 @@ class WorldIO {
 
         static glm::vec3 asVec3(int x, int y, int z);
 
+		static void saveObjAsync(std::shared_ptr<Progress> progress, const std::string& outputDir,
+			const std::shared_ptr<World>& world);
+
         static void genTopPlane(const std::string& outputDir,
                                 std::vector<std::string>& texVec,
                                 objb::ObjBuilder& ob, objb::MtlBuilder& mb,

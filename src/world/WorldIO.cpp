@@ -125,159 +125,7 @@ AsyncOperation WorldIO::saveObj(const std::string& outputDir,
                               const std::shared_ptr<World>& world) {
         auto ret = std::make_shared<Progress>();
         auto w = world;
-        using namespace objb;
-        std::thread([w, ret, outputDir]() -> void {
-				// 先にファイルを消しておく
-				auto outputPath = ofFilePath::join(ofFilePath::getCurrentExeDir(), ofFilePath::join(outputDir, "data.obj"));
-				ofFile::removeFile(outputPath);
-				ofFile::removeFile(outputPath + ".mtl");
-				// 共有される頂点情報を書き込んでおく
-                ObjBuilder ob;
-                MtlBuilder mb;
-                ob.globalTexcoord(glm::vec2(0, 0))
-                    .globalTexcoord(glm::vec2(1, 0))
-                    .globalTexcoord(glm::vec2(1, 1))
-                    .globalTexcoord(glm::vec2(0, 1))
-                    .globalTexcoord(glm::vec2(1, 1))
-                    .globalTexcoord(glm::vec2(1, 0))
-                    .globalTexcoord(glm::vec2(0, 1))
-                    .globalTexcoord(glm::vec2(0, 0))
-                    .globalNormal(glm::vec3(0, 1, 0))
-                    .globalNormal(glm::vec3(0, 1, 0))
-                    .globalNormal(glm::vec3(-1, 0, 0))
-                    .globalNormal(glm::vec3(0, 1, 0))
-                    .globalNormal(glm::vec3(0, 1, 0))
-                    .globalNormal(glm::vec3(0, 0, 1));
-                ob.material("data.obj.mtl");
-                int xsize = w->getXSize();
-                int ysize = w->getYSize();
-                int zsize = w->getZSize();
-                float all = static_cast<float>(xsize * ysize * zsize);
-                glm::vec3 size(1, 1, 1);
-                ob.reserveModels(xsize * ysize * zsize);
-                std::vector<std::string> texVec;
-                for (int x = 0; x < xsize; x++) {
-                        for (int y = 0; y < ysize; y++) {
-                                for (int z = 0; z < zsize; z++) {
-                                        auto block =
-                                            w->getBlock(x, y, z);
-                                        if (!block) {
-                                                ret->setValue(sumf(x, y, z) /
-                                                              all);
-                                                continue;
-                                        }
-                                        bool overXP = x + 1 >= xsize;
-                                        bool overYP = y + 1 >= ysize;
-                                        bool overZP = z + 1 >= zsize;
-                                        bool overXN = x - 1 < 0;
-                                        bool overYN = y - 1 < 0;
-                                        bool overZN = z - 1 < 0;
-
-                                        bool hasBlockXP =
-                                            overXP
-                                                ? false
-                                                : w->getBlock(
-                                                      x + 1, y, z) != nullptr;
-                                        bool hasBlockYP =
-                                            overYP
-                                                ? false
-                                                : w->getBlock(
-                                                      x, y + 1, z) != nullptr;
-                                        bool hasBlockZP =
-                                            overZP
-                                                ? false
-                                                : w->getBlock(
-                                                      x, y, z + 1) != nullptr;
-                                        bool hasBlockXN =
-                                            overXN
-                                                ? false
-                                                : w->getBlock(
-                                                      x - 1, y, z) != nullptr;
-                                        bool hasBlockYN =
-                                            overYN
-                                                ? false
-                                                : w->getBlock(
-                                                      x, y - 1, z) != nullptr;
-                                        bool hasBlockZN =
-                                            overZN
-                                                ? false
-                                                : w->getBlock(
-                                                      x, y, z - 1) != nullptr;
-                                        bool hiddenBlock =
-                                            hasBlockXP && hasBlockYP &&
-                                            hasBlockZP && hasBlockXN &&
-                                            hasBlockYN && hasBlockZN;
-                                        if (hiddenBlock) {
-                                                ret->setValue(sumf(x, y, z) /
-                                                              all);
-                                                continue;
-                                        }
-                                        if (!hasBlockYP) {
-                                                genTopPlane(
-                                                    outputDir, texVec, ob, mb,
-                                                    glm::ivec3(x, y, z),
-                                                    glm::ivec3(x * 2, y * 2,
-                                                               z * 2),
-                                                    size, w);
-                                        }
-                                        if (!hasBlockYN) {
-                                                genBottomPlane(
-                                                    outputDir, texVec, ob, mb,
-                                                    glm::ivec3(x, y, z),
-                                                    glm::ivec3(x * 2, y * 2,
-                                                               z * 2),
-                                                    size, w);
-                                        }
-                                        if (!hasBlockXP) {
-                                                genRightPlane(
-                                                    outputDir, texVec, ob, mb,
-                                                    glm::ivec3(x, y, z),
-                                                    glm::ivec3(x * 2, y * 2,
-                                                               z * 2),
-                                                    size, w);
-                                        }
-                                        if (!hasBlockXN) {
-                                                genLeftPlane(
-                                                    outputDir, texVec, ob, mb,
-                                                    glm::ivec3(x, y, z),
-                                                    glm::ivec3(x * 2, y * 2,
-                                                               z * 2),
-                                                    size, w);
-                                        }
-                                        if (!hasBlockZP) {
-                                                genFrontPlane(
-                                                    outputDir, texVec, ob, mb,
-                                                    glm::ivec3(x, y, z),
-                                                    glm::ivec3(x * 2, y * 2,
-                                                               z * 2),
-                                                    size, w);
-                                        }
-                                        if (!hasBlockZN) {
-                                                genBackPlane(
-                                                    outputDir, texVec, ob, mb,
-                                                    glm::ivec3(x, y, z),
-                                                    glm::ivec3(x * 2, y * 2,
-                                                               z * 2),
-                                                    size, w);
-                                        }
-                                        ret->setValue(sumf(x, y, z) / all);
-                                }
-                        }
-                }
-				// オブジェクトファイルを生成
-                std::ofstream objOFS(outputPath);
-                if (!objOFS.fail()) {
-                        ob.write(objOFS);
-                }
-                objOFS.close();
-				// マテリアルファイルを生成
-                std::ofstream mtlOFS(outputPath + ".mtl");
-                if (!mtlOFS.fail()) {
-                        mtlOFS << mb.toString() << std::endl;
-                }
-                mtlOFS.close();
-                ret->setValue(1.0f);
-        }).detach();
+        std::thread(std::bind(&WorldIO::saveObjAsync, ret, outputDir, world)).detach();
         return ret;
 }
 
@@ -346,6 +194,160 @@ AsyncOperation WorldIO::saveBmp(const std::string& outputFile,
 }
 
 glm::vec3 WorldIO::asVec3(int x, int y, int z) { return glm::vec3(x, y, z); }
+
+void WorldIO::saveObjAsync(std::shared_ptr<Progress> progress, const std::string & outputDir, const std::shared_ptr<World>& world) {
+	using namespace objb;
+	// 先にファイルを消しておく
+	auto outputPath = ofFilePath::join(ofFilePath::getCurrentExeDir(), ofFilePath::join(outputDir, "data.obj"));
+	ofFile::removeFile(outputPath);
+	ofFile::removeFile(outputPath + ".mtl");
+	// 共有される頂点情報を書き込んでおく
+	ObjBuilder ob;
+	MtlBuilder mb;
+	ob.globalTexcoord(glm::vec2(0, 0))
+		.globalTexcoord(glm::vec2(1, 0))
+		.globalTexcoord(glm::vec2(1, 1))
+		.globalTexcoord(glm::vec2(0, 1))
+		.globalTexcoord(glm::vec2(1, 1))
+		.globalTexcoord(glm::vec2(1, 0))
+		.globalTexcoord(glm::vec2(0, 1))
+		.globalTexcoord(glm::vec2(0, 0))
+		.globalNormal(glm::vec3(0, 1, 0))
+		.globalNormal(glm::vec3(0, 1, 0))
+		.globalNormal(glm::vec3(-1, 0, 0))
+		.globalNormal(glm::vec3(0, 1, 0))
+		.globalNormal(glm::vec3(0, 1, 0))
+		.globalNormal(glm::vec3(0, 0, 1));
+	ob.material("data.obj.mtl");
+	int xsize = world->getXSize();
+	int ysize = world->getYSize();
+	int zsize = world->getZSize();
+	float all = static_cast<float>(xsize * ysize * zsize);
+	glm::vec3 size(1, 1, 1);
+	ob.reserveModels(xsize * ysize * zsize);
+	std::vector<std::string> texVec;
+	for (int x = 0; x < xsize; x++) {
+		for (int y = 0; y < ysize; y++) {
+			for (int z = 0; z < zsize; z++) {
+				auto block =
+					world->getBlock(x, y, z);
+				if (!block) {
+					progress->setValue(sumf(x, y, z) /
+						all);
+					continue;
+				}
+				bool overXP = x + 1 >= xsize;
+				bool overYP = y + 1 >= ysize;
+				bool overZP = z + 1 >= zsize;
+				bool overXN = x - 1 < 0;
+				bool overYN = y - 1 < 0;
+				bool overZN = z - 1 < 0;
+
+				bool hasBlockXP =
+					overXP
+					? false
+					: world->getBlock(
+						x + 1, y, z) != nullptr;
+				bool hasBlockYP =
+					overYP
+					? false
+					: world->getBlock(
+						x, y + 1, z) != nullptr;
+				bool hasBlockZP =
+					overZP
+					? false
+					: world->getBlock(
+						x, y, z + 1) != nullptr;
+				bool hasBlockXN =
+					overXN
+					? false
+					: world->getBlock(
+						x - 1, y, z) != nullptr;
+				bool hasBlockYN =
+					overYN
+					? false
+					: world->getBlock(
+						x, y - 1, z) != nullptr;
+				bool hasBlockZN =
+					overZN
+					? false
+					: world->getBlock(
+						x, y, z - 1) != nullptr;
+				bool hiddenBlock =
+					hasBlockXP && hasBlockYP &&
+					hasBlockZP && hasBlockXN &&
+					hasBlockYN && hasBlockZN;
+				if (hiddenBlock) {
+					progress->setValue(sumf(x, y, z) /
+						all);
+					continue;
+				}
+				if (!hasBlockYP) {
+					genTopPlane(
+						outputDir, texVec, ob, mb,
+						glm::ivec3(x, y, z),
+						glm::ivec3(x * 2, y * 2,
+							z * 2),
+						size, world);
+				}
+				if (!hasBlockYN) {
+					genBottomPlane(
+						outputDir, texVec, ob, mb,
+						glm::ivec3(x, y, z),
+						glm::ivec3(x * 2, y * 2,
+							z * 2),
+						size, world);
+				}
+				if (!hasBlockXP) {
+					genRightPlane(
+						outputDir, texVec, ob, mb,
+						glm::ivec3(x, y, z),
+						glm::ivec3(x * 2, y * 2,
+							z * 2),
+						size, world);
+				}
+				if (!hasBlockXN) {
+					genLeftPlane(
+						outputDir, texVec, ob, mb,
+						glm::ivec3(x, y, z),
+						glm::ivec3(x * 2, y * 2,
+							z * 2),
+						size, world);
+				}
+				if (!hasBlockZP) {
+					genFrontPlane(
+						outputDir, texVec, ob, mb,
+						glm::ivec3(x, y, z),
+						glm::ivec3(x * 2, y * 2,
+							z * 2),
+						size, world);
+				}
+				if (!hasBlockZN) {
+					genBackPlane(
+						outputDir, texVec, ob, mb,
+						glm::ivec3(x, y, z),
+						glm::ivec3(x * 2, y * 2,
+							z * 2),
+						size, world);
+				}
+				progress->setValue(sumf(x, y, z) / all);
+			}
+		}
+	}
+	// オブジェクトファイルを生成
+	std::ofstream objOFS(outputPath);
+	if (!objOFS.fail()) {
+		ob.write(objOFS);
+	}
+	objOFS.close();
+	// マテリアルファイルを生成
+	std::ofstream mtlOFS(outputPath + ".mtl");
+	if (!mtlOFS.fail()) {
+		mtlOFS << mb.toString() << std::endl;
+	}
+	mtlOFS.close();
+	progress->setValue(1.0f);
+}
 
 // private
 void WorldIO::genTopPlane(const std::string& outputDir,
