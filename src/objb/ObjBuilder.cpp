@@ -30,37 +30,10 @@ ObjModel::ObjModel(ObjBuilder& builder, const std::string& name)
       texcoords() {}
 ObjModel& ObjModel::sharedVertex(const glm::vec3& aVertex,
                                  ObjPolygon& destPoly) {
-        int sum = 0;
-        bool found = false;
-        int startIndex = 0;
-        for (int i = startIndex; i < builder.getModelCount(); i++) {
-                auto& model = builder.getModelAt(i);
-                if (&model == this) {
-                        break;
-                }
-                for (int j = 0; j < model.vertexCount;
-                     j++) {
-                        glm::vec3 otherVert = model.vertices.at(j);
-                        sum++;
-                        if (aVertex == otherVert) {
-                                destPoly.vertexIndex.index =
-                                    sum + builder.getGlobalVertexCount();
-                                destPoly.vertexIndex.mode = IndexMode::Global;
-                                found = true;
-                                useIndexCount++;
-                                break;
-                        }
-                }
-                if (found) {
-                        break;
-                }
-        }
-        if (!found) {
-                vertices.emplace_back(aVertex);
-                destPoly.vertexIndex.index = builder.countVertex();
-                destPoly.vertexIndex.mode = IndexMode::Global;
-				this->vertexCount++;
-        }
+        vertices.emplace_back(aVertex);
+        destPoly.vertexIndex.index = builder.countVertex();
+        destPoly.vertexIndex.mode = IndexMode::Global;
+		this->vertexCount++;
         return *this;
 }
 ObjModel& ObjModel::vertex(const glm::vec3& vertex) {
