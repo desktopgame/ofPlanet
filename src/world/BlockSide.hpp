@@ -2,7 +2,7 @@
 #ifndef WORLD_BLOCKSIDE_HPP
 #define WORLD_BLOCKSIDE_HPP
 namespace planet {
-enum class BlockSde {
+enum class BlockSide {
 	Top,
 	Bottom,
 	Left,
