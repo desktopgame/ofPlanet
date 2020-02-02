@@ -222,10 +222,12 @@ void WorldIO::saveObjAsync(std::shared_ptr<Progress> progress,
             .globalTexcoord(glm::vec2(1, 0))
             .globalTexcoord(glm::vec2(1, 1))
             .globalTexcoord(glm::vec2(0, 1))
-            .globalTexcoord(glm::vec2(1, 1))
-            .globalTexcoord(glm::vec2(1, 0))
-            .globalTexcoord(glm::vec2(0, 1))
-            .globalTexcoord(glm::vec2(0, 0))
+
+			.globalTexcoord(glm::vec2(0, 1))
+			.globalTexcoord(glm::vec2(0, 0))
+			.globalTexcoord(glm::vec2(1, 1))
+			.globalTexcoord(glm::vec2(1, 0))
+
             .globalNormal(glm::vec3(0, 1, 0))
             .globalNormal(glm::vec3(0, 1, 0))
             .globalNormal(glm::vec3(-1, 0, 0))
