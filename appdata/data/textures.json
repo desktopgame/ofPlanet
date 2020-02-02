@@ -38,6 +38,13 @@
       "reference": "RDoorBottomBlock"
     },
     {
+      "baseFileName": "DebugBlock",
+      "mappingRule": {
+        "all": "Side"
+      },
+      "reference": "DebugBlock"
+    },
+    {
       "baseFileName": "DirtBlock",
       "mappingRule": {
         "all": "Side"

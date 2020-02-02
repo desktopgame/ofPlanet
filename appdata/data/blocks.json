@@ -17,6 +17,10 @@
       "texture": "RDoorBottomBlock"
     },
     {
+      "reference": "Debug",
+      "texture": "DebugBlock"
+    },
+    {
       "reference": "Dirt",
       "texture": "DirtBlock"
     },
