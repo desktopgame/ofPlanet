@@ -9,7 +9,7 @@ struct BlockInfo {
         explicit BlockInfo() = default;
         std::string textue;
         std::string reference;
-		std::string shape;
+        std::string shape;
 };
 
 class BlockInfoCollection {
@@ -20,7 +20,8 @@ class BlockInfoCollection {
 
         void addBlockInfo(const BlockInfo& blockInfo);
         BlockInfo getBlockInfo(int index) const;
-		bool tryGetBlockInfo(const std::string& reference, BlockInfo& outBlockInfo);
+        bool tryGetBlockInfo(const std::string& reference,
+                             BlockInfo& outBlockInfo);
         int getBlockInfoCount() const;
 
        private:

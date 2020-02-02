@@ -1,10 +1,11 @@
 #include "ofApp.h"
+
 #include "../common/GLM.hpp"
 #include "../common/glfw.hpp"
-#include "../world/Planet.hpp"
-#include "../world/World.hpp"
 #include "../world/BlockPack.hpp"
+#include "../world/Planet.hpp"
 #include "../world/TexturePack.hpp"
+#include "../world/World.hpp"
 #include "../world/biome/ScriptBiome.hpp"
 namespace planet {
 
@@ -15,10 +16,9 @@ using ExportMode =
     };
 
 ofApp::ofApp()
-    :
-	  shader(),
-	  camera(),
-	  planet(std::make_shared<Planet>(shader)),
+    : shader(),
+      camera(),
+      planet(std::make_shared<Planet>(shader)),
       rand(),
       cameraAngle(0),
       gui(),
@@ -29,7 +29,7 @@ ofApp::ofApp()
       exportDir("Output Directory"),
       cameraSpeed("CameraSpeed", 0.01f),
       worldSize("Size", 2),
-	  splitCount("SplitCount", 0),
+      splitCount("SplitCount", 0),
       asyncOp(nullptr) {
         exportDir.setString("dist");
         worldSize.value = glm::vec3(128, 64, 128);
@@ -40,9 +40,9 @@ ofApp::ofApp()
         fpsCon.setMode(FirstPersonController::Mode::Key);
         gui.setup();
         exportTypes.labels = std::vector<std::string>{"JSON", "OBJ", "BMP"};
-		splitCount.step = 2;
-		splitCount.min = 0;
-		splitCount.max = 8;
+        splitCount.step = 2;
+        splitCount.min = 0;
+        splitCount.max = 8;
 }
 
 //--------------------------------------------------------------
@@ -54,12 +54,12 @@ void ofApp::setup() {
             reinterpret_cast<GLDEBUGPROC>(ofApp::bridgeDebugMessage), NULL);
         glEnable(GL_DEBUG_OUTPUT);
 #endif
-		camera.setScreenSize(glm::vec2(800, 600));
-		loadBiomes();
-		loadShader();
-		loadJson();
-		updateCamera();
-		updateMaterial();
+        camera.setScreenSize(glm::vec2(800, 600));
+        loadBiomes();
+        loadShader();
+        loadJson();
+        updateCamera();
+        updateMaterial();
         // 描画設定
         glEnable(GL_CULL_FACE);
         glCullFace(GL_BACK);
@@ -76,11 +76,11 @@ void ofApp::update() {
         }
         w->update();
         if (this->playMode.get()) {
-			cameraUser();
+                cameraUser();
         } else {
-			cameraAuto();
+                cameraAuto();
         }
-		updateCamera();
+        updateCamera();
 }
 
 //--------------------------------------------------------------
@@ -97,9 +97,9 @@ void ofApp::draw() {
         glDisable(GL_CULL_FACE);
         gui.begin();
         ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0, 1, 0, 1));
-		drawSettingsWindow();
-		drawParameterWindow();
-		drawExporterWindow();
+        drawSettingsWindow();
+        drawParameterWindow();
+        drawExporterWindow();
         ImGui::PopStyleColor();
         gui.end();
 }
@@ -143,26 +143,26 @@ void ofApp::gotMessage(ofMessage msg) {}
 void ofApp::dragEvent(ofDragInfo dragInfo) {}
 // protected
 void ofApp::loadBiomes() {
-	biomeNames.items.clear();
-	biomes.clear();
-	ofDirectory scriptDir("script");
-	scriptDir.allowExt("lua");
-	for (int i = 0; i < scriptDir.listDir(); i++) {
-		auto file = scriptDir.getFile(i);
-		biomes.emplace_back(
-			std::make_shared<planet::ScriptBiome>(file.path()));
-		biomeNames.items.emplace_back(file.getFileName());
-	}
-	biomeNames.rehash();
+        biomeNames.items.clear();
+        biomes.clear();
+        ofDirectory scriptDir("script");
+        scriptDir.allowExt("lua");
+        for (int i = 0; i < scriptDir.listDir(); i++) {
+                auto file = scriptDir.getFile(i);
+                biomes.emplace_back(
+                    std::make_shared<planet::ScriptBiome>(file.path()));
+                biomeNames.items.emplace_back(file.getFileName());
+        }
+        biomeNames.rehash();
 }
 
 void ofApp::loadShader() {
-	if (shader.isLoaded()) {
-		shader.unload();
-	}
-	// 頂点シェーダ読み込み
-	shader.setupShaderFromSource(GL_VERTEX_SHADER, 
-R"(
+        if (shader.isLoaded()) {
+                shader.unload();
+        }
+        // 頂点シェーダ読み込み
+        shader.setupShaderFromSource(GL_VERTEX_SHADER,
+                                     R"(
  #version 410
 #extension GL_ARB_explicit_attrib_location : require
 #extension GL_ARB_explicit_uniform_location : require
@@ -195,9 +195,9 @@ void main(void) {
   gl_Position = position;
 }
 )");
-	//フラグメントシェーダ読み込み
-	shader.setupShaderFromSource(GL_FRAGMENT_SHADER, 
-R"(
+        //フラグメントシェーダ読み込み
+        shader.setupShaderFromSource(GL_FRAGMENT_SHADER,
+                                     R"(
 
 #version 410
 #extension GL_ARB_explicit_attrib_location : require
@@ -229,150 +229,157 @@ void main (void) {
                 + color * uAmbient;
 }
 )");
-	shader.bindDefaults();
-	shader.linkProgram();
+        shader.bindDefaults();
+        shader.linkProgram();
 }
 
 void ofApp::loadJson() {
-	auto texBuf = ofBufferFromFile("textures.json");
-	auto blockBuf = ofBufferFromFile("blocks.json");
+        auto texBuf = ofBufferFromFile("textures.json");
+        auto blockBuf = ofBufferFromFile("blocks.json");
 
-	TextureInfoCollection tic;
-	tic.deserialize(std::string(texBuf.getData()));
-	BlockInfoCollection bic;
-	bic.deserialize(std::string(blockBuf.getData()));
-	BlockPack::load(bic)->select();
-	TexturePack::load(tic)->select();
-	TexturePack::getCurrent()->resolve();
+        TextureInfoCollection tic;
+        tic.deserialize(std::string(texBuf.getData()));
+        BlockInfoCollection bic;
+        bic.deserialize(std::string(blockBuf.getData()));
+        BlockPack::load(bic)->select();
+        TexturePack::load(tic)->select();
+        TexturePack::getCurrent()->resolve();
 }
 
 void ofApp::updateCamera() {
-	camera.rehash();
-	shader.begin();
-	shader.setUniformMatrix4f("uMVPMatrix", (camera.getProjectionMatrix() * camera.getViewMatrix()));
-	shader.setUniformMatrix4f("uNormalMatrix", (camera.computeNormalMatrix(glm::mat4(1.0f))));
-	shader.end();
+        camera.rehash();
+        shader.begin();
+        shader.setUniformMatrix4f("uMVPMatrix", (camera.getProjectionMatrix() *
+                                                 camera.getViewMatrix()));
+        shader.setUniformMatrix4f(
+            "uNormalMatrix", (camera.computeNormalMatrix(glm::mat4(1.0f))));
+        shader.end();
 }
 
 void ofApp::updateMaterial() {
-	shader.begin();
-	shader.setUniform4f("uAmbient", glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
-	shader.setUniform4f("uDiffuse", glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
-	shader.setUniform4f("uSpecular", glm::vec4(0.f, 0.f, 0.f, 1.0f));
-	shader.setUniform1f("uShininess", 50);
-	shader.end();
+        shader.begin();
+        shader.setUniform4f("uAmbient", glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
+        shader.setUniform4f("uDiffuse", glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
+        shader.setUniform4f("uSpecular", glm::vec4(0.f, 0.f, 0.f, 1.0f));
+        shader.setUniform1f("uShininess", 50);
+        shader.end();
 }
 
 void ofApp::drawSettingsWindow() {
-	bool processing = isProcessing();
-	ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiSetCond_Once);
-	ImGui::SetNextWindowSize(ImVec2(320, 180), ImGuiSetCond_Once);
-	ImGui::Begin("Setting");
-	worldSize.draw();
-	biomeNames.draw();
-	cameraSpeed.draw();
-	if (!processing &&
-		!biomes.empty() &&
-		biomeNames.selectedIndex >= 0 &&
-		ImGui::Button("Generate")) {
-		planet->generate(worldSize.value,
-			biomes.at(biomeNames.selectedIndex));
-	}
-	if (!processing && ImGui::Button("Reload")) {
-		// loadShader();
-		loadBiomes();
-		loadJson();
-	}
-	ImGui::Checkbox("PlayMode", &playMode.getNewValue());
-	playMode.detect();
-	ImGui::End();
+        bool processing = isProcessing();
+        ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiSetCond_Once);
+        ImGui::SetNextWindowSize(ImVec2(320, 180), ImGuiSetCond_Once);
+        ImGui::Begin("Setting");
+        worldSize.draw();
+        biomeNames.draw();
+        cameraSpeed.draw();
+        if (!processing && !biomes.empty() && biomeNames.selectedIndex >= 0 &&
+            ImGui::Button("Generate")) {
+                planet->generate(worldSize.value,
+                                 biomes.at(biomeNames.selectedIndex));
+        }
+        if (!processing && ImGui::Button("Reload")) {
+                // loadShader();
+                loadBiomes();
+                loadJson();
+        }
+        ImGui::Checkbox("PlayMode", &playMode.getNewValue());
+        playMode.detect();
+        ImGui::End();
 }
 
 void ofApp::drawParameterWindow() {
-	ImGui::SetNextWindowPos(ImVec2(ofGetWidth() - 380, 0), ImGuiSetCond_Once);
-	ImGui::SetNextWindowSize(ImVec2(380, 180), ImGuiSetCond_Once);
-	ImGui::Begin("Parameter");
-	if (!biomes.empty()) {
-		biomes.at(biomeNames.selectedIndex)->onGUI();
-	}
-	ImGui::End();
+        ImGui::SetNextWindowPos(ImVec2(ofGetWidth() - 380, 0),
+                                ImGuiSetCond_Once);
+        ImGui::SetNextWindowSize(ImVec2(380, 180), ImGuiSetCond_Once);
+        ImGui::Begin("Parameter");
+        if (!biomes.empty()) {
+                biomes.at(biomeNames.selectedIndex)->onGUI();
+        }
+        ImGui::End();
 }
 
 void ofApp::drawExporterWindow() {
-	bool processing = isProcessing();
-	ImGui::SetNextWindowPos(ImVec2(0, ofGetHeight() - 120), ImGuiSetCond_Once);
-	ImGui::SetNextWindowSize(ImVec2(370, 120), ImGuiSetCond_Once);
-	ImGui::Begin("Exporter");
-	exportTypes.draw();
-	splitCount.draw();
-	int exportMode = exportTypes.mode;
-	exportDir.draw();
-	// 処理中ならラベルだけを表示
-	if (processing) {
-		char buf[256];
-		std::memset(buf, '\0', 256);
-		std::sprintf(buf, "processing now... %f %%",
-			(this->asyncOp->getValue() * 100.0f));
-		ImGui::Text(buf);
-	}
-	else {
-		//そうでなければボタンを表示
-		if (ImGui::Button("Export")) {
-			ofDirectory::createDirectory(ofFilePath::join(ofFilePath::getCurrentExeDir(), exportDir.getString()));
-			if (exportMode == EXPORT_JSON) {
-				exportJson(ofFilePath::join(exportDir.getString(), "data.json"));
-			} else if (exportMode == EXPORT_OBJ) {
-				exportObj(exportDir.getString());
-			} else if (exportMode == EXPORT_BMP) {
-				exportBmp(ofFilePath::join(exportDir.getString(), "data.bmp"));
-			}
-		}
-	}
-	ImGui::End();
+        bool processing = isProcessing();
+        ImGui::SetNextWindowPos(ImVec2(0, ofGetHeight() - 120),
+                                ImGuiSetCond_Once);
+        ImGui::SetNextWindowSize(ImVec2(370, 120), ImGuiSetCond_Once);
+        ImGui::Begin("Exporter");
+        exportTypes.draw();
+        splitCount.draw();
+        int exportMode = exportTypes.mode;
+        exportDir.draw();
+        // 処理中ならラベルだけを表示
+        if (processing) {
+                char buf[256];
+                std::memset(buf, '\0', 256);
+                std::sprintf(buf, "processing now... %f %%",
+                             (this->asyncOp->getValue() * 100.0f));
+                ImGui::Text(buf);
+        } else {
+                //そうでなければボタンを表示
+                if (ImGui::Button("Export")) {
+                        ofDirectory::createDirectory(
+                            ofFilePath::join(ofFilePath::getCurrentExeDir(),
+                                             exportDir.getString()));
+                        if (exportMode == EXPORT_JSON) {
+                                exportJson(ofFilePath::join(
+                                    exportDir.getString(), "data.json"));
+                        } else if (exportMode == EXPORT_OBJ) {
+                                exportObj(exportDir.getString());
+                        } else if (exportMode == EXPORT_BMP) {
+                                exportBmp(ofFilePath::join(
+                                    exportDir.getString(), "data.bmp"));
+                        }
+                }
+        }
+        ImGui::End();
 }
 
 void ofApp::cameraAuto() {
-	auto w = planet->getWorld();
-	const int wsx = w->getXSize();
-	const int wsy = w->getYSize();
-	const int wsz = w->getZSize();
-	const float fwsx = static_cast<float>(w->getXSize());
-	const float fwsy = static_cast<float>(w->getYSize());
-	const float fwsz = static_cast<float>(w->getZSize());
-	const float hfwsx = fwsx / 2;
-	const float hfwsz = fwsz / 2;
-	// プレイモードではないので、オブジェクトの周りを周回します。
-	auto cx = std::cos(cameraAngle);
-	auto cz = std::sin(cameraAngle);
-	camera.setPosition(glm::vec3(hfwsx + (hfwsx * cx), wsy, hfwsz + (hfwsz * cz)) * 2);
-	camera.setLookAt(glm::vec3(wsx / 2, 0, wsz / 2) * 2);
-	camera.rehash();
-	this->cameraAngle += cameraSpeed.value;
+        auto w = planet->getWorld();
+        const int wsx = w->getXSize();
+        const int wsy = w->getYSize();
+        const int wsz = w->getZSize();
+        const float fwsx = static_cast<float>(w->getXSize());
+        const float fwsy = static_cast<float>(w->getYSize());
+        const float fwsz = static_cast<float>(w->getZSize());
+        const float hfwsx = fwsx / 2;
+        const float hfwsz = fwsz / 2;
+        // プレイモードではないので、オブジェクトの周りを周回します。
+        auto cx = std::cos(cameraAngle);
+        auto cz = std::sin(cameraAngle);
+        camera.setPosition(
+            glm::vec3(hfwsx + (hfwsx * cx), wsy, hfwsz + (hfwsz * cz)) * 2);
+        camera.setLookAt(glm::vec3(wsx / 2, 0, wsz / 2) * 2);
+        camera.rehash();
+        this->cameraAngle += cameraSpeed.value;
 }
 void ofApp::cameraUser() {
-	auto w = planet->getWorld();
-	const int wsx = w->getXSize();
-	const int wsy = w->getYSize();
-	const int wsz = w->getZSize();
-	const int OF_KEY_SPACE = 32;
-	// WASD, 矢印キーによる移動と回転
-	fpsCon.update();
-	if (playMode.testIsChanged()) {
-		camera.setPosition(glm::vec3(wsx / 2, wsy / 2, wsz / 2) * 2);
-	}
-	else {
-		camera.setPosition(camera.getPosition() + fpsCon.getVelocity());
-	}
-	camera.setLookAt(camera.getPosition() + fpsCon.getTransform().forward());
-	// 上昇, 下降
-	if (ofGetKeyPressed(OF_KEY_SPACE)) {
-		camera.setPosition(camera.getPosition() + glm::vec3(0, 0.4f, 0));
-	}
-	else if (glfw::getKey(glfw::Key_left_shift) ||
-		glfw::getKey(glfw::Key_z)) {
-		camera.setPosition(camera.getPosition() + glm::vec3(0, -0.4f, 0));
-	}
-	camera.rehash();
+        auto w = planet->getWorld();
+        const int wsx = w->getXSize();
+        const int wsy = w->getYSize();
+        const int wsz = w->getZSize();
+        const int OF_KEY_SPACE = 32;
+        // WASD, 矢印キーによる移動と回転
+        fpsCon.update();
+        if (playMode.testIsChanged()) {
+                camera.setPosition(glm::vec3(wsx / 2, wsy / 2, wsz / 2) * 2);
+        } else {
+                camera.setPosition(camera.getPosition() + fpsCon.getVelocity());
+        }
+        camera.setLookAt(camera.getPosition() +
+                         fpsCon.getTransform().forward());
+        // 上昇, 下降
+        if (ofGetKeyPressed(OF_KEY_SPACE)) {
+                camera.setPosition(camera.getPosition() +
+                                   glm::vec3(0, 0.4f, 0));
+        } else if (glfw::getKey(glfw::Key_left_shift) ||
+                   glfw::getKey(glfw::Key_z)) {
+                camera.setPosition(camera.getPosition() +
+                                   glm::vec3(0, -0.4f, 0));
+        }
+        camera.rehash();
 }
 void ofApp::bridgeDebugMessage(GLenum source, GLenum type, GLuint eid,
                                GLenum severity, GLsizei length,
@@ -480,24 +487,25 @@ void ofApp::bridgeDebugMessage(GLenum source, GLenum type, GLuint eid,
                 ss << "message(" << message << ")";
                 std::cout << ss.str() << std::endl;
         }
-        
 }
 
 void ofApp::exportJson(const std::string& outputFile) {
         if (!isProcessing()) {
-                this->asyncOp = WorldIO::saveJson(outputFile, planet->getWorld());
+                this->asyncOp =
+                    WorldIO::saveJson(outputFile, planet->getWorld());
         }
 }
 
 void ofApp::exportObj(const std::string& outputDir) {
-		if (isProcessing()) {
-			return;
-		}
-		if (splitCount.value <= 1) {
-			this->asyncOp = WorldIO::saveObj(outputDir, planet->getWorld());
-		} else {
-			this->asyncOp = WorldIO::saveObj(outputDir, planet->getWorld(), splitCount.value);
-		}
+        if (isProcessing()) {
+                return;
+        }
+        if (splitCount.value <= 1) {
+                this->asyncOp = WorldIO::saveObj(outputDir, planet->getWorld());
+        } else {
+                this->asyncOp = WorldIO::saveObj(outputDir, planet->getWorld(),
+                                                 splitCount.value);
+        }
 }
 
 void ofApp::exportBmp(const std::string& outputFile) {

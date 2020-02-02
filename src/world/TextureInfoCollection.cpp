@@ -1,8 +1,9 @@
 #include "TextureInfoCollection.hpp"
 
-#include "../picojson/picojson.h"
 #include <ofFileUtils.h>
 #include <ofUtils.h>
+
+#include "../picojson/picojson.h"
 
 namespace planet {
 TextureInfoCollection::TextureInfoCollection(const std::string& baseDirectory)
@@ -23,21 +24,21 @@ std::string TextureInfoCollection::serialize() const {
                 }
                 // front, back
                 if (texInfo.mappingRule.front.hasValue()) {
-                        mappingRuleO["front"] =
-                            picojson::value(texInfo.mappingRule.front.getValue());
+                        mappingRuleO["front"] = picojson::value(
+                            texInfo.mappingRule.front.getValue());
                 }
                 if (texInfo.mappingRule.back.hasValue()) {
-                        mappingRuleO["back"] =
-                            picojson::value(texInfo.mappingRule.back.getValue());
+                        mappingRuleO["back"] = picojson::value(
+                            texInfo.mappingRule.back.getValue());
                 }
                 // left, right
                 if (texInfo.mappingRule.left.hasValue()) {
-                        mappingRuleO["left"] =
-                            picojson::value(texInfo.mappingRule.left.getValue());
+                        mappingRuleO["left"] = picojson::value(
+                            texInfo.mappingRule.left.getValue());
                 }
                 if (texInfo.mappingRule.right.hasValue()) {
-                        mappingRuleO["right"] =
-                            picojson::value(texInfo.mappingRule.right.getValue());
+                        mappingRuleO["right"] = picojson::value(
+                            texInfo.mappingRule.right.getValue());
                 }
                 // top, bottom
                 if (texInfo.mappingRule.top.hasValue()) {
@@ -45,8 +46,8 @@ std::string TextureInfoCollection::serialize() const {
                             picojson::value(texInfo.mappingRule.top.getValue());
                 }
                 if (texInfo.mappingRule.bottom.hasValue()) {
-                        mappingRuleO["bottom"] =
-                            picojson::value(texInfo.mappingRule.bottom.getValue());
+                        mappingRuleO["bottom"] = picojson::value(
+                            texInfo.mappingRule.bottom.getValue());
                 }
                 textureO["mappingRule"] = picojson::value(mappingRuleO);
                 texturesA.push_back(picojson::value(textureO));
@@ -87,7 +88,7 @@ void TextureInfoCollection::deserialize(const std::string& json) {
                         if (key == "all") {
                                 info.mappingRule.all.setValue(valS);
                         } else if (key == "top") {
-								info.mappingRule.top.setValue(valS);
+                                info.mappingRule.top.setValue(valS);
                         } else if (key == "bottom") {
                                 info.mappingRule.bottom.setValue(valS);
                         } else if (key == "left") {
@@ -112,20 +113,20 @@ void TextureInfoCollection::addTextureInfo(const TextureInfo& textureInfo) {
 TextureInfo TextureInfoCollection::getTextureInfo(int index) const {
         return textureInfoVec.at(index);
 }
-bool TextureInfoCollection::tryGetTextureInfo(const std::string & reference, TextureInfo & outTextureInfo)
-{
-	auto iter = textureInfoVec.begin();
-	while (iter != textureInfoVec.end()) {
-		auto v = *iter;
-		if (v.reference == reference) {
-			outTextureInfo.baseFileName = v.baseFileName;
-			outTextureInfo.mappingRule = v.mappingRule;
-			outTextureInfo.reference = v.reference;
-			return true;
-		}
-		++iter;
-	}
-	return false;
+bool TextureInfoCollection::tryGetTextureInfo(const std::string& reference,
+                                              TextureInfo& outTextureInfo) {
+        auto iter = textureInfoVec.begin();
+        while (iter != textureInfoVec.end()) {
+                auto v = *iter;
+                if (v.reference == reference) {
+                        outTextureInfo.baseFileName = v.baseFileName;
+                        outTextureInfo.mappingRule = v.mappingRule;
+                        outTextureInfo.reference = v.reference;
+                        return true;
+                }
+                ++iter;
+        }
+        return false;
 }
 int TextureInfoCollection::getTextureInfoCount() const {
         return static_cast<int>(textureInfoVec.size());
@@ -134,6 +135,6 @@ std::string TextureInfoCollection::getBaseDirectory() const {
         return this->baseDirectory;
 }
 std::string TextureInfoCollection::getBasePath() const {
-	return ofToDataPath(baseDirectory);
+        return ofToDataPath(baseDirectory);
 }
 }  // namespace planet

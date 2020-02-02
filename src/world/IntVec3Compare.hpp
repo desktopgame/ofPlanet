@@ -5,7 +5,7 @@
 
 namespace planet {
 struct KeyCompare {
-	bool operator()(const glm::ivec3& a, const glm::ivec3& b) const;
+        bool operator()(const glm::ivec3& a, const glm::ivec3& b) const;
 };
-}
+}  // namespace planet
 #endif

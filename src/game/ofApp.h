@@ -2,17 +2,18 @@
 #include <ofMain.h>
 #include <ofShader.h>
 #include <ofxImGui.h>
+
 #include <vector>
 
+#include "../common/Camera.hpp"
 #include "../common/FirstPersonController.hpp"
 #include "../common/Random.hpp"
 #include "../common/StateValue.hpp"
-#include "../common/Camera.hpp"
 #include "../imguiex/CheckBox.hpp"
-#include "../imguiex/Integer.hpp"
 #include "../imguiex/Float.hpp"
 #include "../imguiex/FloatXZ.hpp"
 #include "../imguiex/InputField.hpp"
+#include "../imguiex/Integer.hpp"
 #include "../imguiex/ListBox.hpp"
 #include "../imguiex/RadioButtonGroup.hpp"
 #include "../world/WorldIO.hpp"
@@ -41,16 +42,16 @@ class ofApp : public ofBaseApp {
         void gotMessage(ofMessage msg);
 
        protected:
-		void loadBiomes();
-		void loadShader();
-		void loadJson();
-		void updateCamera();
-		void updateMaterial();
-		void drawSettingsWindow();
-		void drawParameterWindow();
-		void drawExporterWindow();
-		void cameraAuto();
-		void cameraUser();
+        void loadBiomes();
+        void loadShader();
+        void loadJson();
+        void updateCamera();
+        void updateMaterial();
+        void drawSettingsWindow();
+        void drawParameterWindow();
+        void drawExporterWindow();
+        void cameraAuto();
+        void cameraUser();
         static void bridgeDebugMessage(GLenum source, GLenum type, GLuint eid,
                                        GLenum severity, GLsizei length,
                                        const GLchar* message,
@@ -61,8 +62,8 @@ class ofApp : public ofBaseApp {
         void exportObj(const std::string& outputDir);
         void exportBmp(const std::string& outputFile);
 
-		ofShader shader;
-		Camera camera;
+        ofShader shader;
+        Camera camera;
         std::shared_ptr<Planet> planet;
         Random rand;
         float cameraAngle;
@@ -76,8 +77,7 @@ class ofApp : public ofBaseApp {
         imguiex::InputField<> exportDir;
         imguiex::Float cameraSpeed;
         imguiex::FloatXZ worldSize;
-		imguiex::Integer splitCount;
+        imguiex::Integer splitCount;
         AsyncOperation asyncOp;
-
 };
 }  // namespace planet

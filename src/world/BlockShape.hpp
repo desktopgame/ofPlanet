@@ -3,13 +3,13 @@
 #define WORLD_BLOCKSHAPE_HPP
 namespace planet {
 enum class BlockShape {
-	Block,
-	LeftSlab,
-	RightSlab,
-	FrontSlab,
-	BackSlab,
-	TopSlab,
-	BottomSlab,
+        Block,
+        LeftSlab,
+        RightSlab,
+        FrontSlab,
+        BackSlab,
+        TopSlab,
+        BottomSlab,
 };
 }
 #endif

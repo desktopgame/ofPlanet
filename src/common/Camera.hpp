@@ -116,7 +116,6 @@ class Camera : public std::enable_shared_from_this<Camera> {
          */
         glm::mat4 computeNormalMatrix(const glm::mat4 model) const;
 
-
        private:
         bool dirty;
         float fov;

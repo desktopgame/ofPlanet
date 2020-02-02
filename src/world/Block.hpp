@@ -1,12 +1,12 @@
 #pragma once
 #ifndef WORLD_BLOCK_HPP
 #define WORLD_BLOCK_HPP
+#include <glm/glm.hpp>
 #include <memory>
 #include <unordered_map>
-#include <glm/glm.hpp>
 
-#include "TextureSet.hpp"
 #include "BlockShape.hpp"
+#include "TextureSet.hpp"
 namespace planet {
 
 class World;
@@ -20,9 +20,8 @@ class Block {
                        const std::string& textureReference, int id);
         virtual ~Block() = default;
 
-        void batch(std::shared_ptr<World> world,
-                           BlockRenderer& renderer, int x, int y,
-                           int z);
+        void batch(std::shared_ptr<World> world, BlockRenderer& renderer, int x,
+                   int y, int z);
 
         TextureSet getTextureSet() const;
 
@@ -31,13 +30,13 @@ class Block {
 
         std::string getTextureReference() const;
         std::string getName() const;
-		glm::vec3 getSize() const;
-		BlockShape getShape() const;
+        glm::vec3 getSize() const;
+        BlockShape getShape() const;
         int getID() const;
 
        protected:
        private:
-		BlockShape shape;
+        BlockShape shape;
         std::string textureReference;
         std::string name;
         int id;

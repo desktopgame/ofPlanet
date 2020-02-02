@@ -3,13 +3,13 @@
 #define WORLD_TEXTURECOLLECTIONINFO_HPP
 #include <string>
 #include <vector>
+
 #include "Optional.hpp"
 
 namespace planet {
 struct TextureMappingRule {
         explicit TextureMappingRule() = default;
-		Optional<std::string> all, top, bottom, left, right,
-            front, back;
+        Optional<std::string> all, top, bottom, left, right, front, back;
 };
 
 struct TextureInfo {
@@ -29,11 +29,12 @@ class TextureInfoCollection {
 
         void addTextureInfo(const TextureInfo& textureInfo);
         TextureInfo getTextureInfo(int index) const;
-		bool tryGetTextureInfo(const std::string& reference, TextureInfo& outTextureInfo);
+        bool tryGetTextureInfo(const std::string& reference,
+                               TextureInfo& outTextureInfo);
         int getTextureInfoCount() const;
 
         std::string getBaseDirectory() const;
-		std::string getBasePath() const;
+        std::string getBasePath() const;
 
        private:
         std::vector<TextureInfo> textureInfoVec;

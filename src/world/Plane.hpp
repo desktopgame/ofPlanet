@@ -1,8 +1,8 @@
 #pragma once
 #ifndef WORLD_PLANE_HPP
 #define WORLD_PLANE_HPP
-#include <ofVbo.h>
 #include <ofShader.h>
+#include <ofVbo.h>
 
 namespace planet {
 /**
@@ -64,7 +64,7 @@ class Plane {
 
         PlaneType type;
         ofVbo ofVAO;
-		ofShader& shader;
+        ofShader& shader;
 };
 }  // namespace planet
 #endif  // !SHADER_PLANE_HPP

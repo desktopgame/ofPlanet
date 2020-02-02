@@ -1,8 +1,9 @@
 #pragma once
 #ifndef WORLD_PLANET_HPP
 #define WORLD_PLANET_HPP
-#include <memory>
 #include <ofShader.h>
+
+#include <memory>
 
 #include "../common/GLM.hpp"
 #include "BlockTable.hpp"
@@ -27,7 +28,7 @@ class Planet {
         BlockTable getBlockTable() const;
 
        private:
-		ofShader& shader;
+        ofShader& shader;
         BlockTable blockTable;
         std::shared_ptr<World> world;
 };

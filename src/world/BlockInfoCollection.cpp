@@ -11,7 +11,7 @@ std::string BlockInfoCollection::serialize() const {
                 picojson::object blockO;
                 blockO["texture"] = picojson::value(blockInfo.textue);
                 blockO["reference"] = picojson::value(blockInfo.reference);
-				blockO["shape"] = picojson::value(blockInfo.shape);
+                blockO["shape"] = picojson::value(blockInfo.shape);
                 blocksA.push_back(picojson::value(blockO));
         }
         rootO["blocks"] = picojson::value(blocksA);
@@ -34,14 +34,14 @@ void BlockInfoCollection::deserialize(const std::string& json) {
                 auto blockO = blockV.get<picojson::object>();
                 auto textureV = blockO["texture"];
                 auto referenceV = blockO["reference"];
-				//Shape属性は必須ではないのでデフォルト値がある
-				std::string shape("Block");
-				if (blockO.count("shape")) {
-					shape = blockO["shape"].get<std::string>();
-				}
+                // Shape属性は必須ではないのでデフォルト値がある
+                std::string shape("Block");
+                if (blockO.count("shape")) {
+                        shape = blockO["shape"].get<std::string>();
+                }
                 bi.textue = textureV.get<std::string>();
                 bi.reference = referenceV.get<std::string>();
-				bi.shape = shape;
+                bi.shape = shape;
                 blockInfoVec.emplace_back(bi);
                 ++blocksIter;
         }
@@ -52,19 +52,19 @@ void BlockInfoCollection::addBlockInfo(const BlockInfo& blockInfo) {
 BlockInfo BlockInfoCollection::getBlockInfo(int index) const {
         return blockInfoVec.at(index);
 }
-bool BlockInfoCollection::tryGetBlockInfo(const std::string & reference, BlockInfo & outBlockInfo)
-{
-	auto iter = blockInfoVec.begin();
-	while (iter != blockInfoVec.end()) {
-		auto v = *iter;
-		if (v.reference == reference) {
-			outBlockInfo.reference = v.reference;
-			outBlockInfo.textue = v.textue;
-			return true;
-		}
-		++iter;
-	}
-	return false;
+bool BlockInfoCollection::tryGetBlockInfo(const std::string& reference,
+                                          BlockInfo& outBlockInfo) {
+        auto iter = blockInfoVec.begin();
+        while (iter != blockInfoVec.end()) {
+                auto v = *iter;
+                if (v.reference == reference) {
+                        outBlockInfo.reference = v.reference;
+                        outBlockInfo.textue = v.textue;
+                        return true;
+                }
+                ++iter;
+        }
+        return false;
 }
 int BlockInfoCollection::getBlockInfoCount() const {
         return static_cast<int>(blockInfoVec.size());

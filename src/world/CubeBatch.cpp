@@ -4,14 +4,19 @@
 #include "Block.hpp"
 namespace planet {
 
-
-
-CubeBatch::CubeBatch(const World& world, ofShader& shader, const glm::vec3& size, int direction)
-    : GraphicsBatch(world, shader), isInvalid(true),size(size),direction(direction), planes(), posVec(), vbo() {
+CubeBatch::CubeBatch(const World& world, ofShader& shader,
+                     const glm::vec3& size, int direction)
+    : GraphicsBatch(world, shader),
+      isInvalid(true),
+      size(size),
+      direction(direction),
+      planes(),
+      posVec(),
+      vbo() {
         for (int i = 0; i < static_cast<int>(PlaneType::Count); i++) {
                 std::vector<float> v;
-                planes[i] = std::make_shared<Plane>(shader, static_cast<PlaneType>(i),
-					size);
+                planes[i] = std::make_shared<Plane>(
+                    shader, static_cast<PlaneType>(i), size);
                 posVec[i] = v;
                 vbo[i].allocate();
         }
@@ -23,21 +28,15 @@ void CubeBatch::putFront(int x, int y, int z) {
         put(PlaneType::Front, x, y, z);
 }
 
-void CubeBatch::putBack(int x, int y, int z) {
-        put(PlaneType::Back, x, y, z);
-}
+void CubeBatch::putBack(int x, int y, int z) { put(PlaneType::Back, x, y, z); }
 
-void CubeBatch::putLeft(int x, int y, int z) {
-        put(PlaneType::Left, x, y, z);
-}
+void CubeBatch::putLeft(int x, int y, int z) { put(PlaneType::Left, x, y, z); }
 
 void CubeBatch::putRight(int x, int y, int z) {
         put(PlaneType::Right, x, y, z);
 }
 
-void CubeBatch::putTop(int x, int y, int z) {
-        put(PlaneType::Top, x, y, z);
-}
+void CubeBatch::putTop(int x, int y, int z) { put(PlaneType::Top, x, y, z); }
 
 void CubeBatch::putBottom(int x, int y, int z) {
         put(PlaneType::Bottom, x, y, z);
@@ -61,7 +60,7 @@ void CubeBatch::update() {
 }
 
 void CubeBatch::render(GLuint texture) {
-		update();
+        update();
         glBindTexture(GL_TEXTURE_2D, texture);
 
         for (int i = 0; i < static_cast<int>(PlaneType::Count); i++) {
@@ -72,14 +71,15 @@ void CubeBatch::render(GLuint texture) {
 // private
 
 void CubeBatch::put(PlaneType type, int x, int y, int z) {
-	glm::vec3 pos = getPhysicalPosition(x, y, z);
-	glm::vec3 baseSize = sizeFromShape(BlockShape::Block);
-	glm::vec3 offset = ((baseSize - (this->size * 2.0f)) / 2.0f) * static_cast<float>(direction);
-	pos += offset;
-	getPosVec(type).emplace_back(pos.x);
-	getPosVec(type).emplace_back(pos.y);
-	getPosVec(type).emplace_back(pos.z);
-	this->isInvalid = true;
+        glm::vec3 pos = getPhysicalPosition(x, y, z);
+        glm::vec3 baseSize = sizeFromShape(BlockShape::Block);
+        glm::vec3 offset = ((baseSize - (this->size * 2.0f)) / 2.0f) *
+                           static_cast<float>(direction);
+        pos += offset;
+        getPosVec(type).emplace_back(pos.x);
+        getPosVec(type).emplace_back(pos.y);
+        getPosVec(type).emplace_back(pos.z);
+        this->isInvalid = true;
 }
 
 void CubeBatch::updatePlane(PlaneType type) {
@@ -95,7 +95,7 @@ void CubeBatch::updatePlane(PlaneType type) {
         v.unbind(GL_ARRAY_BUFFER);
         // update vao
         ofVbo& vao = planes[index]->getVAO();
-		shader.begin();
+        shader.begin();
         vao.bind();
         // vertex Attributes
         vao.setAttributeBuffer(4, v, 3, 0);
@@ -105,7 +105,7 @@ void CubeBatch::updatePlane(PlaneType type) {
         vao.setAttributeDivisor(4, 1);
 
         vao.unbind();
-		shader.end();
+        shader.end();
 }
 
 std::vector<float>& CubeBatch::getPosVec(PlaneType type) {

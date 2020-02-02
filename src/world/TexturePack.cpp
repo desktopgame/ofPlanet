@@ -1,7 +1,8 @@
 #include "TexturePack.hpp"
 
-#include <algorithm>
 #include <ofUtils.h>
+
+#include <algorithm>
 
 #include "Block.hpp"
 #include "BlockPack.hpp"
@@ -20,52 +21,59 @@ std::shared_ptr<TexturePack> TexturePack::load(
                 TextureSet set(ret, tinfo.reference);
                 if (tinfo.mappingRule.all.hasValue()) {
                         set.top = set.bottom = set.front = set.back = set.left =
-                            set.right =
-                                (tinfo.baseFileName + tinfo.mappingRule.all.getValue());
+                            set.right = (tinfo.baseFileName +
+                                         tinfo.mappingRule.all.getValue());
                 }
                 if (tinfo.mappingRule.top.hasValue()) {
-                        set.top = (tinfo.baseFileName + tinfo.mappingRule.top.getValue());
+                        set.top = (tinfo.baseFileName +
+                                   tinfo.mappingRule.top.getValue());
                 }
                 if (tinfo.mappingRule.bottom.hasValue()) {
-                        set.bottom =
-                            (tinfo.baseFileName + tinfo.mappingRule.bottom.getValue());
+                        set.bottom = (tinfo.baseFileName +
+                                      tinfo.mappingRule.bottom.getValue());
                 }
                 if (tinfo.mappingRule.front.hasValue()) {
-                        set.front =
-                            (tinfo.baseFileName + tinfo.mappingRule.front.getValue());
+                        set.front = (tinfo.baseFileName +
+                                     tinfo.mappingRule.front.getValue());
                 }
                 if (tinfo.mappingRule.back.hasValue()) {
-                        set.back =
-                            (tinfo.baseFileName + tinfo.mappingRule.back.getValue());
+                        set.back = (tinfo.baseFileName +
+                                    tinfo.mappingRule.back.getValue());
                 }
                 if (tinfo.mappingRule.left.hasValue()) {
-                        set.left =
-                            (tinfo.baseFileName + tinfo.mappingRule.left.getValue());
+                        set.left = (tinfo.baseFileName +
+                                    tinfo.mappingRule.left.getValue());
                 }
                 if (tinfo.mappingRule.right.hasValue()) {
-                        set.right =
-                            (tinfo.baseFileName + tinfo.mappingRule.right.getValue());
+                        set.right = (tinfo.baseFileName +
+                                     tinfo.mappingRule.right.getValue());
                 }
                 ret->addTextureSet(set);
         }
         // load textures
         for (TextureSet set : ret->textureSets) {
-				auto topFile = ofFilePath::join(textureInfoCollection.getBasePath(), set.top);
+                auto topFile = ofFilePath::join(
+                    textureInfoCollection.getBasePath(), set.top);
                 auto topTex = std::make_shared<Texture>();
                 topTex->load(topFile + ".png");
-				auto bottomFile = ofFilePath::join(textureInfoCollection.getBasePath(), set.bottom);
+                auto bottomFile = ofFilePath::join(
+                    textureInfoCollection.getBasePath(), set.bottom);
                 auto bottomTex = std::make_shared<Texture>();
                 bottomTex->load(bottomFile + ".png");
-                auto leftFile = ofFilePath::join(textureInfoCollection.getBasePath(), set.left);
+                auto leftFile = ofFilePath::join(
+                    textureInfoCollection.getBasePath(), set.left);
                 auto leftTex = std::make_shared<Texture>();
                 leftTex->load(leftFile + ".png");
-                auto rightFile = ofFilePath::join(textureInfoCollection.getBasePath(), set.right);
+                auto rightFile = ofFilePath::join(
+                    textureInfoCollection.getBasePath(), set.right);
                 auto rightTex = std::make_shared<Texture>();
                 rightTex->load(rightFile + ".png");
-                auto frontFile = ofFilePath::join(textureInfoCollection.getBasePath(), set.front);
+                auto frontFile = ofFilePath::join(
+                    textureInfoCollection.getBasePath(), set.front);
                 auto frontTex = std::make_shared<Texture>();
                 frontTex->load(frontFile + ".png");
-                auto backFile = ofFilePath::join(textureInfoCollection.getBasePath(), set.back);
+                auto backFile = ofFilePath::join(
+                    textureInfoCollection.getBasePath(), set.back);
                 auto backTex = std::make_shared<Texture>();
                 backTex->load(backFile + ".png");
 
@@ -158,7 +166,7 @@ void TexturePack::resolve() {
 std::string TexturePack::getBaseDirectory() const { return baseDirectory; }
 
 std::string TexturePack::getBasePath() const {
-	return ofToDataPath(baseDirectory);
+        return ofToDataPath(baseDirectory);
 }
 
 // protected

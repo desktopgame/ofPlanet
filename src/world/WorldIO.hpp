@@ -31,12 +31,14 @@ using AsyncOperation = std::shared_ptr<ReadonlyProgress>;
 class WorldIO {
        public:
         static AsyncOperation saveJson(const std::string& outputFile,
-                                     const std::shared_ptr<World>& world);
+                                       const std::shared_ptr<World>& world);
         static AsyncOperation saveObj(const std::string& outputDir,
-                                    const std::shared_ptr<World>& world);
-		static AsyncOperation saveObj(const std::string& outputDir, const std::shared_ptr<World>& world, int splitCount);
+                                      const std::shared_ptr<World>& world);
+        static AsyncOperation saveObj(const std::string& outputDir,
+                                      const std::shared_ptr<World>& world,
+                                      int splitCount);
         static AsyncOperation saveBmp(const std::string& outputFile,
-                                    const std::shared_ptr<Planet>& planet);
+                                      const std::shared_ptr<Planet>& planet);
 
        private:
         template <typename T>
@@ -61,14 +63,15 @@ class WorldIO {
 
         static glm::vec3 asVec3(int x, int y, int z);
 
-		static void saveObjAsync(std::shared_ptr<Progress> progress, const std::string& outputDir,
-			const std::shared_ptr<World>& world);
+        static void saveObjAsync(std::shared_ptr<Progress> progress,
+                                 const std::string& outputDir,
+                                 const std::shared_ptr<World>& world);
 
         static void genTopPlane(const std::string& outputDir,
                                 std::vector<std::string>& texVec,
                                 objb::ObjBuilder& ob, objb::MtlBuilder& mb,
                                 glm::ivec3 worldPos, glm::ivec3 objPos,
-                                glm::vec3 size,glm::vec3 offset,
+                                glm::vec3 size, glm::vec3 offset,
                                 const std::shared_ptr<World>& world);
         static void genBottomPlane(const std::string& outputDir,
                                    std::vector<std::string>& texVec,

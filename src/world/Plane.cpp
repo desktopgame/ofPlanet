@@ -4,20 +4,20 @@
 namespace planet {
 
 Plane::Plane(ofShader& shader, PlaneType type, const glm::vec3 size)
-    : shader(shader), type(type),ofVAO() {
+    : shader(shader), type(type), ofVAO() {
         setupOfVbo(type, size);
 }
 
 void Plane::draw() {
-		shader.begin();
+        shader.begin();
         ofVAO.drawElements(GL_TRIANGLES, 6);
-		shader.end();
+        shader.end();
 }
 
 void Plane::drawInstanced(int count) {
-		shader.begin();
+        shader.begin();
         ofVAO.drawElementsInstanced(GL_TRIANGLES, 6, count);
-		shader.end();
+        shader.end();
 }
 
 ofVbo& Plane::getVAO() { return ofVAO; }
@@ -65,12 +65,12 @@ void Plane::setupOfVbo(PlaneType type, const glm::vec3 size) {
         }
         auto indexData = std::vector<ofIndexType>{0, 1, 2, 2, 3, 0};
         ofVAO.setIndexData(indexData.data(), indexData.size(), GL_STATIC_DRAW);
-/*
-        auto shader = nameSet.getShader();
-        shader->use();
-        nameSet.apply(shader);
-        shader->unuse();
-*/
+        /*
+                auto shader = nameSet.getShader();
+                shader->use();
+                nameSet.apply(shader);
+                shader->unuse();
+        */
 }
 
 std::vector<float> Plane::createFrontVertex(glm::vec3 size) {

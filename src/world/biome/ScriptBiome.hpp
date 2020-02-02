@@ -2,6 +2,7 @@
 #ifndef WORLD_BIOME_SCRIPTBIOME_HPP
 #define WORLD_BIOME_SCRIPTBIOME_HPP
 #include <ofxLua.h>
+
 #include "BasicBiome.hpp"
 #include "MultiBlock.hpp"
 #include "WeightTable.hpp"
@@ -17,7 +18,7 @@ class ScriptBiome : public BasicBiome {
         virtual bool isUseCallbacks() override;
         virtual void onBeginGenerateWorld(BlockTable& blockTable) override;
         virtual void onEndGenerateWorld(BlockTable& blockTable) override;
-		virtual void onEndGenerateTerrain() override;
+        virtual void onEndGenerateTerrain() override;
         virtual float onFixHeight(float y) override;
         virtual void onGenerateTerrain(BlockTable& blockTable, int x, int y,
                                        int z) override;
@@ -30,8 +31,9 @@ class ScriptBiome : public BasicBiome {
         std::string mode;
         ofxLua::Context::Instance ctx;
         std::shared_ptr<BlockTable> table;
-		std::shared_ptr<MultiBlockMap> multiBlockMap;
-		std::shared_ptr<std::unordered_map<std::string, WeightTable> > weightTableMap;
+        std::shared_ptr<MultiBlockMap> multiBlockMap;
+        std::shared_ptr<std::unordered_map<std::string, WeightTable> >
+            weightTableMap;
         std::unordered_map<std::string, ofxLua::Object> globals;
 };
 

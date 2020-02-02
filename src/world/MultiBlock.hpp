@@ -10,9 +10,9 @@
 namespace planet {
 
 struct MultiBlockCell {
-	explicit MultiBlockCell(const glm::ivec3& point, int blockId);
-	glm::ivec3 point;
-	int blockId;
+        explicit MultiBlockCell(const glm::ivec3& point, int blockId);
+        glm::ivec3 point;
+        int blockId;
 };
 
 using MultiBlockLine = std::vector<std::string>;

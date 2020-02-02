@@ -3,8 +3,8 @@
 #define COMMON_FIRSTPERSONCONTROLLER_HPP
 #include <string>
 
-#include "Transform.hpp"
 #include "MouseScroll.hpp"
+#include "Transform.hpp"
 #include "WASDMove.hpp"
 namespace planet {
 /**

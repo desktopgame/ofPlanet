@@ -5,7 +5,7 @@
 namespace planet {
 
 Planet::Planet(ofShader& shader)
-    :  shader(shader), world(nullptr), blockTable(0, 0, 0) {}
+    : shader(shader), world(nullptr), blockTable(0, 0, 0) {}
 
 void Planet::generate(glm::vec3 size, std::shared_ptr<Biome> biome) {
         this->world = World::create(shader, size);

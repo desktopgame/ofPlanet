@@ -34,7 +34,7 @@ class TexturePack : public std::enable_shared_from_this<TexturePack> {
         void resolve();
 
         std::string getBaseDirectory() const;
-		std::string getBasePath() const;
+        std::string getBasePath() const;
 
        protected:
         explicit TexturePack(const std::string& baseDirectory);

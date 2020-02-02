@@ -46,7 +46,7 @@ void BasicBiome::generate(BlockTable& blockTable) {
         // generate terrain
         auto terrain = gen.generate(seed_gen());
         blockTable.setTerrain(terrain);
-		onBeginGenerateTerrain();
+        onBeginGenerateTerrain();
         for (int i = 0; i < terrain.getCellCount(); i++) {
                 Cell cellSrc = terrain.getCellAt(i);
                 Cell cell =
@@ -56,7 +56,7 @@ void BasicBiome::generate(BlockTable& blockTable) {
                 heightMap[glm::ivec2(cell.x, cell.z)] = y;
                 onGenerateTerrain(blockTable, cell.x, y, cell.z);
         }
-		onEndGenerateTerrain();
+        onEndGenerateTerrain();
         // generate structure
         onGenerateStructures(blockTable);
         // generate cave
@@ -79,8 +79,7 @@ void BasicBiome::onBeginGenerateWorld(BlockTable& blockTable) {}
 
 void BasicBiome::onEndGenerateWorld(BlockTable& blockTable) {}
 
-void BasicBiome::onBeginGenerateTerrain() {
-}
+void BasicBiome::onBeginGenerateTerrain() {}
 
 void BasicBiome::onGenerateTerrain(BlockTable& blockTable, int x, int y,
                                    int z) {
@@ -92,8 +91,7 @@ void BasicBiome::onGenerateTerrain(BlockTable& blockTable, int x, int y,
         }
 }
 
-void BasicBiome::onEndGenerateTerrain() {
-}
+void BasicBiome::onEndGenerateTerrain() {}
 
 void BasicBiome::onGenerateStructures(BlockTable& blockTable) {}
 
@@ -108,10 +106,7 @@ void BasicBiome::onGenerateCave(BlockTable& blockTable, int x, int y, int z,
 void BasicBiome::generateStructure(BlockTable& blockTable, MultiBlock mb,
                                    glm::ivec3 intervalMin,
                                    glm::ivec3 intervalMax, int testCount,
-                                   int genLimit) {
-	
-        
-}
+                                   int genLimit) {}
 
 BlockPrefab BasicBiome::createTopBlock(BlockTable& blockTable, int x, int y,
                                        int z) const {

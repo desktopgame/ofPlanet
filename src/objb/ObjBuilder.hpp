@@ -103,7 +103,7 @@ class ObjModel {
         std::vector<ObjFace> faces;
 
        private:
-		int vertexCount;
+        int vertexCount;
         int useIndexCount;
         ObjBuilder& builder;
 };

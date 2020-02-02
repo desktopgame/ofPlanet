@@ -12,7 +12,8 @@ std::shared_ptr<BlockPack> BlockPack::load(
         for (int i = 0; i < blockInfoCollection.getBlockInfoCount(); i++) {
                 BlockInfo info = blockInfoCollection.getBlockInfo(i);
                 auto block =
-                    std::make_shared<Block>(stringToBlockShape(info.shape), info.reference, info.textue, i);
+                    std::make_shared<Block>(stringToBlockShape(info.shape),
+                                            info.reference, info.textue, i);
                 ret->addBlock(block);
         }
         return registerBlockPack(ret);

@@ -15,7 +15,7 @@ class Terrain {
         void addCell(const Cell& cell);
         Cell getCellAt(int index) const;
         int getCellCount() const;
-		Cell findCell(int x, int z) const;
+        Cell findCell(int x, int z) const;
 
         void addPocket(const Pocket& pocket);
         Pocket getPocketAt(int index) const;

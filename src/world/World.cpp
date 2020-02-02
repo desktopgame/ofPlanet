@@ -17,18 +17,18 @@
 #include "TexturePack.hpp"
 namespace planet {
 
-WorldPart::WorldPart(const std::shared_ptr<World>& world, glm::ivec3 offset) : world(world), offset(offset) {
-}
-std::shared_ptr<World> World::create(ofShader& shader,const glm::ivec3& size) {
+WorldPart::WorldPart(const std::shared_ptr<World>& world, glm::ivec3 offset)
+    : world(world), offset(offset) {}
+std::shared_ptr<World> World::create(ofShader& shader, const glm::ivec3& size) {
         return create(shader, size.x, size.y, size.z);
 }
 
-std::shared_ptr<World> World::create(ofShader& shader, int xSize, int ySize, int zSize) {
+std::shared_ptr<World> World::create(ofShader& shader, int xSize, int ySize,
+                                     int zSize) {
         World* world = new World(shader, xSize, ySize, zSize);
         std::shared_ptr<World> ret = std::shared_ptr<World>(world);
         for (int i = 0; i < xSize; i++) {
-                std::vector<std::vector<std::shared_ptr<Block> > >
-                    yline;
+                std::vector<std::vector<std::shared_ptr<Block> > > yline;
                 for (int j = 0; j < ySize; j++) {
                         std::vector<std::shared_ptr<Block> > zline;
                         for (int k = 0; k < zSize; k++) {
@@ -53,12 +53,9 @@ void World::load(const BlockTable& table) {
                                         continue;
                                 }
                                 if (i.instanced) {
-                                        setBlock(
-                                            x, y, z,
-                                            bp->getBlock(i.id));
+                                        setBlock(x, y, z, bp->getBlock(i.id));
                                 } else {
-                                        setBlock(x, y, z,
-                                                         bp->getBlock(i.id));
+                                        setBlock(x, y, z, bp->getBlock(i.id));
                                 }
                         }
                 }
@@ -129,46 +126,40 @@ void World::rehash() {
         renderer.update();
 }
 
-void World::setBlock(glm::vec3 pos,
-                             std::shared_ptr<Block> block) {
+void World::setBlock(glm::vec3 pos, std::shared_ptr<Block> block) {
         setBlock(pos.x, pos.y, pos.z, block);
 }
 
-void World::setBlock(glm::ivec3 pos,
-                             std::shared_ptr<Block> block) {
+void World::setBlock(glm::ivec3 pos, std::shared_ptr<Block> block) {
         setBlock(pos.x, pos.y, pos.z, block);
 }
 
-void World::setBlock(float x, float y, float z,
-                             std::shared_ptr<Block> block) {
+void World::setBlock(float x, float y, float z, std::shared_ptr<Block> block) {
         setBlock(World::floatToInt(x), World::floatToInt(y),
-                         World::floatToInt(z), block);
+                 World::floatToInt(z), block);
 }
 
-void World::setBlock(int x, int y, int z,
-                             std::shared_ptr<Block> block) {
-		// 以前同じ座標にブロックが置かれていたなら削除
-		glm::ivec3 pos(x, y, z);
-		auto iter = std::remove_if(notBlockPositionsVec.begin(), notBlockPositionsVec.end(), [pos](glm::ivec3 e) -> bool {
-			return e == pos;
-		});
-		notBlockPositionsVec.erase(iter, notBlockPositionsVec.end());
-		//ブロックのサイズがデフォルトでないなら記録する
-		if (block && block->getShape() != BlockShape::Block) {
-			notBlockPositionsVec.emplace_back(pos);
-		}
+void World::setBlock(int x, int y, int z, std::shared_ptr<Block> block) {
+        // 以前同じ座標にブロックが置かれていたなら削除
+        glm::ivec3 pos(x, y, z);
+        auto iter = std::remove_if(
+            notBlockPositionsVec.begin(), notBlockPositionsVec.end(),
+            [pos](glm::ivec3 e) -> bool { return e == pos; });
+        notBlockPositionsVec.erase(iter, notBlockPositionsVec.end());
+        //ブロックのサイズがデフォルトでないなら記録する
+        if (block && block->getShape() != BlockShape::Block) {
+                notBlockPositionsVec.emplace_back(pos);
+        }
         blocks[x][y][z] = block;
         this->isInvalid = true;
 }
 
-std::shared_ptr<Block> World::getBlock(int x, int y,
-                                                       int z) const {
+std::shared_ptr<Block> World::getBlock(int x, int y, int z) const {
         return blocks[x][y][z];
 }
-std::shared_ptr<Block> World::getBlock(float x, float y,
-                                                       float z) const {
+std::shared_ptr<Block> World::getBlock(float x, float y, float z) const {
         return getBlock(World::floatToInt(x), World::floatToInt(y),
-                                World::floatToInt(z));
+                        World::floatToInt(z));
 }
 std::shared_ptr<Block> World::getBlock(glm::vec3 pos) const {
         return getBlock(pos.x, pos.y, pos.z);
@@ -196,11 +187,11 @@ bool World::isEmpty(int x, int y, int z) const {
         auto block = getBlock(x, y, z);
         return block == nullptr;
 }
-bool World::isFilled(int x, int y, int z) const  {
-	if (isEmpty(x, y, z)) {
-		return false;
-	}
-	return getBlock(x,y,z)->getShape() == BlockShape::Block;
+bool World::isFilled(int x, int y, int z) const {
+        if (isEmpty(x, y, z)) {
+                return false;
+        }
+        return getBlock(x, y, z)->getShape() == BlockShape::Block;
 }
 int World::getGroundY(int x, int z) const {
         for (int i = 0; i < ySize; i++) {
@@ -211,18 +202,16 @@ int World::getGroundY(int x, int z) const {
         return ySize;
 }
 glm::vec3 World::getPhysicalPosition(int x, int y, int z) const {
-	// まずは全てのブロックが通常ブロックである前提で計算する
-	glm::vec3 pos(x*2, y*2, z*2);
-	/*
-	for (auto e : notBlockPositionsVec) {
-		glm::vec3 size = glm::vec3(2, 2, 2) - getBlock(e.x, e.y, e.z)->getSize();
-		if (e.x <= x && e.y <= y && e.z <= z) {
-			pos.x -= size.x;
-			pos.y -= size.y;
-			pos.z -= size.z;
-		}
-	}*/
-	return pos;
+        // まずは全てのブロックが通常ブロックである前提で計算する
+        glm::vec3 pos(x * 2, y * 2, z * 2);
+        /*
+        for (auto e : notBlockPositionsVec) {
+                glm::vec3 size = glm::vec3(2, 2, 2) - getBlock(e.x, e.y,
+        e.z)->getSize(); if (e.x <= x && e.y <= y && e.z <= z) { pos.x -=
+        size.x; pos.y -= size.y; pos.z -= size.z;
+                }
+        }*/
+        return pos;
 }
 int World::getXSize() const { return xSize; }
 int World::getYSize() const { return ySize; }
@@ -232,27 +221,32 @@ void World::setPlayMode(bool playMode) { this->bIsPlayMode = playMode; }
 bool World::isPlayMode() const { return bIsPlayMode; }
 
 std::vector<WorldPart> World::split(int splitNum) const {
-	int sx = xSize / splitNum;
-	int sz = zSize / splitNum;
-	std::vector<WorldPart > ret;
-	for (int i = 0; i < splitNum; i++) {
-		for (int j = 0; j < splitNum; j++) {
-			auto w = World::create(shader,glm::ivec3(sx, ySize, sz));
-			for (int x = (sx*i); x < (sx*i) + sx; x++) {
-				for (int y = 0; y < ySize; y++) {
-					for (int z = (sz*j); z < (sz*j) + sz; z++) {
-						int ix = x - (sx * i);
-						int iz = z - (sz * j);
-						w->setBlock(glm::ivec3(ix, y, iz), this->getBlock(x, y, z));
-					}
-				}
-			}
-			float xoffs = (sx * splitNum * 2) - ((sx*i) * 2);
-			float zoffs = ((sz*j) * 2);
-			ret.emplace_back(WorldPart(w, glm::ivec3(xoffs, 0, zoffs)));
-		}
-	}
-	return ret;
+        int sx = xSize / splitNum;
+        int sz = zSize / splitNum;
+        std::vector<WorldPart> ret;
+        for (int i = 0; i < splitNum; i++) {
+                for (int j = 0; j < splitNum; j++) {
+                        auto w =
+                            World::create(shader, glm::ivec3(sx, ySize, sz));
+                        for (int x = (sx * i); x < (sx * i) + sx; x++) {
+                                for (int y = 0; y < ySize; y++) {
+                                        for (int z = (sz * j);
+                                             z < (sz * j) + sz; z++) {
+                                                int ix = x - (sx * i);
+                                                int iz = z - (sz * j);
+                                                w->setBlock(
+                                                    glm::ivec3(ix, y, iz),
+                                                    this->getBlock(x, y, z));
+                                        }
+                                }
+                        }
+                        float xoffs = (sx * splitNum * 2) - ((sx * i) * 2);
+                        float zoffs = ((sz * j) * 2);
+                        ret.emplace_back(
+                            WorldPart(w, glm::ivec3(xoffs, 0, zoffs)));
+                }
+        }
+        return ret;
 }
 
 void World::checkFBO() {
@@ -271,7 +265,7 @@ World::World(ofShader& shader, const glm::ivec3& size)
 
 World::World(ofShader& shader, int xSize, int ySize, int zSize)
     : notBlockPositionsVec(),
-	  blocks(),
+      blocks(),
       xSize(xSize),
       ySize(ySize),
       zSize(zSize),
@@ -279,7 +273,7 @@ World::World(ofShader& shader, int xSize, int ySize, int zSize)
       isInvalid(true),
       bIsPlayMode(false),
       fbo(),
-	  shader(shader),
+      shader(shader),
       fboW(-1),
       fboH(-1) {}
 }  // namespace planet
