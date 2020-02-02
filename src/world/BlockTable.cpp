@@ -94,10 +94,12 @@ bool BlockTable::canExpand(int baseX, int baseY, int baseZ,
         auto points = expandTargets(baseX, baseY, baseZ, mb);
         for (auto& point : points) {
                 glm::ivec3 pos = std::get<0>(point);
+				//その座標はワールドからはみ出す
                 if (!contains(pos.x, pos.y, pos.z)) {
                         return false;
                 }
                 int oldId = get(pos.x, pos.y, pos.z).id;
+				//新しく設置されるブロックが空気なら無視
                 int newId = std::get<1>(point);
                 if (newId < 0) {
                         continue;
@@ -106,6 +108,21 @@ bool BlockTable::canExpand(int baseX, int baseY, int baseZ,
                 if (oldId >= 0) {
                         return false;
                 }
+				// 下にブロックがあるかどうかチェックする
+				if (pos.y > 0) {
+					// そもそもまだ下に構造物があるか確認
+					glm::ivec3 bottom(pos.x, pos.y - 1, pos.z);
+					auto iter = std::find_if(points.begin(), points.end(), [bottom](auto e) -> bool {
+						return std::get<0>(e) == bottom;
+					});
+					// ない
+					if (iter == points.end()) {
+						// かつ、既に設置しているブロックが存在しない
+						if (get(bottom.x, bottom.y, bottom.z).id == -1) {
+							return false;
+						}
+					}
+				}
         }
         return true;
 }
