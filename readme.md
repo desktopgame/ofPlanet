@@ -1,5 +1,8 @@
 # ofPlanetユーザーマニュアル
 ofPlanetは地形生成エディターです。  
+![ofPlanetのプレビュー](ss_app.png)
+
+3Dモデルを .obj で出力して、他のアプリケーションから使うこともできます。  
 ※画像はofPlanetで生成したモデルをUnityで表示した様子
 ![ofPlanetで生成したモデルのプレビュー](ss_unity.png)
 
