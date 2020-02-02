@@ -164,6 +164,48 @@ blocks.jsonは例えば以下のようなファイルです。
 対応するテクスチャを定義します。
 上述の `textures.json` の `reference` に定義した名前を使用します。
 
+### shape
+上の例では省略されていますが、追加でブロックの形状を指定することができます。  
+これは現在のところハーフブロックのみをサポートしています。  
+ofPlanetでは、Y方向のハーブロックだけでなくXZ方向のハーフブロックをサポートしています。  
+※省略されている場合は通常のブロックとして扱われます。
+以下がハーフブロックの定義例です。
+
+````
+...中略...
+    {
+      "reference": "StoneTopSlab",
+      "texture": "StoneBlock",
+      "shape": "TopSlab"
+    },
+    {
+      "reference": "StoneBottomSlab",
+      "texture": "StoneBlock",
+      "shape": "BottomSlab"
+    },
+    {
+      "reference": "StoneLeftSlab",
+      "texture": "StoneBlock",
+      "shape": "LeftSlab"
+    },
+    {
+      "reference": "StoneRightSlab",
+      "texture": "StoneBlock",
+      "shape": "RightSlab"
+    },
+    {
+      "reference": "StoneFrontSlab",
+      "texture": "StoneBlock",
+      "shape": "FrontSlab"
+    },
+    {
+      "reference": "StoneBackSlab",
+      "texture": "StoneBlock",
+      "shape": "BackSlab"
+    },
+...中略...
+````
+
 ### textures.json & blocks.json
 この2つのファイルが間接参照を多用したデータ構造になっているのは意図的なものです。  
 テクスチャのみ/ブロックのみをあとから簡単に差し替えることが可能です。
