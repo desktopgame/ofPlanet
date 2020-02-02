@@ -1,8 +1,8 @@
 #include "glfw.hpp"
 
-#include <GLFW/glfw3.h>
-#include <ofApp.h>
 #include <ofAppGLFWWindow.h>
+#include <ofApp.h>
+#include <GLFW/glfw3.h>
 namespace planet {
 
 namespace glfw {

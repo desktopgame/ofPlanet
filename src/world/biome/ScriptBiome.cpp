@@ -1,9 +1,9 @@
 #include "ScriptBiome.hpp"
 
-#include <lauxlib.h>
-#include <lualib.h>
-
 #include <lua.hpp>
+#include <lualib.h>
+#include <lauxlib.h>
+
 
 #include "../Block.hpp"
 #include "../BlockPack.hpp"
