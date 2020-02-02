@@ -368,9 +368,9 @@ void WorldIO::genTopPlane(const std::string& outputDir,
                          ObjIndex(1, IndexMode::Global));
         ObjPolygon polyB(ObjIndex(2), ObjIndex(2, IndexMode::Global),
                          ObjIndex(1, IndexMode::Global));
-        ObjPolygon polyC(ObjIndex(4), ObjIndex(3, IndexMode::Global),
+        ObjPolygon polyC(ObjIndex(4), ObjIndex(4, IndexMode::Global),
                          ObjIndex(1, IndexMode::Global));
-        ObjPolygon polyD(ObjIndex(3), ObjIndex(4, IndexMode::Global),
+        ObjPolygon polyD(ObjIndex(3), ObjIndex(3, IndexMode::Global),
                          ObjIndex(1, IndexMode::Global));
 
         auto& aa =
@@ -427,9 +427,9 @@ void WorldIO::genBottomPlane(const std::string& outputDir,
                          ObjIndex(2, IndexMode::Global));
         ObjPolygon polyB(ObjIndex(2), ObjIndex(2, IndexMode::Global),
                          ObjIndex(2, IndexMode::Global));
-        ObjPolygon polyC(ObjIndex(4), ObjIndex(3, IndexMode::Global),
+        ObjPolygon polyC(ObjIndex(4), ObjIndex(4, IndexMode::Global),
                          ObjIndex(2, IndexMode::Global));
-        ObjPolygon polyD(ObjIndex(3), ObjIndex(4, IndexMode::Global),
+        ObjPolygon polyD(ObjIndex(3), ObjIndex(3, IndexMode::Global),
                          ObjIndex(2, IndexMode::Global));
 
         auto& aa =
