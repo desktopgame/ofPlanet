@@ -73,6 +73,8 @@ function onGenerateTerrain(x, y, z)
 end
 
 function onGenerateStructures()
+    putblockrange(0, 0, 0, getxsize()-1, math.floor(getysize() / 3) - 5, getzsize()-1, "Water")
+    setweightrange(0, 0, 0, getxsize()-1, math.floor(getysize() / 3) - 4, getzsize()-1, 10, "Tree");
     setweightrange(0, getysize()-20, 0, getxsize()-1, getysize()-1, getzsize()-1, 10, "Tree");
     genstruct(
         12,
@@ -82,11 +84,7 @@ function onGenerateStructures()
 end
 
 function onGenerateCave(x, y, z, noise)
-    -- if(noise > 0.1) then
-    --     setblock(x, y, z, "");
-    -- end
 end
 
 function onPostGenerate()
-    putblockrange(0, 0, 0, getxsize()-1, math.floor(getysize() / 3) - 5, getzsize()-1, "Water")
 end
