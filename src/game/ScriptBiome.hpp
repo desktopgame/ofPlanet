@@ -3,9 +3,9 @@
 #define WORLD_BIOME_SCRIPTBIOME_HPP
 #include <ofxLua.h>
 
-#include "BasicBiome.hpp"
-#include "MultiBlock.hpp"
-#include "WeightTable.hpp"
+#include "../world/biome/BasicBiome.hpp"
+#include "../world/MultiBlock.hpp"
+#include "../world/WeightTable.hpp"
 
 namespace planet {
 using MultiBlockMap = std::unordered_map<std::string, MultiBlock>;

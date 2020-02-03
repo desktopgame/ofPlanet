@@ -5,9 +5,9 @@
 #include <lauxlib.h>
 
 
-#include "../Block.hpp"
-#include "../BlockPack.hpp"
-#include "../MultiBlock.hpp"
+#include "../../world/Block.hpp"
+#include "../../world/BlockPack.hpp"
+#include "../../world/MultiBlock.hpp"
 #include "../csvr/Parser.hpp"
 
 using namespace ofxLua;

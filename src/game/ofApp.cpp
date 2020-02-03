@@ -6,7 +6,7 @@
 #include "../world/Planet.hpp"
 #include "../world/TexturePack.hpp"
 #include "../world/World.hpp"
-#include "../world/biome/ScriptBiome.hpp"
+#include "ScriptBiome.hpp"
 namespace planet {
 
 using ExportMode =
