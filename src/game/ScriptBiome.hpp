@@ -9,6 +9,7 @@ namespace planet {
 class ScriptBiome : public BasicBiome {
        public:
         explicit ScriptBiome(const std::string& filename);
+		~ScriptBiome();
         void onGUI();
 
        protected:

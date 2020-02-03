@@ -29,6 +29,9 @@ class BasicBiome : public Biome {
 			const std::string& name,
 			int addWeight,
 			int limitWeight);
+		void setWeightRange(const std::string& name, glm::ivec3 min, glm::ivec3 max, int weight);
+		void setWeight(const std::string& name, int x, int y, int z, int weight);
+		int getWeight(const std::string& name, int x, int y, int z);
 		MultiBlock& getMultiBlock(const std::string& name) const;
 		WeightTable& getWeightTable(const std::string& name);
 

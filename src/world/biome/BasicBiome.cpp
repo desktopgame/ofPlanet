@@ -20,7 +20,8 @@ BasicBiome::BasicBiome()
 	  multiBlockMap(),
 	  weightTableMap() {}
 
-BasicBiome::~BasicBiome() {}
+BasicBiome::~BasicBiome() {
+}
 
 void BasicBiome::generate(BlockTable& blockTable) {
         std::random_device seed_gen;
@@ -180,6 +181,27 @@ void BasicBiome::generateStruct(BlockTable& table, const std::string & name, int
 				expandCenter.z, addWeight);
 		}
 	}
+}
+
+void BasicBiome::setWeightRange(const std::string & name, glm::ivec3 min, glm::ivec3 max, int weight) {
+	auto& wt = getWeightTable(name);
+	for (int x = min.x; x <= max.x; x++) {
+		for (int y = min.y; y <= max.y; y++) {
+			for (int z = min.z; z <= max.z; z++) {
+				wt.setWeight(x, y, z, weight);
+			}
+		}
+	}
+}
+
+void BasicBiome::setWeight(const std::string & name, int x, int y, int z, int weight) {
+	auto& wt = getWeightTable(name);
+	wt.setWeight(x, y, z, weight);
+}
+
+int BasicBiome::getWeight(const std::string & name, int x, int y, int z) {
+	auto& wt = getWeightTable(name);
+	return wt.getWeight(x, y, z);
 }
 
 MultiBlock & BasicBiome::getMultiBlock(const std::string & name) const {

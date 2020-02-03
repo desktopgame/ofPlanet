@@ -33,6 +33,12 @@ ScriptBiome::ScriptBiome(const std::string& filename)
         this->globals = lua.getAllVariables().get();
 }
 
+ScriptBiome::~ScriptBiome() {
+	if (table != nullptr) {
+		delete table;
+	}
+}
+
 void ScriptBiome::onGUI() {
         // GUIを表示する
         auto iter = globals.begin();
@@ -358,8 +364,7 @@ int lua_setweight(lua_State* state) {
         y = std::max(0, std::min(y, table->getYSize() - 1));
         z = std::max(0, std::min(z, table->getZSize() - 1));
         std::string name = luaL_checkstring(state, -1);
-		auto& wtable = biome->getWeightTable(name);
-        wtable.setWeight(x, y, z, weight);
+		biome->setWeight(name, x, y, z, weight);
         return 0;
 }
 int lua_getweight(lua_State* state) {
@@ -372,8 +377,7 @@ int lua_getweight(lua_State* state) {
         y = std::max(0, std::min(y, table->getYSize() - 1));
         z = std::max(0, std::min(z, table->getZSize() - 1));
         std::string name = luaL_checkstring(state, -1);
-		auto& wtable = biome->getWeightTable(name);
-        lua_pushinteger(state, wtable.getWeight(x, y, z));
+        lua_pushinteger(state, biome->getWeight(name, x, y, z));
         return 1;
 }
 int lua_setweightrange(lua_State* state) {
@@ -389,13 +393,7 @@ int lua_setweightrange(lua_State* state) {
         int weight = luaL_checkinteger(state, -2);
         std::string name = luaL_checkstring(state, -1);
 		auto& wtable = biome->getWeightTable(name);
-        for (int x = minX; x <= maxX; x++) {
-                for (int y = minY; y <= maxY; y++) {
-                        for (int z = minZ; z <= maxZ; z++) {
-                                wtable.setWeight(x, y, z, weight);
-                        }
-                }
-        }
+		biome->setWeightRange(name, glm::ivec3(minX, minY, minZ), glm::ivec3(maxX, maxY, maxZ), weight);
         return 0;
 }
 }  // namespace planet
