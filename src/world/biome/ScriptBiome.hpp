@@ -12,7 +12,7 @@ using MultiBlockMap = std::unordered_map<std::string, MultiBlock>;
 class ScriptBiome : public BasicBiome {
        public:
         explicit ScriptBiome(const std::string& filename);
-        virtual void onGUI() override;
+        void onGUI();
 
        protected:
         virtual bool isUseCallbacks() override;

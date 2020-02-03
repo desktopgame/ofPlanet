@@ -17,7 +17,6 @@ class BasicBiome : public Biome {
        public:
         explicit BasicBiome();
         virtual ~BasicBiome();
-        virtual void onGUI() override;
         void generate(BlockTable& blockTable) override;
 
        protected:

@@ -20,14 +20,6 @@ BasicBiome::BasicBiome()
 
 BasicBiome::~BasicBiome() {}
 
-void BasicBiome::onGUI() {
-        ImGui::InputText("TopBlock", topBlock, 255);
-        ImGui::InputText("FillBlock", fillBlock, 255);
-        ImGui::InputText("FillHardBlock", fillHardBlock, 255);
-        ImGui::InputText("WaterBlock", waterBlock, 255);
-        ImGui::Checkbox("GenerateCave", &generateCave);
-}
-
 void BasicBiome::generate(BlockTable& blockTable) {
         std::random_device seed_gen;
         const int XSIZE = blockTable.getXSize();

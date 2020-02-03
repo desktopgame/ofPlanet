@@ -20,7 +20,7 @@
 
 namespace planet {
 class Planet;
-class Biome;
+class ScriptBiome;
 class ofApp : public ofBaseApp {
        public:
         ofApp();
@@ -71,7 +71,7 @@ class ofApp : public ofBaseApp {
         ofxImGui::Gui gui;
         StateValue<bool> playMode;
         FirstPersonController fpsCon;
-        std::vector<std::shared_ptr<Biome> > biomes;
+        std::vector<std::shared_ptr<ScriptBiome> > biomes;
         imguiex::ListBox biomeNames;
         imguiex::RadioButtonGroup exportTypes;
         imguiex::InputField<> exportDir;
