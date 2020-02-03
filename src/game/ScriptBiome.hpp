@@ -4,11 +4,8 @@
 #include <ofxLua.h>
 
 #include "../world/biome/BasicBiome.hpp"
-#include "../world/MultiBlock.hpp"
-#include "../world/WeightTable.hpp"
 
 namespace planet {
-using MultiBlockMap = std::unordered_map<std::string, MultiBlock>;
 class ScriptBiome : public BasicBiome {
        public:
         explicit ScriptBiome(const std::string& filename);
@@ -31,9 +28,6 @@ class ScriptBiome : public BasicBiome {
         std::string mode;
         ofxLua::Context::Instance ctx;
         std::shared_ptr<BlockTable> table;
-        std::shared_ptr<MultiBlockMap> multiBlockMap;
-        std::shared_ptr<std::unordered_map<std::string, WeightTable> >
-            weightTableMap;
         std::unordered_map<std::string, ofxLua::Object> globals;
 };
 

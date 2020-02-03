@@ -16,7 +16,9 @@ BasicBiome::BasicBiome()
       topBlock("GrassDirt"),
       fillBlock("Stone"),
       fillHardBlock("HardStone"),
-      waterBlock("Water") {}
+      waterBlock("Water"),
+	  multiBlockMap(),
+	  weightTableMap() {}
 
 BasicBiome::~BasicBiome() {}
 
@@ -27,14 +29,16 @@ void BasicBiome::generate(BlockTable& blockTable) {
         const int ZSIZE = blockTable.getZSize();
         const int YSIZE_H = YSIZE / 2;
         const int XZ = (XSIZE + ZSIZE) / 2;
+		this->worldSize = glm::ivec3(XSIZE, YSIZE, ZSIZE);
+		this->heightMap = std::make_shared<HeightMap>();
+		this->multiBlockMap = std::make_shared<MultiBlockMap>();
+		this->weightTableMap = std::make_shared<WeightTableMap>();
         onBeginGenerateWorld(blockTable);
         if (!this->isUseCallbacks()) {
                 onEndGenerateWorld(blockTable);
                 return;
         }
         Generator gen(XSIZE, YSIZE, ZSIZE);
-        // world.clear();
-        heightMap.clear();
         // generate terrain
         auto terrain = gen.generate(seed_gen());
         blockTable.setTerrain(terrain);
@@ -45,7 +49,7 @@ void BasicBiome::generate(BlockTable& blockTable) {
                     Cell(cellSrc.x, cellSrc.z, onFixHeight(cellSrc.noise));
                 int y = YSIZE_H + World::floatToInt(cell.noise * (YSIZE_H - 1));
                 y = std::min(YSIZE - 1, y);
-                heightMap[glm::ivec2(cell.x, cell.z)] = y;
+				heightMap->insert_or_assign(glm::ivec2(cell.x, cell.z), y);
                 onGenerateTerrain(blockTable, cell.x, y, cell.z);
         }
         onEndGenerateTerrain();
@@ -60,6 +64,14 @@ void BasicBiome::generate(BlockTable& blockTable) {
                 }
         }
         onEndGenerateWorld(blockTable);
+}
+
+WeightTable& BasicBiome::getWeightTable(const std::string & name) {
+	if (!this->weightTableMap->count(name)) {
+		WeightTable wt(this->worldSize.x, this->worldSize.y, this->worldSize.z);
+		this->weightTableMap->insert_or_assign(name, wt);
+	}
+	return weightTableMap->at(name);
 }
 
 bool BasicBiome::isUseCallbacks() { return true; }
@@ -100,6 +112,18 @@ void BasicBiome::generateStructure(BlockTable& blockTable, MultiBlock mb,
                                    glm::ivec3 intervalMax, int testCount,
                                    int genLimit) {}
 
+void BasicBiome::registerStruct(const std::string & name, const MultiBlock & mb) {
+	this->multiBlockMap->insert_or_assign(name, mb);
+}
+
+void BasicBiome::generateStruct(const std::string & name, const glm::ivec3 & pos, int addWeight, int limitWeight) {
+}
+
+MultiBlock & BasicBiome::getMultiBlock(const std::string & name) const {
+	return this->multiBlockMap->at(name);
+}
+
+// private
 BlockPrefab BasicBiome::createTopBlock(BlockTable& blockTable, int x, int y,
                                        int z) const {
         return BlockPrefab(

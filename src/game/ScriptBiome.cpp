@@ -13,7 +13,7 @@
 using namespace ofxLua;
 namespace planet {
 ScriptBiome::ScriptBiome(const std::string& filename)
-    : lua(), ctx(nullptr), table(nullptr), multiBlockMap(), weightTableMap() {
+    : lua(), ctx(nullptr), table(nullptr){
         lua.define("setblock", lua_setblock);
         lua.define("putblock", lua_putblock);
         lua.define("getblock", lua_getblock);
@@ -86,13 +86,8 @@ void ScriptBiome::onBeginGenerateWorld(BlockTable& blockTable) {
         this->table = std::make_shared<BlockTable>(blockTable.getXSize(),
                                                    blockTable.getYSize(),
                                                    blockTable.getZSize());
-        this->multiBlockMap = std::make_shared<MultiBlockMap>();
-        this->weightTableMap =
-            std::make_shared<std::unordered_map<std::string, WeightTable> >();
         ctx->set("TABLE", table);
-        ctx->set("MB", multiBlockMap);
-        ctx->set("HM", heightMap);
-        ctx->set("WT", weightTableMap);
+		ctx->set("BIOME", const_cast<ScriptBiome*>(this));
         // コールバックモードを決める
         std::vector<Variant> modeV = lua.call("start", std::vector<Object>{},
                                               std::vector<Type>{T_STRING})
@@ -120,7 +115,7 @@ void ScriptBiome::onEndGenerateWorld(BlockTable& blockTable) {
         }
 }
 
-void ScriptBiome::onEndGenerateTerrain() { ctx->set("HM", heightMap); }
+void ScriptBiome::onEndGenerateTerrain() { }
 
 float ScriptBiome::onFixHeight(float y) {
         std::vector<Variant> r =
@@ -298,7 +293,7 @@ int lua_newstruct(lua_State* state) {
         std::string body = luaL_checkstring(state, -1);
         auto pack = BlockPack::getCurrent();
         auto table = Context::top()->get<std::shared_ptr<BlockTable> >("TABLE");
-        auto mbmap = Context::top()->get<std::shared_ptr<MultiBlockMap> >("MB");
+        auto biome = Context::top()->get<ScriptBiome* >("BIOME");
         MultiBlock mb;
         // CSVR形式を解析
         csvr::Parser parser;
@@ -318,7 +313,7 @@ int lua_newstruct(lua_State* state) {
                 }
                 mb.emplace_back(mbLayer);
         }
-        mbmap->insert_or_assign(name, mb);
+		biome->registerStruct(name, mb);
         return 0;
 }
 
@@ -327,24 +322,10 @@ int lua_genstruct(lua_State* state) {
         int limitWeight = luaL_checkinteger(state, -2);
         std::string name = luaL_checkstring(state, -1);
 
-        using HeightMapT =
-            std::unordered_map<glm::ivec2, int, Vec2HashFunc, Vec2HashFunc>;
         auto table = Context::top()->get<std::shared_ptr<BlockTable> >("TABLE");
-        auto mbmap = Context::top()->get<std::shared_ptr<MultiBlockMap> >("MB");
-        auto hmap = Context::top()->get<HeightMapT>("HM");
-        auto wtableMap =
-            Context::top()
-                ->get<std::shared_ptr<
-                    std::unordered_map<std::string, WeightTable> > >("WT");
-        //構造物ごとに重み付けを記録する
-        if (!wtableMap->count(name)) {
-                WeightTable wt(table->getXSize(), table->getYSize(),
-                               table->getZSize());
-                wtableMap->insert_or_assign(name, wt);
-        }
-        auto& wtable = wtableMap->at(name);
-
-        auto& mb = mbmap->at(name);
+		auto biome = Context::top()->get<ScriptBiome* >("BIOME");
+		auto& wtable = biome->getWeightTable(name);
+		auto& mb = biome->getMultiBlock(name);
         // 構造物のだいたいの大きさを取得する
         glm::ivec3 mbSize;
         multiBlock3DSize(mb, mbSize);
@@ -411,7 +392,7 @@ int lua_genstruct(lua_State* state) {
 
 int lua_expandstruct(lua_State* state) {
         auto table = Context::top()->get<std::shared_ptr<BlockTable> >("TABLE");
-        auto mbmap = Context::top()->get<std::shared_ptr<MultiBlockMap> >("MB");
+		auto biome = Context::top()->get<ScriptBiome* >("BIOME");
         int x = luaL_checkinteger(state, -4);
         int y = luaL_checkinteger(state, -3);
         int z = luaL_checkinteger(state, -2);
@@ -419,17 +400,13 @@ int lua_expandstruct(lua_State* state) {
         y = std::max(0, std::min(y, table->getYSize() - 1));
         z = std::max(0, std::min(z, table->getZSize() - 1));
         std::string name = luaL_checkstring(state, -1);
-        auto& mb = mbmap->at(name);
+		auto& mb = biome->getMultiBlock(name);
         table->expand(x, y, z, mb);
         return 0;
 }
 int lua_setweight(lua_State* state) {
         auto table = Context::top()->get<std::shared_ptr<BlockTable> >("TABLE");
-        auto mbmap = Context::top()->get<std::shared_ptr<MultiBlockMap> >("MB");
-        auto wtableMap =
-            Context::top()
-                ->get<std::shared_ptr<
-                    std::unordered_map<std::string, WeightTable> > >("WT");
+		auto biome = Context::top()->get<ScriptBiome* >("BIOME");
         int x = luaL_checkinteger(state, -5);
         int y = luaL_checkinteger(state, -4);
         int z = luaL_checkinteger(state, -3);
@@ -438,23 +415,13 @@ int lua_setweight(lua_State* state) {
         y = std::max(0, std::min(y, table->getYSize() - 1));
         z = std::max(0, std::min(z, table->getZSize() - 1));
         std::string name = luaL_checkstring(state, -1);
-        //構造物ごとに重み付けを記録する
-        if (!wtableMap->count(name)) {
-                WeightTable wt(table->getXSize(), table->getYSize(),
-                               table->getZSize());
-                wtableMap->insert_or_assign(name, wt);
-        }
-        auto& wtable = wtableMap->at(name);
+		auto& wtable = biome->getWeightTable(name);
         wtable.setWeight(x, y, z, weight);
         return 0;
 }
 int lua_getweight(lua_State* state) {
         auto table = Context::top()->get<std::shared_ptr<BlockTable> >("TABLE");
-        auto mbmap = Context::top()->get<std::shared_ptr<MultiBlockMap> >("MB");
-        auto wtableMap =
-            Context::top()
-                ->get<std::shared_ptr<
-                    std::unordered_map<std::string, WeightTable> > >("WT");
+		auto biome = Context::top()->get<ScriptBiome* >("BIOME");
         int x = luaL_checkinteger(state, -4);
         int y = luaL_checkinteger(state, -3);
         int z = luaL_checkinteger(state, -2);
@@ -462,23 +429,14 @@ int lua_getweight(lua_State* state) {
         y = std::max(0, std::min(y, table->getYSize() - 1));
         z = std::max(0, std::min(z, table->getZSize() - 1));
         std::string name = luaL_checkstring(state, -1);
-        //構造物ごとに重み付けを記録する
-        if (!wtableMap->count(name)) {
-                WeightTable wt(table->getXSize(), table->getYSize(),
-                               table->getZSize());
-                wtableMap->insert_or_assign(name, wt);
-        }
-        auto& wtable = wtableMap->at(name);
+		auto& wtable = biome->getWeightTable(name);
         lua_pushinteger(state, wtable.getWeight(x, y, z));
         return 1;
 }
 int lua_setweightrange(lua_State* state) {
         auto blockpack = BlockPack::getCurrent();
         auto table = Context::top()->get<std::shared_ptr<BlockTable> >("TABLE");
-        auto wtableMap =
-            Context::top()
-                ->get<std::shared_ptr<
-                    std::unordered_map<std::string, WeightTable> > >("WT");
+		auto biome = Context::top()->get<ScriptBiome* >("BIOME");
         int minX = luaL_checkinteger(state, -8);
         int minY = luaL_checkinteger(state, -7);
         int minZ = luaL_checkinteger(state, -6);
@@ -487,13 +445,7 @@ int lua_setweightrange(lua_State* state) {
         int maxZ = luaL_checkinteger(state, -3);
         int weight = luaL_checkinteger(state, -2);
         std::string name = luaL_checkstring(state, -1);
-        //構造物ごとに重み付けを記録する
-        if (!wtableMap->count(name)) {
-                WeightTable wt(table->getXSize(), table->getYSize(),
-                               table->getZSize());
-                wtableMap->insert_or_assign(name, wt);
-        }
-        auto& wtable = wtableMap->at(name);
+		auto& wtable = biome->getWeightTable(name);
         for (int x = minX; x <= maxX; x++) {
                 for (int y = minY; y <= maxY; y++) {
                         for (int z = minZ; z <= maxZ; z++) {
