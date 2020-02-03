@@ -5,7 +5,6 @@
 #include <sstream>
 #include <stdexcept>
 
-#include "../text/Strings.hpp"
 #include "Block.hpp"
 #include "BlockPack.hpp"
 
