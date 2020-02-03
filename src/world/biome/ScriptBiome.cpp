@@ -328,8 +328,7 @@ int lua_genstruct(lua_State* state) {
         std::string name = luaL_checkstring(state, -1);
 
         using HeightMapT =
-            std::unordered_map<glm::ivec2, int, hidden::Vec2HashFunc,
-                               hidden::Vec2HashFunc>;
+            std::unordered_map<glm::ivec2, int, Vec2HashFunc, Vec2HashFunc>;
         auto table = Context::top()->get<std::shared_ptr<BlockTable> >("TABLE");
         auto mbmap = Context::top()->get<std::shared_ptr<MultiBlockMap> >("MB");
         auto hmap = Context::top()->get<HeightMapT>("HM");

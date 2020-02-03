@@ -8,20 +8,9 @@
 #include "../BlockTable.hpp"
 #include "../MultiBlock.hpp"
 #include "../common/Random.hpp"
+#include "../IntVec2Hash.hpp"
 #include "Biome.hpp"
 namespace planet {
-
-namespace hidden {
-struct Vec2HashFunc {
-        size_t operator()(const glm::ivec2& k) const {
-                return std::hash<int>()(k.x) ^ std::hash<int>()(k.y);
-        }
-
-        bool operator()(const glm::ivec2& a, const glm::ivec2& b) const {
-                return a.x == b.x && a.y == b.y;
-        }
-};
-}  // namespace hidden
 
 class Block;
 class BasicBiome : public Biome {
@@ -56,8 +45,7 @@ class BasicBiome : public Biome {
         virtual BlockPrefab createWaterBlock(BlockTable& blockTable, int x,
                                              int y, int z) const;
         Random random;
-        std::unordered_map<glm::ivec2, int, hidden::Vec2HashFunc,
-                           hidden::Vec2HashFunc>
+        std::unordered_map<glm::ivec2, int, Vec2HashFunc,Vec2HashFunc>
             heightMap;
         char topBlock[255];
         char fillBlock[255];
