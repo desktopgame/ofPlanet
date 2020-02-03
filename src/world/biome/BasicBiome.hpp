@@ -24,7 +24,11 @@ class BasicBiome : public Biome {
         void generate(BlockTable& blockTable) override;
 
 		void registerStruct(const std::string& name, const MultiBlock& mb);
-		void generateStruct(const std::string& name, const glm::ivec3& pos, int addWeight, int limitWeight);
+		void generateStruct(
+			BlockTable& table,
+			const std::string& name,
+			int addWeight,
+			int limitWeight);
 		MultiBlock& getMultiBlock(const std::string& name) const;
 		WeightTable& getWeightTable(const std::string& name);
 

@@ -83,7 +83,10 @@ bool ScriptBiome::isUseCallbacks() { return this->mode == "default"; }
 
 void ScriptBiome::onBeginGenerateWorld(BlockTable& blockTable) {
         this->ctx = Context::push();
-        this->table = std::make_shared<BlockTable>(blockTable.getXSize(),
+		if (this->table != nullptr) {
+			delete this->table;
+		}
+        this->table = new BlockTable(blockTable.getXSize(),
                                                    blockTable.getYSize(),
                                                    blockTable.getZSize());
         ctx->set("TABLE", table);
@@ -153,7 +156,7 @@ void ScriptBiome::onGenerateCave(BlockTable& blockTable, int x, int y, int z,
 
 int lua_setblock(lua_State* state) {
         auto blockpack = BlockPack::getCurrent();
-        auto table = Context::top()->get<std::shared_ptr<BlockTable> >("TABLE");
+        auto table = Context::top()->get<BlockTable*>("TABLE");
         int x = luaL_checkinteger(state, -4);
         int y = luaL_checkinteger(state, -3);
         int z = luaL_checkinteger(state, -2);
@@ -168,7 +171,7 @@ int lua_setblock(lua_State* state) {
 
 int lua_putblock(lua_State* state) {
         auto blockpack = BlockPack::getCurrent();
-        auto table = Context::top()->get<std::shared_ptr<BlockTable> >("TABLE");
+        auto table = Context::top()->get<BlockTable*>("TABLE");
         int x = luaL_checkinteger(state, -4);
         int y = luaL_checkinteger(state, -3);
         int z = luaL_checkinteger(state, -2);
@@ -185,7 +188,7 @@ int lua_putblock(lua_State* state) {
 
 int lua_getblock(lua_State* state) {
         auto blockpack = BlockPack::getCurrent();
-        auto table = Context::top()->get<std::shared_ptr<BlockTable> >("TABLE");
+        auto table = Context::top()->get<BlockTable*>("TABLE");
         int x = luaL_checkinteger(state, -3);
         int y = luaL_checkinteger(state, -2);
         int z = luaL_checkinteger(state, -1);
@@ -200,7 +203,7 @@ int lua_getblock(lua_State* state) {
 
 int lua_setblockrange(lua_State* state) {
         auto blockpack = BlockPack::getCurrent();
-        auto table = Context::top()->get<std::shared_ptr<BlockTable> >("TABLE");
+        auto table = Context::top()->get<BlockTable*>("TABLE");
         int minX = luaL_checkinteger(state, -7);
         int minY = luaL_checkinteger(state, -6);
         int minZ = luaL_checkinteger(state, -5);
@@ -221,7 +224,7 @@ int lua_setblockrange(lua_State* state) {
 
 int lua_putblockrange(lua_State* state) {
         auto blockpack = BlockPack::getCurrent();
-        auto table = Context::top()->get<std::shared_ptr<BlockTable> >("TABLE");
+        auto table = Context::top()->get<BlockTable*>("TABLE");
         int minX = luaL_checkinteger(state, -7);
         int minY = luaL_checkinteger(state, -6);
         int minZ = luaL_checkinteger(state, -5);
@@ -245,7 +248,7 @@ int lua_putblockrange(lua_State* state) {
 
 int lua_replaceblockrange(lua_State* state) {
         auto blockpack = BlockPack::getCurrent();
-        auto table = Context::top()->get<std::shared_ptr<BlockTable> >("TABLE");
+        auto table = Context::top()->get<BlockTable*>("TABLE");
         int minX = luaL_checkinteger(state, -8);
         int minY = luaL_checkinteger(state, -7);
         int minZ = luaL_checkinteger(state, -6);
@@ -270,19 +273,19 @@ int lua_replaceblockrange(lua_State* state) {
 }
 
 int lua_getxsize(lua_State* state) {
-        auto table = Context::top()->get<std::shared_ptr<BlockTable> >("TABLE");
+        auto table = Context::top()->get<BlockTable*>("TABLE");
         lua_pushinteger(state, table->getXSize());
         return 1;
 }
 
 int lua_getysize(lua_State* state) {
-        auto table = Context::top()->get<std::shared_ptr<BlockTable> >("TABLE");
+        auto table = Context::top()->get<BlockTable*>("TABLE");
         lua_pushinteger(state, table->getYSize());
         return 1;
 }
 
 int lua_getzsize(lua_State* state) {
-        auto table = Context::top()->get<std::shared_ptr<BlockTable> >("TABLE");
+        auto table = Context::top()->get<BlockTable*>("TABLE");
         lua_pushinteger(state, table->getZSize());
         return 1;
 }
@@ -292,7 +295,7 @@ int lua_newstruct(lua_State* state) {
         std::string name = luaL_checkstring(state, -2);
         std::string body = luaL_checkstring(state, -1);
         auto pack = BlockPack::getCurrent();
-        auto table = Context::top()->get<std::shared_ptr<BlockTable> >("TABLE");
+        auto table = Context::top()->get<BlockTable*>("TABLE");
         auto biome = Context::top()->get<ScriptBiome* >("BIOME");
         MultiBlock mb;
         // CSVR形式を解析
@@ -318,80 +321,20 @@ int lua_newstruct(lua_State* state) {
 }
 
 int lua_genstruct(lua_State* state) {
-        int maxWeight = luaL_checkinteger(state, -3);
+        int addWeight = luaL_checkinteger(state, -3);
         int limitWeight = luaL_checkinteger(state, -2);
         std::string name = luaL_checkstring(state, -1);
 
-        auto table = Context::top()->get<std::shared_ptr<BlockTable> >("TABLE");
+        auto table = Context::top()->get<BlockTable*>("TABLE");
 		auto biome = Context::top()->get<ScriptBiome* >("BIOME");
 		auto& wtable = biome->getWeightTable(name);
 		auto& mb = biome->getMultiBlock(name);
-        // 構造物のだいたいの大きさを取得する
-        glm::ivec3 mbSize;
-        multiBlock3DSize(mb, mbSize);
-        // 全てのエリアに対して
-        auto blockAreaVec = table->getAllBlockAreaForTop();
-        for (auto& blockArea : blockAreaVec) {
-                auto areaSize = blockArea.compute2DSize();
-                // 高さが足りないので次へ
-                int stackHeight = table->getStackableHeight(blockArea);
-                if (stackHeight < mbSize.y) {
-                        continue;
-                }
-                areaSize.y = stackHeight;
-                // 幅がたりないので次へ
-                if (areaSize.x < mbSize.x || areaSize.z < mbSize.z) {
-                        continue;
-                }
-                std::vector<glm::ivec3> expandPosVec;
-                // 一ますごとに配置可能か検証する
-                for (int i = 0; i < blockArea.getPointCount(); i++) {
-                        auto point = blockArea.getPoint(i);
-                        point += glm::ivec3(0, 1, 0);
-                        bool canPlace =
-                            table->canExpand(point.x, point.y, point.z, mb);
-                        if (canPlace) {
-                                expandPosVec.emplace_back(point);
-                        }
-                }
-                // シャッフルしてから適当につっこむ
-                std::random_device seed_gen;
-                std::mt19937 engine(seed_gen());
-                std::shuffle(expandPosVec.begin(), expandPosVec.end(), engine);
-                for (auto point : expandPosVec) {
-                        auto expandVec =
-                            table->expandTargets(point.x, point.y, point.z, mb);
-                        bool canPlace = true;
-                        // 重み付けによって判定する
-                        for (auto& expandBlock : expandVec) {
-                                glm::ivec3 expandPos = std::get<0>(expandBlock);
-                                int weight = wtable.getWeight(
-                                    expandPos.x, expandPos.y, expandPos.z);
-                                if (limitWeight <= weight) {
-                                        canPlace = false;
-                                        break;
-                                }
-                        }
-                        if (!canPlace) {
-                                continue;
-                        }
-                        // 展開する
-                        table->expand(point.x, point.y, point.z, mb);
-                        // 中心の位置を取得
-                        auto expandCenter = point;
-                        expandCenter.x += mbSize.x / 2;
-                        expandCenter.y += mbSize.y / 2;
-                        expandCenter.z += mbSize.z / 2;
-                        // 中心から重み付けを加算する
-                        wtable.addWeight(expandCenter.x, expandCenter.y,
-                                         expandCenter.z, maxWeight);
-                }
-        }
+		biome->generateStruct(*table, name, addWeight, limitWeight);
         return 0;
 }
 
 int lua_expandstruct(lua_State* state) {
-        auto table = Context::top()->get<std::shared_ptr<BlockTable> >("TABLE");
+        auto table = Context::top()->get<BlockTable*>("TABLE");
 		auto biome = Context::top()->get<ScriptBiome* >("BIOME");
         int x = luaL_checkinteger(state, -4);
         int y = luaL_checkinteger(state, -3);
@@ -405,7 +348,7 @@ int lua_expandstruct(lua_State* state) {
         return 0;
 }
 int lua_setweight(lua_State* state) {
-        auto table = Context::top()->get<std::shared_ptr<BlockTable> >("TABLE");
+        auto table = Context::top()->get<BlockTable*>("TABLE");
 		auto biome = Context::top()->get<ScriptBiome* >("BIOME");
         int x = luaL_checkinteger(state, -5);
         int y = luaL_checkinteger(state, -4);
@@ -420,7 +363,7 @@ int lua_setweight(lua_State* state) {
         return 0;
 }
 int lua_getweight(lua_State* state) {
-        auto table = Context::top()->get<std::shared_ptr<BlockTable> >("TABLE");
+        auto table = Context::top()->get<BlockTable*>("TABLE");
 		auto biome = Context::top()->get<ScriptBiome* >("BIOME");
         int x = luaL_checkinteger(state, -4);
         int y = luaL_checkinteger(state, -3);
@@ -435,7 +378,7 @@ int lua_getweight(lua_State* state) {
 }
 int lua_setweightrange(lua_State* state) {
         auto blockpack = BlockPack::getCurrent();
-        auto table = Context::top()->get<std::shared_ptr<BlockTable> >("TABLE");
+        auto table = Context::top()->get<BlockTable*>("TABLE");
 		auto biome = Context::top()->get<ScriptBiome* >("BIOME");
         int minX = luaL_checkinteger(state, -8);
         int minY = luaL_checkinteger(state, -7);

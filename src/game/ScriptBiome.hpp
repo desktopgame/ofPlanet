@@ -27,7 +27,7 @@ class ScriptBiome : public BasicBiome {
         ofxLua::Interpreter lua;
         std::string mode;
         ofxLua::Context::Instance ctx;
-        std::shared_ptr<BlockTable> table;
+        BlockTable* table;
         std::unordered_map<std::string, ofxLua::Object> globals;
 };
 
