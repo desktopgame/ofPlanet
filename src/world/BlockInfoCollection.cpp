@@ -1,6 +1,6 @@
 #include "BlockInfoCollection.hpp"
 
-#include "../picojson/picojson.h"
+#include "picojson/picojson.h"
 
 namespace planet {
 BlockInfoCollection::BlockInfoCollection() : blockInfoVec() {}

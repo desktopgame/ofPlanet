@@ -7,7 +7,7 @@
 #include <sstream>
 #include <thread>
 
-#include "../picojson/picojson.h"
+#include "picojson/picojson.h"
 #include "Block.hpp"
 #include "BlockPack.hpp"
 #include "Planet.hpp"

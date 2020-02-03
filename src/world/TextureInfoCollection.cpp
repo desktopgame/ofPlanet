@@ -3,7 +3,7 @@
 #include <ofFileUtils.h>
 #include <ofUtils.h>
 
-#include "../picojson/picojson.h"
+#include "picojson/picojson.h"
 
 namespace planet {
 TextureInfoCollection::TextureInfoCollection(const std::string& baseDirectory)
