@@ -18,7 +18,7 @@ using ExportMode =
 ofApp::ofApp()
     : shader(),
       camera(),
-      planet(std::make_shared<Planet>(shader)),
+      planet(std::make_shared<ofxPlanet::Planet>(shader)),
       rand(),
       cameraAngle(0),
       gui(),
@@ -237,13 +237,13 @@ void ofApp::loadJson() {
         auto texBuf = ofBufferFromFile("textures.json");
         auto blockBuf = ofBufferFromFile("blocks.json");
 
-        TextureInfoCollection tic;
+        ofxPlanet::TextureInfoCollection tic;
         tic.deserialize(std::string(texBuf.getData()));
-        BlockInfoCollection bic;
+		ofxPlanet::BlockInfoCollection bic;
         bic.deserialize(std::string(blockBuf.getData()));
-        BlockPack::load(bic)->select();
-        TexturePack::load(tic)->select();
-        TexturePack::getCurrent()->resolve();
+		ofxPlanet::BlockPack::load(bic)->select();
+		ofxPlanet::TexturePack::load(tic)->select();
+		ofxPlanet::TexturePack::getCurrent()->resolve();
 }
 
 void ofApp::updateCamera() {
@@ -492,7 +492,7 @@ void ofApp::bridgeDebugMessage(GLenum source, GLenum type, GLuint eid,
 void ofApp::exportJson(const std::string& outputFile) {
         if (!isProcessing()) {
                 this->asyncOp =
-                    WorldIO::saveJson(outputFile, planet->getWorld());
+					ofxPlanet::WorldIO::saveJson(outputFile, planet->getWorld());
         }
 }
 
@@ -501,16 +501,16 @@ void ofApp::exportObj(const std::string& outputDir) {
                 return;
         }
         if (splitCount.value <= 1) {
-                this->asyncOp = WorldIO::saveObj(outputDir, planet->getWorld());
+                this->asyncOp = ofxPlanet::WorldIO::saveObj(outputDir, planet->getWorld());
         } else {
-                this->asyncOp = WorldIO::saveObj(outputDir, planet->getWorld(),
+                this->asyncOp = ofxPlanet::WorldIO::saveObj(outputDir, planet->getWorld(),
                                                  splitCount.value);
         }
 }
 
 void ofApp::exportBmp(const std::string& outputFile) {
         if (!isProcessing()) {
-                this->asyncOp = WorldIO::saveBmp(outputFile, planet);
+                this->asyncOp = ofxPlanet::WorldIO::saveBmp(outputFile, planet);
         }
 }
 

@@ -3,10 +3,9 @@
 #include <lua.hpp>
 #include <lualib.h>
 #include <lauxlib.h>
-
+#include <ofxImGui.h>
 
 #include "../../world/Block.hpp"
-#include "../../world/BlockPack.hpp"
 #include "../../world/MultiBlock.hpp"
 #include "../csvr/Parser.hpp"
 
@@ -87,12 +86,12 @@ void ScriptBiome::onGUI() {
 
 bool ScriptBiome::isUseCallbacks() { return this->mode == "default"; }
 
-void ScriptBiome::onBeginGenerateWorld(BlockTable& blockTable) {
+void ScriptBiome::onBeginGenerateWorld(ofxPlanet::BlockTable& blockTable) {
         this->ctx = Context::push();
 		if (this->table != nullptr) {
 			delete this->table;
 		}
-        this->table = new BlockTable(blockTable.getXSize(),
+        this->table = new ofxPlanet::BlockTable(blockTable.getXSize(),
                                                    blockTable.getYSize(),
                                                    blockTable.getZSize());
         ctx->set("TABLE", table);
@@ -107,7 +106,7 @@ void ScriptBiome::onBeginGenerateWorld(BlockTable& blockTable) {
         }
 }
 
-void ScriptBiome::onEndGenerateWorld(BlockTable& blockTable) {
+void ScriptBiome::onEndGenerateWorld(ofxPlanet::BlockTable& blockTable) {
         lua.call("onPostGenerate", std::vector<Object>{}, std::vector<Type>{})
             .check();
         //コンテキストを削除
@@ -124,7 +123,7 @@ void ScriptBiome::onEndGenerateWorld(BlockTable& blockTable) {
         }
 }
 
-void ScriptBiome::onEndGenerateTerrain() { }
+void ScriptBiome::onEndGenerateTerrain(ofxPlanet::BlockTable& blockTable) { }
 
 float ScriptBiome::onFixHeight(float y) {
         std::vector<Variant> r =
@@ -134,7 +133,7 @@ float ScriptBiome::onFixHeight(float y) {
         return static_cast<float>(r.at(0).number);
 }
 
-void ScriptBiome::onGenerateTerrain(BlockTable& blockTable, int x, int y,
+void ScriptBiome::onGenerateTerrain(ofxPlanet::BlockTable& blockTable, int x, int y,
                                     int z) {
         std::vector<Variant> r =
             lua.call("onGenerateTerrain",
@@ -143,14 +142,14 @@ void ScriptBiome::onGenerateTerrain(BlockTable& blockTable, int x, int y,
                 .get();
 }
 
-void ScriptBiome::onGenerateStructures(BlockTable& blockTable) {
+void ScriptBiome::onGenerateStructures(ofxPlanet::BlockTable& blockTable) {
         std::vector<Variant> r =
             lua.call("onGenerateStructures", std::vector<Object>{},
                      std::vector<Type>{})
                 .get();
 }
 
-void ScriptBiome::onGenerateCave(BlockTable& blockTable, int x, int y, int z,
+void ScriptBiome::onGenerateCave(ofxPlanet::BlockTable& blockTable, int x, int y, int z,
                                  float noise) {
         std::vector<Variant> r =
             lua.call("onGenerateCave",
@@ -161,8 +160,8 @@ void ScriptBiome::onGenerateCave(BlockTable& blockTable, int x, int y, int z,
 }
 
 int lua_setblock(lua_State* state) {
-        auto blockpack = BlockPack::getCurrent();
-        auto table = Context::top()->get<BlockTable*>("TABLE");
+        auto blockpack = ofxPlanet::BlockPack::getCurrent();
+        auto table = Context::top()->get<ofxPlanet::BlockTable*>("TABLE");
         int x = luaL_checkinteger(state, -4);
         int y = luaL_checkinteger(state, -3);
         int z = luaL_checkinteger(state, -2);
@@ -170,14 +169,14 @@ int lua_setblock(lua_State* state) {
         y = std::max(0, std::min(y, table->getYSize() - 1));
         z = std::max(0, std::min(z, table->getZSize() - 1));
         std::string name = luaL_checkstring(state, -1);
-        int id = BlockPack::getCurrent()->getBlockIndexForName(name);
-        table->set(x, y, z, BlockPrefab(id, false));
+        int id = ofxPlanet::BlockPack::getCurrent()->getBlockIndexForName(name);
+        table->set(x, y, z, ofxPlanet::BlockPrefab(id, false));
         return 0;
 }
 
 int lua_putblock(lua_State* state) {
-        auto blockpack = BlockPack::getCurrent();
-        auto table = Context::top()->get<BlockTable*>("TABLE");
+        auto blockpack = ofxPlanet::BlockPack::getCurrent();
+        auto table = Context::top()->get<ofxPlanet::BlockTable*>("TABLE");
         int x = luaL_checkinteger(state, -4);
         int y = luaL_checkinteger(state, -3);
         int z = luaL_checkinteger(state, -2);
@@ -185,16 +184,16 @@ int lua_putblock(lua_State* state) {
         y = std::max(0, std::min(y, table->getYSize() - 1));
         z = std::max(0, std::min(z, table->getZSize() - 1));
         std::string name = luaL_checkstring(state, -1);
-        int id = BlockPack::getCurrent()->getBlockIndexForName(name);
+        int id = ofxPlanet::BlockPack::getCurrent()->getBlockIndexForName(name);
         if (table->get(x, y, z).id == -1) {
-                table->set(x, y, z, BlockPrefab(id, false));
+                table->set(x, y, z, ofxPlanet::BlockPrefab(id, false));
         }
         return 0;
 }
 
 int lua_getblock(lua_State* state) {
-        auto blockpack = BlockPack::getCurrent();
-        auto table = Context::top()->get<BlockTable*>("TABLE");
+        auto blockpack = ofxPlanet::BlockPack::getCurrent();
+        auto table = Context::top()->get<ofxPlanet::BlockTable*>("TABLE");
         int x = luaL_checkinteger(state, -3);
         int y = luaL_checkinteger(state, -2);
         int z = luaL_checkinteger(state, -1);
@@ -208,8 +207,8 @@ int lua_getblock(lua_State* state) {
 }
 
 int lua_setblockrange(lua_State* state) {
-        auto blockpack = BlockPack::getCurrent();
-        auto table = Context::top()->get<BlockTable*>("TABLE");
+        auto blockpack = ofxPlanet::BlockPack::getCurrent();
+        auto table = Context::top()->get<ofxPlanet::BlockTable*>("TABLE");
         int minX = luaL_checkinteger(state, -7);
         int minY = luaL_checkinteger(state, -6);
         int minZ = luaL_checkinteger(state, -5);
@@ -217,11 +216,11 @@ int lua_setblockrange(lua_State* state) {
         int maxY = luaL_checkinteger(state, -3);
         int maxZ = luaL_checkinteger(state, -2);
         std::string name = luaL_checkstring(state, -1);
-        int id = BlockPack::getCurrent()->getBlockIndexForName(name);
+        int id = ofxPlanet::BlockPack::getCurrent()->getBlockIndexForName(name);
         for (int x = minX; x <= maxX; x++) {
                 for (int y = minY; y <= maxY; y++) {
                         for (int z = minZ; z <= maxZ; z++) {
-                                table->set(x, y, z, BlockPrefab(id, false));
+                                table->set(x, y, z, ofxPlanet::BlockPrefab(id, false));
                         }
                 }
         }
@@ -229,8 +228,8 @@ int lua_setblockrange(lua_State* state) {
 }
 
 int lua_putblockrange(lua_State* state) {
-        auto blockpack = BlockPack::getCurrent();
-        auto table = Context::top()->get<BlockTable*>("TABLE");
+        auto blockpack = ofxPlanet::BlockPack::getCurrent();
+        auto table = Context::top()->get<ofxPlanet::BlockTable*>("TABLE");
         int minX = luaL_checkinteger(state, -7);
         int minY = luaL_checkinteger(state, -6);
         int minZ = luaL_checkinteger(state, -5);
@@ -238,13 +237,13 @@ int lua_putblockrange(lua_State* state) {
         int maxY = luaL_checkinteger(state, -3);
         int maxZ = luaL_checkinteger(state, -2);
         std::string name = luaL_checkstring(state, -1);
-        int id = BlockPack::getCurrent()->getBlockIndexForName(name);
+        int id = ofxPlanet::BlockPack::getCurrent()->getBlockIndexForName(name);
         for (int x = minX; x <= maxX; x++) {
                 for (int y = minY; y <= maxY; y++) {
                         for (int z = minZ; z <= maxZ; z++) {
                                 if (table->get(x, y, z).id == -1) {
                                         table->set(x, y, z,
-                                                   BlockPrefab(id, false));
+                                                   ofxPlanet::BlockPrefab(id, false));
                                 }
                         }
                 }
@@ -253,8 +252,8 @@ int lua_putblockrange(lua_State* state) {
 }
 
 int lua_replaceblockrange(lua_State* state) {
-        auto blockpack = BlockPack::getCurrent();
-        auto table = Context::top()->get<BlockTable*>("TABLE");
+        auto blockpack = ofxPlanet::BlockPack::getCurrent();
+        auto table = Context::top()->get<ofxPlanet::BlockTable*>("TABLE");
         int minX = luaL_checkinteger(state, -8);
         int minY = luaL_checkinteger(state, -7);
         int minZ = luaL_checkinteger(state, -6);
@@ -263,14 +262,14 @@ int lua_replaceblockrange(lua_State* state) {
         int maxZ = luaL_checkinteger(state, -3);
         std::string oldName = luaL_checkstring(state, -2);
         std::string newName = luaL_checkstring(state, -1);
-        int oldId = BlockPack::getCurrent()->getBlockIndexForName(oldName);
-        int newId = BlockPack::getCurrent()->getBlockIndexForName(newName);
+        int oldId = ofxPlanet::BlockPack::getCurrent()->getBlockIndexForName(oldName);
+        int newId = ofxPlanet::BlockPack::getCurrent()->getBlockIndexForName(newName);
         for (int x = minX; x <= maxX; x++) {
                 for (int y = minY; y <= maxY; y++) {
                         for (int z = minZ; z <= maxZ; z++) {
                                 if (table->get(x, y, z).id == oldId) {
                                         table->set(x, y, z,
-                                                   BlockPrefab(newId, false));
+                                                   ofxPlanet::BlockPrefab(newId, false));
                                 }
                         }
                 }
@@ -279,40 +278,40 @@ int lua_replaceblockrange(lua_State* state) {
 }
 
 int lua_getxsize(lua_State* state) {
-        auto table = Context::top()->get<BlockTable*>("TABLE");
+        auto table = Context::top()->get<ofxPlanet::BlockTable*>("TABLE");
         lua_pushinteger(state, table->getXSize());
         return 1;
 }
 
 int lua_getysize(lua_State* state) {
-        auto table = Context::top()->get<BlockTable*>("TABLE");
+        auto table = Context::top()->get<ofxPlanet::BlockTable*>("TABLE");
         lua_pushinteger(state, table->getYSize());
         return 1;
 }
 
 int lua_getzsize(lua_State* state) {
-        auto table = Context::top()->get<BlockTable*>("TABLE");
+        auto table = Context::top()->get<ofxPlanet::BlockTable*>("TABLE");
         lua_pushinteger(state, table->getZSize());
         return 1;
 }
 
 int lua_newstruct(lua_State* state) {
-        auto blockpack = BlockPack::getCurrent();
+        auto blockpack = ofxPlanet::BlockPack::getCurrent();
         std::string name = luaL_checkstring(state, -2);
         std::string body = luaL_checkstring(state, -1);
-        auto pack = BlockPack::getCurrent();
-        auto table = Context::top()->get<BlockTable*>("TABLE");
+        auto pack = ofxPlanet::BlockPack::getCurrent();
+        auto table = Context::top()->get<ofxPlanet::BlockTable*>("TABLE");
         auto biome = Context::top()->get<ScriptBiome* >("BIOME");
-        MultiBlock mb;
+        ofxPlanet::MultiBlock mb;
         // CSVR形式を解析
         csvr::Parser parser;
         parser.parse(body);
         for (int i = 0; i < parser.getTableCount(); i++) {
                 auto& table = parser.getTableAt(i);
-                MultiBlockLayer mbLayer;
+				ofxPlanet::MultiBlockLayer mbLayer;
                 for (int j = 0; j < static_cast<int>(table.size()); j++) {
                         auto& line = table.at(j);
-                        MultiBlockLine mbLine;
+						ofxPlanet::MultiBlockLine mbLine;
                         for (int k = 0; k < static_cast<int>(line.size());
                              k++) {
                                 auto& col = line.at(k);
@@ -331,7 +330,7 @@ int lua_genstruct(lua_State* state) {
         int limitWeight = luaL_checkinteger(state, -2);
         std::string name = luaL_checkstring(state, -1);
 
-        auto table = Context::top()->get<BlockTable*>("TABLE");
+        auto table = Context::top()->get<ofxPlanet::BlockTable*>("TABLE");
 		auto biome = Context::top()->get<ScriptBiome* >("BIOME");
 		auto& wtable = biome->getWeightTable(name);
 		auto& mb = biome->getMultiBlock(name);
@@ -340,7 +339,7 @@ int lua_genstruct(lua_State* state) {
 }
 
 int lua_expandstruct(lua_State* state) {
-        auto table = Context::top()->get<BlockTable*>("TABLE");
+        auto table = Context::top()->get<ofxPlanet::BlockTable*>("TABLE");
 		auto biome = Context::top()->get<ScriptBiome* >("BIOME");
         int x = luaL_checkinteger(state, -4);
         int y = luaL_checkinteger(state, -3);
@@ -354,7 +353,7 @@ int lua_expandstruct(lua_State* state) {
         return 0;
 }
 int lua_setweight(lua_State* state) {
-        auto table = Context::top()->get<BlockTable*>("TABLE");
+        auto table = Context::top()->get<ofxPlanet::BlockTable*>("TABLE");
 		auto biome = Context::top()->get<ScriptBiome* >("BIOME");
         int x = luaL_checkinteger(state, -5);
         int y = luaL_checkinteger(state, -4);
@@ -368,7 +367,7 @@ int lua_setweight(lua_State* state) {
         return 0;
 }
 int lua_getweight(lua_State* state) {
-        auto table = Context::top()->get<BlockTable*>("TABLE");
+        auto table = Context::top()->get<ofxPlanet::BlockTable*>("TABLE");
 		auto biome = Context::top()->get<ScriptBiome* >("BIOME");
         int x = luaL_checkinteger(state, -4);
         int y = luaL_checkinteger(state, -3);
@@ -381,8 +380,8 @@ int lua_getweight(lua_State* state) {
         return 1;
 }
 int lua_setweightrange(lua_State* state) {
-        auto blockpack = BlockPack::getCurrent();
-        auto table = Context::top()->get<BlockTable*>("TABLE");
+        auto blockpack = ofxPlanet::BlockPack::getCurrent();
+        auto table = Context::top()->get<ofxPlanet::BlockTable*>("TABLE");
 		auto biome = Context::top()->get<ScriptBiome* >("BIOME");
         int minX = luaL_checkinteger(state, -8);
         int minY = luaL_checkinteger(state, -7);

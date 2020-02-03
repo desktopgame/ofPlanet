@@ -2,6 +2,7 @@
 #include <ofMain.h>
 #include <ofShader.h>
 #include <ofxImGui.h>
+#include <ofxPlanet.h>
 
 #include <vector>
 
@@ -16,7 +17,6 @@
 #include "../imguiex/Integer.hpp"
 #include "../imguiex/ListBox.hpp"
 #include "../imguiex/RadioButtonGroup.hpp"
-#include "../world/WorldIO.hpp"
 
 namespace planet {
 class Planet;
@@ -64,8 +64,8 @@ class ofApp : public ofBaseApp {
 
         ofShader shader;
         Camera camera;
-        std::shared_ptr<Planet> planet;
-        Random rand;
+        std::shared_ptr<ofxPlanet::Planet> planet;
+		ofxPlanet::Random rand;
         float cameraAngle;
 
         ofxImGui::Gui gui;
@@ -78,6 +78,6 @@ class ofApp : public ofBaseApp {
         imguiex::Float cameraSpeed;
         imguiex::FloatXZ worldSize;
         imguiex::Integer splitCount;
-        AsyncOperation asyncOp;
+        ofxPlanet::AsyncOperation asyncOp;
 };
 }  // namespace planet

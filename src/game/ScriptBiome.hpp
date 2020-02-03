@@ -3,10 +3,10 @@
 #define WORLD_BIOME_SCRIPTBIOME_HPP
 #include <ofxLua.h>
 
-#include "../world/biome/BasicBiome.hpp"
+#include <ofxPlanet.h>
 
 namespace planet {
-class ScriptBiome : public BasicBiome {
+class ScriptBiome : public ofxPlanet::BasicBiome {
        public:
         explicit ScriptBiome(const std::string& filename);
 		~ScriptBiome();
@@ -14,21 +14,21 @@ class ScriptBiome : public BasicBiome {
 
        protected:
         virtual bool isUseCallbacks() override;
-        virtual void onBeginGenerateWorld(BlockTable& blockTable) override;
-        virtual void onEndGenerateWorld(BlockTable& blockTable) override;
-        virtual void onEndGenerateTerrain() override;
+        virtual void onBeginGenerateWorld(ofxPlanet::BlockTable& blockTable) override;
+        virtual void onEndGenerateWorld(ofxPlanet::BlockTable& blockTable) override;
+        virtual void onEndGenerateTerrain(ofxPlanet::BlockTable& blockTable) override;
         virtual float onFixHeight(float y) override;
-        virtual void onGenerateTerrain(BlockTable& blockTable, int x, int y,
+        virtual void onGenerateTerrain(ofxPlanet::BlockTable& blockTable, int x, int y,
                                        int z) override;
-        virtual void onGenerateStructures(BlockTable& blockTable) override;
-        virtual void onGenerateCave(BlockTable& blockTable, int x, int y, int z,
+        virtual void onGenerateStructures(ofxPlanet::BlockTable& blockTable) override;
+        virtual void onGenerateCave(ofxPlanet::BlockTable& blockTable, int x, int y, int z,
                                     float noise) override;
 
        private:
         ofxLua::Interpreter lua;
         std::string mode;
         ofxLua::Context::Instance ctx;
-        BlockTable* table;
+		ofxPlanet::BlockTable* table;
         std::unordered_map<std::string, ofxLua::Object> globals;
 };
 

@@ -1,3 +1,4 @@
 ofxImGui
 ofxLua
+ofxPlanet
 ofxSOIL
