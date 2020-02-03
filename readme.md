@@ -231,6 +231,7 @@ your_dir/of_v0.10.1_vs2017_release/apps/myApps/ofPlanet
 また、アドオンとして
 * [ofxLua](https://github.com/desktopgame/ofxLua)
 * [ofxSOIL](https://github.com/desktopgame/ofxSOIL)
+* [ofxPlanet](https://github.com/desktopgame/ofxPlanet)
 
 が必要です。現在ではアドオンはWindowsにしか対応していないので
 このアプリもWindowsでしか動作しません。
