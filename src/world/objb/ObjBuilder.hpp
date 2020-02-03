@@ -1,11 +1,12 @@
 #pragma once
-#ifndef OBJB_OBJBUILDER_HPP
-#define OBJB_OBJBUILDER_HPP
+#ifndef WORLD_OBJB_OBJBUILDER_HPP
+#define WORLD_OBJB_OBJBUILDER_HPP
 #include <glm/glm.hpp>
 #include <ostream>
 #include <string>
 #include <vector>
 
+namespace planet {
 namespace objb {
 /**
  * IndexMode は、あるインデックスが現在のモデルからの位置であるか、
@@ -313,4 +314,5 @@ inline void ObjBuilder::writeImpl(StreamType& stream, int index,
         }
 }
 }  // namespace objb
+}  // namespace planet
 #endif

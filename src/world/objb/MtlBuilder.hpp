@@ -1,10 +1,11 @@
 #pragma once
-#ifndef OBJB_MTLBUILDER_HPP
-#define OBJB_MTLBUILDER_HPP
+#ifndef WORLD_OBJB_MTLBUILDER_HPP
+#define WORLD_OBJB_MTLBUILDER_HPP
 #include <glm/glm.hpp>
 #include <string>
 #include <vector>
 
+namespace planet {
 namespace objb {
 /**
  * MtlElement は、マテリアル定義です。
@@ -47,4 +48,5 @@ class MtlBuilder {
         std::vector<MtlElement*> elements;
 };
 }  // namespace objb
+}  // namespace planet
 #endif

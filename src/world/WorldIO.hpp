@@ -7,8 +7,8 @@
 #include <memory>
 #include <string>
 
-#include "../objb/MtlBuilder.hpp"
-#include "../objb/ObjBuilder.hpp"
+#include "objb/MtlBuilder.hpp"
+#include "objb/ObjBuilder.hpp"
 
 namespace planet {
 class World;

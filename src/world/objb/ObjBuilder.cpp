@@ -4,6 +4,7 @@
 #include <iostream>
 #include <sstream>
 
+namespace planet {
 namespace objb {
 // ObjIndex
 ObjIndex::ObjIndex(int index, IndexMode mode)
@@ -196,3 +197,4 @@ int ObjBuilder::resolveTexcoordIndex(std::vector<int>& cache, int modelIndex,
                localTexcoordIndex + static_cast<int>(this->texcoords.size());
 }
 }  // namespace objb
+}  // namespace planet

@@ -2,6 +2,7 @@
 
 #include <sstream>
 
+namespace planet {
 namespace objb {
 // MtlElement
 MtlElement::MtlElement(const std::string& name)
@@ -84,3 +85,4 @@ std::string MtlBuilder::toString() const {
         return ss.str();
 }
 }  // namespace objb
+}  // namespace planet
