@@ -59,10 +59,10 @@ private:
 	BlockPrefab createWaterBlock(BlockTable& blockTable, int x,
 		int y, int z) const;
         Random random;
-        char topBlock[255];
-        char fillBlock[255];
-        char fillHardBlock[255];
-        char waterBlock[255];
+        std::string topBlock;
+        std::string fillBlock;
+        std::string fillHardBlock;
+        std::string waterBlock;
         bool generateCave;
 
 		glm::ivec3 worldSize;
