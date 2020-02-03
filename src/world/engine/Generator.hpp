@@ -5,7 +5,7 @@
 #include <glm/gtc/quaternion.hpp>
 #include <vector>
 
-#include "../PerlinNoise/PerlinNoise.hpp"
+#include "PerlinNoise.hpp"
 #include "../World.hpp"
 #include "Terrain.hpp"
 namespace planet {
