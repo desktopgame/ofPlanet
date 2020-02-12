@@ -1,6 +1,6 @@
 #pragma once
-#ifndef COMMON_RANDOM_HPP
-#define COMMON_RANDOM_HPP
+#ifndef COMMON_MYRANDOM_HPP
+#define COMMON_MYRANDOM_HPP
 #include <random>
 namespace planet {
 /**

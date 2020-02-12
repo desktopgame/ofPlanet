@@ -116,8 +116,8 @@ void ScriptBiome::onEndGenerateWorld(ofxPlanet::BlockTable& blockTable) {
         for (int x = 0; x < this->table->getXSize(); x++) {
                 for (int y = 0; y < this->table->getYSize(); y++) {
                         for (int z = 0; z < this->table->getZSize(); z++) {
-                                blockTable.set(x, y, z,
-                                               this->table->get(x, y, z));
+                                blockTable.setBlock(x, y, z,
+                                               this->table->getBlock(x, y, z));
                         }
                 }
         }
@@ -170,7 +170,7 @@ int lua_setblock(lua_State* state) {
         z = std::max(0, std::min(z, table->getZSize() - 1));
         std::string name = luaL_checkstring(state, -1);
         int id = ofxPlanet::BlockPack::getCurrent()->getBlockIndexForName(name);
-        table->set(x, y, z, ofxPlanet::BlockPrefab(id, false));
+        table->setBlock(x, y, z, ofxPlanet::BlockPrefab(id, false));
         return 0;
 }
 
@@ -185,8 +185,8 @@ int lua_putblock(lua_State* state) {
         z = std::max(0, std::min(z, table->getZSize() - 1));
         std::string name = luaL_checkstring(state, -1);
         int id = ofxPlanet::BlockPack::getCurrent()->getBlockIndexForName(name);
-        if (table->get(x, y, z).id == -1) {
-                table->set(x, y, z, ofxPlanet::BlockPrefab(id, false));
+        if (table->getBlock(x, y, z).id == -1) {
+                table->setBlock(x, y, z, ofxPlanet::BlockPrefab(id, false));
         }
         return 0;
 }
@@ -202,7 +202,7 @@ int lua_getblock(lua_State* state) {
         z = std::max(0, std::min(z, table->getZSize() - 1));
         lua_pushstring(
             state,
-            blockpack->getBlock(table->get(x, y, z).id)->getName().c_str());
+            blockpack->getBlock(table->getBlock(x, y, z).id)->getName().c_str());
         return 1;
 }
 
@@ -220,7 +220,7 @@ int lua_setblockrange(lua_State* state) {
         for (int x = minX; x <= maxX; x++) {
                 for (int y = minY; y <= maxY; y++) {
                         for (int z = minZ; z <= maxZ; z++) {
-                                table->set(x, y, z, ofxPlanet::BlockPrefab(id, false));
+                                table->setBlock(x, y, z, ofxPlanet::BlockPrefab(id, false));
                         }
                 }
         }
@@ -241,8 +241,8 @@ int lua_putblockrange(lua_State* state) {
         for (int x = minX; x <= maxX; x++) {
                 for (int y = minY; y <= maxY; y++) {
                         for (int z = minZ; z <= maxZ; z++) {
-                                if (table->get(x, y, z).id == -1) {
-                                        table->set(x, y, z,
+                                if (table->getBlock(x, y, z).id == -1) {
+                                        table->setBlock(x, y, z,
                                                    ofxPlanet::BlockPrefab(id, false));
                                 }
                         }
@@ -267,8 +267,8 @@ int lua_replaceblockrange(lua_State* state) {
         for (int x = minX; x <= maxX; x++) {
                 for (int y = minY; y <= maxY; y++) {
                         for (int z = minZ; z <= maxZ; z++) {
-                                if (table->get(x, y, z).id == oldId) {
-                                        table->set(x, y, z,
+                                if (table->getBlock(x, y, z).id == oldId) {
+                                        table->setBlock(x, y, z,
                                                    ofxPlanet::BlockPrefab(newId, false));
                                 }
                         }
@@ -304,7 +304,7 @@ int lua_newstruct(lua_State* state) {
         auto biome = Context::top()->get<ScriptBiome* >("BIOME");
         ofxPlanet::MultiBlock mb;
         // CSVR形式を解析
-        csvr::Parser parser;
+		ofxPlanet::csvr::Parser parser;
         parser.parse(body);
         for (int i = 0; i < parser.getTableCount(); i++) {
                 auto& table = parser.getTableAt(i);

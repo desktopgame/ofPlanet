@@ -19,7 +19,6 @@ ofApp::ofApp()
     : shader(),
       camera(),
       planet(std::make_shared<ofxPlanet::Planet>(shader)),
-      rand(),
       cameraAngle(0),
       gui(),
       playMode(false),
@@ -162,8 +161,8 @@ void ofApp::loadShader() {
         }
         // 頂点シェーダ読み込み
         shader.setupShaderFromSource(GL_VERTEX_SHADER,
-                                     R"(
- #version 410
+			R"(
+#version 410
 #extension GL_ARB_explicit_attrib_location : require
 #extension GL_ARB_explicit_uniform_location : require
 /*
@@ -173,60 +172,31 @@ void ofApp::loadShader() {
 3: texcoord
 */
 layout(location=0) in vec3 aVertex;
-layout(location=2) in vec3 aNormal;
 layout(location=3) in vec2 aUV;
 layout(location=4) in vec3 aPosition;
-
 uniform mat4 uMVPMatrix;
-uniform mat4 uNormalMatrix;
-//uniform vec4 uLightPos;
-
 out vec4 position;
-out vec4 normal;
 out vec2 uv;
-out vec4 lightPos;
-//flat out int InstanceID; 
-
 void main(void) {
   position = uMVPMatrix * vec4(aVertex+aPosition, 1);
-  lightPos = uMVPMatrix * vec4(64,32,64, 1);
-  normal = normalize(uNormalMatrix * vec4(aNormal, 0));
   uv = aUV;
   gl_Position = position;
-}
-)");
+})");
         //フラグメントシェーダ読み込み
         shader.setupShaderFromSource(GL_FRAGMENT_SHADER,
-                                     R"(
-
+			R"(
 #version 410
 #extension GL_ARB_explicit_attrib_location : require
 #extension GL_ARB_explicit_uniform_location : require
-
 out vec4 outputC;
-
 uniform sampler2D uTexture;
-uniform float uShininess;
-uniform vec4 uDiffuse;
-uniform vec4 uSpecular;
-uniform vec4 uAmbient;
-
-in vec4 position;
-in vec4 normal;
+uniform float uBrightness;
 in vec2 uv;
-in vec4 lightPos;
-
 void main (void) {
-  vec4 color = texture(uTexture, uv);
-  vec3 light = normalize((lightPos * position.w - lightPos.w * position).xyz);
-  vec3 fnormal = normalize(normal.xyz);
-  float diffuse = max(dot(light, fnormal), 0.0);
-  vec3 view = -normalize(position.xyz);
-  vec3 halfway = normalize(light + view);
-  float specular = pow(max(dot(fnormal, halfway), 0.0), uShininess);
-  outputC = color * uDiffuse * diffuse
-                + uSpecular * specular
-                + color * uAmbient;
+  vec3 black = vec3(0, 0, 0);
+  vec4 diffuse = texture(uTexture, uv);
+  vec3 color = mix(diffuse.rgb, black, uBrightness);
+  outputC = vec4(color.rgb, diffuse.a);
 }
 )");
         shader.bindDefaults();
