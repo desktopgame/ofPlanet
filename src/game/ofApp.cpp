@@ -237,8 +237,8 @@ void ofApp::updateMaterial() {
 
 void ofApp::drawSettingsWindow() {
         bool processing = isProcessing();
-        ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiSetCond_Once);
-        ImGui::SetNextWindowSize(ImVec2(320, 180), ImGuiSetCond_Once);
+        ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Once);
+        ImGui::SetNextWindowSize(ImVec2(320, 180), ImGuiCond_Once);
         ImGui::Begin("Setting");
         worldSize.draw();
         biomeNames.draw();
@@ -260,8 +260,8 @@ void ofApp::drawSettingsWindow() {
 
 void ofApp::drawParameterWindow() {
         ImGui::SetNextWindowPos(ImVec2(ofGetWidth() - 380, 0),
-                                ImGuiSetCond_Once);
-        ImGui::SetNextWindowSize(ImVec2(380, 180), ImGuiSetCond_Once);
+			ImGuiCond_Once);
+        ImGui::SetNextWindowSize(ImVec2(380, 180), ImGuiCond_Once);
         ImGui::Begin("Parameter");
         if (!biomes.empty()) {
                 biomes.at(biomeNames.selectedIndex)->onGUI();
@@ -272,8 +272,8 @@ void ofApp::drawParameterWindow() {
 void ofApp::drawExporterWindow() {
         bool processing = isProcessing();
         ImGui::SetNextWindowPos(ImVec2(0, ofGetHeight() - 120),
-                                ImGuiSetCond_Once);
-        ImGui::SetNextWindowSize(ImVec2(370, 120), ImGuiSetCond_Once);
+			ImGuiCond_Once);
+        ImGui::SetNextWindowSize(ImVec2(370, 120), ImGuiCond_Once);
         ImGui::Begin("Exporter");
         exportTypes.draw();
         splitCount.draw();
