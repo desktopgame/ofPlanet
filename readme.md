@@ -376,14 +376,16 @@ overwrite weighting for specific range.
 #### Block Specification Method
 use `reference` attribute from `blocks.json`.
 
-#### 数値型
+#### Numeric Type
+translate at later.
 Luaには実数型と整数型の区別がありません。  
 しかし、Luaのある変数が整数(integer)として使用されることが想定されているなら、  
 `ofPlanet`はその変数に対して小数部分を編集できないエディターを提供するべきです。  
 この区別をつけるため、`ofPlanet`は変数名にプレフィックス`i`のついた変数を特別扱いします。  
 `i`が付く場合には小数部分を編集できないスライダーUIを提供し、それ以外の場合では小数部分まで編集できてしまうスライダーUIを提供します。
 
-### 重み付けのアルゴリズム
+### Weighting Algorithm
+translate at later.
 v0.3からは、重み付けによる構造物の生成がサポートされるようになりました。  
 構造物を生成できる場所を検索するときに、ただ単にブロックがそこにあるかどうかだけでなく、  
 その座標の重み付けがしきい値を超えるかどうかも加味して検索します。  
@@ -398,8 +400,8 @@ ofPlanetでは構造物それぞれが内部的に別々の重み付けテーブ
 また、構造物を生成せずとも重み付けを操作できる関数を用意しています。  
 これを使えば高いところだけ構造物を少なくすることも可能です。
 
-## JSONフォーマット
-出力して得られるJSONファイルの形式
+## JSON Format
+format of json obtained by output.
 ````
 {
     "cell": [
@@ -409,7 +411,7 @@ ofPlanetでは構造物それぞれが内部的に別々の重み付けテーブ
             "y": 0,
             "z": 0,
         }
-        このような定義がブロックの数だけ続く...
+        ...
     ],
     "worldSize": {
         "x": 128,
@@ -419,9 +421,9 @@ ofPlanetでは構造物それぞれが内部的に別々の重み付けテーブ
 }
 ````
 
-## OBJフォーマット
-* 座標系(上=Z+ 右=X+ 奥=Y+)
-* 回転モード: XYZオイラー角
+## OBJ Format
+* Coordinate system(Up=Z+ Right=X+ Front=Y+)
+* Rotateion Mode: XYZ Euler Angle
 
 ## 外部プログラムとの連携
 ~~様々なバックエンドで地形を利用可能にするため、~~  
@@ -435,8 +437,8 @@ uniPlanetは現状でも使用可能ですが、OBJをエクスポートして  
 そのままだと当たり判定がつきませんが、[SAColliderBuilder](https://assetstore.unity.com/packages/tools/sacolliderbuilder-15058)を使えば当たり判定もつけられます。  
 ※SAColliderBuilderは私の制作したアセットではありません。
 
-# ライセンス
-このアプリケーションは以下のライブラリを使用して実装されました。
+# License
+this application was implemented by below libraries.
 * [openframeworks](https://openframeworks.cc/ja/)
 * [ofxImGui](https://github.com/jvcleave/ofxImGui)
 * [soil](https://www.lonesock.net/soil.html)
@@ -445,9 +447,8 @@ uniPlanetは現状でも使用可能ですが、OBJをエクスポートして  
 * [kazuho/picojson](https://github.com/kazuho/picojson)
 * [Reputeless/PerlinNoise](https://github.com/Reputeless/PerlinNoise)
 
-# アセット
-このアプリケーションには以下のアセットが含まれています。  
-(使わなくても動作は可能です。)
+# Asset
+this application is include below assets.
 * [Stone Texture](https://www.deviantart.com/akinuri/art/Stone-Textures-244325727)
 * [Sand Texture](https://www.deviantart.com/akinuri/art/Sand-Textures-244325158)
 * [Grass Texture](https://www.deviantart.com/akinuri/art/Grass-Textures-218366439)
