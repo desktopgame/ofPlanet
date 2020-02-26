@@ -236,6 +236,10 @@ your_dir/of_v0.10.1_vs2017_release/apps/myApps/ofPlanet
 が必要です。現在ではアドオンはWindowsにしか対応していないので
 このアプリもWindowsでしか動作しません。
 
+また、"ofPlanet\\bin" には "lua.dll" が必要です。  
+このプロジェクトを開くと nuget によって自動で lua がインストールされますので、
+"ofPlanet\\packages\\lua.redist.5.3.5.1\\build\\native\\bin\\v142\\Win32\\Debug" から "lua.dll" をコピーして "ofPlanet\\bin" にペーストしてください。
+
 ## Luaスクリプト
 原則として、luaスクリプトは全て `Runtime/data/script` に配置します。  
 ※ `ofPlanet.exe` が `Runtime` にあるとする
