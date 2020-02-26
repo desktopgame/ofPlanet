@@ -20,7 +20,7 @@ in defaults, because already prepared `Runtime/data/blocks.json`, `Runtime/data/
 should be able to launch for only double click.
 
 ## Screen Image
-launch application and should be able to display like bellow image.
+launch application and should be able to display like below image.
 
 ![start screen](ss_default.png)
 
@@ -99,7 +99,7 @@ end
 ````
 
 ## textures.json
-textures.json is like bellow.
+textures.json is like below.
 ````
 {
   "baseDirectory": "image/block",
@@ -121,7 +121,7 @@ textures is array for texture definition.
 ### baseFileName
 baseFileName is base of texture name.
 because block is structured six side plane, need each sides resolve texture.
-for example, baseFileName of texture list bellow is `Dirt_`.
+for example, baseFileName of texture list below is `Dirt_`.
 * `Dirt_Top.png`
 * `Dirt_Bottom.png`
 * `Dirt_Left.png`
@@ -139,7 +139,7 @@ useable keys is next: "all", "top", "bottom", "left", "right", "front", "back"
 reference is define name of texture set.
 
 ## blocks.json
-blocks.json is like bellow.
+blocks.json is like below.
 ````
 {
   "blocks": [
@@ -162,7 +162,7 @@ omitted in above examples, can specificate block shapes.
 in now, supported half block like minecraft.  
 not only, Y axis half block, can create X axis half block and Z axis half block.  
 using default block shape if omitt shape property.  
-bellow is example for define shape.
+below is example for define shape.
 
 ````
 ......
@@ -213,7 +213,7 @@ in now, supported .bmp, .json and .obj.
 # Developer's Manual
 ## Build
 need openFrameworks for build this project.   
-and, this project must be located on bellow directory.
+and, this project must be located on below directory.
 ````
 your_dir/of_v0.10.1_vs2017_release/apps/myApps/ofPlanet
 ````
@@ -239,7 +239,7 @@ in principle, all lua script is put on `Runtime/data/script`.
 in internal, generate terrain by call lua from C++.  
 however, stylized processes is execute on C++.  
 example, perlin noise generation... binding block to texture...  
-what to do on lua script side is bellow list.  
+what to do on lua script side is below list.  
 * filtering noise value.
 * put blocks using noise value.
 * generate structures using weighting table.
