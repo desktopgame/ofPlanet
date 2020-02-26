@@ -277,7 +277,7 @@ generate cave if needed.
 #### onPostGenerate -> void
 called on end of terrain generation.
 
-### 関数
+### Function
 
 #### setblock(x, y, z, name)
 overwrite block in specific point.  
