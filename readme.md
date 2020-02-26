@@ -246,40 +246,36 @@ what to do on lua script side is bellow list.
 * generate caves using noise value.
 
 #### start -> mode
-スクリプトの初期化処理をここに記述します。      
-最初に一度だけ呼び出されます。
+write initialize code in this function.  
+only once called on terrain generation.  
 
-また、戻り値として次のどちらかを返す必要があります。
-初期化処理のあと、どのコールバックを呼び出すべきかを指定します。
+also, should be return either value.
 * "default"
-    * 全てのコールバックを呼び出します。
+  * call all callback functions.
 * "ignore"
-    * onPostGenerateだけを呼び出します。
+  * call "onPostGenerate" only.
 
 #### onFixHeight(y) -> y
-y: -1 ~ 1 で表される2Dノイズ  
-C++で内部的にノイズを生成したあとで呼び出されます。  
-パーリンノイズ2Dで生成されたy座標を必要ならフィルタできます。
+y: noise value. biger than -1 and smaller than 1.   
+will called in each XZ point, filtering noise value.
 
 #### onGenerateTerrain(x, y, z) -> void
-x, y, z: 生成先の座標  
-onFixHeightによって地形(Terrain)を生成したあとで、  
-生成された地形の一番高い座標全てに対してこの関数が呼ばれます。
-地表にブロックを配置します。
+x, y, z: destination point.
+called on each XZ points, after filter a noise.  
+put ground surface blocks.
 
 #### onGenerateStructures() -> void
-onGenerateTerrainによってブロックを生成したあとで呼ばれます。  
-構造物を生成します。
+called on after "onGenerateTerrain".  
+generate structure if needed.
 
 #### onGenerateCave(x, y, z, noise) -> void
-x, y, z: 生成先の座標  
-noise: -1 ~ 1 で表される3Dノイズ  
-onGenerateStructuresによって構造物を生成したあとで、  
-"ワールドのY方向のサイズ/2" より低い位置の全ての座標に対してこの関数が呼ばれます。
-洞窟を生成します。
+x, y, z: destination point.
+noise: noise value. biger than -1 and smaller than 1.   
+called on after "onGenerateStructures".  
+generate cave if needed.
 
 #### onPostGenerate -> void
-一番最後に呼び出されるコールバックです。
+called on end of terrain generation.
 
 ### 関数
 
