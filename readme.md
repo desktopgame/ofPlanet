@@ -309,8 +309,8 @@ returns Y axis in world size.
 returns Z axis in world size.
 
 #### newstruct(name, format)
-指定の形状の構造物を文字列nameに紐づけて登録します。  
-以下に例を示します。
+link a structure and name.  
+below is example.
 
 ````
 function start()
@@ -348,32 +348,33 @@ Leaf,Leaf,Leaf
 end
 ````
 
-※木を構造物として登録するサンプル  
+* example for tree generation.  
+
+translate at later.
 １つの文字列の中に複数のCSVを格納するようなイメージです。空行がCSV間の区切りとなります。  
 下に定義されたものほど実際に構造物を生成したときに上の方(+Y)に生成されます。  
 また、指定されるブロック名は `blocks.json` の `reference` と同じ名前である必要があります。  
 なにもない場合は `,,` のように隙間をあけずにカンマを打てばOKです。
 
 #### genstruct(addWeight, limitWeight, name)
-重み付けを使用して構造物を複数配置します。  
-重み付けが強ければ強いほど配置数は少なくなります。
+generate structure using weighting table.
 
 #### expandstruct(x, y, z, name)
-指定の座標に構造物を配置します。
+generate structure at specific point.
 
 #### setweight(x, y, z, weight, name)
-指定の構造物を配置するための重み付けテーブルの指定の座標の重み付けを上書きします。
+overwrite weighting on specific point.
 
 #### getweight(x, y, z, name)
-指定の構造物を配置するための重み付けテーブルの指定の座標の重み付けを返します。
+returns weighting on specific point.
 
 #### setweightrange(minX, minY, minZ, maxX, maxY, maxZ, weight, name)
-指定の構造物を配置するための重み付けテーブルの指定の座標の重み付けを範囲ごと上書きします。
+overwrite weighting for specific range.
 
-### その他
+### Other
 
-#### ブロックを指定する方法
-`blocks.json`に定義されているブロックの `reference` 属性と同じ名前を使用してください。
+#### Block Specification Method
+use `reference` attribute from `blocks.json`.
 
 #### 数値型
 Luaには実数型と整数型の区別がありません。  
