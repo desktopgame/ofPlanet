@@ -21,10 +21,12 @@ should be able to launch for only double click.
 
 ## Screen Image
 launch application and should be able to display like bellow image.
+
 ![start screen](ss_default.png)
 
 ### Setting
 input basic setting for world.
+
 ![setting screen](ss_setting.png)
 
 #### Size
@@ -41,6 +43,7 @@ PlayMode is if toggled on, will able move by WASD key.
 ### Parameter
 Parameter is like "SerializedField" on Unity.
 editable to variable of current selected lua script.
+
 ![設定画面](ss_parameter.png)
 
 for example, below script is declare variable in first four line.
