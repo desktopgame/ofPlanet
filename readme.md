@@ -425,18 +425,6 @@ format of json obtained by output.
 * Coordinate system(Up=Z+ Right=X+ Front=Y+)
 * Rotateion Mode: XYZ Euler Angle
 
-## 外部プログラムとの連携
-~~様々なバックエンドで地形を利用可能にするため、~~  
-~~`ofPlanet`は特定のプラットフォームやフレームワークに依存した形式の出力を行いません。~~  
-~~代わりに、`ofPlanet`を利用するユーザは適切に出力をパースする必要があります。~~  
-~~現在のところ、`ofPlanet`に対応したバックエンドの一つとして、`uniPlanet`を提供しています。~~
-
-~~[uniPlanet](https://github.com/desktopgame/uniPlanet)~~
-
-uniPlanetは現状でも使用可能ですが、OBJをエクスポートして  それをUnityで読み込むほうが軽量です。  
-そのままだと当たり判定がつきませんが、[SAColliderBuilder](https://assetstore.unity.com/packages/tools/sacolliderbuilder-15058)を使えば当たり判定もつけられます。  
-※SAColliderBuilderは私の制作したアセットではありません。
-
 # License
 this application was implemented by below libraries.
 * [openframeworks](https://openframeworks.cc/ja/)
