@@ -280,33 +280,33 @@ called on end of terrain generation.
 ### 関数
 
 #### setblock(x, y, z, name)
-指定座標のブロックを設定します  
-nameが空文字列""のとき、指定位置のブロックを削除します
+overwrite block in specific point.  
+delete block if block name is "".
 
 #### putblock(x, y, z, name)
-指定位置に何もなければブロックを配置します。
+put block if nothing block on point.  
 
 #### getblock(x, y, z) -> name
-指定座標のブロックを返します
+returns block located on point.  
 
 #### setblockrange(minX, minY, minZ, maxX, maxY, maxZ, name)
-指定の範囲のブロックを全て埋めます。
+fill to range using block.  
 
 #### putblockrange(minX, minY, minZ, maxX, maxY, maxZ, name)
-指定の範囲のブロックを全て埋めます。
-また、既に何か配置されている座標はスキップします。
+fill to range using block.  
+however, skip if already existing block.
 
 #### replaceblockrange(minX, minY, minZ, maxX, maxY, maxZ, oldName, newName)
-指定の範囲のブロックを全て置き換えます。
+replace blcok in range.  
 
 #### getxsize() -> xsize
-ワールドのX方向のサイズを返します
+returns X axis in world size.
 
 #### getysize() -> ysize
-ワールドのY方向のサイズを返します
+returns Y axis in world size.
 
 #### getzsize() -> zsize
-ワールドのZ方向のサイズを返します
+returns Z axis in world size.
 
 #### newstruct(name, format)
 指定の形状の構造物を文字列nameに紐づけて登録します。  
