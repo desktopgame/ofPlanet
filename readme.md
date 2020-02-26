@@ -12,11 +12,11 @@ this application was developed in Visual Studio 2017.
 need ["VisualStudio Redistribution Package"](https://support.microsoft.com/en-us/help/2977003/the-latest-supported-visual-c-downloads) for run a ofPlanet.
 
 ## Launch
-double click to `Runtime/ofPlanet.exe" for launch.
-need `blocks.json` and `textures.json` in `Runtime/data` folder.
-other, need images for blocks, it is locatable for subordinate on data folder.
+double click to `Runtime/ofPlanet.exe` for launch.  
+need `blocks.json` and `textures.json` in `Runtime/data` folder.  
+other, need images for blocks, it is locatable for subordinate on data folder.  
 
-in defaults, because already prepared `Runtime/data/blocks.json`, `Runtime/data/textures.json` and images for blocks,
+in defaults, because already prepared `Runtime/data/blocks.json`, `Runtime/data/textures.json` and images for blocks,  
 should be able to launch for only double click.
 
 ## Screen Image
