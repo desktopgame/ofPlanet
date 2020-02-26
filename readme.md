@@ -1,51 +1,51 @@
-# ofPlanetユーザーマニュアル
-ofPlanetは地形生成エディターです。  
-![ofPlanetのプレビュー](ss_app.png)
+# ofPlanet User's Manual
+ofPlanet is terrain generator.
 
-3Dモデルを .obj で出力して、他のアプリケーションから使うこともできます。  
-※画像はofPlanetで生成したモデルをUnityで表示した様子
-![ofPlanetで生成したモデルのプレビュー](ss_unity.png)
+![ofPlanet preview](ss_app.png)
 
-# 動作環境
-このアプリケーションはVisualStudio2017を用いて実装されました。  
-[VisualStudio2017再頒布パッケージ](https://support.microsoft.com/ja-jp/help/2977003/the-latest-supported-visual-c-downloads)が必要です。
+can model export in obj format, can useable in other applications.  
+in now, verified confirmed readable in Unity.
+![model preview in unity](ss_unity.png)
 
-## 起動
-`Runtime/ofPlanet.exe`をダブルクリックして起動します。  
-Runtime/dataフォルダには `block.json` `textures.json` が必要です。  
-他にもブロックのための画像が必要ですが、これはdata配下の自由なディレクトリに配置できます。  
-※ただし、サブディレクトリを作ることはできません。全て直下に配置します。
+# Operating Enviroment
+this application was developed in Visual Studio 2017.  
+need ["VisualStudio Redistribution Package"](https://support.microsoft.com/en-us/help/2977003/the-latest-supported-visual-c-downloads) for run a ofPlanet.
 
-このアプリには最初から `Runtime/data/blocks.json` `Runtime/data/textures.json` そしてテクスチャが `Runtime/data/block` に格納されているので、  
-何もしなくても起動することができるはずです。
+## Launch
+double click to `Runtime/ofPlanet.exe" for launch.
+need `blocks.json` and `textures.json` in `Runtime/data` folder.
+other, need images for blocks, it is locatable for subordinate on data folder.
 
-## 画面
-起動すると、以下のような画面が表示されるはずです。
-![最初の画面](ss_default.png)
+in defaults, because already prepared `Runtime/data/blocks.json`, `Runtime/data/textures.json` and images for blocks,
+should be able to launch for only double click.
+
+## Screen Image
+launch application and should be able to display like bellow image.
+![start screen](ss_default.png)
 
 ### Setting
-ワールドの基本的な設定を定義します。  
-![設定画面](ss_setting.png)
+input basic setting for world.
+![setting screen](ss_setting.png)
 
 #### Size
-生成するワールドのサイズを設定出来ます。
+Size is configure world size.
 #### Biome
-生成するワールドの種類を決めます。  
-これは `Runtime/data/script` の中に配置されたLuaスクリプトで実装されており、
-ユーザーが自由に追加可能です。
+Biome is configure world biome.  
+because  implemented by lua script, users can add new biome.  
+details is see `Runtime/data/script` folder.
 #### CameraSpeed
-プレビュー時のカメラ速度です。
+CameraSpeed is camera spped on preview.
 #### PlayMode
-ONにすると、WASDと矢印キーでワールドを移動出来ます。
+PlayMode is if toggled on, will able move by WASD key.
 
 ### Parameter
-これはUnityにおける`SerializedField`と同じような働きをします。  
-現在選択されているLuaスクリプトのグローバル変数を全て表示します。  
+Parameter is like "SerializedField" on Unity.
+editable to variable of current selected lua script.
 ![設定画面](ss_parameter.png)
 
-例えば、以下のスクリプトでは最初の四行で変数を宣言し、初期値を与えています。  
-この変数を編集するための適切なエディターを表示しているのが上記の画像です。  
-選択中のスクリプトが切り替われば自動で切り替わります。
+for example, below script is declare variable in first four line.
+above image is shown editor for this variable.
+editor is auto updated if changed script.
 ````
 topBlock = "GrassDirt"
 fillBlockDeep = "Stone"
@@ -96,7 +96,7 @@ end
 ````
 
 ## textures.json
-textures.jsonは例えば以下のようなファイルです。
+textures.json is like bellow.
 ````
 {
   "baseDirectory": "image/block",
@@ -108,17 +108,17 @@ textures.jsonは例えば以下のようなファイルです。
       },
       "reference": "DirtBlock"
     }
-    以下略...
+    ...
 }
 ````
 ### baseDirectory
-テクスチャが格納されるディレクトリを指定します。
+baseDirectory is directory for put on textures.
 ### textures
-この配下にテクスチャ定義を並べます
+textures is array for texture definition.
 ### baseFileName
-テクスチャのベースとなるファイル名です。  
-ブロックは6個の面から構成されますが、  それぞれのファイルに共通する部分をここに定義します。  
-例えば、6個の面を構成するテクスチャが
+baseFileName is base of texture name.
+because block is structured six side plane, need each sides resolve texture.
+for example, baseFileName of texture list bellow is `Dirt_`.
 * `Dirt_Top.png`
 * `Dirt_Bottom.png`
 * `Dirt_Left.png`
@@ -126,28 +126,17 @@ textures.jsonは例えば以下のようなファイルです。
 * `Dirt_Front.png`
 * `Dirt_Back.png`
 
-であるとき、共通部分は `Dirt_` です。  
-これに後述する `mappingRule` をつけたすことで面ごとのテクスチャのファイル名を解決します。
+resolve by add `mappingRule` to this string.
 
 ### mappingRule
-マッピングルールはある面に対応するファイルの名前です。  
-キーには `"all" "top" "bottom" "left" "right" "front" "back"` が使えます。  
-ただし、6個の面全てが埋められていれば全てのキーを使う必要はありません。  
-例えば、ベース名が `"baseFileName": "Dirt"` のように定義されていて、  
-マッピングルールが `"all": "Side"` のように定義されているなら、
-全ての面に `DirtSide.png` が適用されることになります。  
-これは6個の面のうちいくつかの面のテクスチャが使い回されるときに便利です。  
-
-また、`"all"`と他の面が同時に定義されている場合、  
-一度 `"all"` で全ての面を解決したあとで、定義されている他の面を使ってもう一度テクスチャのファイルを解決します。(上書き)  
-なので、部分的にテクスチャを使い回すことも可能です。
+mappingRule is define texture bound sides plane.  
+useable keys is next: "all", "top", "bottom", "left", "right", "front", "back"
 
 ### reference
-リファレンスは、このテクスチャのセット自体に一意な名前をつけるために必要です。  
-`blocks.json`からテクスチャを指定するときはこの名前を使用します。
+reference is define name of texture set.
 
 ## blocks.json
-blocks.jsonは例えば以下のようなファイルです。
+blocks.json is like bellow.
 ````
 {
   "blocks": [
@@ -160,22 +149,20 @@ blocks.jsonは例えば以下のようなファイルです。
 ````
 
 ### reference
-このブロックを参照するための名前を定義します。  
-これはLuaスクリプト内部から使用されます。(後述)
+reference is define name of block.
 
 ### texture
-対応するテクスチャを定義します。
-上述の `textures.json` の `reference` に定義した名前を使用します。
+texture is define texture set for corresponding to block.
 
 ### shape
-上の例では省略されていますが、追加でブロックの形状を指定することができます。  
-これは現在のところハーフブロックのみをサポートしています。  
-ofPlanetでは、Y方向のハーブロックだけでなくXZ方向のハーフブロックをサポートしています。  
-※省略されている場合は通常のブロックとして扱われます。
-以下がハーフブロックの定義例です。
+omitted in above examples, can specificate block shapes.  
+in now, supported half block like minecraft.  
+not only, Y axis half block, can create X axis half block and Z axis half block.  
+using default block shape if omitt shape property.  
+bellow is example for define shape.
 
 ````
-...中略...
+......
     {
       "reference": "StoneTopSlab",
       "texture": "StoneBlock",
@@ -206,51 +193,54 @@ ofPlanetでは、Y方向のハーブロックだけでなくXZ方向のハーフ
       "texture": "StoneBlock",
       "shape": "BackSlab"
     },
-...中略...
+......
 ````
 
 ### textures.json & blocks.json
+translate at later, because this section is not so important.  
 この2つのファイルが間接参照を多用したデータ構造になっているのは意図的なものです。  
 テクスチャのみ/ブロックのみをあとから簡単に差し替えることが可能です。
 
 ### Exporter
-生成した地形を任意の他のプログラムで利用するために、  
-エクスポートするためのウィンドウです。  
-JSON/OBJ/BMP に対応しています。
+Exporter is window for export terrain.
+in now, supported .bmp, .json and .obj.
 
-![エクスポート画面](ss_export.png)
+![export screen](ss_export.png)
 
-# 開発者マニュアル
-## ビルド
-このプロジェクトのビルドにはopenframeworksが必要です。  
-ディレクトリは以下の場所である必要があります。
+# Developer's Manual
+## Build
+need openFrameworks for build this project.   
+and, this project must be located on bellow directory.
 ````
 your_dir/of_v0.10.1_vs2017_release/apps/myApps/ofPlanet
 ````
 
-また、アドオンとして
+and, need next addons:
 * [ofxLua](https://github.com/desktopgame/ofxLua)
 * [ofxSOIL](https://github.com/desktopgame/ofxSOIL)
 * [ofxPlanet](https://github.com/desktopgame/ofxPlanet)
 
-が必要です。現在ではアドオンはWindowsにしか対応していないので
-このアプリもWindowsでしか動作しません。
 
-また、"ofPlanet\\bin" には "lua.dll" が必要です。  
-このプロジェクトを開くと nuget によって自動で lua がインストールされますので、
-"ofPlanet\\packages\\lua.redist.5.3.5.1\\build\\native\\bin\\v142\\Win32\\Debug" から "lua.dll" をコピーして "ofPlanet\\bin" にペーストしてください。
+and, need "lua.dll" for "ofPlanet\\bin".  
+will auto installed lua at opened this project by nuget.  
+will installed "lua.dll" is  together at this time.  
+must be this "lua.dll" is copy to "ofPlanet\\bin".
 
-## Luaスクリプト
-原則として、luaスクリプトは全て `Runtime/data/script` に配置します。  
-※ `ofPlanet.exe` が `Runtime` にあるとする
+## Lua Script
+in principle, all lua script is put on `Runtime/data/script`.
+* if you have ofPlanet.exe is located on `Runtime`
 
 [LUA Manual](https://www.lua.org/manual/5.3/)
 
-### コールバック関数
-内部的には、C++からLuaで定義された各種コールバック関数を呼び出すことで地形を生成します。  
-パーリンノイズ生成などの定型的な処理は全てC++側で処理されます。  
-LuaでやるべきことはC++から受け取ったノイズ(実数型)を使用して地形を生成することと、  
-必要に応じて任意の構造物などを生成することです。  
+### Callback Functions
+in internal, generate terrain by call lua from C++.  
+however, stylized processes is execute on C++.  
+example, perlin noise generation... binding block to texture...  
+what to do on lua script side is bellow list.  
+* filtering noise value.
+* put blocks using noise value.
+* generate structures using weighting table.
+* generate caves using noise value.
 
 #### start -> mode
 スクリプトの初期化処理をここに記述します。      
