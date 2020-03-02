@@ -219,9 +219,9 @@ your_dir/of_v0.10.1_vs2017_release/apps/myApps/ofPlanet
 ````
 
 and, need next addons:
-* [ofxLua](https://github.com/desktopgame/ofxLua)
-* [ofxSOIL](https://github.com/desktopgame/ofxSOIL)
-* [ofxPlanet](https://github.com/desktopgame/ofxPlanet)
+* [ofxLua](https://github.com/desktopgame/ofxLua) tag:0.1
+* [ofxSOIL](https://github.com/desktopgame/ofxSOIL) tag:v1.0
+* [ofxPlanet](https://github.com/desktopgame/ofxPlanet) tag:v1.2
 
 
 and, need "lua.dll" for "ofPlanet\\bin".  
