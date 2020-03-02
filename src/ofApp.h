@@ -64,7 +64,7 @@ class ofApp : public ofBaseApp {
 
         ofShader shader;
         Camera camera;
-        std::shared_ptr<ofxPlanet::Planet> planet;
+        std::shared_ptr<ofxPlanet::FixedWorld> world;
         float cameraAngle;
 
         ofxImGui::Gui gui;

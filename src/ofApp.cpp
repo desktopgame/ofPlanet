@@ -2,10 +2,6 @@
 
 #include "../common/GLM.hpp"
 #include "../common/glfw.hpp"
-#include "../world/BlockPack.hpp"
-#include "../world/Planet.hpp"
-#include "../world/TexturePack.hpp"
-#include "../world/World.hpp"
 #include "ScriptBiome.hpp"
 namespace planet {
 
@@ -18,7 +14,7 @@ using ExportMode =
 ofApp::ofApp()
     : shader(),
       camera(),
-      planet(std::make_shared<ofxPlanet::Planet>(shader)),
+		world(nullptr),
       cameraAngle(0),
       gui(),
       playMode(false),
@@ -69,7 +65,7 @@ void ofApp::setup() {
 
 //--------------------------------------------------------------
 void ofApp::update() {
-        auto w = planet->getWorld();
+		auto w = this->world;
         if (!w) {
                 return;
         }
@@ -88,9 +84,9 @@ void ofApp::draw() {
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_CULL_FACE);
         glCullFace(GL_BACK);
-        auto w = planet->getWorld();
-        planet->drawToBuffer();
-        planet->render();
+		if (this->world) {
+			this->world->getChunk()->draw();
+		}
         // 3D‹@”\‚ð–³Œø‚É‚µ‚ÄÝ’è‰æ–Ê‚ð•`‰æ
         glDisable(GL_DEPTH_TEST);
         glDisable(GL_CULL_FACE);
@@ -245,8 +241,11 @@ void ofApp::drawSettingsWindow() {
         cameraSpeed.draw();
         if (!processing && !biomes.empty() && biomeNames.selectedIndex >= 0 &&
             ImGui::Button("Generate")) {
-                planet->generate(worldSize.value,
-                                 biomes.at(biomeNames.selectedIndex));
+				glm::ivec3 iworldSize = worldSize.value;
+				this->world = ofxPlanet::FixedWorld::create(this->shader, iworldSize.x, iworldSize.y, iworldSize.z);
+				ofxPlanet::BlockTable bt(iworldSize.x, iworldSize.y, iworldSize.z);
+				biomes.at(biomeNames.selectedIndex)->generate(bt);
+				this->world->load(bt);
         }
         if (!processing && ImGui::Button("Reload")) {
                 // loadShader();
@@ -307,7 +306,10 @@ void ofApp::drawExporterWindow() {
 }
 
 void ofApp::cameraAuto() {
-        auto w = planet->getWorld();
+		auto w = this->world;
+		if (!w) {
+			return;
+		}
         const int wsx = w->getXSize();
         const int wsy = w->getYSize();
         const int wsz = w->getZSize();
@@ -326,7 +328,10 @@ void ofApp::cameraAuto() {
         this->cameraAngle += cameraSpeed.value;
 }
 void ofApp::cameraUser() {
-        auto w = planet->getWorld();
+		auto w = this->world;
+		if (!w) {
+			return;
+		}
         const int wsx = w->getXSize();
         const int wsy = w->getYSize();
         const int wsz = w->getZSize();
@@ -462,7 +467,7 @@ void ofApp::bridgeDebugMessage(GLenum source, GLenum type, GLuint eid,
 void ofApp::exportJson(const std::string& outputFile) {
         if (!isProcessing()) {
                 this->asyncOp =
-					ofxPlanet::WorldIO::saveJson(outputFile, planet->getWorld());
+					ofxPlanet::WorldIO::saveJson(outputFile, this->world);
         }
 }
 
@@ -471,16 +476,16 @@ void ofApp::exportObj(const std::string& outputDir) {
                 return;
         }
         if (splitCount.value <= 1) {
-                this->asyncOp = ofxPlanet::WorldIO::saveObj(outputDir, planet->getWorld());
+                this->asyncOp = ofxPlanet::WorldIO::saveObj(outputDir, this->world);
         } else {
-                this->asyncOp = ofxPlanet::WorldIO::saveObj(outputDir, planet->getWorld(),
+                this->asyncOp = ofxPlanet::WorldIO::saveObj(outputDir, this->world,
                                                  splitCount.value);
         }
 }
 
 void ofApp::exportBmp(const std::string& outputFile) {
         if (!isProcessing()) {
-                this->asyncOp = ofxPlanet::WorldIO::saveBmp(outputFile, planet);
+                //this->asyncOp = ofxPlanet::WorldIO::saveBmp(outputFile, planet);
         }
 }
 
