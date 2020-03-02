@@ -8,7 +8,6 @@ namespace planet {
 using ExportMode =
     enum { EXPORT_JSON = 0,
            EXPORT_OBJ,
-           EXPORT_BMP,
     };
 
 ofApp::ofApp()
@@ -34,7 +33,7 @@ ofApp::ofApp()
         fpsCon.setMoveSpeed(1.0f);
         fpsCon.setMode(FirstPersonController::Mode::Key);
         gui.setup();
-        exportTypes.labels = std::vector<std::string>{"JSON", "OBJ", "BMP"};
+        exportTypes.labels = std::vector<std::string>{"JSON", "OBJ"};
         splitCount.step = 2;
         splitCount.min = 0;
         splitCount.max = 8;
@@ -296,9 +295,6 @@ void ofApp::drawExporterWindow() {
                                     exportDir.getString(), "data.json"));
                         } else if (exportMode == EXPORT_OBJ) {
                                 exportObj(exportDir.getString());
-                        } else if (exportMode == EXPORT_BMP) {
-                                exportBmp(ofFilePath::join(
-                                    exportDir.getString(), "data.bmp"));
                         }
                 }
         }
